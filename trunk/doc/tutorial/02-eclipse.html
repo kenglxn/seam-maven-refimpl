@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Seam Maven reference Implentation - Eclipse</title>
+</head>
+<body>
+
+<h1>Eclipse and JBoss Tools</h1>
+<p>Denne tutorialen er ikke helt ferdig. Må beskrive stegene som er nødvendige for å benytte JBoss Tools. 
+  Screenshots må endres siden jeg har fjernet JAR pom'en. Vise steps for å opprette en entitetklasse
+  med autogenerert CRUD UI-grensesnitt. Vise steps for reverse engeneering med autogenerert UI.
+</p>
+
+<p>This tutorial explains how to use the Eclipse IDE and JBoss Tools for development.</p>
+
+<li>Download and install software: 
+<ul>
+  <li><a href="http://www.eclipse.org/">Eclipse Ganymede 3.4 (with WTP installed)</a></li>
+  <li><a href="http://maven.apache.org/">Maven 2.2.x</a></li>
+  <li><a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a></li>
+  <li><a href="http://subclipse.tigris.org/">SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE</a></li>
+  <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a></li>
+  <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a></li>
+</ul>
+
+<h2>Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</h2>
+<p><a href="01-gettingstarted.html#use-as-template">Follow steps here.</a></p>
+
+<h2>Import Maven project to Eclipse</h2>
+<p>To import a mavenized project to Eclipse (i.e. a project that is already installed on your computer), 
+  follow these steps:</p>
+<ol>
+  <li>Create a workspace in eclipse (do not use same folder as <code>${SEAM_REFIMPL}</code>)</li>
+  <li>Create a WTP server reference (that references the installed JBoss application server), the
+    <a href="http://seamframework.org/Documentation">JBoss Seam documentation</a> explains how to 
+    Create a WTP server reference
+  </li>
+  <li>Exit eclipse, navigate to the project folder using a command shell and execute Maven command: <code>mvn clean install</code></li>
+  <li>Execute Maven command: <code>mvn eclipse:clean</code></li>
+  <li>Execute Maven command: <code>mvn eclipse:m2eclipse</code> from the command shell<br/>
+       <strong>Note:</strong> <code>mvn eclipse:eclipse</code> does not work!
+  </li>
+  <li>Open Eclipse and import the <code>seam-refimpl</code> project into your Eclipse workspace
+    <img src="img/eclipse-import.png" style="width:250px; display:block;" /><br/>
+    <img src="img/eclipse-import-maven-01.png" style="width:400px; display:block;" /><br/>
+    <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" /><br/>
+    If the SubClipse plugin is  configured corretly and the project was previously checked out from 
+    <strong>svn</strong> (using tortoise or a similar tool), then the project should already be under 
+    revision control inside Eclipse. If the project does not apear to be under revision control then 
+    select all <strong>seam-refimpl</strong> projects, rightclick and select <code>Team &gt; Share Project...</code>
+    to get the project under revision control.
+    <img src="img/eclipse-import-maven-03.png" style="width:250px; display:block;" /><br/>
+  </li>
+  <li>Right click on the configured JBoss Server and select <strong>Add and Remove Projects...</strong>
+    <img src="img/eclipse-import-maven-04.png" style="width:450px; display:block;" /><br/>
+  </li>
+  <li>Select the <strong>seam-refimpl-ear</strong> project and click <strong>Add</strong>
+    <img src="img/eclipse-import-maven-05.png" style="width:450px; display:block;" /><br/>
+  </li>
+  <li>Start the server</strong>
+    <img src="img/eclipse-import-maven-06.png" style="width:300px; display:block;" /><br/>
+  </li>
+  <li>Open a browser and enter the URL <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a></li>
+</ol>
+
+<h2>Checkout a Maven project to Eclipse from SCM</h2>
+<ol>
+  <li>Select <strong>File &gt; New &gt; Other...</strong>
+    <img src="img/eclipse-scm-maven-01.png" style="width:400px; display:block;" /><br/>
+  </li>
+  <li>Select <strong>Checkout Maven Projects from SCM</strong></strong>
+    <img src="img/eclipse-scm-maven-02.png" style="width:450px; display:block;" /><br/>
+    <img src="img/eclipse-scm-maven-03.png" style="width:450px; display:block;" /><br/>
+    <img src="img/eclipse-scm-maven-04.png" style="width:450px; display:block;" /><br/>
+    <img src="img/eclipse-scm-maven-05.png" style="width:750px; display:block;" /><br/>
+  </li>
+  <li>Exit eclipse, navigate to the project folder using a command shell and execute Maven command:
+     <code>mvn eclipse:m2eclipse</code><br/>
+     <strong>Note:</strong> <code>mvn eclipse:eclipse</code> does not work!<br/>
+     <strong>Note ii:</strong> Maybe this step is redundant?
+  </li>
+  <li>Open Eclipse again and right click on the configured JBoss Server and select <strong>Add and Remove Projects...</strong>
+    <img src="img/eclipse-import-maven-04.png" style="width:450px; display:block;" /><br/>
+  </li>
+  <li>Select the <strong>seam-refimpl-ear</strong> project and click <strong>Add</strong>
+    <img src="img/eclipse-import-maven-05.png" style="width:450px; display:block;" /><br/>
+  </li>
+  <li>Start the server</strong>
+    <img src="img/eclipse-import-maven-06.png" style="width:300px; display:block;" /><br/>
+  </li>
+  <li>
+    Open a command shell and run <code>mvn clean package -Pexplode</code><br/>
+    This is <strong>IMPORTANT</strong> because JBoss Tools clutters up the exploded view.
+  </li>
+  <li>
+    The exploded view on your <code>${JBOSS_DEPLOY}</code> folder should look like this:
+    <img src="img/exploded-ear.png" style="width:700px; display:block;" /><br/>
+  </li>
+  <li>Open a browser and enter the URL <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a><br/>
+    After logging in, your welcome screen should look like this:
+    <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" /><br/>
+  </li>
+</ol>
+
+
+<h3>m2eclipse issues</h3>
+<p>There is a problem with running <code>mvn install</code> from eclipse, see: 
+<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
+http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas</a>
+</p>
+
+<h2>Tips for debugging</h2>
+<p>
+When your application starts up it will print all components being created (Seam and your own) 
+and the context they are placed in. Validate that your new component is displayed as well.</p>
+<p>
+Seam has a debug page showing useful information. To use it, add the following dependency to your war pom.xml:
+</p><pre>  &lt;dependency&gt;
+    &lt;groupId&gt;org.jboss.seam&lt;/groupId&gt;
+    &lt;artifactId&gt;jboss-seam-debug&lt;/artifactId&gt;
+    &lt;version&gt;${jboss.seam.version}&lt;/version&gt;
+  &lt;/dependency&gt;</pre>
+  
+<p>In the components.xml activate the debug mode.</p>
+<pre>&lt;core:init transaction-management-enabled=&quot;false&quot; debug=&quot;true&quot;/&gt;</pre>
+<p>
+  Open your browser and point to the following URL to see the debug page.
+  <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
+</p>
+</body>
+</html>

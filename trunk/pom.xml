@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+	<modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.jboss.seam</groupId>
+    <artifactId>root</artifactId>
+    <version>2.1.1.GA</version>
+  </parent>
+  
+  <groupId>no.knowit.seam</groupId>
+  <artifactId>seam-refimpl</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>${artifactId}-parent</name>
+  <description>Seam Maven reference implementation parent pom ....</description>
+  <url>http://maven.apache.org</url>
+  <packaging>pom</packaging>
+  
+  <!-- 
+  <prerequisites>
+    <maven>2.2.0-RC2</maven>
+  </prerequisites>
+  -->
+  
+  <developers>
+    <developer>
+      <id>loo@knowit.no</id>
+      <name>Leif Olsen</name>
+      <email>loo@knowit.no</email>
+      <organization>Knowit Objectnet Kristiansand</organization>
+      <organizationUrl>http://www.knowit.no</organizationUrl>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>GMT +1</timezone>
+    </developer>
+  </developers>
+
+  <modules>
+    <module>ear</module>
+    <module>ejb</module>
+    <module>war</module>
+  </modules>
+
+	<repositories>
+		<repository>
+			<id>download.java.net</id>
+			<url>http://download.java.net/maven/1</url>
+			<layout>legacy</layout>
+		</repository>
+    <repository>
+      <id>repository.jboss.org</id>
+      <name>Jboss Repository</name>
+      <url>http://repository.jboss.org/maven2</url>
+    </repository>
+	</repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>apache.snapshots</id>
+      <url>http://people.apache.org/maven-snapshot-repository/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>codehaus.snapshots</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>  <!-- Workaround for MNG-2974, see: http://mojo.codehaus.org/using-sandbox-plugins.html -->
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <properties>
+    <jboss.seam.version>2.1.1.GA</jboss.seam.version>
+    <jboss.el.version>2.0.2.CR1</jboss.el.version>
+    <richfaces.version>3.3.0.GA</richfaces.version>
+
+    <app.context>seam-refimpl</app.context>
+    <app.display.name>Seam Reference Implementation</app.display.name>
+    <app.description>The Seam Reference Implementation is a Maven project you can use as a template for your own JBoss Seam projects</app.description>
+    <app.jndi.name>${app.context}Datasource</app.jndi.name>
+    <app.database.name>refimpl_db</app.database.name>
+    <app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
+    <app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
+    <app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+    <app.ds.xml>${app.context}-ds.xml</app.ds.xml>
+    
+    <!-- Default profile attribute values. The values can be removed if a profiles.xml file is present -->
+    <env>prod</env>
+    <env.unpack.modules>false</env.unpack.modules>
+    <env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+    <env.hibernate.show_sql>true</env.hibernate.show_sql>
+    <env.hibernate.format_sql>true</env.hibernate.format_sql>
+    
+    <jdk.debug>false</jdk.debug>
+    <jdk.optimize>true</jdk.optimize>
+    <jdk.source>1.5</jdk.source>
+    <jdk.target>1.5</jdk.target>
+
+    <as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
+    <as.version>4.2</as.version> 
+    
+    <ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
+    <ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
+    <ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
+    <ds.user.name>sa</ds.user.name>
+    <ds.password></ds.password>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.3</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-ear-plugin</artifactId>
+          <version>2.3.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>2.1-beta-1</version>
+        </plugin> 
+      </plugins>
+    </pluginManagement>
+  
+    <plugins>
+      <!-- Maven Eclipse Plugin        -->
+      <!-- @TODO: move to profiles.xml -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>true</downloadJavadocs>
+          <projectNameTemplate>${app.context}</projectNameTemplate>
+          <addVersionToProjectName>false</addVersionToProjectName>
+          <version>2.6</version> 
+					<wtpapplicationxml>false</wtpapplicationxml>
+          <wtpmanifest>false</wtpmanifest>
+					<manifest>${basedir}/src/main/resources/META-INF/MANIFEST.MF</manifest>
+        </configuration>
+			</plugin>
+      
+      <!-- Maven IDEA Plugin           -->
+      <!-- @TODO: move to profiles.xml -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-idea-plugin</artifactId>
+        <configuration>
+          <downloadSources>true</downloadSources> 
+          <downloadJavadocs>true</downloadJavadocs> 
+          <dependenciesAsLibraries>true</dependenciesAsLibraries> 
+          <useFullNames>false</useFullNames> 
+        </configuration>
+      </plugin>
+      
+      <!-- Maven Compiler Plugin                                    -->
+      <!-- @TODO: split into jdk5 and jdk6 and move to profiles.xml -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${jdk.source}</source>
+          <target>${jdk.target}</target>
+          <encoding>utf-8</encoding> 
+          <debug>${jdk.debug}</debug>
+          <optimize>${jdk.optimize}</optimize>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- Available Dependencies -->
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- seam-refimpl -->
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${app.context}-ear</artifactId>
+        <version>${project.version}</version>
+        <type>ear</type>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${app.context}-ejb</artifactId>
+        <version>${project.version}</version>
+        <type>ejb</type>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${app.context}-war</artifactId>
+        <version>${project.version}</version>
+        <type>war</type>
+      </dependency>
+      <!--
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${app.context}-jar</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      -->
+      
+      <!--  needed by richfaces-impl in WAR -->
+      <dependency>
+        <groupId>commons-digester</groupId>
+        <artifactId>commons-digester</artifactId>
+        <version>1.8</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <!--  JBoss Seam -->
+      <dependency>
+        <groupId>org.jboss.seam</groupId>
+        <artifactId>jboss-seam</artifactId>
+        <version>${jboss.seam.version}</version>
+        <type>ejb</type>
+        <exclusions>
+          <exclusion>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.jboss.el</groupId>
+            <artifactId>jboss-el</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <!--  Dependencies common for all poms -->
+  <dependencies>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>5.8</version>
+      <scope>test</scope>
+      <classifier>jdk15</classifier>
+    </dependency>
+  </dependencies>
+
+</project>
