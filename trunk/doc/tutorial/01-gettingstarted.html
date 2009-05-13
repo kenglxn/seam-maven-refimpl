@@ -7,15 +7,18 @@
 <body>
 
 <h1>Getting Started</h1>
-<p>Describes the necessary steps to get a Mavenized Seam project up and running.</p>
+<p>The getting started tutorial describes the necessary steps to get a Mavenized Seam project up and 
+  running.</p>
 <p>You must have a basic understanding of 
-  <a href="http://docs.jboss.com/seam/latest/reference/en-US/html/Book-Preface.html">JBoss Seam</a>, the
+  <a href="http://docs.jboss.com/seam/latest/reference/en-US/html/Book-Preface.html">
+    JBoss Seam</a> (EJB3, JPA, JSF), the
   <a href="http://www.jboss.org/jbossas/docs/index.html">JBoss application server</a>,
   <a href="http://maven.apache.org/guides/getting-started/">Maven</a> and the DBMS of your choice, e.g. 
   <a href="http://dev.mysql.com/">MySql5</a>, to follow this tutorial.</p>
 
 <h2>Environment Variables</h2>
-<p>The environment variables listed here are just shortcuts so we don't have to type the tedious file paths over and over again in this document.</p>
+<p>The environment variables listed here are just shortcuts so we don't have to type the tedious file 
+  paths over and over again in this document.</p>
 <ul>
   <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation folder, e.g. C:\servers\jboss-4.2.3.GA</li>
   <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
@@ -27,9 +30,9 @@
 <ul>
   <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-1.5</a></li>
   <li><a href="http://maven.apache.org/download.html">Maven 2.0.10</a> or 
-    <a href="https://repository.apache.org/content/repositories/maven-staging-010/org/apache/maven/apache-maven/2.2.0-RC2/">Maven 2.2.x</a>
-    <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug. 
-    See the <code>${SEAM_REFIMPL}/doc/maven-2.1.0-bug</code> folder for an explanation.</li>
+    <a href="https://repository.apache.org/content/repositories/maven-staging-010/org/apache/maven/apache-maven/2.2.0-RC2/">
+      Maven 2.2.x</a> <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug. 
+      See the <code>${SEAM_REFIMPL}/doc/maven-2.1.0-bug</code> folder for an explanation.</li>
   <li>
     <a href="http://tortoisesvn.tigris.org/">Tortoise SVN</a> or a SVN client of your choice. 
     <strong>Note:</strong> The svn client must be compatible with 
@@ -42,7 +45,7 @@
 <h2>Check Out, Install and Run the Project</h2>
 <p>The example uses Tortoise SVN to check out the project.<br/>
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
-  of your choice and <a href="#install-and-run">jump to step 3</a> in this section.</p>
+  of your choice and <a href="#install-and-run">jump to step 3</a> of this section.</p>
 <ol>
   <li>In explorer right click on the folder where you want to check out the project and select 
   <strong>TortoiseSVN &gt; Repo-browser</strong> from the menu.
@@ -51,7 +54,7 @@
   </li>
   <li>Open <code>http://projects.knowit.no/repos/ok/trunk</code> in Repo-browser
     <ul>
-      <li>Navigate to <code>http://projects.knowit.no/repos/ok/trunk/seam-refimpl</code></li>
+      <li>Navigate to <code>https://seam-maven-refimpl.googlecode.com/svn/trunk</code></li>
       <li>Right click the <strong>seam-refimpl</strong> project and select <strong>checkout...</strong> 
         from the menu.</li>
       <li>Click the <strong>OK</strong> button to check out the project.</li>
