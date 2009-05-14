@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<project name="ant-helper" default="usage" basedir=".">
+
+  <property name="source" value="C:\\ide\\projects\\logit\\workspaces\\LogitD2D-V2\\LogitD2D-ProviderApplication-ejb" />
+  <property name="target" value="C:\\ide\\projects\\logit\\logitd2d-providerapplication\\ejb" />
+
+
+  <target name="usage">
+    <echo message="Available targets:"/>
+    <echo message="-------------------"/>
+    <echo message="echo-properties => Displays the properties for this build"/>
+    <echo message="                 >   Use -Decho.prefix=prefixname to list a group of properties,"/>
+    <echo message="                 >   e.g ant echoproperties -Decho.prefix=project"/>
+    <echo message="copy-project    => Copy files from a source folder to a target folder"/>
+    <echo message="                 >   excludes: .svn/, .settings/, target/ .classpath, .project"/>
+  </target>
+  
+  <!-- To list a spesific group of properties,        -->
+  <!-- e.g. all attributes prefixed with "server.":   -->
+  <!--   ant (-f build.xml) -Decho.prefix=server      -->
+  <property name="echo.prefix" value="" />
+  <target name="echo-properties">
+    <echoproperties prefix="${echo.prefix}" />
+  </target>
+  
+  <target name="copy-project">
+  
+    <copy todir="${target}" verbose="true" includeEmptyDirs="true">
+    
+      <fileset dir="${source}">
+        <exclude name=".svn/" />
+        <exclude name=".settings/" />
+        <exclude name="**/.classpath" />
+        <exclude name="**/.project" />
+        <exclude name="**/target/" />
+      </fileset>
+    </copy>
+    
+  </target>
+    
+</project> 
