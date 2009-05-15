@@ -23,7 +23,8 @@
   <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation folder, e.g. C:\servers\jboss-4.2.3.GA</li>
   <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
   <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy folder, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
-  <li><code>${SEAM_REFIMPL}</code> - the folder where this project is installed on your computer</li>
+  <li><code>${PROJECT}</code> - the project root folder, i.e. seam-maven-refimpl</li>
+  <li><code>${SEAM_REFIMPL}</code> - the folder where the reference project, i.e. seam-refimpl is installed on your computer</li>
 </ul>
 
 <h2>Download and Install Software</h2>
@@ -54,13 +55,12 @@
   </li>
   <li>
     Navigate to http(s)://seam-maven-refimpl.googlecode.com/svn/trunk</code>.
-    <img src="img/tortoise-repo-url.png" style="width:400px; display:block;" />
+    <img src="img/tortoise-repo-url.png" style="width:397px; display:block;" />
     <br/>
   </li>
-  <li>Open <code>http(s)://seam-maven-refimpl.googlecode.com/svn/trunk</code> in Repo-browser
+  <li>Right click <strong>trunk</strong> and select <strong>checkout...</strong> from the menu.
     <ul>
-      <li>Right click the <strong>seam-refimpl</strong> project and select <strong>checkout...</strong> 
-        from the menu.</li>
+      <li>Modify the checkout directory if desired.</li>
       <li>Click the <strong>OK</strong> button to check out the project.</li>
     </ul>
     <img src="img/tortoise-checkout.png" style="width:700px; display:block;" />
