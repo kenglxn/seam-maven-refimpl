@@ -1,3 +1,0 @@
-#summary Link to Getting Started Tutorial.
-
-[http://groups.google.com/group/know-it_seaminaction/web/getting-started Getting Started Tutorial] 
