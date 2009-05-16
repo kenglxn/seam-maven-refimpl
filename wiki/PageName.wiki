@@ -1,4 +1,4 @@
 #summary Link to Getting Started Tutorial.
 
 = Getting Started =
-[http://seam-maven-refimpl.googlecode.com/svn/trunk/doc/tutorial/01-gettingstarted.html Getting Started] 
+[http://groups.google.com/group/know-it_seaminaction/web/getting-started Getting Started] 
