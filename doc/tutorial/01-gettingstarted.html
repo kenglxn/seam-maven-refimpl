@@ -2,11 +2,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" href="../styles/blueprint/screen.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="../styles/blueprint/print.css" type="text/css" media="print" />
+
+<!--[if IE]>
+<link rel="stylesheet" href="../styles/blueprint/ie.css" type="text/css" media="screen, projection" />
+<![endif]-->
+
+<link rel="stylesheet" href="../styles/page-layout/page-layout.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../styles/site/site.css" type="text/css" media="screen" />
+
 <title>Seam Maven reference Implentation - Getting Started</title>
 </head>
 <body>
 
-<h1>Getting Started</h1>
+<div id="sizer">
+<div id="expander">
+  <div id="page-wrapper">
+    
+    <div id="header">
+    <div class="header">
+      <h1>Getting Started</h1>
+    </div>
+    </div> 
+    
+    <div id="page">
+
 <p>The getting started tutorial describes the necessary steps to get a Mavenized Seam project up and 
   running.</p>
 <p>You must have a basic understanding of 
@@ -46,17 +68,15 @@
 <h2>Check Out, Install and Run the Project</h2>
 <p>The example uses Tortoise SVN to check out the project.<br/>
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
-  of your choice and <a href="#install-and-run">jump to step 3</a> of this section.</p>
+  of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
 <ol>
   <li>In explorer right click on the folder where you want to check out the project and select 
   <strong style="white-space:nowrap;">TortoiseSVN&nbsp;&gt;&nbsp;Repo-browser</strong> from the menu.
     <img src="img/tortoise-menu.png" style="width:350px; display:block;" />
-    <br/>
   </li>
   <li>
     Navigate to http(s)://seam-maven-refimpl.googlecode.com/svn/trunk.
     <img src="img/tortoise-repo-url.png" style="width:397px; display:block;" />
-    <br/>
   </li>
   <li>Right click <strong>trunk</strong> and select <strong>checkout...</strong> from the menu.
     <ul>
@@ -64,11 +84,10 @@
       <li>Click the <strong>OK</strong> button to check out the project.</li>
     </ul>
     <img src="img/tortoise-checkout.png" style="width:750px; display:block;" />
-    <br/>
   </li>
-  <li id="install-and-run">
+  <li><a name="install-and-run">
     Navigate to <code>${SEAM_REFIMPL}</code> using a command shell and run: 
-    <code>mvn clean install</code>
+    <code>mvn clean install</code></a>
   </li>
   <li>Copy <code>${SEAM_REFIMPL}/ear/target/seam-refimpl-ear.ear</code> to the 
     <code>${JBOSS_DEPLOY}</code> folder.
@@ -79,13 +98,13 @@
   <li>Open a browser and point the URL to 
     <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
     After logging in, your welcome screen should look like this:
-    <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" /><br/>
+    <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" />
     The User Registration page should look something like this:
-    <img src="img/seam-refimpl-userreg.png" style="width:590px; display:block;" /><br/>
+    <img src="img/seam-refimpl-userreg.png" style="width:590px; display:block;" />
   </li>
 </ol>
 
-<h2 id="switch-to-development-mode">Switch to Development Mode</h2>
+<h2><a name="switch-to-development-mode">Switch to Development Mode</a></h2>
 <ol>
   <li>Svn ignore<br/>
     The following folders and files is added to <strong>svn ignore</strong>.
@@ -166,7 +185,7 @@
     &lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;
     &lt;as.jndi.pattern&gt;${app.context}-ear/#{ejbName}/local&lt;/as.jndi.pattern&gt;
   &lt;/properties&gt;
-&lt;/profile&gt;</code>
+&lt;/profile&gt;</pre>
       </li>
       
       <li>
@@ -246,13 +265,13 @@ The following profiles are active:
   <li>Open a browser and point the URL to 
     <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
     After logging in, your welcome screen should again look like this:
-    <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" /><br/>
+    <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" />
     The User Registration page should look something like this:
-    <img src="img/seam-refimpl-userreg.png" style="width:590px; display:block;" /><br/>
+    <img src="img/seam-refimpl-userreg.png" style="width:590px; display:block;" />
   </li>  
 </ol>
 
-<h2 id="activate-a-database-profile">Activate a Database Profile</h2>
+<h2><a name="activate-a-database-profile">Activate a Database Profile</a></h2>
 <p>At some point in time you will want to access data in a database other than the default Hypersonic
   database provided with the JBoss Application Server and you will require some mechanism to do this. 
   The <code>*-ds.xml</code> file located in <code>ear/src/main/resources</code> defines a data source, 
@@ -340,7 +359,7 @@ The following profiles are active:
   </li>
 </ol>
 
-<h2 id="use-as-template">Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</h2>
+<h2><a name="use-as-template">Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a></h2>
 <p> Follow these steps to use the <code>seam-refimpl</code> project as a template for your own 
   project.<br/>  
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
@@ -354,10 +373,8 @@ The following profiles are active:
       <li>Select Export directory and click <strong>OK</strong></li>
     </ul>
     <img src="img/tortoise-export.png" style="width:750px; display:block;" />
-    <br/>
   </li>
-  <li id="modfy-the-poms">
-    Modify the poms:
+  <li><a name="modfy-the-poms">Modify the poms:</a>
     <ul>
     <li>
     The root pom:
@@ -558,7 +575,7 @@ The following profiles are active:
   </li>
   <li>
     Open a command shell and navigate to the project folder.<br/>
-    Prepare project for the IDE of your choice:<br/>
+    Prepare project for the IDE of your choice:
     <ul>
       <li>run: <code>mvn clean -Punexplode</code></li>
       <li>run: <code>mvn install -Pexplode</code></li>
@@ -566,14 +583,23 @@ The following profiles are active:
       <li>run: <code>mvn idea:idea</code> if you're using IntelliJ</li>
     </ul>
   </li>
-  <li>Continue with an IDE spesific tutorial:
-    <ul>
-    <li><a href="02-eclipse.html">Continue with this tutorial if you're using Eclipse</a></li>
-    <li><a href="03-intellij.html">Continue with this tutorial if you're using IntelliJ</li>
-    <li><a href="04-netbeans.html">Continue with this tutorial if you're using NetBeans</li>
+</ol>    
+    
+    </div> <!-- #page -->
+  </div> <!-- #page-wrapper -->
+
+  <div id="footer">  
+    <div class="footer">
+    <ul class="links" style="text-align: center;">
+      <li><a href="02-eclipse.html"><strong>Eclipse</strong> tutorial</a></li>
+      <li><a href="03-intellij.html"><strong>IntelliJ</strong> tutorial</a></li>
+      <li><a href="04-netbeans.html"><strong>NetBeans</strong> tutorial</a></li>
     </ul>
-  </li>
-</ol>
+    </div>
+  </div> <!-- #footer -->
+
+</div> <!-- #expander -->
+</div> <!-- #sizer -->
 
 </body>
 </html>
