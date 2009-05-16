@@ -62,7 +62,7 @@ br.clear-float,
 body {
   font-size: 62.5%; /* This body font-size fixes an IE bug and maintains x-browser uniformity   */
                     /* By setting body.font-size:62.5% we ensures that ems to pixel ratio = 10  */
-  line-height: 1;   /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
+  line-height: 1.5; /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
   color: #000; 
   background-color: #002C5C; 
@@ -222,12 +222,10 @@ gin {
 }
 pre, code, tt { 
   font: 1em 'andale mono', 'lucida console', monospace; 
-  line-height: 1.5; 
-  /*font-size: 1.2em;*/
+  font-size: inherit;
 } 
 pre {
   line-height: 1.1; 
-  font-size: 12px;
 }
 
 
