@@ -16,8 +16,8 @@
   <a href="http://maven.apache.org/guides/getting-started/">Maven</a> and the DBMS of your choice, e.g. 
   <a href="http://dev.mysql.com/">MySql5</a>, to follow this tutorial.</p>
 
-<h2>Environment Variables</h2>
-<p>The environment variables listed here are just shortcuts so we don't have to type the tedious file 
+<h2>Shortcuts</h2>
+<p>The shortcuts are listed here so we don't have to type the tedious file 
   paths over and over again in this document.</p>
 <ul>
   <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation folder, e.g. C:\servers\jboss-4.2.3.GA</li>
@@ -49,12 +49,12 @@
   of your choice and <a href="#install-and-run">jump to step 3</a> of this section.</p>
 <ol>
   <li>In explorer right click on the folder where you want to check out the project and select 
-  <strong>TortoiseSVN &gt; Repo-browser</strong> from the menu.
-    <img src="img/tortoise-menu.png" style="width:300px; display:block;" />
+  <strong style="white-space:nowrap;">TortoiseSVN&nbsp;&gt;&nbsp;Repo-browser</strong> from the menu.
+    <img src="img/tortoise-menu.png" style="width:350px; display:block;" />
     <br/>
   </li>
   <li>
-    Navigate to http(s)://seam-maven-refimpl.googlecode.com/svn/trunk</code>.
+    Navigate to http(s)://seam-maven-refimpl.googlecode.com/svn/trunk.
     <img src="img/tortoise-repo-url.png" style="width:397px; display:block;" />
     <br/>
   </li>
@@ -63,35 +63,32 @@
       <li>Modify the checkout directory if desired.</li>
       <li>Click the <strong>OK</strong> button to check out the project.</li>
     </ul>
-    <img src="img/tortoise-checkout.png" style="width:700px; display:block;" />
+    <img src="img/tortoise-checkout.png" style="width:750px; display:block;" />
     <br/>
   </li>
   <li id="install-and-run">
-    Navigate to <code>${SEAM_REFIMPL}</code> using a command shell and execute Maven command: 
+    Navigate to <code>${SEAM_REFIMPL}</code> using a command shell and run: 
     <code>mvn clean install</code>
   </li>
-  <li>Copy <code>${SEAM_REFIMPL}/ear/target/seam-refimpl-ear.ear</code> to your 
-    <code>${JBOSS_DEPLOY}</code> folder
+  <li>Copy <code>${SEAM_REFIMPL}/ear/target/seam-refimpl-ear.ear</code> to the 
+    <code>${JBOSS_DEPLOY}</code> folder.
   </li>
 	<li>Start JBossAS<br/>
       Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>run</code> 
   </li>
   <li>Open a browser and point the URL to 
-    <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a><br/>
+    <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
     After logging in, your welcome screen should look like this:
     <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" /><br/>
     The User Registration page should look something like this:
-    <img src="img/seam-refimpl-userreg.png" style="width:580px; display:block;" /><br/>
+    <img src="img/seam-refimpl-userreg.png" style="width:590px; display:block;" /><br/>
   </li>
 </ol>
 
 <h2 id="switch-to-development-mode">Switch to Development Mode</h2>
 <ol>
-  <li>Add the following folders and files to <strong>svn ignore</strong>.<br/>
-    <strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
-    probably be more IDE spesific files to add to svn ignore as other IDEs are put to use. Please
-    take care when files are checked into svn, if you find an IDE spesific file then list it here 
-    add it to <strong>svn ignore</strong>!
+  <li>Svn ignore<br/>
+    The following folders and files is added to <strong>svn ignore</strong>.
     <code>
     <ul>
       <li>
@@ -140,39 +137,52 @@
       </li>
     </ul>
     </code>
+    <strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
+    probably be more IDE spesific files to add as other IDEs are put to use. Please
+    take care when files are checked into svn, if you find an IDE spesific file then list it here 
+    add it to <strong>svn ignore</strong>!
   </li>
   <li>
-    Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code><br/>
-    Cd to to <code>${SEAM_REFIMPL}</code> and edit <code>profiles.xml</code><br/>
-    Locate the <code>as-jboss423</code> profile and point the <code>as.home </code> property to your
-    <code>${JBOSS_HOME}</code> folder.
-    <pre>
-  &lt;!-- jboss-4.2.3 --&gt;
-  &lt;profile&gt;
-    &lt;id&gt;as-jboss423&lt;/id&gt;
-    &lt;activation&gt;
-      &lt;property&gt;
-        &lt;name&gt;as&lt;/name&gt;
-        &lt;value&gt;jboss423&lt;/value&gt;
-      &lt;/property&gt;
-    &lt;/activation&gt;
-    &lt;properties&gt;
-      <strong style="color:blue;">&lt;as.home&gt;C:/jboss-4.2.3.GA&lt;/as.home&gt;</strong>
-      &lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;
-      &lt;as.jndi.pattern&gt;${app.context}-ear/#{ejbName}/local&lt;/as.jndi.pattern&gt;
-    &lt;/properties&gt;
-  &lt;/profile&gt;</pre>
-  Locate the <code>&lt;activeProfiles&gt;</code> tag and check that the following profiles are active:
+    Activate <code>profiles.xml</code><br/>
+    Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code>.<br/>
+    Cd to to <code>${SEAM_REFIMPL}</code> and edit <code>profiles.xml</code>
+    <ul>
+      <li>
+      JBoss profile<br/>
+      Locate the <code>as-jboss423</code> profile and point the <code>as.home </code> property to your
+      <code>${JBOSS_HOME}</code> folder.
+      <pre>
+&lt;!-- jboss-4.2.3 --&gt;
+&lt;profile&gt;
+  &lt;id&gt;as-jboss423&lt;/id&gt;
+  &lt;activation&gt;
+    &lt;property&gt;
+      &lt;name&gt;as&lt;/name&gt;
+      &lt;value&gt;jboss423&lt;/value&gt;
+    &lt;/property&gt;
+  &lt;/activation&gt;
+  &lt;properties&gt;
+    <strong style="color:blue;">&lt;as.home&gt;C:/jboss-4.2.3.GA&lt;/as.home&gt;</strong>
+    &lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;
+    &lt;as.jndi.pattern&gt;${app.context}-ear/#{ejbName}/local&lt;/as.jndi.pattern&gt;
+  &lt;/properties&gt;
+&lt;/profile&gt;</code>
+      </li>
+      
+      <li>
+    Locate the <code>&lt;activeProfiles&gt;</code> tag and check that the following profiles are active:
   <pre>
-  &lt;activeProfiles&gt;
-    &lt;activeProfile&gt;ds-hsqldb&lt;/activeProfile&gt;
-    &lt;activeProfile&gt;as-jboss423&lt;/activeProfile&gt;
-    &lt;activeProfile&gt;env-dev&lt;/activeProfile&gt;
-  &lt;/activeProfiles&gt;</pre>
-  </li>
-  <li>
-    Use a command shell and run: <code>mvn help:active-profiles</code> and verify that profiles are active.
-    <pre>
+&lt;activeProfiles&gt;
+  &lt;activeProfile&gt;ds-hsqldb&lt;/activeProfile&gt;
+  &lt;activeProfile&gt;as-jboss423&lt;/activeProfile&gt;
+  &lt;activeProfile&gt;env-dev&lt;/activeProfile&gt;
+&lt;/activeProfiles&gt;</pre>
+      </li>
+      
+      <li>
+        Use a command shell and run: <code>mvn help:active-profiles</code> and verify that profiles 
+          are active.
+        <pre>
 C:\ide\projects\ok\seam-refimpl>mvn help:active-profiles
 [INFO] Scanning for projects...
 [INFO] Reactor build order:
@@ -194,11 +204,11 @@ The following profiles are active:
  - <strong style="color:blue;">ds-hsqldb</strong> (source: profiles.xml)
  - <strong style="color:blue;">as-jboss423</strong> (source: profiles.xml)
  - <strong style="color:blue;">env-dev</strong> (source: profiles.xml)</pre>
-  </li>
-  <li>
-    Run: <code>mvn help:effective-pom</code> and verify that the following properties reflects
-    the active profiles.
-    <pre>
+      </li>
+      <li>
+        Run: <code>mvn help:effective-pom</code> and verify that the following properties reflects
+        the active profiles.
+        <pre>
   .
   .
   &lt;properties&gt;
@@ -216,10 +226,17 @@ The following profiles are active:
     .
   &lt;/properties&gt;
 &lt;/project&gt;</pre>
+      </li>
+    </ul>
   </li>
   <li>
-    Deploy exploded EAR to the application server.<br/>
-    Run: <code>mvn clean package -Pexplode</code><br/>
+    Deploy exploded EAR to the application server.
+    <ul>
+      <li>Run: <code>mvn clean</code></li>
+      <li>Run: <code>mvn package -Pexplode</code></li>
+    </ul><br/>
+      It is <strong>important</strong> that you <strong>clean</strong> the project after switching 
+      to development mode.<br/>
     Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
     <img src="img/exploded-ear.png" style="width:700px; display:block;" /><br/>
   </li>
@@ -227,11 +244,11 @@ The following profiles are active:
       Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>run</code> 
   </li>
   <li>Open a browser and point the URL to 
-    <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a><br/>
+    <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
     After logging in, your welcome screen should again look like this:
     <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" /><br/>
     The User Registration page should look something like this:
-    <img src="img/seam-refimpl-userreg.png" style="width:550px; display:block;" /><br/>
+    <img src="img/seam-refimpl-userreg.png" style="width:590px; display:block;" /><br/>
   </li>  
 </ol>
 
@@ -290,14 +307,16 @@ The following profiles are active:
   &lt;/activeProfiles&gt;</pre>
   </li>
   <li>
-    Run: <code>mvn package -Pexplode</code>
+    Run: <code>mvn package -Pexplode</code><br/>
+    The properties defined in the active database profile will be filtered into the 
+    <code>*-ds.xml</code> file during packaging of the project.
   </li>  
   <li>
     Restart the server and point your browser to 
     <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
   </li>
   <li>
-    If nothing went wrong; smile!
+    If nothing went wrong <strong>:o)</strong>
   </li>
 </ol>
 
@@ -327,9 +346,14 @@ The following profiles are active:
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
   of your choice and <a href="#modfy-the-poms">jump to step 2</a> in this section.</p>
 <ol>
-	<li>
-    Export from svn<br/>
-    <img src="img/tortoise-export.png" style="width:700px; display:block;" />
+	<li> Export from svn.<br/>
+    <ul>
+      <li>Right click the ${PROJECT} folder and select <strong style="white-space:nowrap;">
+        TortoiseSVN&nbsp;&gt;&nbsp;Repo-browser</strong> from the menu.</li>
+      <li>In repo browser right click the <code>seam-refimpl</code> folder and select <code>export... </code></li>
+      <li>Select Export directory and click <strong>OK</strong></li>
+    </ul>
+    <img src="img/tortoise-export.png" style="width:750px; display:block;" />
     <br/>
   </li>
   <li id="modfy-the-poms">
