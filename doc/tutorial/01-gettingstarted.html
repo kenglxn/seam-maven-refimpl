@@ -47,21 +47,24 @@
   <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy folder, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
   <li><code>${PROJECT}</code> - the project root folder, i.e. seam-maven-refimpl</li>
   <li><code>${SEAM_REFIMPL}</code> - the folder where the reference project, i.e. seam-refimpl, is installed on your computer</li>
+  <li><code>${SEAM_TUTORIAL}</code> - the folder where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
 </ul>
 
 <h2>Download and Install Software</h2>
 <ul>
   <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-1.5</a></li>
-  <li><a href="http://maven.apache.org/download.html">Maven 2.0.10</a> or 
-    <a href="https://repository.apache.org/content/repositories/maven-staging-010/org/apache/maven/apache-maven/2.2.0-RC2/">
-      Maven 2.2.x</a> <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug. 
-      See the <code>${SEAM_REFIMPL}/doc/maven-2.1.0-bug</code> folder for an explanation.</li>
+  <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
+    <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
+    <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.
+    A Maven-2.2.0 release candidate can be found <a href="https://repository.apache.org/content/repositories/maven-staging-010/org/apache/maven/apache-maven/2.2.0-RC2/">
+      here</a>.
+  </li>
   <li>
-    <a href="http://tortoisesvn.tigris.org/">Tortoise SVN</a> or a SVN client of your choice. 
+    <a href="http://tortoisesvn.tigris.org/">Tortoise SVN</a> or a SVN client of your choice.<br/> 
     <strong>Note:</strong> The svn client must be compatible with 
     <a href="http://subclipse.tigris.org/">SubClipse-1.6.x</a> if you are using the Eclipse IDE.
   </li>
-  <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a></li>
+  <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.</li>
 </ul>
 <p>Install the required software.</p>
 
@@ -579,7 +582,10 @@ The following profiles are active:
     <ul>
       <li>run: <code>mvn clean -Punexplode</code></li>
       <li>run: <code>mvn install -Pexplode</code></li>
-      <li>run: <code>mvn eclipse:m2eclipse</code> if you're using Eclipse</li>
+      <li>run: <code>mvn eclipse:m2eclipse</code> if you're using Eclipse<br/>
+        This command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
+        files that now makes the project a valid Eclipse project.
+      </li>
       <li>run: <code>mvn idea:idea</code> if you're using IntelliJ</li>
     </ul>
   </li>

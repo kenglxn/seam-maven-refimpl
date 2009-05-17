@@ -42,6 +42,7 @@
   <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy folder, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
   <li><code>${PROJECT}</code> - the project root folder, i.e. seam-maven-refimpl</li>
   <li><code>${SEAM_REFIMPL}</code> - the folder where the reference project, i.e. seam-refimpl, is installed on your computer</li>
+  <li><code>${SEAM_TUTORIAL}</code> - the folder where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
 </ul>
 
 <h2>Download and install software:</h2>
@@ -55,7 +56,16 @@
 </ul>
 
 <h2>Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</h2>
-<p><a href="01-gettingstarted.html#use-as-template">Follow steps here.</a></p>
+<ol>
+  <li><a href="01-gettingstarted.html#use-as-template">Follow steps here</a> to set up the project.</li>
+  <li>Install <a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a> if you haven't done so yet.</li>
+  <li>Navigate to the ${SEAM_TUTORIAL} folder using a command shell and execute maven commands:<br/>
+    <code>mvn clean install<br/>
+    mvn eclipse:m2eclipse</code><br/> 
+    The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
+    files that now makes the project a valid Eclipse project.
+  </li>
+</ol>
 
 <h2>Import Maven project to Eclipse</h2>
 <p>To import a mavenized project to Eclipse (i.e. a project that is already installed on your computer), 
