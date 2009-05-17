@@ -18,11 +18,12 @@
      http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.1.xsd
      http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.1.xsd
      http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.1.xsd
-     http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd">
+     http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd
+     http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.1.xsd">
 
      
   <!-- Note: debug="true" requires "jboss-seam-debug" in pom -->
-  <core:init debug="${jdk.debug}" jndi-pattern="${as.jndi.pattern}"/>
+  <core:init debug="true" jndi-pattern="${as.jndi.pattern}"/>
 
   <core:manager concurrent-request-timeout="500"
                conversation-timeout="120000"
@@ -43,7 +44,7 @@
     Note: The namespace must be declared at the beginning of the components XML:
     xmlns:transaction="http://jboss.com/products/seam/transaction" 
   -->
-  <transaction:ejb-transaction/>
+  <transaction:ejb-transaction />
   
   <persistence:managed-persistence-context name="entityManager"
                                     auto-create="true"
