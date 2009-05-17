@@ -19,17 +19,17 @@
 
 <div id="sizer">
 <div id="expander">
-  <div id="page-wrapper">
-    
-    <div id="header">
-    <div class="header">
-      <h1>Getting Started</h1>
-    </div>
-    </div> 
-    
-    <div id="page">
+<div id="page-wrapper">
 
-<p>The getting started tutorial describes the necessary steps to get a Mavenized Seam project up and 
+<div id="header">
+<div class="header">
+  <h1>Getting Started</h1>
+</div>
+</div> 
+
+<div id="page">
+
+<p>The getting started tutorial outlines the necessary steps to get a Mavenized Seam project up and 
   running.</p>
 <p>You must have a basic understanding of 
   <a href="http://docs.jboss.com/seam/latest/reference/en-US/html/Book-Preface.html">
@@ -449,7 +449,7 @@ The following profiles are active:
     <a href="#activate-a-database-profile">Activate a Database Profile.</a>
   </li>
   <li>
-    <strong>How to deploy the data source</strong>.<br/>
+    How to deploy the data source.<br/>
     You can deploy the <code>*-ds.xml</code> data source file in two ways: <strong>embedded</strong> 
     in the ear project or as  a <strong>separate</strong> service deployed to the 
     <code>${JBOSS_DEPLOY}</code> folder. The default for this build is to embed the 
@@ -584,22 +584,43 @@ The following profiles are active:
     </ul>
   </li>
 </ol>    
-    
-    </div> <!-- #page -->
-  </div> <!-- #page-wrapper -->
 
-  <div id="footer">  
-    <div class="footer">
-    <ul class="links" style="text-align: center;">
-      <li><a href="02-eclipse.html"><strong>Eclipse</strong> tutorial</a></li>
-      <li><a href="03-intellij.html"><strong>IntelliJ</strong> tutorial</a></li>
-      <li><a href="04-netbeans.html"><strong>NetBeans</strong> tutorial</a></li>
-    </ul>
-    </div>
-  </div> <!-- #footer -->
+<h2>Tips for Debugging</h2>
+<p>
+  When your application starts up it will print all components being created (Seam and your own) 
+  and the context they are placed in. Validate that your new component is displayed as well.</p>
+<p>
+  Seam has a debug page showing useful information. To use it, add the following dependency to your war 
+  <code>pom.xml</code>:
+</p>
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.jboss.seam&lt;/groupId&gt;
+  &lt;artifactId&gt;jboss-seam-debug&lt;/artifactId&gt;
+  &lt;version&gt;${jboss.seam.version}&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+<p>In <code>profiles.xml</code> make shure that the <code>jdk.debug</code> property value is 
+<code>true</code>:</p>  
+<p>
+  Open your browser and point to the following URL to see the debug page.
+  <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
+</p>
+
+    
+</div> <!-- #page -->
+</div> <!-- #page-wrapper -->
+
+<div id="footer">  
+<div class="footer">
+  <ul class="links" style="text-align: center;">
+    <li><a href="01-gettingstarted.html"><strong>Getting started</strong> tutorial</a></li>
+    <li><a href="02-eclipse.html"><strong>Eclipse</strong> tutorial</a></li>
+    <li><a href="03-intellij.html"><strong>IntelliJ</strong> tutorial</a></li>
+    <li><a href="04-netbeans.html"><strong>NetBeans</strong> tutorial</a></li>
+  </ul>
+</div>
+</div> <!-- #footer -->
 
 </div> <!-- #expander -->
 </div> <!-- #sizer -->
-
 </body>
 </html>

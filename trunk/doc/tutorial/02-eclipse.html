@@ -2,11 +2,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" href="../styles/blueprint/screen.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="../styles/blueprint/print.css" type="text/css" media="print" />
+
+<!--[if IE]>
+<link rel="stylesheet" href="../styles/blueprint/ie.css" type="text/css" media="screen, projection" />
+<![endif]-->
+
+<link rel="stylesheet" href="../styles/page-layout/page-layout.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../styles/site/site.css" type="text/css" media="screen" />
 <title>Seam Maven reference Implentation - Eclipse</title>
 </head>
 <body>
 
-<h1>Eclipse and JBoss Tools</h1>
+<div id="sizer">
+<div id="expander">
+<div id="page-wrapper">
+<div id="header">
+<div class="header">
+  <h1>Eclipse and JBoss Tools</h1>
+</div>
+</div> 
+<div id="page">
+    
 <p>Denne tutorialen er ikke helt ferdig. Må beskrive stegene som er nødvendige for å benytte JBoss Tools. 
   Screenshots må endres siden jeg har fjernet JAR pom'en. Vise steps for å opprette en entitetklasse
   med autogenerert CRUD UI-grensesnitt. Vise steps for reverse engeneering med autogenerert UI.
@@ -14,7 +33,18 @@
 
 <p>This tutorial explains how to use the Eclipse IDE and JBoss Tools for development.</p>
 
-<li>Download and install software: 
+<h2>Shortcuts</h2>
+<p>The shortcuts are listed here so we don't have to type the tedious file 
+  paths over and over again in this document.</p>
+<ul>
+  <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation folder, e.g. C:\servers\jboss-4.2.3.GA</li>
+  <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
+  <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy folder, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
+  <li><code>${PROJECT}</code> - the project root folder, i.e. seam-maven-refimpl</li>
+  <li><code>${SEAM_REFIMPL}</code> - the folder where the reference project, i.e. seam-refimpl, is installed on your computer</li>
+</ul>
+
+<h2>Download and install software:</h2>
 <ul>
   <li><a href="http://www.eclipse.org/">Eclipse Ganymede 3.4 (with WTP installed)</a></li>
   <li><a href="http://maven.apache.org/">Maven 2.2.x</a></li>
@@ -77,6 +107,9 @@
   </li>
   <li>Exit eclipse, navigate to the project folder using a command shell and execute Maven command:
      <code>mvn eclipse:m2eclipse</code><br/>
+     This command will generate the Eclipse .project and .classpath files that now makes the project 
+     a valid Eclipse project. Startup eclipse and import this project into your Eclipse workspace using 
+     the File > Import > Existing Project action.
      <strong>Note:</strong> <code>mvn eclipse:eclipse</code> does not work!<br/>
      <strong>Note ii:</strong> Maybe this step is redundant?
   </li>
@@ -110,23 +143,19 @@
 http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas</a>
 </p>
 
-<h2>Tips for debugging</h2>
-<p>
-When your application starts up it will print all components being created (Seam and your own) 
-and the context they are placed in. Validate that your new component is displayed as well.</p>
-<p>
-Seam has a debug page showing useful information. To use it, add the following dependency to your war pom.xml:
-</p><pre>  &lt;dependency&gt;
-    &lt;groupId&gt;org.jboss.seam&lt;/groupId&gt;
-    &lt;artifactId&gt;jboss-seam-debug&lt;/artifactId&gt;
-    &lt;version&gt;${jboss.seam.version}&lt;/version&gt;
-  &lt;/dependency&gt;</pre>
-  
-<p>In the components.xml activate the debug mode.</p>
-<pre>&lt;core:init transaction-management-enabled=&quot;false&quot; debug=&quot;true&quot;/&gt;</pre>
-<p>
-  Open your browser and point to the following URL to see the debug page.
-  <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
-</p>
+</div> <!-- #page -->
+</div> <!-- #page-wrapper -->
+<div id="footer">  
+  <div class="footer">
+  <ul class="links" style="text-align: center;">
+    <li><a href="01-gettingstarted.html"><strong>Getting started</strong> tutorial</a></li>
+    <li><a href="02-eclipse.html"><strong>Eclipse</strong> tutorial</a></li>
+    <li><a href="03-intellij.html"><strong>IntelliJ</strong> tutorial</a></li>
+    <li><a href="04-netbeans.html"><strong>NetBeans</strong> tutorial</a></li>
+  </ul>
+  </div>
+</div> <!-- #footer -->
+</div> <!-- #expander -->
+</div> <!-- #sizer -->
 </body>
 </html>

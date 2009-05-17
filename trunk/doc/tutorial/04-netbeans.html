@@ -2,32 +2,50 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Seam Maven reference Implentation - IntelliJ</title>
+<link rel="stylesheet" href="../styles/blueprint/screen.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="../styles/blueprint/print.css" type="text/css" media="print" />
+
+<!--[if IE]>
+<link rel="stylesheet" href="../styles/blueprint/ie.css" type="text/css" media="screen, projection" />
+<![endif]-->
+
+<link rel="stylesheet" href="../styles/page-layout/page-layout.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../styles/site/site.css" type="text/css" media="screen" />
+<title>Seam Maven reference Implentation - NetBeans</title>
 </head>
 <body>
+<div id="sizer">
+<div id="expander">
+<div id="page-wrapper">
 
-<h1>NetBeans</h1>
+<div id="header">
+<div class="header">
+  <h1>NetBeans</h1>
+</div>
+</div> 
+
+<div id="page">
+
 <p>Her må noen andre fylle ut ting og tang, kanskje Erling?</p>
 <h2>Import Maven project to NetBeans</h2>
 <h2>Checkout a Maven project to NetBeans from SCM</h2>
 <h2>Import project to NetBeans</h2>
-<h2>Tips for debugging</h2>
-<p>
-When your application starts up it will print all components being created (Seam and your own) 
-and the context they are placed in. Validate that your new component is displayed as well.</p>
-<p>
-Seam has a debug page showing useful information. To use it, add the following dependency to your war pom.xml:
-</p><pre>  &lt;dependency&gt;
-    &lt;groupId&gt;org.jboss.seam&lt;/groupId&gt;
-    &lt;artifactId&gt;jboss-seam-debug&lt;/artifactId&gt;
-    &lt;version&gt;${jboss.seam.version}&lt;/version&gt;
-  &lt;/dependency&gt;</pre>
-  
-<p>In the components.xml activate the debug mode.</p>
-<pre>&lt;core:init transaction-management-enabled=&quot;false&quot; debug=&quot;true&quot;/&gt;</pre>
-<p>
-  Open your browser and point to the following URL to see the debug page.
-  <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
-</p>
+
+</div> <!-- #page -->
+</div> <!-- #page-wrapper -->
+
+<div id="footer">  
+<div class="footer">
+  <ul class="links" style="text-align: center;">
+    <li><a href="01-gettingstarted.html"><strong>Getting started</strong> tutorial</a></li>
+    <li><a href="02-eclipse.html"><strong>Eclipse</strong> tutorial</a></li>
+    <li><a href="03-intellij.html"><strong>IntelliJ</strong> tutorial</a></li>
+    <li><a href="04-netbeans.html"><strong>NetBeans</strong> tutorial</a></li>
+  </ul>
+</div>
+</div> <!-- #footer -->
+
+</div> <!-- #expander -->
+</div> <!-- #sizer -->
 </body>
 </html>
