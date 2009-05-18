@@ -48,7 +48,13 @@
 <h2>Download and install software:</h2>
 <ul>
   <li><a href="http://www.eclipse.org/">Eclipse Ganymede 3.4 (with WTP installed)</a></li>
-  <li><a href="http://maven.apache.org/">Maven 2.2.x</a></li>
+  <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
+    <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
+    <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.<br/>
+    A Maven-2.2.0 release candidate can be found 
+    <a href="https://repository.apache.org/content/repositories/maven-staging-010/org/apache/maven/apache-maven/2.2.0-RC2/">
+    here</a>.
+  </li>
   <li><a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a></li>
   <li><a href="http://subclipse.tigris.org/">SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE</a></li>
   <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a></li>
@@ -59,11 +65,33 @@
 <ol>
   <li><a href="01-gettingstarted.html#use-as-template">Follow steps here</a> to set up the project.</li>
   <li>Install <a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a> if you haven't done so yet.</li>
+  <li>Copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to <code>${SEAM_TUTORIAL}</code></li>
+  <li>Create a workspace folder, e.g. C:/seam-workspace<br/>
+    <strong>Note:</strong> Do not use your project folder, ${SEAM_TUTORIAL}, as a workspace folder.</li>
+  <li>Open profiles.xml and point the <code>env.eclipse.workspace</code> property to the newly 
+    created folder, 
+    <br/>e.g. 
+    <code>&lt;env.eclipse.workspace&gt;C:/seam-workspace&lt;/env.eclipse.workspace&gt;</code>
+  </li>
   <li>Navigate to the ${SEAM_TUTORIAL} folder using a command shell and execute maven commands:<br/>
     <code>mvn clean install<br/>
+    mvn eclipse:configure-workspace<br/>
     mvn eclipse:m2eclipse</code><br/> 
     The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
     files that now makes the project a valid Eclipse project.
+  </li>
+  <li>Open Eclipse and select to the newly created workspace folder.
+    <img src="img/eclipse-workspace-launcher.png" style="width:500px; display:block;" />
+  </li>
+  <li>
+    Configure Eclipse to use an external Maven installation.
+    <img src="img/eclipse-maven-installations.png" style="width:700px; display:block;" />
+  </li>
+  <li>
+    Import project:
+    <img src="img/eclipse-import.png" style="width:250px; display:block;" /><br/>
+    <img src="img/eclipse-import-maven-01.png" style="width:400px; display:block;" /><br/>
+    <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" /><br/>
   </li>
 </ol>
 
@@ -149,8 +177,8 @@
 
 <h3>m2eclipse issues</h3>
 <p>There is a problem with running <code>mvn install</code> from eclipse, see: 
-<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas</a>
+  <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
+  http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas</a>
 </p>
 
 </div> <!-- #page -->
