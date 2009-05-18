@@ -62,6 +62,9 @@
 </ul>
 
 <h2>Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</h2>
+<p>To import a mavenized project to Eclipse (i.e. a project that is already installed on your computer), 
+  follow these steps:
+</p>
 <ol>
   <li><a href="01-gettingstarted.html#use-as-template">Follow steps here</a> to set up the project.</li>
   <li><a href="01-gettingstarted.html#switch-to-development-mode">Switch to developmentmode</a></li>
@@ -79,7 +82,9 @@
     mvn eclipse:configure-workspace<br/>
     mvn eclipse:m2eclipse</code><br/> 
     The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
-    files that now makes the project a valid Eclipse project.
+    files that now makes the project a valid Eclipse project.<br/>
+    <strong>Note:</strong> Do not use the <code>eclipse:eclipse</code> command, it does not work 
+    properly when m2eclipse is installed.
   </li>
   <li>Open Eclipse and select to the newly created workspace folder.
     <img src="img/eclipse-workspace-launcher.png" style="width:500px; display:block;" />
@@ -98,32 +103,34 @@
     Modify Run Configurations:<br/>
     According to 
     <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-    this blog</a> there is a problem with running <code>mvn install</code> from eclipse. Read the 
-    blog and follow screenshots here to fix the problem.
+    this blog</a> there is a problem with running <code>mvn install</code> from eclipse. 
+    <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
+    Read the blog</a> and follow screenshots here to fix the problem.
     <img src="img/eclipse-run-configurations.png" style="width:640px; display:block;" />
     <img src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
     <img src="img/eclipse-run-configurations-03.png" style="width:640px; display:block;" />
+    <img src="img/eclipse-run-configurations-04.png" style="width:640px; display:block;" />
+    Run the <code>clean install and explode</code> Run Configurations to deploy the project to the 
+    server the first time. In <code>profiles.xml</code>, remember to point the server to the correct 
+    deploy folder.
   </li>
-</ol>
-
-<h2>Import Maven project to Eclipse</h2>
-<p>To import a mavenized project to Eclipse (i.e. a project that is already installed on your computer), 
-  follow these steps:</p>
-<ol>
-  <li>Create a workspace in eclipse (do not use same folder as <code>${SEAM_REFIMPL}</code>)</li>
+  <li>
+    Install JBoss Tools if you haven't done so already.
+  </li>
   <li>Create a WTP server reference (that references the installed JBoss application server), the
     <a href="http://seamframework.org/Documentation">JBoss Seam documentation</a> explains how to 
     Create a WTP server reference
   </li>
-  <li>Exit eclipse, navigate to the project folder using a command shell and execute Maven command: <code>mvn clean install</code></li>
-  <li>Execute Maven command: <code>mvn eclipse:clean</code></li>
-  <li>Execute Maven command: <code>mvn eclipse:m2eclipse</code> from the command shell<br/>
-       <strong>Note:</strong> <code>mvn eclipse:eclipse</code> does not work!
-  </li>
-  <li>Open Eclipse and import the <code>seam-refimpl</code> project into your Eclipse workspace
-    <img src="img/eclipse-import.png" style="width:250px; display:block;" /><br/>
-    <img src="img/eclipse-import-maven-01.png" style="width:400px; display:block;" /><br/>
-    <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" /><br/>
+</ol>
+
+
+
+
+
+<div style="display:none;">
+<h2>Import Maven project to Eclipse</h2>
+<ol>
+  <li>
     If the SubClipse plugin is  configured corretly and the project was previously checked out from 
     <strong>svn</strong> (using tortoise or a similar tool), then the project should already be under 
     revision control inside Eclipse. If the project does not apear to be under revision control then 
@@ -191,6 +198,7 @@
   <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
   http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas</a>
 </p>
+</div>
 
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
