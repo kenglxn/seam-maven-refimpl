@@ -64,6 +64,7 @@
 <h2>Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</h2>
 <ol>
   <li><a href="01-gettingstarted.html#use-as-template">Follow steps here</a> to set up the project.</li>
+  <li><a href="01-gettingstarted.html#switch-to-development-mode">Switch to developmentmode</a></li>
   <li>Install <a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a> if you haven't done so yet.</li>
   <li>Copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to <code>${SEAM_TUTORIAL}</code></li>
   <li>Create a workspace folder, e.g. C:/seam-workspace<br/>
@@ -92,6 +93,16 @@
     <img src="img/eclipse-import.png" style="width:250px; display:block;" /><br/>
     <img src="img/eclipse-import-maven-01.png" style="width:400px; display:block;" /><br/>
     <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" /><br/>
+  </li>
+  <li>
+    Modify Run Configurations:<br/>
+    According to 
+    <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
+    this blog</a> there is a problem with running <code>mvn install</code> from eclipse. Read the 
+    blog and follow screenshots here to fix the problem.
+    <img src="img/eclipse-run-configurations.png" style="width:640px; display:block;" />
+    <img src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
+    <img src="img/eclipse-run-configurations-03.png" style="width:640px; display:block;" />
   </li>
 </ol>
 
