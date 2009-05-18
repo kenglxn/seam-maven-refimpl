@@ -66,6 +66,10 @@
       <url>http://download.java.net/maven/1</url>
       <layout>legacy</layout>
     </repository>
+	<repository>
+      <id>repository.jboss.org</id>
+      <url>http://repository.jboss.org/maven2</url>
+    </repository>	
   </repositories>
 
   <properties>
