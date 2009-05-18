@@ -100,7 +100,7 @@ h4 a:hover, h5 a:hover, h6 a:hover {
 -------------------------------------------------------------- */
 p,  ul,    ol, dl,
 dl, table, blockquote {
-  font-size: 1.2em; 
+  font-size: 12px; /*1.2em; */
   line-height: 1.2; /* Use same (unitless) value as font-size */
 }
 p { 
@@ -185,6 +185,7 @@ ol {
 }
 li {
   line-height: 1.4;
+  font-size: 12px;
 }
 li ul, li ol { 
   margin: 0 1.6em; 
