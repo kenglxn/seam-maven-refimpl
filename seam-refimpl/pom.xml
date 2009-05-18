@@ -70,8 +70,6 @@
 
   <properties>
     <jboss.seam.version>2.1.2.CR1</jboss.seam.version>
-    <jboss.el.version>2.0.2.CR1</jboss.el.version>
-    <richfaces.version>3.3.0.GA</richfaces.version>
 
     <app.context>seam-refimpl</app.context>
     <app.display.name>Seam Reference Implementation</app.display.name>
@@ -89,6 +87,7 @@
     <env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
     <env.hibernate.show_sql>true</env.hibernate.show_sql>
     <env.hibernate.format_sql>true</env.hibernate.format_sql>
+    <env.eclipse.workspace>C:/ide/workspace</env.eclipse.workspace>
     
     <jdk.debug>false</jdk.debug>
     <jdk.optimize>true</jdk.optimize>
@@ -108,6 +107,8 @@
   <build>
     <pluginManagement>
       <plugins>
+        <!-- Last syncronized: 20090517                      --> 
+        <!-- see: http://maven.apache.org/plugins/index.html -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
@@ -116,63 +117,80 @@
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
+        
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-ear-plugin</artifactId>
           <version>2.3.2</version>
         </plugin>
+        
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
           <version>2.1-beta-1</version>
-        </plugin> 
+        </plugin>
+        
+        <!-- @TODO: split into jdk5 and jdk6 and move to profiles.xml?? -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>${jdk.source}</source>
+            <target>${jdk.target}</target>
+            <encoding>utf-8</encoding> 
+            <debug>${jdk.debug}</debug>
+            <optimize>${jdk.optimize}</optimize>
+          </configuration>
+        </plugin>
+        
+        <!-- @TODO: move to profiles.xml?? -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <downloadSources>true</downloadSources>
+            <downloadJavadocs>true</downloadJavadocs>
+            <addVersionToProjectName>false</addVersionToProjectName>
+            <version>2.6</version> 
+            <wtpapplicationxml>false</wtpapplicationxml>
+            <wtpmanifest>false</wtpmanifest>
+            <manifest>${basedir}/src/main/resources/META-INF/MANIFEST.MF</manifest>
+          </configuration>
+        </plugin>
+        
+        <!-- @TODO: move to profiles.xml?? -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-idea-plugin</artifactId>
+          <version>2.2</version>
+          <configuration>
+            <downloadSources>true</downloadSources> 
+            <downloadJavadocs>true</downloadJavadocs> 
+            <dependenciesAsLibraries>true</dependenciesAsLibraries> 
+            <useFullNames>false</useFullNames> 
+          </configuration>
+        </plugin>
+        
       </plugins>
     </pluginManagement>
   
     <plugins>
-      <!-- Maven Eclipse Plugin        -->
-      <!-- @TODO: move to profiles.xml -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <downloadSources>true</downloadSources>
-          <downloadJavadocs>true</downloadJavadocs>
-          <projectNameTemplate>${app.context}</projectNameTemplate>
-          <addVersionToProjectName>false</addVersionToProjectName>
-          <version>2.6</version> 
-					<wtpapplicationxml>false</wtpapplicationxml>
-          <wtpmanifest>false</wtpmanifest>
-					<manifest>${basedir}/src/main/resources/META-INF/MANIFEST.MF</manifest>
-        </configuration>
-			</plugin>
-      
-      <!-- Maven IDEA Plugin           -->
-      <!-- @TODO: move to profiles.xml -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-idea-plugin</artifactId>
-        <configuration>
-          <downloadSources>true</downloadSources> 
-          <downloadJavadocs>true</downloadJavadocs> 
-          <dependenciesAsLibraries>true</dependenciesAsLibraries> 
-          <useFullNames>false</useFullNames> 
-        </configuration>
-      </plugin>
-      
-      <!-- Maven Compiler Plugin                                    -->
-      <!-- @TODO: split into jdk5 and jdk6 and move to profiles.xml -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>${jdk.source}</source>
-          <target>${jdk.target}</target>
-          <encoding>utf-8</encoding> 
-          <debug>${jdk.debug}</debug>
-          <optimize>${jdk.optimize}</optimize>
-        </configuration>
-      </plugin>
+        <!-- @TODO: move to profiles.xml?? -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <configuration>
+            <workspace>${env.eclipse.workspace}</workspace>
+            <workspaceCodeStylesURL>http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-eclipse-plugin/src/optional/eclipse-config/maven-styles.xml</workspaceCodeStylesURL>
+          </configuration>
+        </plugin>
+        
+        <!-- @TODO: move to profiles.xml?? -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-idea-plugin</artifactId>
+        </plugin>
     </plugins>
   </build>
 
