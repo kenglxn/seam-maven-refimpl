@@ -15,6 +15,7 @@
   <artifactId>seam-refimpl-ear</artifactId>
   <name>${artifactId} ${project.version}</name>
   <description>Seam Maven reference implementation ear ....</description>
+  
   <url>http://maven.apache.org</url>
   <packaging>ear</packaging>
   
