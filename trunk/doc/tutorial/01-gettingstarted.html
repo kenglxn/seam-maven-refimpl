@@ -256,11 +256,13 @@ The following profiles are active:
   <li>
     Deploy exploded EAR to the application server.
     <ul>
-      <li>Run: <code>mvn clean</code></li>
+      <li>Run: <code>mvn clean -Punexplode</code>
+      </li>
       <li>Run: <code>mvn package -Pexplode</code></li>
     </ul><br/>
       It is <strong>important</strong> that you <strong>clean</strong> the project after switching 
-      to development mode.<br/>
+      to development mode. <code>-Punexplode</code> ensures that the project is cleaned from the 
+      <code>${JBOSS_DEPLOY}</code> folder as well.<br/>
     Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
     <img src="img/exploded-ear.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>
