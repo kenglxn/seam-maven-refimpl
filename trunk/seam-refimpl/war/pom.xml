@@ -76,7 +76,7 @@
   
 	<dependencies>
 
-    <!-- seam-refimpl -->
+    <!-- project modules -->
     <!--
     <dependency>
       <groupId>${project.groupId}</groupId>
