@@ -254,19 +254,20 @@ The following profiles are active:
     </ul>
   </li>
   <li>
-    Deploy exploded EAR to the application server.
+    Deploy the exploded EAR to the application server.
     <ul>
       <li>Run: <code>mvn clean -Punexplode</code>
       </li>
       <li>Run: <code>mvn package -Pexplode</code></li>
     </ul><br/>
-      It is <strong>important</strong> that you <strong>clean</strong> the project after switching 
-      to development mode. <code>-Punexplode</code> ensures that the project is cleaned from the 
-      <code>${JBOSS_DEPLOY}</code> folder as well.<br/>
+		It is <strong>important</strong> to <strong>clean</strong> the project after switching 
+		to development mode. <code>-Punexplode</code> ensures that the project is cleaned from the 
+		<code>${JBOSS_DEPLOY}</code> folder as well.<br/>
     Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
     <img src="img/exploded-ear.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>
-	<li>Start JBossAS<br/>
+	<li>
+	  <a name="start-jboss">Start JBossAS</a><br/>
       Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>run</code> 
   </li>
   <li>Open a browser and point the URL to 
@@ -396,7 +397,7 @@ The following profiles are active:
     &lt;app.context&gt;<font color="blue">seam-tutorial</font>&lt;/app.context&gt;
     &lt;app.display.name&gt;<font color="blue">Seam Tutorial</font>&lt;/app.display.name&gt;
     &lt;app.description&gt;<font color="blue">Happy Seam Maven hacking</font>&lt;/app.description&gt;
-    &lt;app.database.name&gt;<font color="blue">tutorial_db</font>&lt;/app.database.name&gt;
+    &lt;app.database.name&gt;<font color="blue">refimpl_db</font>&lt;/app.database.name&gt;
     .
     .
   &lt;/properties&gt;
@@ -443,8 +444,8 @@ The following profiles are active:
     </ul>
   </li>
   <li>
-    Rename the datasource file <code>ear/src/main/resources/seam-refimpl.ds</code> 
-    to <code>seam-tutorial.ds</code>
+    Rename the datasource file <code>ear/src/main/resources/seam-refimpl-ds.xml</code> 
+    to <code>seam-tutorial-ds.xml</code>
   </li>
   <li>
     <a href="#install-and-run">Deploy the project "out of the box" to verify that everyting works</a>
@@ -581,18 +582,21 @@ The following profiles are active:
     </ol>
   </li>
   <li>
-    Open a command shell and navigate to the project folder.<br/>
-    Prepare project for the IDE of your choice:
+    Open a command shell and navigate to the <code>${SEAM_TUTORIAL}</code> folder.
     <ul>
-      <li>run: <code>mvn clean -Punexplode</code></li>
-      <li>run: <code>mvn install -Pexplode</code></li>
-      <li>run: <code>mvn eclipse:m2eclipse</code> if you're using Eclipse<br/>
-        This command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
-        files that now makes the project a valid Eclipse project.
+      <li>Run: <code>mvn clean -Punexplode</code>
       </li>
-      <li>run: <code>mvn idea:idea</code> if you're using IntelliJ</li>
-    </ul>
+      <li>Run: <code>mvn package -Pexplode</code></li>
+    </ul><br/>
+		It is <strong>important</strong> to <strong>clean</strong> the project after switching 
+		to development mode. <code>-Punexplode</code> ensures that the project is cleaned from the 
+		<code>${JBOSS_DEPLOY}</code> folder as well.<br/>
+    Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
+    <img src="img/exploded-ear-tutorial.png" style="width:730px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>
+	<li>
+	  <a href="#start-jboss">Start JBoss, open browser, etc...</a>
+	</li>
 </ol>    
 
 <h2>Tips for Debugging</h2>
@@ -614,7 +618,7 @@ The following profiles are active:
   Open your browser and point to the following URL to see the debug page.
   <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
 </p>
-
+<br/>
     
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
