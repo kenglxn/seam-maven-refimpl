@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.jboss.seam</groupId>
     <artifactId>root</artifactId>
-    <version>2.1.2.CR1</version>
+    <version>2.1.1.GA</version>
   </parent>
   
   <groupId>no.knowit.seam</groupId>
@@ -18,30 +18,52 @@
   <description>Seam Maven reference implementation parent pom ....</description>
   <url>http://maven.apache.org</url>
   <packaging>pom</packaging>
-  
+
   <prerequisites>
     <maven>2.0.9</maven>
   </prerequisites>
   
-  <developers>
-    <developer>
-      <id>loo@knowit.no</id>
-      <name>Leif Olsen</name>
-      <email>loo@knowit.no</email>
-      <organization>Knowit Objectnet Kristiansand</organization>
-      <organizationUrl>http://www.knowit.no</organizationUrl>
-      <roles>
-        <role>Developer</role>
-      </roles>
-      <timezone>GMT +1</timezone>
-    </developer>
-  </developers>
-
   <modules>
     <module>ear</module>
     <module>ejb</module>
     <module>war</module>
   </modules>
+
+  <properties>
+    <version.jboss.seam>2.1.1.GA</version.jboss.seam>
+
+    <app.context>seam-refimpl</app.context>
+    <app.display.name>Seam Reference Implementation</app.display.name>
+    <app.description>The Seam Reference Implementation is a Maven project you can use as a template for your own JBoss Seam projects</app.description>
+    
+    <app.jndi.name>${app.context}Datasource</app.jndi.name>
+    <app.database.name>refimpl_db</app.database.name>
+    <app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
+    <app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
+    <app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+    <app.ds.xml>${app.context}-ds.xml</app.ds.xml>
+    
+    <!-- Default profile attribute values. The values can be removed if a profiles.xml file is present -->
+    <env>prod</env>
+    <env.unpack.modules>false</env.unpack.modules>
+    <env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+    <env.hibernate.show_sql>true</env.hibernate.show_sql>
+    <env.hibernate.format_sql>true</env.hibernate.format_sql>
+    
+    <jdk.debug>false</jdk.debug>
+    <jdk.optimize>true</jdk.optimize>
+    <jdk.source>1.5</jdk.source>
+    <jdk.target>1.5</jdk.target>
+
+    <as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
+    <as.version>4.2</as.version> 
+    
+    <ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
+    <ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
+    <ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
+    <ds.user.name>sa</ds.user.name>
+    <ds.password></ds.password>
+  </properties>
 
   <pluginRepositories>
     <pluginRepository>
@@ -66,48 +88,11 @@
       <url>http://download.java.net/maven/1</url>
       <layout>legacy</layout>
     </repository>
-	<repository>
+    <repository>
       <id>repository.jboss.org</id>
       <url>http://repository.jboss.org/maven2</url>
     </repository>	
   </repositories>
-
-  <properties>
-    <jboss.seam.version>2.1.2.CR1</jboss.seam.version>
-
-    <app.context>seam-refimpl</app.context>
-    <app.display.name>Seam Reference Implementation</app.display.name>
-    <app.description>The Seam Reference Implementation is a Maven project you can use as a template for your own JBoss Seam projects</app.description>
-    
-    <app.jndi.name>${app.context}Datasource</app.jndi.name>
-    <app.database.name>refimpl_db</app.database.name>
-    <app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
-    <app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
-    <app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
-    <app.ds.xml>${app.context}-ds.xml</app.ds.xml>
-    
-    <!-- Default profile attribute values. The values can be removed if a profiles.xml file is present -->
-    <env>prod</env>
-    <env.unpack.modules>false</env.unpack.modules>
-    <env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
-    <env.hibernate.show_sql>true</env.hibernate.show_sql>
-    <env.hibernate.format_sql>true</env.hibernate.format_sql>
-    <env.eclipse.workspace>C:/ide/workspace</env.eclipse.workspace>
-    
-    <jdk.debug>false</jdk.debug>
-    <jdk.optimize>true</jdk.optimize>
-    <jdk.source>1.5</jdk.source>
-    <jdk.target>1.5</jdk.target>
-
-    <as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
-    <as.version>4.2</as.version> 
-    
-    <ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
-    <ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
-    <ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
-    <ds.user.name>sa</ds.user.name>
-    <ds.password></ds.password>
-  </properties>
 
   <build>
     <pluginManagement>
@@ -185,10 +170,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
-          <configuration>
-            <workspace>${env.eclipse.workspace}</workspace>
-            <workspaceCodeStylesURL>http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-eclipse-plugin/src/optional/eclipse-config/maven-styles.xml</workspaceCodeStylesURL>
-          </configuration>
         </plugin>
         
         <!-- @TODO: move to profiles.xml?? -->
@@ -203,7 +184,7 @@
   <dependencyManagement>
     <dependencies>
 
-      <!-- seam-refimpl project -->
+      <!-- project modules -->
       <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>${app.context}-ear</artifactId>
@@ -248,7 +229,7 @@
       <dependency>
         <groupId>org.jboss.seam</groupId>
         <artifactId>jboss-seam</artifactId>
-        <version>${jboss.seam.version}</version>
+        <version>${version.jboss.seam}</version>
         <type>ejb</type>
         <exclusions>
           <exclusion>
@@ -279,5 +260,19 @@
       <classifier>jdk15</classifier>
     </dependency>
   </dependencies>
+
+  <developers>
+    <developer>
+      <id>loo@knowit.no</id>
+      <name>Leif Olsen</name>
+      <email>loo@knowit.no</email>
+      <organization>Knowit Objectnet Kristiansand</organization>
+      <organizationUrl>http://www.knowit.no</organizationUrl>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>GMT +1</timezone>
+    </developer>
+  </developers>
 
 </project>
