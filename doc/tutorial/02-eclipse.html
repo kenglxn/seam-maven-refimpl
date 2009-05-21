@@ -57,41 +57,126 @@
   </li>
   <li><a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a></li>
   <li><a href="http://subclipse.tigris.org/">SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE</a></li>
+	<li><a href="http://www.seamframework.org/Download">JBoss Seam 2.1</a></li>
   <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a></li>
   <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a></li>
+  <li><a href="http://testng.org/doc/eclipse.html">TestNG</a></li>
 </ul>
 
-<h2>Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</h2>
-<p>To import a mavenized project to Eclipse (i.e. a project that is already installed on your computer), 
-  follow these steps:
+<h2>Configure Eclipse</h2>
+<ol>
+  <li>
+		Create an empty workspace folder, e.g. C:/ide/workspaces<br/>
+    <strong>Note:</strong> Do not use your project folder, ${SEAM_TUTORIAL}, as a workspace folder.
+	</li>
+  <li>
+		Start Eclipse and select to the newly created workspace folder.
+    <img src="img/eclipse-workspace-launcher.png" style="width:560px; display:block;" />
+  </li>
+	<li>
+	  <strong>Import code styles - To be done!</strong>
+	</li>
+	<li>
+	  Set all editors to UTF-8
+    <img src="img/eclipse-utf8-01.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-utf8-02.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-utf8-03.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-utf8-04.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-utf8-05.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-utf8-06.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-utf8-07.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-utf8-08.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-utf8-09.png" style="width:700px; display:block;" />
+	</li>
+  <li>
+	  Install <a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a> and configure Eclipse 
+		to use an external Maven installation.<br/>
+		According to 
+		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
+		this blog</a> there is a problem when running embedded Maven from Eclipse, so we need to configure 
+		Eclipse to use an external Maven installation.<br/> 
+		Select <strong>Window>Preferences</strong> from the menu and edit details as outlined in image below.
+    <img src="img/eclipse-maven-installations.png" style="width:640px; display:block;" />
+  </li>
+	<li>
+		Create a WTP server reference:<br/>
+	  Install the <a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a>, 
+		install <a href="http://www.jboss.org/tools">JBoss Tools 3</a>. The 
+		<a href="http://docs.jboss.com/seam/2.1.1.GA/reference/en-US/html/gettingstartedwithjbosstools.html">
+		JBoss Seam documentation</a> explains these steps in detail. The screenshots below outlines the 
+		steps needed to configure a WTP server reference for JBoss 4.2.3.
+		<br/>
+		In Preferences, navigate to <strong>Server>Runtime Environments</strong>. Click 
+		<strong>Add...</strong>. Browse to the folder named <strong>JBoss, a division of Red Hat</strong> 
+		and select <strong>JBoss 4.2 Runtime</strong>.
+		<img src="img/eclipse-server-runtime-01.png" style="width:750px; display:block;" />
+		Click <strong>Next</strong>, name the server runtime, e.g. JBoss 4.2.3 Runtime, and point the 
+		<strong>Home Directory</strong> to the folder where you installed the	server. Select the 
+		<strong>Default</strong> configuration. 
+		<img src="img/eclipse-server-runtime-02.png" style="width:400px; display:block;" />
+		Click <strong>Next</strong>, name the server, e.g. JBoss 4.2.3 Server, and click 
+		<strong>Finish</strong>.
+		<img src="img/eclipse-server-runtime-03.png" style="width:400px; display:block;" />
+		Exit Preferences and switch to the JBoss perspective.
+		<img src="img/eclipse-jboss-perspective.png" style="width:300px; display:block;" />
+		Doubleclick on the JBoss 4.2.3 Server to open the JBoss 4.2.3 Server Overview tab.
+		<img src="img/eclipse-jboss-server-view.png" style="width:190px; display:block;" />
+		Verify that the <strong>Use the JBoss deploy folder</strong> radio button is checked.
+		<img src="img/eclipse-jboss-server-overview.png" style="width:800px; display:block;" />
+		The console output should look something like the screeshot below.
+		<img src="img/eclipse-jboss-server-view-started.png" style="width:800px; display:block;" />
+  </li>
+	<li>
+	  Define a data source:
+		<img src="img/eclipse-data-management-01.png" style="width:800px; display:block;" />
+		<img src="img/eclipse-data-management-02.png" style="width:490px; display:block;" />
+		<img src="img/eclipse-data-management-03.png" style="width:490px; display:block;" />
+		<img src="img/eclipse-data-management-04.png" style="width:490px; display:block;" />
+		Open the <strong>Database Development</strong> perspective. In <strong>Data Source Explorer</strong> 
+		rightclick <strong>Databases</strong> folder and select <strong>New...</strong>
+		<img src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
+		<img src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
+		<img src="img/eclipse-connection-profile-02.png" style="width:420px; display:block;" />
+		<img src="img/eclipse-connection-profile-03.png" style="width:420px; display:block;" />
+		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
+	</li>
+  <li>
+	  Configure JBoss Tools<br/>
+	  Unpack <a href="http://www.seamframework.org/Download">JBoss Seam 2.1</a> to a folder of your 
+		choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.1.GA</code>. Follow the screenshots.
+		<img src="img/eclipse-jboss-tools-01.png" style="width:750px; display:block;" />
+		<img src="img/eclipse-jboss-tools-02.png" style="width:750px; display:block;" />
+	</li>
+</ol>
+
+<h2>Import a Mavenized Seam Project Into Eclipse</h2>
+<p>To import a mavenized Seam project to Eclipse (i.e. a project that is already installed on your 
+	computer), follow these steps:
 </p>
 <ol>
-  <li><a href="01-gettingstarted.html#use-as-template">Follow steps here</a> to set up the project.</li>
-  <li><a href="01-gettingstarted.html#switch-to-development-mode">Switch to developmentmode</a></li>
-  <li>Install <a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a> if you haven't done so yet.</li>
-  <li>Copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to <code>${SEAM_TUTORIAL}</code></li>
-  <li>Create a workspace folder, e.g. C:/seam-workspace<br/>
-    <strong>Note:</strong> Do not use your project folder, ${SEAM_TUTORIAL}, as a workspace folder.</li>
-  <li>Open profiles.xml and point the <code>env.eclipse.workspace</code> property to the newly 
-    created folder, 
-    <br/>e.g. 
-    <code>&lt;env.eclipse.workspace&gt;C:/seam-workspace&lt;/env.eclipse.workspace&gt;</code>
-  </li>
-  <li>Navigate to the ${SEAM_TUTORIAL} folder using a command shell and execute maven commands:<br/>
-    <code>mvn clean install<br/>
-    mvn eclipse:configure-workspace<br/>
+  <li>
+		<a href="01-gettingstarted.html#use-as-template">Use the <code>seam-refimpl</code> project 
+		as a template</a> to set up the project.
+	</li>
+  <li>
+		<a href="01-gettingstarted.html#switch-to-development-mode">Switch to developmentmode</a>
+	</li>
+  <li>
+		Copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to <code>${SEAM_TUTORIAL}</code>
+	</li>
+  <li>
+		Navigate to the ${SEAM_TUTORIAL} folder using a command shell and execute maven commands:<br/>
+    <code>mvn clean -Punexplode<br/>
+    mvn install -Pexplode (remember to point the server to the correct deploy folder in
+		<code>profiles.xml</code>)<br/>
     mvn eclipse:m2eclipse</code><br/> 
     The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
     files that now makes the project a valid Eclipse project.<br/>
     <strong>Note:</strong> Do not use the <code>eclipse:eclipse</code> command, it does not work 
     properly when m2eclipse is installed.
-  </li>
-  <li>Open Eclipse and select to the newly created workspace folder.
-    <img src="img/eclipse-workspace-launcher.png" style="width:500px; display:block;" />
-  </li>
-  <li>
-    Configure Eclipse to use an external Maven installation.
-    <img src="img/eclipse-maven-installations.png" style="width:700px; display:block;" />
+		
+    
+		
   </li>
   <li>
     Import project:
@@ -100,29 +185,30 @@
     <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" /><br/>
   </li>
   <li>
+    Modify Maven properties for parent project.
+    <img src="img/eclipse-project-properties-maven-01.png" style="width:600px; display:block;" /><br/>
+    The sub modules.
+    <img src="img/eclipse-project-properties-maven-02.png" style="width:600px; display:block;" /><br/>
+  </li>
+  <li>
     Modify Run Configurations:<br/>
     According to 
     <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
     this blog</a> there is a problem with running <code>mvn install</code> from eclipse. 
     <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
     Read the blog</a> and follow screenshots here to fix the problem.
-    <img src="img/eclipse-run-configurations.png" style="width:640px; display:block;" />
+    <img src="img/eclipse-run-configurations-01.png" style="width:640px; display:block;" />
     <img src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
     <img src="img/eclipse-run-configurations-03.png" style="width:640px; display:block;" />
-    <img src="img/eclipse-run-configurations-04.png" style="width:640px; display:block;" />
-    Run the <code>clean install -Pexplode</code> Run Configurations to deploy the project to the 
-    server the first time. In <code>profiles.xml</code>: remember to point the server to the correct 
-    deploy folder.
   </li>
-  <li>
-    Install JBoss Tools if you haven't done so already.
-  </li>
-  <li>Create a WTP server reference (that references the installed JBoss application server), the
-    <a href="http://seamframework.org/Documentation">JBoss Seam documentation</a> explains how to 
-    Create a WTP server reference
-  </li>
+	<li>
+	  Start server:
+    <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+		A successful deploy should look like this in the Console log:
+    <img src="img/eclipse-server-view-start-server-02.png" style="width:750px; display:block;" />
+		
+	</li>
 </ol>
-
 
 
 
@@ -191,14 +277,12 @@
     <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" /><br/>
   </li>
 </ol>
-
-
-<h3>m2eclipse issues</h3>
-<p>There is a problem with running <code>mvn install</code> from eclipse, see: 
-  <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-  http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas</a>
-</p>
 </div>
+
+
+
+
+
 
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
