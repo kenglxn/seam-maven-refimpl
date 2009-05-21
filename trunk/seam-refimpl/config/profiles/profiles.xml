@@ -161,7 +161,6 @@
         <env.hibernate.hbm2ddl.auto>update</env.hibernate.hbm2ddl.auto>
         <env.hibernate.show_sql>false</env.hibernate.show_sql>
         <env.hibernate.format_sql>false</env.hibernate.format_sql>
-        <env.eclipse.workspace>C:/ide/workspace</env.eclipse.workspace>
         <jdk.debug>false</jdk.debug>
         <jdk.optimize>true</jdk.optimize>
         <jdk.source>1.5</jdk.source>
@@ -183,7 +182,6 @@
         <env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
         <env.hibernate.show_sql>true</env.hibernate.show_sql>
         <env.hibernate.format_sql>true</env.hibernate.format_sql>
-        <env.eclipse.workspace>C:/ide/workspace</env.eclipse.workspace>
         <jdk.debug>true</jdk.debug>
         <jdk.optimize>false</jdk.optimize>
         <jdk.source>1.5</jdk.source>
