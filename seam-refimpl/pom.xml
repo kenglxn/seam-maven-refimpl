@@ -35,9 +35,9 @@
     <app.context>seam-refimpl</app.context>
     <app.display.name>Seam Reference Implementation</app.display.name>
     <app.description>The Seam Reference Implementation is a Maven project you can use as a template for your own JBoss Seam projects</app.description>
+    <app.database.name>refimpl_db</app.database.name>
     
     <app.jndi.name>${app.context}Datasource</app.jndi.name>
-    <app.database.name>refimpl_db</app.database.name>
     <app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
     <app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
     <app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
