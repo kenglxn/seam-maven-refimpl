@@ -1,0 +1,5 @@
+#Using Eclipse and JBoss Tools and Maven2
+
+=Using Eclipse, JBoss Tools and Maven=
+
+[http://www.glxn.net/seam-maven-refimpl/doc/tutorial/02-eclipse.html  This tutorial] shows the steps needed to use Eclipse, JBoss Tools and Maven for Seam development.
