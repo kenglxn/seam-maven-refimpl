@@ -111,12 +111,13 @@
 <h2><a name="switch-to-development-mode">Switch to Development Mode</a></h2>
 <ol>
   <li>Svn ignore<br/>
-    The following folders and files is added to <strong>svn ignore</strong>.
+    The following folders and files are added to <strong>svn ignore</strong>.
     <code>
     <ul>
       <li>
         In ${SEAM_REFIMPL} folder
         <ul>
+					<li>.externalToolBuilders/</li>
           <li>.metadata/</li>
           <li>.settings/</li>
           <li>target/</li>
@@ -129,6 +130,7 @@
       <li>
         In ${SEAM_REFIMPL}/<strong>ear</strong> folder
         <ul>
+					<li>.externalToolBuilders/</li>
           <li>.settings/</li>
           <li>target/</li>
           <li>.classpath</li>
@@ -139,6 +141,7 @@
       <li>
         In ${SEAM_REFIMPL}/<strong>ejb</strong> folder
         <ul>
+					<li>.externalToolBuilders/</li>
           <li>.settings/</li>
           <li>target/</li>
           <li>.classpath</li>
@@ -150,6 +153,7 @@
       <li>
         In ${SEAM_REFIMPL}/<strong>war</strong> folder
         <ul>
+					<li>.externalToolBuilders/</li>
           <li>.settings/</li>
           <li>target/</li>
           <li>.classpath</li>
@@ -161,7 +165,7 @@
       </li>
     </ul>
     </code>
-    <strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
+    <br/><strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
     probably be more IDE spesific files to add as other IDEs are put to use. Please
     take care when files are checked into svn, if you find an IDE spesific file then list it here 
     add it to <strong>svn ignore</strong>!
