@@ -1,3 +1,7 @@
 #summary Getting Started Tutorial.
+=Getting Started=
+The getting started tutorial outlines the necessary steps to get a Mavenized Seam project up and running.
 
-[http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  take a look at the latest getting started tutorial] (updated every 30 min from repo)
+You must have a basic understanding of JBoss Seam (EJB3, JPA, JSF), the JBoss application server, Maven and the DBMS of your choice, e.g. MySql5, to follow this tutorial.
+
+[http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  Take a look at the getting started tutorial here]
