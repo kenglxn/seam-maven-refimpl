@@ -1,4 +1,4 @@
-#Using Eclipse and JBoss Tools and Maven2
+#Using Eclipse, JBoss Tools and Maven
 
 =Using Eclipse, JBoss Tools and Maven=
 
