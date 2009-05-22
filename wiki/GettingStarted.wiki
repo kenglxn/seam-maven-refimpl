@@ -1,3 +1,3 @@
-#summary Link to Getting Started Tutorial.
+#summary Getting Started Tutorial.
 
 [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  take a look at the latest getting started tutorial] (updated every 30 min from repo)
