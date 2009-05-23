@@ -45,11 +45,11 @@
   <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
     <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
     <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.<br/>
-    A Maven-2.2.0 release candidate can be found 
-    <a href="https://repository.apache.org/content/repositories/maven-staging-010/org/apache/maven/apache-maven/2.2.0-RC2/">
+    A Maven-2.2.x release candidate can be found 
+    <a href="https://repository.apache.org/content/repositories/maven-staging-010/org/apache/maven/apache-maven/">
     here</a>.
   </li>
-  <li><a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a></li>
+  <li><a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a> (0.9.8 or later)</li>
   <li><a href="http://subclipse.tigris.org/">SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE</a></li>
 	<li><a href="http://www.seamframework.org/Download">JBoss Seam 2.1</a></li>
   <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a></li>
@@ -71,7 +71,7 @@
 	  <strong>Import code styles - To be done!</strong>
 	</li>
 	<li>
-	  Set all editors to UTF-8
+	  Set all editors to UTF-8:
     <img src="img/eclipse-utf8-01.png" style="width:700px; display:block;" />
     <img src="img/eclipse-utf8-02.png" style="width:700px; display:block;" />
     <img src="img/eclipse-utf8-03.png" style="width:700px; display:block;" />
@@ -82,50 +82,85 @@
     <img src="img/eclipse-utf8-08.png" style="width:700px; display:block;" />
     <img src="img/eclipse-utf8-09.png" style="width:700px; display:block;" />
 	</li>
+</ol>
+
+<h2>Configure Maven Eclipse Plugin</h2>
+<ol>
   <li>
-	  Install <a href="http://m2eclipse.codehaus.org/">Eclipse Maven plugin</a> and configure Eclipse 
-		to use an external Maven installation.<br/>
+	  Install <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a> and configure the
+		plugin to use an external Maven installation.<br/>
 		According to 
 		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
 		this blog</a> there is a problem when running embedded Maven from Eclipse, so we need to configure 
 		Eclipse to use an external Maven installation.<br/> 
 		Select <strong>Window>Preferences</strong> from the menu and edit details as outlined in image below.
-    <img src="img/eclipse-maven-installations.png" style="width:640px; display:block;" />
-  </li>
+		<img src="img/eclipse-maven-installations.png" style="width:640px; display:block;" />
+	</li>
+</ol>
+
+<h2>Create a WTP Server Reference</h2>
+<ol>	
 	<li>
-		Create a WTP server reference:<br/>
 	  Install the <a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a>, 
 		install <a href="http://www.jboss.org/tools">JBoss Tools 3</a>. The 
 		<a href="http://docs.jboss.com/seam/2.1.1.GA/reference/en-US/html/gettingstartedwithjbosstools.html">
 		JBoss Seam documentation</a> explains these steps in detail. The screenshots below outlines the 
 		steps needed to configure a WTP server reference for JBoss 4.2.3.
-		<br/>
+	</li>
+	<li>
 		In Preferences, navigate to <strong>Server>Runtime Environments</strong>. Click 
 		<strong>Add...</strong>. Browse to the folder named <strong>JBoss, a division of Red Hat</strong> 
 		and select <strong>JBoss 4.2 Runtime</strong>.
 		<img src="img/eclipse-server-runtime-01.png" style="width:750px; display:block;" />
+	</li>
+	<li>
 		Click <strong>Next</strong>, name the server runtime, e.g. JBoss 4.2.3 Runtime, and point the 
 		<strong>Home Directory</strong> to the folder where you installed the	server. Select the 
 		<strong>Default</strong> configuration. 
 		<img src="img/eclipse-server-runtime-02.png" style="width:400px; display:block;" />
+	</li>
+	<li>
 		Click <strong>Next</strong>, name the server, e.g. JBoss 4.2.3 Server, and click 
 		<strong>Finish</strong>.
 		<img src="img/eclipse-server-runtime-03.png" style="width:400px; display:block;" />
+	</li>
+	<li>
 		Exit Preferences and switch to the JBoss perspective.
 		<img src="img/eclipse-jboss-perspective.png" style="width:300px; display:block;" />
+	</li>
+	<li>
 		Doubleclick on the JBoss 4.2.3 Server to open the JBoss 4.2.3 Server Overview tab.
 		<img src="img/eclipse-jboss-server-view.png" style="width:190px; display:block;" />
+	</li>
+	<li>
 		Verify that the <strong>Use the JBoss deploy folder</strong> radio button is checked.
 		<img src="img/eclipse-jboss-server-overview.png" style="width:800px; display:block;" />
+	</li>
+	<li>
+	  Start the server.
+    <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+	</li>
+	<li>
 		The console output should look something like the screeshot below.
 		<img src="img/eclipse-jboss-server-view-started.png" style="width:800px; display:block;" />
-  </li>
+	</li>
 	<li>
-	  Define a data source:
+	  Stop the server.
+  </li>
+</ol>
+
+
+<h2> Define a Data Source</h2>
+<ol>
+	<li>
+		In Preferences, navigate to <strong>Data Management>Connectivity>Driver Ddefinitions</strong>.
+		Click <strong>Add...</strong> to add a new driver.
 		<img src="img/eclipse-data-management-01.png" style="width:800px; display:block;" />
 		<img src="img/eclipse-data-management-02.png" style="width:490px; display:block;" />
 		<img src="img/eclipse-data-management-03.png" style="width:490px; display:block;" />
 		<img src="img/eclipse-data-management-04.png" style="width:490px; display:block;" />
+	</li>
+	<li>
 		Open the <strong>Database Development</strong> perspective. In <strong>Data Source Explorer</strong> 
 		rightclick <strong>Databases</strong> folder and select <strong>New...</strong>
 		<img src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
@@ -134,12 +169,16 @@
 		<img src="img/eclipse-connection-profile-03.png" style="width:420px; display:block;" />
 		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
 	</li>
+</ol>
+
+<h2>Configure JBoss Tools</h2>
+<ol>
   <li>
-	  Configure JBoss Tools<br/>
 	  Unpack <a href="http://www.seamframework.org/Download">JBoss Seam 2.1</a> to a folder of your 
 		choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.1.GA</code>. Follow the screenshots.
 		<img src="img/eclipse-jboss-tools-01.png" style="width:750px; display:block;" />
 		<img src="img/eclipse-jboss-tools-02.png" style="width:750px; display:block;" />
+		<img src="img/eclipse-jboss-tools-03.png" style="width:750px; display:block;" />
 	</li>
 </ol>
 
@@ -168,46 +207,105 @@
     files that now makes the project a valid Eclipse project.<br/>
     <strong>Note:</strong> Do not use the <code>eclipse:eclipse</code> command, it does not work 
     properly when m2eclipse is installed.
-		
-    
-		
   </li>
   <li>
     Import project:
-    <img src="img/eclipse-import.png" style="width:250px; display:block;" /><br/>
-    <img src="img/eclipse-import-maven-01.png" style="width:400px; display:block;" /><br/>
-    <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" /><br/>
+    <img src="img/eclipse-import.png" style="width:250px; display:block;" />
+    <img src="img/eclipse-import-maven-01.png" style="width:400px; display:block;" />
+    <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
+		You will notice a build error in the Maven console:<br/>
+    <img src="img/eclipse-import-maven-08.png" style="width:800px; display:block;" />
+		<a href="http://jira.codehaus.org/browse/MNGECLIPSE-1136"><code><font color="red">
+			Build errors for seam-tutorial-ear; org.apache.maven.lifecycle.LifecycleExecutionException: 
+			Invalid or missing parameters: [Mojo parameter [name: 'outputDirectory'; alias: 'null'], Mojo 
+			parameter [name: 'resources'; alias: 'null']] for mojo: 
+			org.apache.maven.plugins:maven-resources-plugin:2.3:copy-resources</font></code>
+		</a><br/>
+		We fix :-)
+    <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
+    Modify Maven properties for parent project; seam-tutotrial:
+    <img src="img/eclipse-project-properties-maven-01.png" style="width:500px; display:block;" />
+    Modify Maven properties for ear module; seam-tutotrial-ear:
+    <img src="img/eclipse-project-properties-maven-02.png" style="width:500px; display:block;" />
+    Modify Maven properties for ejb and war modules; seam-tutotrial-ejb and seam-tutotrial-war:
+    <img src="img/eclipse-project-properties-maven-03.png" style="width:500px; display:block;" />
+		Now we have fixed and the build errors should be gone :-))
   </li>
   <li>
-    Modify Maven properties for parent project.
-    <img src="img/eclipse-project-properties-maven-01.png" style="width:600px; display:block;" /><br/>
-    The sub modules.
-    <img src="img/eclipse-project-properties-maven-02.png" style="width:600px; display:block;" /><br/>
-  </li>
-  <li>
-    Modify Run Configurations:<br/>
-    According to 
+    Create a Maven <code>install -Pexplode</code> configuration:<br/>
+		The Maven install goal does not work from Eclipse. You should read 
     <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-    this blog</a> there is a problem with running <code>mvn install</code> from eclipse. 
-    <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-    Read the blog</a> and follow screenshots here to fix the problem.
+    this blog</a> and follow the screenshots 
+		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
+		there</a> and here to fix the problem.
     <img src="img/eclipse-run-configurations-01.png" style="width:640px; display:block;" />
     <img src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
-    <img src="img/eclipse-run-configurations-03.png" style="width:640px; display:block;" />
-  </li>
-	<li>
-	  Start server:
+		<pre style="font-size:9px">
+[INFO] Executing tasks
+     [echo] Exploding to C:/ide/server/jboss-4.2.3.GA/server/default/deploy/seam-tutorial-ear.ear
+   [delete] Directory C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear cannot be removed using the file attribute.  Use dir instead.
+     [sync] Copying 16 files to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear
+     [sync] Copying C:\ide\projects\seam-tutorial\ear\target\seam-tutorial-ear-0.1-SNAPSHOT\seam-tutorial-war-0.1-SNAPSHOT.war\WEB-INF\jboss-web.xml to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-war-0.1-SNAPSHOT.war\WEB-INF\jboss-web.xml
+     ....
+     [sync] Copying C:\ide\projects\seam-tutorial\ear\target\seam-tutorial-ear-0.1-SNAPSHOT\seam-tutorial-war-0.1-SNAPSHOT.war\META-INF\maven\no.knowit.seam\seam-tutorial-war\pom.properties to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-war-0.1-SNAPSHOT.war\META-INF\maven\no.knowit.seam\seam-tutorial-war\pom.properties
+     [sync] Copying C:\ide\projects\seam-tutorial\ear\target\seam-tutorial-ear-0.1-SNAPSHOT\META-INF\jboss-app.xml to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\META-INF\jboss-app.xml
+[INFO] Executed tasks
+[INFO] [install:install]
+[INFO] Installing C:\ide\projects\seam-tutorial\ear\target\seam-tutorial-ear.ear to C:\Documents and Settings\Leif\.m2\repository\no\knowit\seam\seam-tutorial-ear\0.1-SNAPSHOT\seam-tutorial-ear-0.1-SNAPSHOT.ear
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] ------------------------------------------------------------------------
+[INFO] seam-tutorial-parent .................................. SUCCESS [2.875s]
+[INFO] seam-tutorial-ejb 0.1-SNAPSHOT ........................ SUCCESS [3.031s]
+[INFO] seam-tutorial-war 0.1-SNAPSHOT ........................ SUCCESS [2.016s]
+[INFO] seam-tutorial-ear 0.1-SNAPSHOT ........................ SUCCESS [7.703s]
+[INFO] ------------------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] ------------------------------------------------------------------------
+</pre>
+		
+		You can run the goal as needed by selecting the 
+		<code><strong>Run As &gt; Maven build...</strong> </code>
+		from the project menu.
+    <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+	  Start the server:
     <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
 		A successful deploy should look like this in the Console log:
     <img src="img/eclipse-server-view-start-server-02.png" style="width:800px; display:block;" />
-	</li>
-  <li>
-		Open a browser and enter <a href="http://localhost:8080/seam-tutorial">
+		Open a browser and point the URL to <a href="http://localhost:8080/seam-tutorial">
 		http://localhost:8080/seam-tutorial</a>
-  </li>
+	</li>
+	<li>
+	  Set up Maven Builder:<br/>
+		You must set up a Maven builder to execute the explode profile during the edit- compile cycle.
+    <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
+    <img src="img/eclipse-maven-builder-01.png" style="width:450px; display:block;" />
+    <img src="img/eclipse-maven-builder-02.png" style="width:450px; display:block;" />
+    <img src="img/eclipse-maven-builder-03.png" style="width:450px; display:block;" />
+		Open a java class, e.g. <code>Authenticator.java</code>. Modify the source, save and check
+		the console output:
+		<pre style="font-size:9px">
+...
+[INFO] [antrun:run {execution: ejb-process-classes}]
+[INFO] Executing tasks
+     [echo] *** Copy file(s) from: C:\ide\projects\seam-tutorial\ejb\target\classes to C:/ide/server/jboss-4.2.3.GA/server/default/deploy/seam-tutorial-ear.ear/seam-tutorial-ejb-0.1-SNAPSHOT.jar
+[INFO] Executed tasks
+...
+</pre>
+		Verify that the class file in the corresponding <code>${JBOSS_DEPLOY}</code> folder has the
+		"correct" timestamp.
+		
+	</li>
 </ol>
 
-<h2>Configure JBoss Tools for the Project</h2>
+<h2>Configure JBoss Tools for a Project</h2>
+<p>JBoss Tools has a lot of useful wizards and automated tasks, like reverse engeneering from 
+	database and generation of user interface during creation of an entity bean. This section 
+	outlines the steps needed to configure JBoss Toos for a project.
+</p>
+
 <br/>
 
 
@@ -271,7 +369,8 @@
     The exploded view on your <code>${JBOSS_DEPLOY}</code> folder should look like this:
     <img src="img/exploded-ear.png" style="width:700px; display:block;" /><br/>
   </li>
-  <li>Open a browser and enter the URL <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a><br/>
+  <li>Open a browser and enter the URL 
+		<a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a><br/>
     After logging in, your welcome screen should look like this:
     <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" /><br/>
   </li>
