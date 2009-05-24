@@ -152,13 +152,11 @@
   </li>
 </ol>
 
-
 <h2> Define a Data Source</h2>
 <ol>
 	<li>
 		<a href="01-gettingstarted.html#activate-a-database-profile">Create a database as outlined here.</a>
 	</li>
-	
 	<li>
 		In Preferences, navigate to <strong>Data Management>Connectivity>Driver Definitions</strong>.
 		Click <strong>Add...</strong> to add a new driver.
@@ -189,23 +187,21 @@
 	</li>
 </ol>
 
-<h2>Import a Mavenized Seam Project Into Eclipse</h2>
+<h2>Import a Mavenized Seam Project</h2>
 <p>To import a mavenized Seam project to Eclipse (i.e. a project that is already installed on your 
 	computer), follow these steps:
 </p>
 <ol>
   <li>
-		<a href="01-gettingstarted.html#use-as-template">Use the <code>seam-refimpl</code> project 
-		as a template</a> to set up the project.
+		<a href="01-gettingstarted.html#use-as-template">Export the <code>seam-refimpl</code> project</a> 
+		to a folder of your choice, the <code>${SEAM_TUTORIAL}</code> folder.
 	</li>
   <li>
-		<a href="01-gettingstarted.html#switch-to-development-mode">Switch to developmentmode</a>
+		<a href="01-gettingstarted.html#modfy-the-poms">Modify the POMs</a> and
+		<a href="01-gettingstarted.html#switch-to-development-mode">switch to development mode</a>
 	</li>
   <li>
-		Copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to <code>${SEAM_TUTORIAL}</code>
-	</li>
-  <li>
-		Navigate to the ${SEAM_TUTORIAL} folder using a command shell and execute maven commands:<br/>
+		Navigate to the <code>${SEAM_TUTORIAL}</code> folder using a command shell and execute maven commands:<br/>
     <code>mvn clean -Punexplode<br/>
     mvn install -Pexplode (remember to point the server to the correct deploy folder in
 		<code>profiles.xml</code>)<br/>
@@ -216,9 +212,9 @@
     properly when m2eclipse is installed.
   </li>
   <li>
-    Import project:
+    Import the project:
     <img src="img/eclipse-import.png" style="width:250px; display:block;" />
-    <img src="img/eclipse-import-maven-01.png" style="width:400px; display:block;" />
+    <img src="img/eclipse-import-maven-01.png" style="width:340px; display:block;" />
     <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
 		You will notice a build error in the Maven console:<br/>
     <img src="img/eclipse-import-maven-08.png" style="width:800px; display:block;" />
@@ -315,11 +311,39 @@
 	</li>
 </ol>
 
+
 <h2>Configure JBoss Tools for a Project</h2>
 <p>JBoss Tools has a lot of useful wizards and automated tasks, like reverse engeneering from 
-	an existing database and generation of user interface during creation of an entity bean. 
-	This section outlines the steps needed to configure JBoss Toos for a project.
+	an existing database and automated generation of Seam framework classes and user interface during 
+	creation of entity beans.  This section outlines the steps needed to configure JBoss Toos for a 
+	project.
 </p>
+<ol>
+	<li>
+	  The parent module:
+    <img src="img/eclipse-parent-properties-01.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-parent-properties-02.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-parent-properties-03.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-parent-properties-04.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-parent-properties-05.png" style="width:700px; display:block;" />
+	</li>
+	<li>
+	  The EAR module:
+    <img src="img/eclipse-ear-properties-01.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ear-properties-04.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ear-properties-05.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ear-properties-02.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ear-properties-03.png" style="width:700px; display:block;" />
+	</li>
+	<li>
+	  The EJB module:
+    <img src="img/eclipse-ejb-properties-02.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-04.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-05.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-03.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-01.png" style="width:700px; display:block;" />
+	</li>
+</ol>
 
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
