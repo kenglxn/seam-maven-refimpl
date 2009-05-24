@@ -284,103 +284,35 @@
     <img src="img/eclipse-maven-builder-01.png" style="width:450px; display:block;" />
     <img src="img/eclipse-maven-builder-02.png" style="width:450px; display:block;" />
     <img src="img/eclipse-maven-builder-03.png" style="width:450px; display:block;" />
+		Test the Builder:<br/>
 		Open a java class, e.g. <code>Authenticator.java</code>. Modify the source, save and check
 		the console output:
 		<pre style="font-size:9px">
 ...
 [INFO] [antrun:run {execution: ejb-process-classes}]
 [INFO] Executing tasks
-     [echo] *** Copy file(s) from: C:\ide\projects\seam-tutorial\ejb\target\classes to C:/ide/server/jboss-4.2.3.GA/server/default/deploy/seam-tutorial-ear.ear/seam-tutorial-ejb-0.1-SNAPSHOT.jar
+     [copy] Copying 1 file to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-ejb-0.1-SNAPSHOT.jar
+     [copy] Copying C:\ide\projects\seam-tutorial\ejb\target\classes\org\jboss\seam\example\session\<font color="blue">Authenticator.class</font> to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-ejb-0.1-SNAPSHOT.jar\org\jboss\seam\example\session\Authenticator.class
 [INFO] Executed tasks
+...</pre>
+		Open a xhtml file, e.g. <code>home.xhtml</code>. Modify the source, save and check
+		the console output:
+		<pre style="font-size:9px">
 ...
-</pre>
-		Verify that the class file in the corresponding <code>${JBOSS_DEPLOY}</code> folder has the
-		"correct" timestamp.
-		
+[INFO] [antrun:run {execution: war-process-classes}]
+[INFO] Executing tasks
+     [copy] Copying 1 file to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-war-0.1-SNAPSHOT.war
+     [copy] Copying C:\ide\projects\seam-tutorial\war\src\main\webapp\home.xhtml to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-war-0.1-SNAPSHOT.war\home.xhtml
+[INFO] Executed tasks
+...</pre>
 	</li>
 </ol>
 
 <h2>Configure JBoss Tools for a Project</h2>
 <p>JBoss Tools has a lot of useful wizards and automated tasks, like reverse engeneering from 
-	database and generation of user interface during creation of an entity bean. This section 
-	outlines the steps needed to configure JBoss Toos for a project.
+	an existing database and generation of user interface during creation of an entity bean. 
+	This section outlines the steps needed to configure JBoss Toos for a project.
 </p>
-
-<br/>
-
-
-
-<div style="display:none;">
-<h2>Import Maven project to Eclipse</h2>
-<ol>
-  <li>
-    If the SubClipse plugin is  configured corretly and the project was previously checked out from 
-    <strong>svn</strong> (using tortoise or a similar tool), then the project should already be under 
-    revision control inside Eclipse. If the project does not apear to be under revision control then 
-    select all <strong>seam-refimpl</strong> projects, rightclick and select <code>Team &gt; Share Project...</code>
-    to get the project under revision control.
-    <img src="img/eclipse-import-maven-03.png" style="width:250px; display:block;" /><br/>
-  </li>
-  <li>Right click on the configured JBoss Server and select <strong>Add and Remove Projects...</strong>
-    <img src="img/eclipse-import-maven-04.png" style="width:450px; display:block;" /><br/>
-  </li>
-  <li>Select the <strong>seam-refimpl-ear</strong> project and click <strong>Add</strong>
-    <img src="img/eclipse-import-maven-05.png" style="width:450px; display:block;" /><br/>
-  </li>
-  <li>Start the server</strong>
-    <img src="img/eclipse-import-maven-06.png" style="width:300px; display:block;" /><br/>
-  </li>
-  <li>Open a browser and enter the URL <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a></li>
-</ol>
-
-<h2>Checkout a Maven project to Eclipse from SCM</h2>
-<ol>
-  <li>Select <strong>File &gt; New &gt; Other...</strong>
-    <img src="img/eclipse-scm-maven-01.png" style="width:400px; display:block;" /><br/>
-  </li>
-  <li>Select <strong>Checkout Maven Projects from SCM</strong></strong>
-    <img src="img/eclipse-scm-maven-02.png" style="width:450px; display:block;" /><br/>
-    <img src="img/eclipse-scm-maven-03.png" style="width:450px; display:block;" /><br/>
-    <img src="img/eclipse-scm-maven-04.png" style="width:450px; display:block;" /><br/>
-    <img src="img/eclipse-scm-maven-05.png" style="width:750px; display:block;" /><br/>
-  </li>
-  <li>Exit eclipse, navigate to the project folder using a command shell and execute Maven command:
-     <code>mvn eclipse:m2eclipse</code><br/>
-     This command will generate the Eclipse .project and .classpath files that now makes the project 
-     a valid Eclipse project. Startup eclipse and import this project into your Eclipse workspace using 
-     the File > Import > Existing Project action.
-     <strong>Note:</strong> <code>mvn eclipse:eclipse</code> does not work!<br/>
-     <strong>Note ii:</strong> Maybe this step is redundant?
-  </li>
-  <li>Open Eclipse again and right click on the configured JBoss Server and select <strong>Add and Remove Projects...</strong>
-    <img src="img/eclipse-import-maven-04.png" style="width:450px; display:block;" /><br/>
-  </li>
-  <li>Select the <strong>seam-refimpl-ear</strong> project and click <strong>Add</strong>
-    <img src="img/eclipse-import-maven-05.png" style="width:450px; display:block;" /><br/>
-  </li>
-  <li>Start the server</strong>
-    <img src="img/eclipse-import-maven-06.png" style="width:300px; display:block;" /><br/>
-  </li>
-  <li>
-    Open a command shell and run <code>mvn clean package -Pexplode</code><br/>
-    This is <strong>IMPORTANT</strong> because JBoss Tools clutters up the exploded view.
-  </li>
-  <li>
-    The exploded view on your <code>${JBOSS_DEPLOY}</code> folder should look like this:
-    <img src="img/exploded-ear.png" style="width:700px; display:block;" /><br/>
-  </li>
-  <li>Open a browser and enter the URL 
-		<a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a><br/>
-    After logging in, your welcome screen should look like this:
-    <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block;" /><br/>
-  </li>
-</ol>
-</div>
-
-
-
-
-
 
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
