@@ -20,6 +20,51 @@
   <url>http://maven.apache.org</url>
   <packaging>war</packaging>
 
+  <profiles>
+    <profile>
+      <id>explode</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>dev</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>war-process-classes</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <property name="deploy-path" value="${as.deploy}/${app.context}-ear.ear" />
+                    <copy todir="${deploy-path}/${project.build.finalName}.war" verbose="true">
+											<fileset dir="src/main/webapp">
+												<include name="**/*"/>
+												<exclude name="WEB-INF/*"/>
+												<exclude name="META-INF/context.xml"/>
+											</fileset>                    
+										</copy>
+                    <copy todir="${deploy-path}/${project.build.finalName}.war/WEB-INF/classes" verbose="true">
+                      <fileset dir="${project.build.outputDirectory}">
+                        <include name="**/*.class"/>
+                      </fileset>
+                    </copy>
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>	
+	
   <build>
     <plugins>
       <plugin>
@@ -46,6 +91,7 @@
         </configuration>
       </plugin> 
 
+			<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -71,6 +117,8 @@
           </additionalProjectnatures>
         </configuration>
       </plugin>
+			-->
+			
     </plugins>
   </build>
   

@@ -22,10 +22,6 @@
   
   <profiles>
     <profile>
-      <!--
-        Explode ejb. Copy *.class files to appserver deploy folder.
-        execute e.g. "mvn compile -Pexplode"  or "mvn compile -Denv=dev"
-       -->      
       <id>explode</id>
       <activation>
         <property>
@@ -39,12 +35,14 @@
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
-                <id>compile</id>
-                <phase>compile</phase>
+                <id>ejb-process-classes</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
                 <configuration>
                   <tasks>
                     <property name="deploy-path" value="${as.deploy}/${app.context}-ear.ear" />
-                    <echo>Copy files from: ${project.build.outputDirectory}</echo>
                     <copy todir="${deploy-path}/${project.build.finalName}.jar" verbose="true">
                       <fileset dir="${project.build.outputDirectory}">
                         <include name="**/*.class"/>
@@ -52,9 +50,6 @@
                     </copy>
                   </tasks>
                 </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
               </execution>
             </executions>
           </plugin>
@@ -86,6 +81,7 @@
         </configuration>
       </plugin>
 
+			<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -110,6 +106,8 @@
           </additionalProjectnatures>
         </configuration>
       </plugin>
+			-->
+			
     </plugins>
   </build>
   
