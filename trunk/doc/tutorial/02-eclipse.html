@@ -340,17 +340,15 @@
 	Compare the files afterwards to spot the differences, then replace the generated 
 	<code>web.xml</code> with the original one. It is also possible that that the tools will place a lot 
 	"unnecessary/redundant" files in the <code>war</code> folder. Compare with <code>seam-refimpl</code>
-	in svn and remove redundant files (hint: <code>war/src/main/resources, war/src/main/WEB-INF/lib</code>).
+	in svn and remove redundant files (hint: <code>ear/src/main/resources, ear/src/main/application,
+	war/src/main/resources, war/src/main/WEB-INF/lib</code>).
 </p>
 <br/>
 <ol>
 	<li>
 	  The parent module:
     <img src="img/eclipse-parent-properties-01.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-parent-properties-06.png" style="width:450px; display:block;" />
     <img src="img/eclipse-parent-properties-02.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-parent-properties-03.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-parent-properties-04.png" style="width:750px; display:block;" />
     <img src="img/eclipse-parent-properties-05.png" style="width:750px; display:block;" />
 	</li>
 	<li>
@@ -359,16 +357,13 @@
     <img src="img/eclipse-ear-properties-04.png" style="width:750px; display:block;" />
     <img src="img/eclipse-ear-properties-05.png" style="width:750px; display:block;" />
     <img src="img/eclipse-ear-properties-02.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ear-properties-03.png" style="width:750px; display:block;" />
 	</li>
 	<li>
 	  The EJB module:
     <img src="img/eclipse-ejb-properties-02.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-properties-06.png" style="width:450px; display:block;" />
     <img src="img/eclipse-ejb-properties-04.png" style="width:750px; display:block;" />
     <img src="img/eclipse-ejb-properties-05.png" style="width:750px; display:block;" />
     <img src="img/eclipse-ejb-properties-03.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-properties-01.png" style="width:750px; display:block;" />
 	</li>
 	<li>
 	  The WAR module:
@@ -378,7 +373,6 @@
     <img src="img/eclipse-war-properties-07.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-05.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-04.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-war-properties-06.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-08.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-09.png" style="width:750px; display:block;" />
 	</li>
