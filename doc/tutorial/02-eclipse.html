@@ -313,11 +313,18 @@
 
 
 <h2>Configure JBoss Tools for a Project</h2>
-<p>JBoss Tools has a lot of useful wizards and automated tasks, like reverse engeneering from 
-	an existing database and automated generation of Seam framework classes and user interface during 
-	creation of entity beans.  This section outlines the steps needed to configure JBoss Toos for a 
-	project.
+<p>JBoss Tools is not essential for developing a Seam application, but it has a lot of 
+	useful wizards and automated tasks, like reverse engeneering from an existing database and 
+	automated generation of Seam framework classes and a corresponding user interface during creation 
+	of entity beans. This section outlines the steps needed to configure 
+	JBoss Toos for a project. 
 </p>
+<p>
+  Before you start, keep a copy of the <code>war/src/main/webapp/WEB-INF/web.xml</code> file. The
+	JBoss Tools parses and modifies this file during configuration, but it does not get i quite right.
+	Compare the files afterwards to spot the differences, then copy the original file back.
+</p>
+<br/>
 <ol>
 	<li>
 	  The parent module:
