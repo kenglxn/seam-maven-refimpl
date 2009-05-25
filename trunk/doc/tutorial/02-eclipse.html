@@ -137,7 +137,7 @@
 	</li>
 	<li>
 		Verify that the <strong>Use the JBoss deploy folder</strong> radio button is checked.
-		<img src="img/eclipse-jboss-server-overview.png" style="width:800px; display:block;" />
+		<img src="img/eclipse-jboss-server-overview.png" style="width:750px; display:block;" />
 	</li>
 	<li>
 	  Start the server.
@@ -145,7 +145,7 @@
 	</li>
 	<li>
 		The console output should look something like the screeshot below.
-		<img src="img/eclipse-jboss-server-view-started.png" style="width:800px; display:block;" />
+		<img src="img/eclipse-jboss-server-view-started.png" style="width:750px; display:block;" />
 	</li>
 	<li>
 	  Stop the server.
@@ -160,7 +160,7 @@
 	<li>
 		In Preferences, navigate to <strong>Data Management>Connectivity>Driver Definitions</strong>.
 		Click <strong>Add...</strong> to add a new driver.
-		<img src="img/eclipse-data-management-01.png" style="width:800px; display:block;" />
+		<img src="img/eclipse-data-management-01.png" style="width:750px; display:block;" />
 		<img src="img/eclipse-data-management-02.png" style="width:490px; display:block;" />
 		<img src="img/eclipse-data-management-03.png" style="width:490px; display:block;" />
 		<img src="img/eclipse-data-management-04.png" style="width:490px; display:block;" />
@@ -217,7 +217,7 @@
     <img src="img/eclipse-import-maven-01.png" style="width:340px; display:block;" />
     <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
 		You will notice a build error in the Maven console:<br/>
-    <img src="img/eclipse-import-maven-08.png" style="width:800px; display:block;" />
+    <img src="img/eclipse-import-maven-08.png" style="width:750px; display:block;" />
 		<a href="http://jira.codehaus.org/browse/MNGECLIPSE-1136"><code><font color="red">
 			Build errors for seam-tutorial-ear; org.apache.maven.lifecycle.LifecycleExecutionException: 
 			Invalid or missing parameters: [Mojo parameter [name: 'outputDirectory'; alias: 'null'], Mojo 
@@ -276,7 +276,7 @@
 	  Start the server:
     <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
 		A successful deploy should look like this in the Console log:
-    <img src="img/eclipse-server-view-start-server-02.png" style="width:800px; display:block;" />
+    <img src="img/eclipse-server-view-start-server-02.png" style="width:750px; display:block;" />
 		Open a browser and point the URL to <a href="http://localhost:8080/seam-tutorial">
 		http://localhost:8080/seam-tutorial</a>
 	</li>
@@ -305,9 +305,23 @@
 [INFO] [antrun:run {execution: war-process-classes}]
 [INFO] Executing tasks
      [copy] Copying 1 file to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-war-0.1-SNAPSHOT.war
-     [copy] Copying C:\ide\projects\seam-tutorial\war\src\main\webapp\home.xhtml to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-war-0.1-SNAPSHOT.war\home.xhtml
+     [copy] Copying C:\ide\projects\seam-tutorial\war\src\main\webapp\<font color="blue">home.xhtml</font> to C:\ide\server\jboss-4.2.3.GA\server\default\deploy\seam-tutorial-ear.ear\seam-tutorial-war-0.1-SNAPSHOT.war\home.xhtml
 [INFO] Executed tasks
 ...</pre>
+		Check the Maven console as well:
+		<pre style="font-size:9px; color:blue;">
+... Maven Builder: AUTO_BUILD 
+... C:\ide\projects\seam-tutorial
+... Build type auto : process-classes
+...  mvn -Pexplode -B -Dmaven.test.skip=true -s "C:\Documents and Settings\Leif\.m2\settings.xml" process-classes
+... Build type auto : process-classes
+... Maven Builder: AUTO_BUILD 
+... Maven Builder: AUTO_BUILD 
+... C:\ide\projects\seam-tutorial
+... Build type auto : process-classes
+...  mvn -Pexplode -B -Dmaven.test.skip=true -s "C:\Documents and Settings\Leif\.m2\settings.xml" process-classes
+... Build type auto : process-classes</pre>
+		
 	</li>
 </ol>
 
@@ -316,41 +330,64 @@
 <p>JBoss Tools is not essential for developing a Seam application, but it has a lot of 
 	useful wizards and automated tasks, like reverse engeneering from an existing database and 
 	automated generation of Seam framework classes and a corresponding user interface during creation 
-	of entity beans. This section outlines the steps needed to configure 
-	JBoss Toos for a project. 
+	of entity beans. If you really want to learn the mecanisms behind Seam, then it is definitively 
+	worth the effort setting up the tools. Play with the tools and study the code that the various
+	tools generates.
 </p>
-<p>
-  Before you start, keep a copy of the <code>war/src/main/webapp/WEB-INF/web.xml</code> file. The
-	JBoss Tools parses and modifies this file during configuration, but it does not get i quite right.
-	Compare the files afterwards to spot the differences, then copy the original file back.
+<p>This section outlines the steps needed to configure JBoss Toos for a project. Before you start, 
+<strong>keep a copy</strong> of the <code>war/src/main/webapp/WEB-INF/web.xml</code> file. The
+	JBoss Tools parses and modifies this file during configuration, but it does not get it quite right.
+	Compare the files afterwards to spot the differences, then replace the generated 
+	<code>web.xml</code> with the original one. It is also possible that that the tools will place a lot 
+	"unnecessary/redundant" files in the <code>war</code> folder. Compare with <code>seam-refimpl</code>
+	in svn and remove redundant files (hint: <code>war/src/main/resources</code>).
 </p>
 <br/>
 <ol>
 	<li>
 	  The parent module:
-    <img src="img/eclipse-parent-properties-01.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-parent-properties-02.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-parent-properties-03.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-parent-properties-04.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-parent-properties-05.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-parent-properties-01.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-parent-properties-06.png" style="width:450px; display:block;" />
+    <img src="img/eclipse-parent-properties-02.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-parent-properties-03.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-parent-properties-04.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-parent-properties-05.png" style="width:750px; display:block;" />
 	</li>
 	<li>
 	  The EAR module:
-    <img src="img/eclipse-ear-properties-01.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ear-properties-04.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ear-properties-05.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ear-properties-02.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ear-properties-03.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ear-properties-01.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ear-properties-04.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ear-properties-05.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ear-properties-02.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ear-properties-03.png" style="width:750px; display:block;" />
 	</li>
 	<li>
 	  The EJB module:
-    <img src="img/eclipse-ejb-properties-02.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ejb-properties-04.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ejb-properties-05.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ejb-properties-03.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ejb-properties-01.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-02.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ejb-properties-06.png" style="width:450px; display:block;" />
+    <img src="img/eclipse-ejb-properties-04.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ejb-properties-05.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ejb-properties-03.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ejb-properties-01.png" style="width:750px; display:block;" />
+	</li>
+	<li>
+	  The WAR module:
+    <img src="img/eclipse-war-properties-03.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-war-properties-02.png" style="width:450px; display:block;" />
+    <img src="img/eclipse-war-properties-01.png" style="width:450px; display:block;" />
+    <img src="img/eclipse-war-properties-07.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-war-properties-05.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-war-properties-04.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-war-properties-06.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-war-properties-08.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-war-properties-09.png" style="width:750px; display:block;" />
 	</li>
 </ol>
+<p>That's it. Shouldn't take you more than a couple of minutes!</p>
+<p>Remember to remove any possibe redundant files. Maybe shut down Eclipse and run 
+  <code>mvn clean -Punexplode install -Pexplode</code> from a command shell.
+</p>
+<h2>Play with JBoss Tools</h2>
 
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
