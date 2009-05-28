@@ -1,127 +1,129 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
 
 	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>no.knowit.seam</groupId>
-    <artifactId>seam-refimpl</artifactId>
-    <version>1.0-SNAPSHOT</version>
+	<parent>
+		<groupId>no.knowit.seam</groupId>
+		<artifactId>seam-refimpl</artifactId>
+		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
-  </parent>
-  
-  <groupId>no.knowit.seam</groupId>
-  <artifactId>seam-refimpl-ejb</artifactId>
-  <name>${artifactId} ${project.version}</name>
-  <description>The Seam Reference Implementation ejb ....</description>
-  
-  <url>http://maven.apache.org</url>
-  <packaging>ejb</packaging>
-  
-  <profiles>
-    <profile>
-      <id>explode</id>
-      <activation>
-        <property>
-          <name>env</name>
-          <value>dev</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>ejb-process-classes</id>
-                <phase>process-classes</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <tasks>
-                    <property name="deploy-path" value="${as.deploy}/${app.context}-ear.ear" />
-                    <copy todir="${deploy-path}/${project.build.finalName}.jar" verbose="true">
-                      <fileset dir="${project.build.outputDirectory}">
-                        <include name="**/*.class"/>
-                      </fileset>
-                    </copy>
-                  </tasks>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-  
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering> <!-- filtering persistence.xml -->
-      </resource>
-    </resources>
-  
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-ejb-plugin</artifactId>
-        <configuration>
-          <ejbVersion>3.0</ejbVersion>
-          <generateClient>false</generateClient>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
+	</parent>
+
+	<groupId>no.knowit.seam</groupId>
+	<artifactId>seam-refimpl-ejb</artifactId>
+	<name>${artifactId} ${project.version}</name>
+	<description>The Seam Reference Implementation ejb ....</description>
+
+	<url>http://maven.apache.org</url>
+	<packaging>ejb</packaging>
+
+	<profiles>
+		<profile>
+			<id>explode</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>ejb-process-classes</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<property
+											name="deploy-path"
+											value="${as.deploy}/${app.context}-ear.ear" />
+										<copy
+											todir="${deploy-path}/${project.build.finalName}.jar"
+											verbose="true"
+										>
+											<fileset
+												dir="${project.build.outputDirectory}"
+											>
+												<include
+													name="**/*.class" />
+											</fileset>
+										</copy>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering> <!-- filtering persistence.xml -->
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ejb-plugin</artifactId>
+				<configuration>
+					<ejbVersion>3.0</ejbVersion>
+					<generateClient>false</generateClient>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 
 			<!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <buildcommands>
-            <buildcommand>org.eclipse.wst.common.project.facet.core.builder</buildcommand>
-            <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
-            <buildcommand>org.eclipse.wst.common.modulecore.ComponentStructuralBuilderDependencyResolver</buildcommand>
-            <buildcommand>org.eclipse.wst.validation.validationbuilder</buildcommand>
-            <buildcommand>org.jboss.tools.seam.core.seambuilder</buildcommand>
-            <buildcommand>org.hibernate.eclipse.console.hibernateBuilder</buildcommand>
-          </buildcommands>
-          
-          <additionalProjectnatures>
-            <projectnature>org.jboss.ide.eclipse.archives.core.archivesNature</projectnature>
-            <projectnature>org.eclipse.wst.common.project.facet.core.nature</projectnature>
-            <projectnature>org.eclipse.wst.common.modulecore.ModuleCoreNature</projectnature>
-            <projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
-            <projectnature>org.jboss.tools.jsf.jsfnature</projectnature>
-            <projectnature>org.jboss.tools.seam.core.seamnature</projectnature>
-            <projectnature>org.hibernate.eclipse.console.hibernateNature</projectnature>
-          </additionalProjectnatures>
-        </configuration>
-      </plugin>
+				<plugin> <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId> <configuration>
+				<buildcommands>
+				<buildcommand>org.eclipse.wst.common.project.facet.core.builder</buildcommand>
+				<buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+				<buildcommand>org.eclipse.wst.common.modulecore.ComponentStructuralBuilderDependencyResolver</buildcommand>
+				<buildcommand>org.eclipse.wst.validation.validationbuilder</buildcommand>
+				<buildcommand>org.jboss.tools.seam.core.seambuilder</buildcommand>
+				<buildcommand>org.hibernate.eclipse.console.hibernateBuilder</buildcommand>
+				</buildcommands> <additionalProjectnatures>
+				<projectnature>org.jboss.ide.eclipse.archives.core.archivesNature</projectnature>
+				<projectnature>org.eclipse.wst.common.project.facet.core.nature</projectnature>
+				<projectnature>org.eclipse.wst.common.modulecore.ModuleCoreNature</projectnature>
+				<projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
+				<projectnature>org.jboss.tools.jsf.jsfnature</projectnature>
+				<projectnature>org.jboss.tools.seam.core.seamnature</projectnature>
+				<projectnature>org.hibernate.eclipse.console.hibernateNature</projectnature>
+				</additionalProjectnatures> </configuration> </plugin>
 			-->
-			
-    </plugins>
-  </build>
-  
+
+		</plugins>
+	</build>
+
 	<dependencies>
 
-    <!-- project modules -->
-    <!--
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>${app.context}-jar</artifactId>
-      <type>jar</type>
-    </dependency>
-    -->
-    
+		<!-- project modules -->
+		<!--
+			<dependency> <groupId>${project.groupId}</groupId>
+			<artifactId>${app.context}-jar</artifactId> <type>jar</type>
+			</dependency>
+		-->
+
 		<!--  Drools Core -->
 		<dependency>
 			<groupId>org.drools</groupId>
@@ -171,5 +173,5 @@
 		</dependency>
 
 	</dependencies>
-  
+
 </project>
