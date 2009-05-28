@@ -25,6 +25,39 @@
 		<maven>2.0.9</maven>
 	</prerequisites>
 
+	<licenses>
+		<license>
+			<name></name>
+			<url></url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection></connection>
+		<developerConnection></developerConnection>
+		<url></url>
+	</scm>
+
+	<issueManagement>
+		<system></system>
+		<url></url>
+	</issueManagement>
+
+	<developers>
+		<developer>
+			<id>loo@knowit.no</id>
+			<name>Leif Olsen</name>
+			<email>loo@knowit.no</email>
+			<organization>Knowit Objectnet Kristiansand</organization>
+			<organizationUrl>http://www.knowit.no</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>GMT +1</timezone>
+		</developer>
+	</developers>
+
+
 	<modules>
 		<module>ear</module>
 		<module>ejb</module>
@@ -296,19 +329,5 @@
 			<classifier>jdk15</classifier>
 		</dependency>
 	</dependencies>
-
-	<developers>
-		<developer>
-			<id>loo@knowit.no</id>
-			<name>Leif Olsen</name>
-			<email>loo@knowit.no</email>
-			<organization>Knowit Objectnet Kristiansand</organization>
-			<organizationUrl>http://www.knowit.no</organizationUrl>
-			<roles>
-				<role>Developer</role>
-			</roles>
-			<timezone>GMT +1</timezone>
-		</developer>
-	</developers>
 
 </project>
