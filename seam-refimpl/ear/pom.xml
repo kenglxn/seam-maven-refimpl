@@ -14,18 +14,16 @@
 	</parent>
 
 	<groupId>no.knowit.seam</groupId>
-	<artifactId>seam-refimpl-ear</artifactId>
-	<name>${artifactId} ${project.version}</name>
-	<description>Seam Maven reference implementation ear ....</description>
-
-	<url>http://maven.apache.org</url>
+	<artifactId>seam-refimpl-ear</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
+	<name>${app.display.name} EAR ${project.version}</name>
+	<description>Seam Maven reference implementation EAR module ....</description>
 	<packaging>ear</packaging>
 
 	<profiles>
 		<profile>
 			<!--
-				Explode ear to appserver deploy folder. execute e.g. "mvn package
-				-Pexplode" or "mvn package -Denv=dev"
+				Explode ear to appserver deploy folder. execute e.g. "mvn package -Pexplode" or 
+				"mvn package -Denv=dev"
 			-->
 			<id>explode</id>
 			<activation>
@@ -61,9 +59,9 @@
 										</sync>
 
 										<!--
-											Uncomment if you want to deploy the *-ds.xml file to
-											appserver deploy folder <copy todir="${as.deploy}"
-											file="${project.build.directory}/${app.ds.xml}"
+											Uncomment if you want to deploy the *-ds.xml file to appserver deploy folder
+											
+											<copy todir="${as.deploy}" file="${project.build.directory}/${app.ds.xml}"
 											verbose="true" />
 										-->
 									</tasks>
@@ -102,8 +100,9 @@
 
 										<!--
 											Uncomment if you have deployed the *-ds.xml file to appserver
-											deploy folder <delete file="${as.deploy}/${app.ds.xml}"
-											quiet="true" />
+											deploy folder 
+											
+											<delete file="${as.deploy}/${app.ds.xml}"	quiet="true" />
 										-->
 									</tasks>
 								</configuration>

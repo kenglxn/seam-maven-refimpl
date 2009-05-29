@@ -16,10 +16,8 @@
 
 	<groupId>no.knowit.seam</groupId>
 	<artifactId>seam-refimpl-ejb</artifactId>
-	<name>${artifactId} ${project.version}</name>
-	<description>The Seam Reference Implementation ejb ....</description>
-
-	<url>http://maven.apache.org</url>
+	<name>${app.display.name} EJB ${project.version}</name>
+	<description>The Seam Reference Implementation EJB module ....</description>
 	<packaging>ejb</packaging>
 
 	<profiles>
@@ -49,13 +47,9 @@
 											value="${as.deploy}/${app.context}-ear.ear" />
 										<copy
 											todir="${deploy-path}/${project.build.finalName}.jar"
-											verbose="true"
-										>
-											<fileset
-												dir="${project.build.outputDirectory}"
-											>
-												<include
-													name="**/*.class" />
+											verbose="true">
+											<fileset	dir="${project.build.outputDirectory}"	>
+												<include	name="**/*.class" />
 											</fileset>
 										</copy>
 									</tasks>
