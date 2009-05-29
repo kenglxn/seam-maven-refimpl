@@ -16,10 +16,8 @@
 
 	<groupId>no.knowit.seam</groupId>
 	<artifactId>seam-refimpl-war</artifactId>
-	<name>${artifactId} ${project.version}</name>
-	<description>The Seam Reference Implementation war ....</description>
-
-	<url>http://maven.apache.org</url>
+	<name>${app.display.name} WAR ${project.version}</name>
+	<description>The Seam Reference Implementation WAR module ....</description>
 	<packaging>war</packaging>
 
 	<profiles>

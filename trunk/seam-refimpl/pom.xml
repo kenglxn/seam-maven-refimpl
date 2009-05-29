@@ -15,8 +15,8 @@
 
 	<groupId>no.knowit.seam</groupId>
 	<artifactId>seam-refimpl</artifactId>
+	<name>${app.display.name} ${project.version}</name>
 	<version>1.0-SNAPSHOT</version>
-	<name>${artifactId}-parent</name>
 	<description>Seam Maven reference implementation parent pom ....</description>
 	<url>http://maven.apache.org</url>
 	<packaging>pom</packaging>
@@ -25,6 +25,11 @@
 		<maven>2.0.9</maven>
 	</prerequisites>
 
+  <organization>
+    <name>Knowit</name>
+    <url>http://www.knowit.no/</url>
+  </organization>
+  
 	<licenses>
 		<license>
 			<name></name>
@@ -69,10 +74,9 @@
 		<version.jsf>1.2_12</version.jsf>
 		<version.richfaces>3.3.1.GA</version.richfaces>
 
-		<app.context>seam-refimpl</app.context>
+		<app.context>seam-refimpl</app.context>  <!-- hint: same value as artifactId -->
 		<app.display.name>Seam Reference Implementation</app.display.name>
-		<app.description>The Seam Reference Implementation is a Maven
-			project you can use as a template for your own JBoss Seam projects</app.description>
+		<app.description>The Seam Reference Implementation is a Maven project you can use as a template for your own JBoss Seam projects</app.description>
 		<app.database.name>refimpl_db</app.database.name>
 
 		<app.jndi.name>${app.context}Datasource</app.jndi.name>
@@ -215,16 +219,12 @@
 						<addVersionToProjectName>false</addVersionToProjectName>
 						<version>2.6</version>
 						
-						<wtpapplicationxml>false</wtpapplicationxml>
-						<wtpmanifest>false</wtpmanifest>
-						<manifest>${basedir}/src/main/resources/META-INF/MANIFEST.MF</manifest>
-						
-						<!-- @TODO: try this...
-						<projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
+						<!-- @TODO: try this... -->
+						<projectNameTemplate>[artifactId]</projectNameTemplate>
 						<wtpmanifest>true</wtpmanifest>
 						<wtpapplicationxml>true</wtpapplicationxml>
 						<wtpversion>2.0</wtpversion>
-						 -->
+						
 					 	<!-- ... instead of this
 						<wtpapplicationxml>false</wtpapplicationxml>
 						<wtpmanifest>false</wtpmanifest>
@@ -248,7 +248,6 @@
 		</pluginManagement>
 	</build>
 
-	<!-- Available Dependencies -->
 	<dependencyManagement>
 		<dependencies>
 
