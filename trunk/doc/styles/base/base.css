@@ -55,6 +55,7 @@ body {
                      * By setting body.font-size:62.5% we ensures that ems to pixel ratio = 10 */
   line-height: 1;   /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
+                    /* font-family: tahoma,arial,verdana,san-serif; /* */
   color: #000; 
   background-color: #FFF;
 }
