@@ -32,6 +32,13 @@ img {
   margin: 1em 0;
 }
 
+ol, ul {
+  padding-top: .3em;
+}
+li {
+  padding-top: .3em;
+}
+
 /**
  * Override page-layout.css
  */
