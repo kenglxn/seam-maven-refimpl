@@ -309,7 +309,14 @@
 			http://www.jboss.org/portletbridge/
 			http://ctpjava.blogspot.com/2009/03/jboss-seam-hot-deploy-with-maven-update.html
 			http://blogs.steeplesoft.com/seam-and-jpa-hibernate-on-oc4j-1013/
-			http://docs.jboss.com/seam/2.1.2.CR2/reference/en-US/html/dependencies.html			 
+			http://docs.jboss.com/seam/2.1.2.CR2/reference/en-US/html/dependencies.html
+			http://kasper.eobjects.dk/2009/04/seam-ejbs-and-ear-packaging-in-maven.html
+			
+			To find and list transitive dependencies: 
+				mvn install dependency:tree 
+			
+			To write the dependency content into a file:
+				mvn install dependency:tree -outputFile=dependency.txt			 
 		-->
 		
 		<dependencies>
