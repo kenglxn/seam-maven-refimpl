@@ -42,26 +42,17 @@
 								<phase>package</phase>
 								<configuration>
 									<tasks>
-										<property
-											name="deploy-path"
-											value="${as.deploy}/${app.context}-ear.ear" />
+										<property name="deploy-path" value="${as.deploy}/${app.context}-ear.ear" />
 										<echo>Exploding to ${deploy-path}</echo>
-										<delete
-											file="${deploy-path}"
-											quiet="true" />
-										<mkdir
-											dir="${deploy-path}" />
-										<sync
-											todir="${deploy-path}"
-											verbose="true" >
-											<fileset
-												dir="${project.build.directory}/${project.build.finalName}" />
+										<delete	file="${deploy-path}" quiet="true" />
+										<mkdir dir="${deploy-path}" />
+										<sync todir="${deploy-path}" verbose="true" >
+											<fileset dir="${project.build.directory}/${project.build.finalName}" />
 										</sync>
-
 										<!--
-											Uncomment if you want to deploy the *-ds.xml file to appserver deploy folder
-											
-											<copy todir="${as.deploy}" file="${project.build.directory}/${app.ds.xml}"
+										Uncomment if you want to deploy the *-ds.xml file to appserver deploy folder
+										<copy todir="${as.deploy}" 
+											file="${project.build.directory}/${app.ds.xml}" 
 											verbose="true" />
 										-->
 									</tasks>
@@ -92,16 +83,13 @@
 								<phase>clean</phase>
 								<configuration>
 									<tasks>
-										<property
-											name="deploy-path"
-											value="${as.deploy}/${app.context}-ear.ear" />
+										<property name="deploy-path" value="${as.deploy}/${app.context}-ear.ear" />
 										<delete	file="${deploy-path}"	quiet="true" />
 										<delete	dir="${deploy-path}" quiet="true" />
 
 										<!--
 											Uncomment if you have deployed the *-ds.xml file to appserver
 											deploy folder 
-											
 											<delete file="${as.deploy}/${app.ds.xml}"	quiet="true" />
 										-->
 									</tasks>
@@ -242,10 +230,12 @@
 						</ejbModule>
 
 						<!--
-							<jarModule> <groupId>${project.groupId}</groupId>
+						<jarModule> 
+							<groupId>${project.groupId}</groupId>
 							<artifactId>${app.context}-jar</artifactId>
-							<bundleDir>lib</bundleDir> <unpack>${env.unpack.modules}</unpack>
-							</jarModule>
+							<bundleDir>lib</bundleDir> 
+							<unpack>${env.unpack.modules}</unpack>
+						</jarModule>
 						-->
 					</modules>
 				</configuration>
@@ -255,64 +245,70 @@
 
 	<dependencies>
 
-		<!-- refimpl -->
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-ejb</artifactId>
-			<type>ejb</type>
-		</dependency>
+		<!-- project modules -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>${app.context}-war</artifactId>
 			<type>war</type>
 		</dependency>
-		<!--
-			<dependency> <groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-jar</artifactId> <type>jar</type>
-			</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>${app.context}-ejb</artifactId>
+			<type>ejb</type>
+		</dependency>
+		
+		<!-- other project modules 
+		<dependency> 
+			<groupId>${project.groupId}</groupId>
+			<artifactId>${app.context}-jar</artifactId> 
+			<type>jar</type>
+		</dependency>
 		-->
 
-		<!--  needed by richfaces-impl in WAR -->
-		<!--  dependent commons-beanutils in added by the richfaces-api -->
+		<dependency>
+			<groupId>org.jboss.seam</groupId>
+			<artifactId>jboss-seam</artifactId>
+			<type>ejb</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.el</groupId>
+			<artifactId>jboss-el</artifactId>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.richfaces.framework</groupId>
+			<artifactId>richfaces-api</artifactId>
+			<type>jar</type>
+		</dependency>
+
 		<dependency>
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 			<type>jar</type>
 		</dependency>
 
-		<!--  Richfaces API -->
 		<dependency>
-			<groupId>org.richfaces.framework</groupId>
-			<artifactId>richfaces-api</artifactId>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
 			<type>jar</type>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-collections</groupId>
-					<artifactId>commons-collections</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
-		<!--  JBoss EL -->
 		<dependency>
-			<groupId>org.jboss.el</groupId>
-			<artifactId>jboss-el</artifactId>
-			<type>jar</type>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.el</groupId>
-					<artifactId>el-api</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
-		<!--  JBoss Seam -->
 		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam</artifactId>
-			<type>ejb</type>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>provided</scope>
 		</dependency>
-
+			
 	</dependencies>
 
 </project>
