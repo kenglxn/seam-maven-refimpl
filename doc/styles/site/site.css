@@ -20,6 +20,18 @@
  * History     : 
  */
  
+body {
+  line-height: 1.5; /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
+  /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* */
+  font-family: tahoma,arial,verdana,san-serif; /* */
+  color: #000; 
+  background-color: #002C5C; 
+}
+
+img {
+  margin: 1em 0;
+}
+
 /**
  * Override page-layout.css
  */
