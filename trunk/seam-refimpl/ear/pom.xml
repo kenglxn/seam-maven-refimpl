@@ -115,10 +115,11 @@
 				target ear folder. The projects *-ds.xml file is placed in the
 				src/main/resources folder, so we'll have to use the
 				maven-resources-plugin to copy the *-ds.xml file. The reason for
-				this is that we need to control where the *-ds.xml is lolcated in
+				this is that we need to control where to copy the *-ds.xml is in
 				the target build. If we want to deploy the *-ds.xml file embedded
 				into the ear project then the file is located in the target/ear root
-				folder. locates the file in the target folder. The explode profile
+				folder. If the *-ds.xml file should be deployed as a separate service,
+				then the file is located the target folder. The explode profile
 				will then copy the *-ds.xml file to the application server's deploy
 				folder.
 			-->
