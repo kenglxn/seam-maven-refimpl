@@ -39,6 +39,9 @@ li {
   padding-top: .3em;
 }
 
+ul.vspace>li, ol.vspace>li {
+  padding-top: .8em;
+}
 /**
  * Override page-layout.css
  */
@@ -84,3 +87,4 @@ ul.links {
 .links li a {
   padding: 0 .5em;
 }
+
