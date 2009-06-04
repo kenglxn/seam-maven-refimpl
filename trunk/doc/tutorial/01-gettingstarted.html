@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -7,9 +7,50 @@
 <link rel="stylesheet" href="../styles/page-layout/page-layout.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../styles/site/site.css" type="text/css" media="screen" />
 
+  <script type="text/javascript">
+    var checkOutInstallHidden = true;
+    var exportTemplateHidden = true;
+    function hideDivs() {
+      hideDiv("checkout-install");
+      hideDiv("export-template");
+    };
+
+    function toggleCheckoutInstall() {
+
+      if (checkOutInstallHidden) {
+        showDiv("checkout-install");
+        checkOutInstallHidden = false;
+      } else {
+        hideDiv("checkout-install");
+        checkOutInstallHidden = true;
+      }
+    };
+
+    function toggleExportTemplate() {
+
+      if (exportTemplateHidden) {
+        showDiv("export-template");
+        exportTemplateHidden = false;
+      } else {
+        hideDiv("export-template");
+        exportTemplateHidden = true;
+      }
+    };
+
+    function hideDiv(id) {
+      document.getElementById(id).style.visibility = "hidden";
+      document.getElementById(id).style.display = "none";
+    };
+
+    function showDiv(id) {
+      document.getElementById(id).style.visibility = "visible";
+      document.getElementById(id).style.display = "block";
+    };
+  </script>
+
 <title>Seam Maven reference Implentation - Getting Started</title>
 </head>
-<body>
+<body onload="hideDivs();">
 
 <div id="sizer">
 <div id="expander">
@@ -63,7 +104,8 @@
 </ul>
 <p>Install the required software.</p>
 
-<h2>Check Out, Install and Run the Project</h2>
+<h2><a href="#" onclick="toggleCheckoutInstall(); return false;">Check Out, Install and Run the Project</a></h2>
+<div id="checkout-install">
 <p>The example uses Tortoise SVN to check out the project.<br/>
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
   of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
@@ -364,9 +406,12 @@ The following profiles are active:
     This completes the basic steps of the tutorial!
   </li>
 </ol>
+</div>
 
-<h2><a name="use-as-template">Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a></h2>
-<p> Follow these steps to use the <code>seam-refimpl</code> project as a template for your own 
+
+<h2><a href="#" onclick="toggleExportTemplate(); return false;">Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a></h2>
+<div id="export-template">
+<p> Follow these steps to use the <code>seam-refimpl</code> project as a template for your own
   project.<br/>  
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
   of your choice and <a href="#modfy-the-poms">jump to step 2</a> in this section.</p>
@@ -595,7 +640,7 @@ The following profiles are active:
 	<li>
 	  <a href="#start-jboss">Start JBoss, open browser, etc...</a>
 	</li>
-</ol>    
+</ol>
 
 <h2>Tips for Debugging</h2>
 <p>
@@ -616,6 +661,8 @@ The following profiles are active:
   Open your browser and point to the following URL to see the debug page.
   <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
 </p>
+</div>
+
 <br/>
     
 </div> <!-- #page -->
