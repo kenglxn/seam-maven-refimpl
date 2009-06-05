@@ -61,8 +61,8 @@
 	</modules>
 
 	<properties>
-		<!-- 2.1.1.GA -->
-		<version.seam>2.1.2.CR1</version.seam>
+		<!-- 2.1.1.GA, 2.1.2.CR2 -->
+		<version.seam>2.1.2.CR2</version.seam> 
 		<version.jsf>1.2_12</version.jsf>
 		<version.richfaces>3.3.1.GA</version.richfaces>
 		<version.drools>4.0.4</version.drools>
@@ -605,10 +605,11 @@
 				</exclusions>
 			</dependency>
 
-		
-			<!-- jboss el -->
-			<!-- versions: 2.0.0.GA, 2.0.1.GA, 2.0.2.CR1, default in Seam-2.1.2-CR is 1.0_02.CR3 -->
-			<!-- problem with 2.0.x, see: http://seamframework.org/Community/JBossELReferenceCacheIsReferencingNonExistingFunctionInJbosseljarReflectionUtilstartup -->
+			<!-- 
+				jboss el
+				default in Seam-2.1.2.CR is 1.0_02.CR3
+				problem with 2.0.x, see: http://seamframework.org/Community/JBossELReferenceCacheIsReferencingNonExistingFunctionInJbosseljarReflectionUtilstartup 
+			-->
       <dependency>
         <groupId>org.jboss.el</groupId>
         <artifactId>jboss-el</artifactId>
