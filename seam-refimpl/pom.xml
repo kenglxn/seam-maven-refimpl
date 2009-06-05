@@ -61,6 +61,7 @@
 	</modules>
 
 	<properties>
+		<!-- 2.1.1.GA -->
 		<version.seam>2.1.2.CR1</version.seam>
 		<version.jsf>1.2_12</version.jsf>
 		<version.richfaces>3.3.1.GA</version.richfaces>
@@ -606,11 +607,11 @@
 
 		
 			<!-- jboss el -->
-			<!-- versions: 1.0_02.CR3, 2.0.0.GA, 2.0.1.GA, 2.0.2.CR1 -->
+			<!-- versions: 1.0_02.CR3 (default in Seam-2.1.2-CR), 2.0.0.GA, 2.0.1.GA, 2.0.2.CR1 -->
       <dependency>
         <groupId>org.jboss.el</groupId>
         <artifactId>jboss-el</artifactId>
-        <version>2.0.2.CR1</version>
+        <version>1.0_02.CR3</version>
 				<exclusions>
 					<exclusion>
 						<groupId>javax.el</groupId>
@@ -626,40 +627,24 @@
 				<version>${version.richfaces}</version>
 				<exclusions>
 					<exclusion>
-						<groupId>junit</groupId>
-						<artifactId>junit</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.facelets</groupId>
-						<artifactId>jsf-facelets</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.el</groupId>
-						<artifactId>el-api</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.servlet</groupId>
-						<artifactId>servlet-api</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.servlet.jsp</groupId>
-						<artifactId>jsp-api</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.faces</groupId>
-						<artifactId>jsf-impl</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-					<exclusion>
 						<groupId>commons-beanutils</groupId>
 						<artifactId>commons-beanutils</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>commons-collections</groupId>
 						<artifactId>commons-collections</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.faces</groupId>
+						<artifactId>jsf-impl</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
