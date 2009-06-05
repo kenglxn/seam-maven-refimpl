@@ -607,11 +607,12 @@
 
 		
 			<!-- jboss el -->
-			<!-- versions: 1.0_02.CR3 (default in Seam-2.1.2-CR), 2.0.0.GA, 2.0.1.GA, 2.0.2.CR1 -->
+			<!-- versions: 2.0.0.GA, 2.0.1.GA, 2.0.2.CR1, default in Seam-2.1.2-CR is 1.0_02.CR3 -->
+			<!-- problem with 2.0.x, see: http://seamframework.org/Community/JBossELReferenceCacheIsReferencingNonExistingFunctionInJbosseljarReflectionUtilstartup -->
       <dependency>
         <groupId>org.jboss.el</groupId>
         <artifactId>jboss-el</artifactId>
-        <version>1.0_02.CR3</version>
+        <version>1.0_02.CR4</version>
 				<exclusions>
 					<exclusion>
 						<groupId>javax.el</groupId>
