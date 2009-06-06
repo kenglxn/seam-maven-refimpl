@@ -9,7 +9,6 @@ import java.util.Arrays;
 @Name("facilityList")
 public class FacilityList extends EntityQuery {
 
-	/* https://jira.jboss.org/jira/browse/JBSEAM-2562
 	private static final String[] RESTRICTIONS = {
 			"lower(facility.address) like concat(lower(#{facilityList.facility.address}),'%')",
 			"lower(facility.city) like concat(lower(#{facilityList.facility.city}),'%')",
@@ -22,12 +21,14 @@ public class FacilityList extends EntityQuery {
 			"lower(facility.type) like concat(lower(#{facilityList.facility.type}),'%')",
 			"lower(facility.uri) like concat(lower(#{facilityList.facility.uri}),'%')",
 			"lower(facility.zip) like concat(lower(#{facilityList.facility.zip}),'%')",};
-	*/
-	private static final String[] RESTRICTIONS = {};
 
 	private Facility facility = new Facility();
 
-	@Override
+    public FacilityList() {
+        setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+    }
+
+    @Override
 	public String getEjbql() {
 		return "select facility from Facility facility";
 	}
@@ -39,11 +40,6 @@ public class FacilityList extends EntityQuery {
 
 	public Facility getFacility() {
 		return facility;
-	}
-
-	@Override
-	public List<String> getRestrictions() {
-		return Arrays.asList(RESTRICTIONS);
 	}
 
 }
