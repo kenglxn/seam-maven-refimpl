@@ -9,16 +9,17 @@ import java.util.Arrays;
 @Name("teeSetList")
 public class TeeSetList extends EntityQuery {
 
-	/* https://jira.jboss.org/jira/browse/JBSEAM-2562
 	private static final String[] RESTRICTIONS = {
 			"lower(teeSet.color) like concat(lower(#{teeSetList.teeSet.color}),'%')",
 			"lower(teeSet.name) like concat(lower(#{teeSetList.teeSet.name}),'%')",};
-	*/
-	private static final String[] RESTRICTIONS = {};
 
 	private TeeSet teeSet = new TeeSet();
 
-	@Override
+    public TeeSetList() {
+        setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+    }
+
+    @Override
 	public String getEjbql() {
 		return "select teeSet from TeeSet teeSet";
 	}
@@ -30,11 +31,6 @@ public class TeeSetList extends EntityQuery {
 
 	public TeeSet getTeeSet() {
 		return teeSet;
-	}
-
-	@Override
-	public List<String> getRestrictions() {
-		return Arrays.asList(RESTRICTIONS);
 	}
 
 }
