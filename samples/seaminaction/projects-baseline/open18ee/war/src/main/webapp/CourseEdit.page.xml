@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+      no-conversation-view-id="/CourseList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true"/>
+   
+   <action execute="#{courseHome.wire}"/>
+   
+   <param name="courseFrom"/>
+   <param name="courseId" value="#{courseHome.courseId}"/>
+   <param name="facilityFrom"/>
+   <param name="facilityId" value="#{facilityHome.facilityId}"/>
+
+
+
+   <navigation from-action="#{courseHome.persist}">
+       <end-conversation/>
+       <redirect view-id="/Course.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{courseHome.update}">
+       <end-conversation/>
+       <redirect view-id="/Course.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{courseHome.remove}">
+       <end-conversation/>
+       <redirect view-id="/CourseList.xhtml"/>
+   </navigation>
+   
+</page>
