@@ -23,12 +23,14 @@
 
      
   <!-- Note: debug="true" requires "jboss-seam-debug" in pom -->
-  <core:init debug="true" jndi-pattern="${as.jndi.pattern}"/>
+  <core:init debug="true"
+  	transaction-management-enabled="true" 
+  	jndi-pattern="${as.jndi.pattern}" />
 
   <core:manager concurrent-request-timeout="500"
-               conversation-timeout="120000"
-               conversation-id-parameter="cid"
-               parent-conversation-id-parameter="pid"/>
+											conversation-timeout="120000"
+								 conversation-id-parameter="cid"
+					parent-conversation-id-parameter="pid"/>
 
 	<core:resource-loader>
 		<core:bundle-names>
