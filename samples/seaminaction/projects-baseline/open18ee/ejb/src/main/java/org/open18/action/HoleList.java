@@ -9,12 +9,16 @@ import java.util.Arrays;
 @Name("holeList")
 public class HoleList extends EntityQuery {
 
-	// https://jira.jboss.org/jira/browse/JBSEAM-2562
-	//private static final String[] RESTRICTIONS = {"lower(hole.name) like concat(lower(#{holeList.hole.name}),'%')",};
-	private static final String[] RESTRICTIONS = {};
+
+	private static final String[] RESTRICTIONS = {"lower(hole.name) like concat(lower(#{holeList.hole.name}),'%')",};
 
 	private Hole hole = new Hole();
 
+	
+	public HoleList() {
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+	}
+	
 	@Override
 	public String getEjbql() {
 		return "select hole from Hole hole";
@@ -27,11 +31,6 @@ public class HoleList extends EntityQuery {
 
 	public Hole getHole() {
 		return hole;
-	}
-
-	@Override
-	public List<String> getRestrictions() {
-		return Arrays.asList(RESTRICTIONS);
 	}
 
 }
