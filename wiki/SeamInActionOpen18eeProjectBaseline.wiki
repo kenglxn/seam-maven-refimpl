@@ -2,12 +2,11 @@
 
 = A Mavenized Version of Seam In Action, Chapter Two. =
 
-We have made a Mavenized version of the source code for chapter two in the Seam In Action book using the *seam-refimpl* as a project template. The project requires JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run.
-
+We have made a Mavenized version of the source code from chapter two in the excellent Seam In Action book using the *seam-refimpl* as a project template. For those who prefers Maven as a build management system this should be a suitable starting point to play with the example code while reading the book. 
 
 == Howto ==
 Here are the steps needed to get the project up and running.
-
+  * The project requires JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run.
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-baseline/open18ee Export project from svn]
   * In MYSQL, create database "*open18initial_db*"
