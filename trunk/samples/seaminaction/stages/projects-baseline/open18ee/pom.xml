@@ -72,7 +72,7 @@
 		<app.display.name>Open18 Project Baseline</app.display.name>
 		<app.description>The Open18 project baseline is built using seam-refimpl. Original source code: 
 			http://seaminaction.googlecode.com/svn/trunk/stages/projects-baseline/open18ee</app.description>
-		<app.database.name>open18_db</app.database.name>
+		<app.database.name>open18initial_db</app.database.name>
 
 		<app.jndi.name>${app.context}Datasource</app.jndi.name>
 		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
