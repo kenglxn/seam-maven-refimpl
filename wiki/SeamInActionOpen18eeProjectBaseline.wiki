@@ -3,7 +3,7 @@
 = A Mavenized Version of Seam In Action, Chapter Two. =
 
 We have made a Mavenized version of the source code from chapter two in the excellent Seam In Action book using the *seam-refimpl* as a project template. For those who prefers Maven as a build management system this should be a suitable starting point to play with the example code while reading the book. 
-The project requires JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run.
+You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 
 == Howto ==
 Here are the steps required to get the project up and running.
