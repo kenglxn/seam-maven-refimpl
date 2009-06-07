@@ -1,4 +1,4 @@
-#summary A Mavenized Version of Seam In Action, Chapter Two.
+#summary A Mavenized Version of Seam In Action, Chapter Two.*
 
 = A Mavenized Version of Seam In Action, Chapter Two. =
 
@@ -14,8 +14,5 @@ Here are the steps needed to get the project up and running.
   * Execute *open18ee/config/schema/open18-initial-schema-mysql.sql*
   * execute *open18ee/config/schema/open18-initial-seed-data-mysql.sql*
   * Copy *open18ee/config/profiles.xml* to *open18ee*. Modify profiles.xml as needed.
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * Execute *mvn install -Pexplode*
+  * You're ready to go!
