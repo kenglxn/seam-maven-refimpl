@@ -10,7 +10,7 @@ Here are the steps needed to get the project up and running.
 
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-baseline/open18ee Export project from svn]
-  * In MySql, create database "*open18initial_db*"
+  * In MYSQL, create database "*open18initial_db*"
   * Execute open18ee/config/schema/open18-initial-schema-mysql.sql
   * execute open18ee/config/schema/open18-initial-seed-data-mysql.sql
   * Copy open18ee/config/profiles.xml to open18ee. Modify profiles.xml as needed.
