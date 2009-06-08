@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <components xmlns="http://jboss.com/products/seam/components"
   xmlns:core="http://jboss.com/products/seam/core"
   xmlns:persistence="http://jboss.com/products/seam/persistence"
@@ -22,7 +22,11 @@
      http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.1.xsd">
 
      
-  <!-- Note: debug="true" requires "jboss-seam-debug" in pom -->
+  <!-- 
+  	Note: debug="true" requires "jboss-seam-debug" in pom
+  	Note: Seam managed transactions are enabled by default, but as a reminder: 
+  				transaction-management-enabled="true"
+  -->
   <core:init debug="true"
   	transaction-management-enabled="true" 
   	jndi-pattern="${as.jndi.pattern}" />
