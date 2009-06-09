@@ -22,15 +22,19 @@
      http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.1.xsd">
 
      
-  <!-- Note: debug="true" requires "jboss-seam-debug" in pom -->
-  <core:init debug="true" 
-		transaction-management-enabled="true" 
-		jndi-pattern="${as.jndi.pattern}" />
+  <!-- 
+  	Note: debug="true" requires "jboss-seam-debug" in pom
+  	Note: Seam managed transactions are enabled by default, but as a reminder: 
+  				transaction-management-enabled="true"
+  -->
+  <core:init debug="true"
+  	transaction-management-enabled="true" 
+  	jndi-pattern="${as.jndi.pattern}" />
 
   <core:manager concurrent-request-timeout="500"
-		conversation-timeout="120000"
-		conversation-id-parameter="cid"
-		parent-conversation-id-parameter="pid"/>
+											conversation-timeout="120000"
+								 conversation-id-parameter="cid"
+					parent-conversation-id-parameter="pid"/>
 
 	<core:resource-loader>
 		<core:bundle-names>
@@ -42,15 +46,25 @@
 
   <web:hot-deploy-filter url-pattern="*.seam"/>
 
-  <!-- 
-    Note: The namespace must be declared at the beginning of the components XML:
-    xmlns:transaction="http://jboss.com/products/seam/transaction" 
-  -->
   <transaction:ejb-transaction />
   
+  <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-p362 -->
+	<persistence:entity-manager-factory name="entityManagerFactory" 
+										 persistence-unit-name="${app.persistence.unit.name}" 
+																 installed="false" 
+																	 startup="false"/>
+
+	<!--
+		If Seam loads the persistence unit (JBoss 4.x), the
+		EntityManagerFactory will be resolved from #{${app.persistence.unit.name}}. On
+		JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
+		binding occurs during application deployment), SiA-p362.
+	-->
   <persistence:managed-persistence-context name="entityManager"
                                     auto-create="true"
+												 entity-manager-factory="#{entityManagerFactory}"
                      persistence-unit-jndi-name="${app.persistence.unit.jndi.name}"/>
+
   
   <drools:rule-base name="securityRules">
     <drools:rule-files>
@@ -69,8 +83,10 @@
     <action execute="#{redirect.returnToCapturedView}"/>
   </event>
 
+	<!--
   <mail:mail-session host="localhost" port="2525" username="test" password="test" />
-
+	-->
+	
   <!-- For use with jBPM pageflow or process management -->
   <!--
   <bpm:jbpm>

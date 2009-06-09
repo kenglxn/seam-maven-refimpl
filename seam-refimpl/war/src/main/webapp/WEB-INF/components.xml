@@ -46,15 +46,25 @@
 
   <web:hot-deploy-filter url-pattern="*.seam"/>
 
-  <!-- 
-    Note: The namespace must be declared at the beginning of the components XML:
-    xmlns:transaction="http://jboss.com/products/seam/transaction" 
-  -->
   <transaction:ejb-transaction />
   
+  <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-p362 -->
+	<persistence:entity-manager-factory name="entityManagerFactory" 
+										 persistence-unit-name="${app.persistence.unit.name}" 
+																 installed="false" 
+																	 startup="false"/>
+
+	<!--
+		If Seam loads the persistence unit (JBoss 4.x), the
+		EntityManagerFactory will be resolved from #{${app.persistence.unit.name}}. On
+		JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
+		binding occurs during application deployment), SiA-p362.
+	-->
   <persistence:managed-persistence-context name="entityManager"
                                     auto-create="true"
+												 entity-manager-factory="#{entityManagerFactory}"
                      persistence-unit-jndi-name="${app.persistence.unit.jndi.name}"/>
+
   
   <drools:rule-base name="securityRules">
     <drools:rule-files>
