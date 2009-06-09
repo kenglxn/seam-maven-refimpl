@@ -59,8 +59,8 @@
 
 	<!--
 		If Seam loads the persistence unit (JBoss 4.x), the
-		EntityManagerFactory will be resolved from #{${app.persistence.unit.name}}. On
-		JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
+		EntityManagerFactory will be resolved from #{entityManagerFactory}. 
+		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-p362.
 	-->
 	<persistence:managed-persistence-context
