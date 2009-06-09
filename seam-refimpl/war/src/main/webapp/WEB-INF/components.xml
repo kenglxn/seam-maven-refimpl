@@ -27,14 +27,16 @@
   	Note: Seam managed transactions are enabled by default, but as a reminder: 
   				transaction-management-enabled="true"
   -->
-  <core:init debug="true"
-  	transaction-management-enabled="true" 
-  	jndi-pattern="${as.jndi.pattern}" />
+	<core:init
+		debug="true"
+		transaction-management-enabled="true"
+		jndi-pattern="${as.jndi.pattern}" />
 
-  <core:manager concurrent-request-timeout="500"
-											conversation-timeout="120000"
-								 conversation-id-parameter="cid"
-					parent-conversation-id-parameter="pid"/>
+	<core:manager
+		concurrent-request-timeout="500"
+		conversation-timeout="120000"
+		conversation-id-parameter="cid"
+		parent-conversation-id-parameter="pid" />
 
 	<core:resource-loader>
 		<core:bundle-names>
@@ -49,10 +51,11 @@
   <transaction:ejb-transaction />
   
   <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-p362 -->
-	<persistence:entity-manager-factory name="entityManagerFactory" 
-										 persistence-unit-name="${app.persistence.unit.name}" 
-																 installed="false" 
-																	 startup="false"/>
+	<persistence:entity-manager-factory
+		name="entityManagerFactory"
+		persistence-unit-name="${app.persistence.unit.name}"
+		installed="false"
+		startup="false" />
 
 	<!--
 		If Seam loads the persistence unit (JBoss 4.x), the
@@ -60,10 +63,11 @@
 		JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-p362.
 	-->
-  <persistence:managed-persistence-context name="entityManager"
-                                    auto-create="true"
-												 entity-manager-factory="#{entityManagerFactory}"
-                     persistence-unit-jndi-name="${app.persistence.unit.jndi.name}"/>
+	<persistence:managed-persistence-context
+		name="entityManager"
+		auto-create="true"
+		entity-manager-factory="#{entityManagerFactory}"
+		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
 
   
   <drools:rule-base name="securityRules">
@@ -83,8 +87,10 @@
     <action execute="#{redirect.returnToCapturedView}"/>
   </event>
 
+	<!-- 
   <mail:mail-session host="localhost" port="2525" username="test" password="test" />
-
+	-->
+	
   <!-- For use with jBPM pageflow or process management -->
   <!--
   <bpm:jbpm>
