@@ -8,6 +8,10 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>${app.jta.data.source}</jta-data-source>
     <properties>
+    	<!--	
+    		Binds the EntityManagerFactory to JNDI where Seam can look it up. This is only relevant when 
+    		the container automatically loads the persistence unit,	as is the case in JBoss AS 5.	
+    	--> 
       <property name="jboss.entity.manager.factory.jndi.name" value="${app.persistence.unit.jndi.name}"/>
       
       <property name="hibernate.dialect" value="${ds.hibernate.dialect}"/>
