@@ -1,0 +1,881 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jboss.seam.example</groupId>
+	<artifactId>seam-ui</artifactId>
+	<name>${app.display.name} ${project.version}</name>
+	<version>2.1.2</version>
+	<description>The Seam UI Example parent pom</description>
+	<url>http://code.google.com/p/seam-maven-refimpl/</url>
+	<packaging>pom</packaging>
+
+	<prerequisites>
+		<maven>2.0.9</maven>
+	</prerequisites>
+
+	<modules>
+		<module>ear</module>
+		<module>ejb</module>
+		<module>war</module>
+	</modules>
+
+	<properties>
+		<version.seam>2.1.2</version.seam> <!-- 2.1.1.GA, 2.1.2 --> 
+		<version.jsf>1.2_12</version.jsf>
+		<version.richfaces>3.3.1.GA</version.richfaces>
+		<version.drools>4.0.4</version.drools>
+		<version.jboss.embedded>beta3.SP4</version.jboss.embedded>
+		<version.resteasy>1.1-RC2</version.resteasy>
+		<version.meldware.mailjmx>1.0M8</version.meldware.mailjmx>
+		<version.lowagie.itext>2.1.2</version.lowagie.itext>
+
+		<app.context>seam-ui</app.context>  <!-- hint: same value as artifactId -->
+		<app.display.name>Seam UI</app.display.name>
+		<app.description>The Seam UI Example</app.description>
+		<app.database.name>refimpl_db</app.database.name>
+
+		<app.core.init.debug>true</app.core.init.debug>
+		<app.jndi.name>${app.context}Datasource</app.jndi.name>
+		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
+		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
+		<app.persistence.emf.installed>false</app.persistence.emf.installed>
+		<app.persistence.emf.startup>false</app.persistence.emf.startup>
+		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create>
+		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
+
+		<!--
+			Default profile attribute values. The values can be removed if a profiles.xml file is present
+		-->
+		<env>prod</env>
+		<env.unpack.modules>false</env.unpack.modules>
+		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+		<env.hibernate.show_sql>true</env.hibernate.show_sql>
+		<env.hibernate.format_sql>true</env.hibernate.format_sql>
+		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+
+		<jdk.debug>false</jdk.debug>
+		<jdk.optimize>true</jdk.optimize>
+		<jdk.source>1.5</jdk.source>
+		<jdk.target>1.5</jdk.target>
+
+		<as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
+		<as.version>4.2</as.version>
+
+		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
+		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
+		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
+		<ds.user.name>sa</ds.user.name>
+		<ds.password></ds.password>
+	</properties>
+
+	<pluginRepositories>
+    <pluginRepository>
+      <id>repository.jboss.org</id>
+      <name>JBoss Repository</name>
+      <url>http://repository.jboss.org/maven2</url>
+    </pluginRepository>
+    
+    <pluginRepository>
+      <snapshots />
+      <id>snapshots.jboss.org</id>
+      <name>JBoss Snapshot Repository</name>
+      <url>http://snapshots.jboss.org/maven2</url>
+    </pluginRepository>
+	</pluginRepositories>
+
+	<repositories>
+		<repository>
+			<id>download.java.net</id>
+			<url>http://download.java.net/maven/1</url>
+			<layout>legacy</layout>
+		</repository>
+		
+    <repository>
+      <id>repository.jboss.org</id>
+      <name>JBoss Repository</name>
+      <url>http://repository.jboss.org/maven2</url>
+    </repository>
+    
+    <repository>
+      <snapshots />
+      <id>snapshots.jboss.org</id>
+      <name>JBoss Snapshot Repository</name>
+      <url>http://snapshots.jboss.org/maven2</url>
+    </repository> 
+	</repositories>
+
+
+	<dependencyManagement>
+	
+		<dependencies>
+
+			<!-- project modules -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-ear</artifactId>
+				<version>${project.version}</version>
+				<type>ear</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-ejb</artifactId>
+				<version>${project.version}</version>
+				<type>ejb</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-war</artifactId>
+				<version>${project.version}</version>
+				<type>war</type>
+			</dependency>
+			
+			<!-- 
+				The rest of this block is mainly a copy of the Seam root pom.
+				The following sites has helped figuring out the transitive dependencies:
+				http://www.reverttoconsole.com/blog/java/maven-transitive-dependencies-with-jboss-seam-richfaces-in-ear-deployement/
+				https://www.jboss.org/community/wiki/RichFacesPhotositedemoapplication/
+				http://www.jboss.org/portletbridge/
+				http://ctpjava.blogspot.com/2009/03/jboss-seam-hot-deploy-with-maven-update.html
+				http://blogs.steeplesoft.com/seam-and-jpa-hibernate-on-oc4j-1013/
+				http://docs.jboss.com/seam/2.1.2.CR2/reference/en-US/html/dependencies.html
+				http://kasper.eobjects.dk/2009/04/seam-ejbs-and-ear-packaging-in-maven.html
+				
+				To find and list transitive dependencies: 
+					mvn install dependency:tree 
+				
+				To write the dependency content into a file:
+					mvn install dependency:tree -outputFile=dependency.txt			 
+			-->
+			
+			<!--  jboss seam -->
+			<dependency>
+				<groupId>org.jboss.seam</groupId>
+				<artifactId>jboss-seam</artifactId>
+				<version>${version.seam}</version>
+				<type>ejb</type>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.el</groupId>
+						<artifactId>el-api</artifactId>
+					</exclusion>
+					<exclusion>
+					   <groupId>javax.servlet</groupId>
+					   <artifactId>servlet-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jboss</groupId>
+						<artifactId>javassist</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.jboss.el</groupId>
+						<artifactId>jboss-el</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>dom4j</groupId>
+						<artifactId>dom4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javassist</groupId>
+						<artifactId>javassist</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.jboss.seam</groupId>
+						<artifactId>jboss-seam-pdf</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.facelets</groupId>
+						<artifactId>jsf-facelets</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.seam</groupId>
+				<artifactId>jboss-seam-ioc</artifactId>
+				<version>${version.seam}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.jboss.seam</groupId>
+						<artifactId>jboss-seam</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.jboss.el</groupId>
+						<artifactId>jboss-el</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.jboss.seam</groupId>
+				<artifactId>jboss-seam-ui</artifactId>
+				<version>${version.seam}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.jboss.seam</groupId>
+						<artifactId>jboss-seam</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.jboss.el</groupId>
+						<artifactId>jboss-el</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.jboss.seam</groupId>
+						<artifactId>jboss-seam-jul</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-beanutils</groupId>
+						<artifactId>commons-beanutils</artifactId>
+					</exclusion>
+					<exclusion>
+						<artifactId>commons-digester</artifactId>
+						<groupId>commons-digester</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.seam</groupId>
+				<artifactId>jboss-seam-debug</artifactId>
+				<version>${version.seam}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.jboss.seam</groupId>
+						<artifactId>jboss-seam</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.jboss.seam</groupId>
+						<artifactId>jboss-seam-pdf</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.jboss.el</groupId>
+						<artifactId>jboss-el</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.el</groupId>
+						<artifactId>el-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.facelets</groupId>
+						<artifactId>jsf-facelets</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+      <dependency>
+        <groupId>org.jboss.el</groupId>
+        <artifactId>jboss-el</artifactId>
+        <version>1.0_02.CR4</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.el</groupId>
+						<artifactId>el-api</artifactId>
+					</exclusion>
+				</exclusions>
+      </dependency>
+      
+			<!-- jee -->
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+      </dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>1.0</version>
+				<scope>provided</scope>
+			</dependency>
+      
+      <dependency>
+        <groupId>javax.servlet.jsp</groupId>
+        <artifactId>jsp-api</artifactId>
+        <version>2.1</version>
+      </dependency>
+      
+			<!-- note: http://www.reverttoconsole.com/blog/java/maven-transitive-dependencies-with-jboss-seam-richfaces-in-ear-deployement/ -->
+			<dependency>
+				<groupId>javax.el</groupId>
+				<artifactId>el-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>com.sun.facelets</groupId>
+				<artifactId>jsf-facelets</artifactId>
+				<version>1.1.15.B1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.faces</groupId>
+				<artifactId>jsf-api</artifactId>
+				<version>${version.jsf}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>javax.faces</groupId>
+				<artifactId>jsf-impl</artifactId>
+				<version>${version.jsf}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-digester</groupId>
+						<artifactId>commons-digester</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			
+			<dependency>
+				<groupId>javax.ejb</groupId>
+				<artifactId>ejb-api</artifactId>
+				<version>3.0</version>
+			</dependency>
+					
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>persistence-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.8.0.GA</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>javax.portlet</groupId>
+				<artifactId>portlet-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>javax.xml.ws</groupId>
+				<artifactId>jaxws-api</artifactId>
+				<version>2.1</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>javax.jws</groupId>
+				<artifactId>jsr181-api</artifactId>
+				<version>1.0-MR1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.xml.bind</groupId>
+						<artifactId>jaxb-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>javax.xml.soap</groupId>
+				<artifactId>saaj-api</artifactId>
+				<version>1.3</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>javax.jms</groupId>
+				<artifactId>jms</artifactId>
+				<version>1.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>jsr250-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>javax.transaction</groupId>
+				<artifactId>jta</artifactId>
+				<version>1.1</version> <!-- <version>1.0.1B</version> -->
+			</dependency>
+		
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>2.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.xml.stream</groupId>
+						<artifactId>stax-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- hibernate -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate</artifactId>
+				<version>3.2.4.sp1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>net.sf.ehcache</groupId>
+						<artifactId>ehcache</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.transaction</groupId>
+						<artifactId>jta</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>asm</groupId>
+						<artifactId>asm</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>asm</groupId>
+						<artifactId>asm-attrs</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>dom4j</groupId>
+						<artifactId>dom4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>antlr</groupId>
+						<artifactId>antlr</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>cglib</groupId>
+						<artifactId>cglib</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-annotations</artifactId>
+				<version>3.3.0.ga</version>
+				<exclusions>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.hibernate</groupId>
+						<artifactId>ejb3-persistence</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-commons-annotations</artifactId>
+				<version>3.3.0.ga</version>
+			</dependency> 
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>3.3.1.ga</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.hibernate</groupId>
+						<artifactId>ejb3-persistence</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jboss</groupId>
+						<artifactId>javassist</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>3.0.0.GA</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-search</artifactId>
+				<version>3.0.1.GA</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-tools</artifactId>
+         <version>3.2.3.GA</version>
+      </dependency>
+
+		
+			<!-- cache -->
+			<dependency>
+				<groupId>jboss</groupId>
+				<artifactId>jboss-cache</artifactId>
+				<version>1.4.1.SP9</version>
+				<exclusions>
+					<exclusion>
+						<groupId>jboss</groupId>
+						<artifactId>jboss-system</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jboss</groupId>
+						<artifactId>jboss-jmx</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>1.2.3</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<!-- You should adjust this in the initcore task in build.xml as well	-->
+			<dependency>
+				<groupId>org.jboss.cache</groupId>
+				<artifactId>jbosscache-core</artifactId>
+				<version>2.2.0.CR6</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.jboss</groupId>
+						<artifactId>jboss-common-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<!-- jgroups -->
+			<dependency>
+				<groupId>jgroups</groupId>
+				<artifactId>jgroups</artifactId>
+				<version>2.4.1</version>
+			</dependency>
+		
+ 		
+			<!-- commons -->
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.7.0</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>commons-digester</groupId>
+				<artifactId>commons-digester</artifactId>
+				<version>1.8.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-beanutils</groupId>
+						<artifactId>commons-beanutils</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.3</version>
+			</dependency>
+
+			<!-- log4j -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.14</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- see: http://maven.apache.org/plugins/index.html for a complete list -->
+				
+				<!-- building -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.3</version>
+        </plugin>
+        
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.0.2</version>
+					<configuration>
+						<source>${jdk.source}</source>
+						<target>${jdk.target}</target>
+						<encoding>utf-8</encoding>
+						<debug>${jdk.debug}</debug>
+						<optimize>${jdk.optimize}</optimize>
+					</configuration>
+				</plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.3</version>
+        </plugin>
+        
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.3</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.4.3</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.richfaces.cdk</groupId>
+          <artifactId>maven-cdk-plugin</artifactId>
+          <version>${version.richfaces}</version>
+        </plugin>
+        
+				<!-- packaging -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-ear-plugin</artifactId>
+					<version>2.3.2</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-ejb-plugin</artifactId>
+					<version>2.1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.1-beta-1</version>
+				</plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
+
+				<!-- reporting -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.2</version>
+				</plugin>
+				
+        <!-- tools -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.3</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>1.2</version>
+				</plugin>
+					
+				
+				<!--
+				  see:   http://mojo.codehaus.org/maven-hibernate3/hibernate3-maven-plugin/
+				  see:   http://unmaintainable.wordpress.com/2008/04/12/hibernate3-schema-creation/
+					usage: mvn hibernate3:hbm2ddl	 
+				-->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>hibernate3-maven-plugin</artifactId>
+					<version>2.2</version>
+					<executions>
+						<execution>
+							<phase>process-classes</phase>
+							<goals>
+								<goal>hbm2ddl</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<components>
+							<component>
+								<name>hbm2ddl</name>
+								<implementation>jpaconfiguration</implementation>
+							</component>
+						</components>
+						<componentProperties>
+							<persistenceunit>${app.persistence.unit.name}</persistenceunit>
+							<outputfilename>schema.ddl</outputfilename>
+							<drop>false</drop>
+							<create>true</create>
+							<export>false</export>
+							<format>true</format>
+						</componentProperties>
+					</configuration>
+				</plugin>
+				
+
+				<!-- ide -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>true</downloadJavadocs>
+						<addVersionToProjectName>false</addVersionToProjectName>
+						<version>2.6</version>
+						<projectNameTemplate>[artifactId]</projectNameTemplate>
+						<wtpmanifest>true</wtpmanifest>
+						<wtpapplicationxml>true</wtpapplicationxml>
+						<wtpversion>2.0</wtpversion>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-idea-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>true</downloadJavadocs>
+						<dependenciesAsLibraries>true</dependenciesAsLibraries>
+						<useFullNames>false</useFullNames>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

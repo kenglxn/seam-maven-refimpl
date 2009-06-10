@@ -202,6 +202,8 @@
 
 			<!-- 
 				The rest of this block is mainly a copy of the Seam root pom.
+				Add/Remove dependencies as needed. In a real project most of this will reside in a
+				separeate (installed) pom project. 
 				The following sites has helped figuring out the transitive dependencies:
 				http://www.reverttoconsole.com/blog/java/maven-transitive-dependencies-with-jboss-seam-richfaces-in-ear-deployement/
 				https://www.jboss.org/community/wiki/RichFacesPhotositedemoapplication/
@@ -880,20 +882,14 @@
 				<groupId>jboss</groupId>
 				<artifactId>jboss-cache</artifactId>
 				<version>1.4.1.SP9</version>
-			</dependency>
-		
-			<dependency>
-				<groupId>net.sf.ehcache</groupId>
-				<artifactId>ehcache</artifactId>
-				<version>1.2.3</version>
 				<exclusions>
 					<exclusion>
-						<groupId>commons-collections</groupId>
-						<artifactId>commons-collections</artifactId>
+						<groupId>jboss</groupId>
+						<artifactId>jboss-system</artifactId>
 					</exclusion>
 					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
+						<groupId>jboss</groupId>
+						<artifactId>jboss-jmx</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -907,6 +903,22 @@
 					<exclusion>
 						<groupId>org.jboss</groupId>
 						<artifactId>jboss-common-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<dependency>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>1.2.3</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>commons-logging</groupId>
