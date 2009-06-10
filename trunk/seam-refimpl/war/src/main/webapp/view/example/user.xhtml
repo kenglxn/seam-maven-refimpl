@@ -30,7 +30,8 @@
             <s:decorate id="passwordField" template="/layout/edit.xhtml">
                 <ui:define name="label">Password</ui:define>
                 <h:inputSecret id="password" required="true"
-                             value="#{userHome.instance.password}"/>
+                             value="#{userHome.instance.password}"
+                             redisplay="true"/>
             </s:decorate>
 
             <div style="clear:both"/>
