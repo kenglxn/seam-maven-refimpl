@@ -15,7 +15,7 @@
 	</parent>
 
 	<groupId>no.knowit.seam</groupId>
-	<artifactId>seam-refimpl-war</artifactId>
+	<artifactId>seam-refimpl-war</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${app.display.name} WAR ${project.version}</name>
 	<description>The Seam Reference Implementation WAR module ....</description>
 	<packaging>war</packaging>

@@ -9,7 +9,7 @@
 
 	<parent>
 		<groupId>org.jboss.seam.example</groupId>
-		<artifactId>seam-ui</artifactId>
+		<artifactId>seam-ui</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 		<version>2.1.2</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
@@ -109,14 +109,6 @@
 			<scope>provided</scope>
 		</dependency>
 		
-		<!-- other project modules 
-		<dependency> 
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-jar</artifactId> 
-			<scope>provided</scope>
-		</dependency>
-		-->
-
 		<!-- seam core -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
@@ -141,8 +133,6 @@
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam-debug</artifactId>
 		</dependency>
-
-		<!-- richfaces -->
 
 		<!--  jee -->
 		<dependency>

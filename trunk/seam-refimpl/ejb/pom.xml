@@ -15,7 +15,7 @@
 	</parent>
 
 	<groupId>no.knowit.seam</groupId>
-	<artifactId>seam-refimpl-ejb</artifactId>
+	<artifactId>seam-refimpl-ejb</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${app.display.name} EJB ${project.version}</name>
 	<description>The Seam Reference Implementation EJB module ....</description>
 	<packaging>ejb</packaging>
