@@ -267,6 +267,7 @@
 		</dependency>
 		-->
 
+		<!-- seam -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam</artifactId>
@@ -280,6 +281,7 @@
 			<type>jar</type>
 		</dependency>
 
+		<!-- richfaces -->
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
 			<artifactId>richfaces-api</artifactId>
@@ -292,6 +294,7 @@
 			<type>jar</type>
 		</dependency>
 
+		<!-- -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
