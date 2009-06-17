@@ -76,11 +76,11 @@
 		<app.database.name>refimpl_db</app.database.name>
 
 		<app.jndi.name>${app.context}Datasource</app.jndi.name>
-		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
-		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
 		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
 		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
-
+		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
+		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
+		
 		<app.persistence.emf.installed>false</app.persistence.emf.installed>
 		<app.persistence.emf.startup>false</app.persistence.emf.startup>
 		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create>
