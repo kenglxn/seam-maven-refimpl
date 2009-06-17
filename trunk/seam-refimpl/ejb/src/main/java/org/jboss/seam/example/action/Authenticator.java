@@ -1,4 +1,4 @@
-package org.jboss.seam.example.session;
+package org.jboss.seam.example.action;
 
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
