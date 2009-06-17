@@ -1,4 +1,4 @@
-package org.jboss.seam.example.entity;
+package org.jboss.seam.example.model;
 
 import java.io.Serializable;
 import javax.persistence.Entity;

@@ -1,8 +1,8 @@
-package org.jboss.seam.example.session;
+package org.jboss.seam.example.action;
 
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityQuery;
-import org.jboss.seam.example.entity.User;
+import org.jboss.seam.example.model.User;
 
 @Name("userList")
 public class UserList extends EntityQuery<User>

@@ -1,11 +1,11 @@
-package org.jboss.seam.example.session;
+package org.jboss.seam.example.action;
 
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.framework.EntityHome;
 
-import org.jboss.seam.example.entity.User;
+import org.jboss.seam.example.model.User;
 
 @Name("userHome")
 public class UserHome extends EntityHome<User>
