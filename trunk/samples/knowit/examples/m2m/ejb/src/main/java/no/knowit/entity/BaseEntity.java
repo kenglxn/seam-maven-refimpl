@@ -65,8 +65,8 @@ public abstract class BaseEntity<ID> implements Serializable {
   	return uuid;
   }
 
-  /**
-   * 
+  /* (non-Javadoc)
+   * @see java.lang.Object#equals(java.lang.Object)
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -78,17 +78,18 @@ public abstract class BaseEntity<ID> implements Serializable {
     return uuid.equals(that.uuid);
   }
 
-  /**
-   * 
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
    */
   @Override
   public int hashCode() {
     return uuid.hashCode();
   }
   
-  /**
-   * 
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
    */
+  @Override
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append(getClass().getName())
