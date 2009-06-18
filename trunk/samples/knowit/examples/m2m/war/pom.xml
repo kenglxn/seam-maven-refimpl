@@ -140,23 +140,6 @@
 			<artifactId>jboss-seam-debug</artifactId>
 		</dependency>
 
-		<!-- add more seam modules as needed 
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam-remoting</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam-mail</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam-pdf</artifactId>
-		</dependency>
-		-->
-		
 		<!-- richfaces -->
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
