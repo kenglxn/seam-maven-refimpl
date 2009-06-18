@@ -93,7 +93,8 @@ public abstract class BaseEntity<ID> implements Serializable {
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append(getClass().getName())
-    	.append("{uuid='").append(uuid).append("', ");
+    	.append("{id='").append(id).append("', ")
+    	.append("uuid='").append(uuid).append("', ");
     return sb.toString();    
   }
   
