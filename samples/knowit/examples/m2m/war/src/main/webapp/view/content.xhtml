@@ -1,0 +1,60 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                template="/layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <h:messages globalOnly="true" styleClass="message"/>
+    
+    <h:form id="contentForm">
+
+        <rich:panel>
+            <f:facet name="header">content</f:facet>
+    
+            <s:decorate id="titleDecoration" template="/layout/edit.xhtml">
+                <ui:define name="label">Title</ui:define>
+                <h:inputText id="title" required="true"
+                             value="#{contentHome.instance.title}"/>
+            </s:decorate>
+            
+            <s:decorate id="descriptionDecoration" template="/layout/edit.xhtml">
+              <ui:define name="label">description</ui:define>
+							<h:inputTextarea cols="80" rows="15" required="true" value="#{contentHome.instance.description}" />
+            </s:decorate>
+            
+            
+            <div style="clear:both"/>
+            
+        </rich:panel>
+
+        <div class="actionButtons">
+            <h:commandButton id="save" 
+                          value="Save" 
+                         action="#{contentHome.persist}"
+                       rendered="#{!contentHome.managed}"/>                   
+            <h:commandButton id="update" 
+                          value="Save" 
+                         action="#{contentHome.update}"
+                       rendered="#{contentHome.managed}"/>                  
+            <h:commandButton id="delete" 
+                          value="Delete" 
+                         action="#{contentHome.remove}"
+                       rendered="#{contentHome.managed}"/>
+            <s:button propagation="end" 
+                               id="done" 
+                            value="Done"
+                             view="/view/contentList.xhtml"/>
+        </div>
+        
+    </h:form>
+    
+</ui:define>
+
+</ui:composition>
+
