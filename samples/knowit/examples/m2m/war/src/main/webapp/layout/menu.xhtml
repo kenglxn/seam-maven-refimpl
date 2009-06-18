@@ -1,4 +1,4 @@
-<rich:toolBar
+<rich:toolBar 
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
@@ -6,20 +6,11 @@
     xmlns:s="http://jboss.com/products/seam/taglib"
     xmlns:rich="http://richfaces.org/rich">
     <rich:toolBarGroup>
-      <h:outputText value="#{projectName}:"/>
-      <s:link view="/home.xhtml" value="Home" propagation="none"/>
+        <h:outputText value="#{projectName}:"/>
+        <s:link view="/home.xhtml" value="Home"/>
     </rich:toolBarGroup>
-    <!-- @newMenuItem@ -->
-    <s:link view="/view/example/userList.xhtml"
-                 value="User List"
-      includePageParams="false"
-           propagation="none"/>
-    
-    <rich:toolBarGroup location="right">
-      <s:link view="/home.xhtml" 
-				action="#{identity.logout}" 
-				value="Logout" 
-				rendered="#{identity.loggedIn}" 
-				propagation="none"/>
-    </rich:toolBarGroup>
+    <s:link view="/view/recipientList.xhtml" value="Recipient List" propagation="none"/>
+    <s:link view="/view/profileList.xhtml" value="Profile List" propagation="none"/>
+    <s:link view="/view/mailShotList.xhtml" value="MailShot List" propagation="none"/>
+    <s:link view="/view/contentList.xhtml" value="Content List" propagation="none"/>
 </rich:toolBar>
