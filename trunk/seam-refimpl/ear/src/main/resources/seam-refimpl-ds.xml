@@ -61,8 +61,7 @@ options, along with a description of each option, can be found in the  docs/dtd/
                         "java:" prefix is automatically added to this name, so datasources are not 
                         available outside the virtual machine.
                         
-  connection-url      : The database-specific URL to the server. In this case, we are calling a
-                        server on the same box, with a database schema called garageSaleDb.
+  connection-url      : The database-specific URL to the server.
                         
   driver-class        : The driver you are using for your database.
   
@@ -184,5 +183,33 @@ options, along with a description of each option, can be found in the  docs/dtd/
           `text` VARCHAR(256) NOT NULL DEFAULT '',
           PRIMARY KEY (`id`)
         ) ENGINE = InnoDB;
+
+
+    MySql example:
+    
+    <local-tx-datasource>
+
+        <jndi-name>wikiDatasource</jndi-name>
+        <connection-url>jdbc:mysql://localhost/my_db?characterEncoding=UTF-8</connection-url>
+        <driver-class>com.mysql.jdbc.Driver</driver-class>
+        <user-name>test</user-name>
+        <password></password>
+
+        <min-pool-size>20</min-pool-size>
+
+        // Make sure your MySQL config has that many max_connections!
+             This is the max_threads in default Tomcat server.xml on JBoss AS. //
+        <max-pool-size>250</max-pool-size>
+
+        <blocking-timeout-millis>5000</blocking-timeout-millis>
+
+        // Needs to be smaller than wait_timeout (which is in seconds) in /etc/my.cnf! //
+        <idle-timeout-minutes>2</idle-timeout-minutes>
+
+        // These are the secret ingredients that make it stable! A simple check-valid-connection-sql won't be enough! //
+        <exception-sorter-class-name>com.mysql.jdbc.integration.jboss.ExtendedMysqlExceptionSorter</exception-sorter-class-name>
+        <valid-connection-checker-class-name>com.mysql.jdbc.integration.jboss.MysqlValidConnectionChecker</valid-connection-checker-class-name>
+
+    </local-tx-datasource>
         
 -->
