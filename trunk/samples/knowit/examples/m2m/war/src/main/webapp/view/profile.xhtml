@@ -52,14 +52,19 @@
 
 			</rich:panel>
 
-			<div class="actionButtons"><h:commandButton id="save"
+			<div class="actionButtons">
+			<h:commandButton id="save"
 				value="Save" action="#{profileHome.persist}"
-				rendered="#{!profileHome.managed}" /> <h:commandButton id="update"
+				rendered="#{!profileHome.managed}" /> 
+			<h:commandButton id="update"
 				value="Save" action="#{profileHome.update}"
-				rendered="#{profileHome.managed}" /> <h:commandButton id="delete"
+				rendered="#{profileHome.managed}" /> 
+			<h:commandButton id="delete"
 				value="Delete" action="#{profileHome.remove}"
-				rendered="#{profileHome.managed}" /> <s:button propagation="end"
-				id="done" value="Done" view="/view/profileList.xhtml" /></div>
+				rendered="#{profileHome.managed}" /> 
+			<s:button propagation="end"
+				id="done" value="Done" view="/view/profileList.xhtml" />
+			</div>
 
 		</h:form>
 

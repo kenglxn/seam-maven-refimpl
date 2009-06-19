@@ -1,0 +1,56 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="companyForm">
+
+			<rich:panel>
+				<f:facet name="header">person</f:facet>
+
+				<s:decorate id="nameField" template="/layout/edit.xhtml">
+					<ui:define name="label">Name</ui:define>
+					<h:inputText id="name" required="true"
+						value="#{personHome.instance.name}" />
+				</s:decorate>
+
+				<s:decorate template="/layout/edit.xhtml">
+					<ui:define name="label">Interests</ui:define>
+					<h:selectManyCheckbox value="#{personHome.instance.interests}"
+						layout="pageDirection">
+						<s:selectItems value="#{interestList.resultList}" 
+							var="interest"
+							label="#{interest.name}" />
+						<s:convertEntity />
+					</h:selectManyCheckbox>
+				</s:decorate>
+
+				<div style="clear: both" />
+			</rich:panel>
+
+        <div class="actionButtons">
+	        <h:commandButton id="save"
+						value="Save" action="#{personHome.persist}"
+						rendered="#{!personHome.managed}" /> 
+					<h:commandButton id="update"
+						value="Save" action="#{personHome.update}"
+						rendered="#{personHome.managed}" /> 
+					<h:commandButton id="delete"
+						value="Delete" action="#{personHome.remove}" immediate="true"
+						rendered="#{personHome.managed}" /> 
+					<s:button id="done"
+						propagation="end" value="Done" view="/view/personList.xhtml" />
+        </div>
+
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

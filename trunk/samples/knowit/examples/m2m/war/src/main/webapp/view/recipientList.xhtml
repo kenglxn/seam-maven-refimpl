@@ -17,27 +17,26 @@
         
         <div class="results">
         
-            <h:outputText value="No recipient exists" 
-                       rendered="#{empty recipientList.resultList}"/>
-                   
-            <h:dataTable id="recipientList" var="recipient"
-                      value="#{recipientList.resultList}" 
-                   rendered="#{not empty recipientList.resultList}">
-                
-                <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    <s:link id="recipient" 
-                         value="#{recipient.name}" 
-                         view="/view/recipient.xhtml">
-                        <f:param name="recipientId" 
-                                value="#{recipient.id}"/>
-                    </s:link>
-                </h:column>
-                <h:column>
-                	<f:facet name="header">Profiles</f:facet>
-                	<h:outputText value="#{recipient.profilesString}"/>
-                </h:column>
-            </h:dataTable>
+     <h:outputText value="No recipient exists" 
+                rendered="#{empty recipientList.resultList}"/>
+            
+				<h:dataTable id="recipientList" 
+					var="recipient"
+					value="#{recipientList.resultList}"
+					rendered="#{not empty recipientList.resultList}">
+
+				<h:column>
+					<f:facet name="header">Name</f:facet>
+					<s:link id="recipient" value="#{recipient.name}"
+						view="/view/recipient.xhtml">
+						<f:param name="recipientId" value="#{recipient.id}" />
+					</s:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">Profiles</f:facet>
+					<h:outputText value="#{recipient.profilesString}" />
+				</h:column>
+			</h:dataTable>
         
         </div>
         
