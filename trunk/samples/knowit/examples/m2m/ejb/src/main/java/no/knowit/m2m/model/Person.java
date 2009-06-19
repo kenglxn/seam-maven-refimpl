@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.CascadeType;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -28,7 +29,7 @@ public class Person extends BaseEntity<Long> {
   @Column(length=40, nullable=false)
   private String name;
   
-	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { PERSIST, MERGE }) 
   @JoinTable(
 		name = "PERSON_INTEREST",
 		joinColumns = @JoinColumn(name = "PERSON_ID"),
