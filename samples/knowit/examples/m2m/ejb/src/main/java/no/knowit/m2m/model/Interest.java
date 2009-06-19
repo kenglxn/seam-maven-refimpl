@@ -1,7 +1,6 @@
 package no.knowit.m2m.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,17 +15,17 @@ import no.knowit.entity.BaseEntity;
  * @version 1.0
  */
 @Entity
-public class Group extends BaseEntity<Long> {
+public class Interest extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 10, nullable = false)
 	private String name;
 
-	@ManyToMany(mappedBy = "groups", cascade=CascadeType.ALL)
-	private Set<Person> persons = new HashSet<Person>();
+	@ManyToMany(mappedBy = "interests", cascade=CascadeType.ALL)
+	private List<Person> persons;
 	
-	public Group() {
+	public Interest() {
 	}
 
 	public String getName() {
@@ -37,11 +36,11 @@ public class Group extends BaseEntity<Long> {
 		this.name = name;
 	}
 
-	public Set<Person> getPersons(){
+	public List<Person> getPersons(){
   	return persons;
   }
 
-	public void setPersons( Set<Person> persons ) {
+	public void setPersons( List<Person> persons ) {
   	this.persons = persons;
   }
 

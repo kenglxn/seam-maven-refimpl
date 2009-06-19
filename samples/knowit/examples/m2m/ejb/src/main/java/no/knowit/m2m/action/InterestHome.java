@@ -5,10 +5,10 @@ import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.framework.EntityHome;
 
-import no.knowit.m2m.model.Person;
+import no.knowit.m2m.model.Interest;
 
-@Name("personHome")
-public class PersonHome extends EntityHome<Person> {
+@Name("interestHome")
+public class InterestHome extends EntityHome<Interest> {
 	@RequestParameter
 	Long personId;
 

@@ -1,0 +1,5 @@
+insert into interest(id, version, uuid, name) values (1, 0, '1', 'Sport')
+insert into interest(id, version, uuid, name) values (2, 0, '2', 'Computers')
+insert into interest(id, version, uuid, name) values (3, 0, '3', 'Fishing')
+insert into interest(id, version, uuid, name) values (4, 0, '4', 'Music')
+insert into interest(id, version, uuid, name) values (5, 0, '5', 'Film')
