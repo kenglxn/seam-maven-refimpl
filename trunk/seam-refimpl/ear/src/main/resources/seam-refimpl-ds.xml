@@ -189,10 +189,10 @@ options, along with a description of each option, can be found in the  docs/dtd/
     
     <local-tx-datasource>
 
-        <jndi-name>wikiDatasource</jndi-name>
-        <connection-url>jdbc:mysql://localhost/my_db?characterEncoding=UTF-8</connection-url>
+        <jndi-name>seam-refimplDatasource</jndi-name>
+        <connection-url>jdbc:mysql://localhost/refimpl_db?characterEncoding=UTF-8</connection-url>
         <driver-class>com.mysql.jdbc.Driver</driver-class>
-        <user-name>test</user-name>
+        <user-name>root</user-name>
         <password></password>
 
         <min-pool-size>20</min-pool-size>
