@@ -10,46 +10,60 @@
 
 <ui:define name="body">
 
-    <h:form id="companyForm">
+   <h:form id="personForm">
 
-			<rich:panel>
-				<f:facet name="header">person</f:facet>
+		<rich:panel>
+			<f:facet name="header">Person</f:facet>
 
-				<s:decorate id="nameField" template="/layout/edit.xhtml">
-					<ui:define name="label">Name</ui:define>
-					<h:inputText id="name" required="true"
-						value="#{personHome.instance.name}" />
-				</s:decorate>
+			<s:decorate id="nameField" template="/layout/edit.xhtml">
+				<ui:define name="label">Name</ui:define>
+				<h:inputText id="name" required="true"
+					value="#{personHome.instance.name}" />
+			</s:decorate>
 
-				<s:decorate template="/layout/edit.xhtml">
-					<ui:define name="label">Interests</ui:define>
-					<h:selectManyCheckbox value="#{personHome.instance.interests}"
-						layout="pageDirection">
-						<s:selectItems value="#{interestList.resultList}" 
-							var="interest"
-							label="#{interest.name}" />
-						<s:convertEntity />
-					</h:selectManyCheckbox>
-				</s:decorate>
+			<s:decorate id="emailField" template="/layout/edit.xhtml">
+				<ui:define name="label">Email</ui:define>
+				<h:inputText id="email" required="true"
+					value="#{personHome.instance.email}" />
+			</s:decorate>
 
-				<div style="clear: both" />
-			</rich:panel>
+			<s:decorate template="/layout/edit.xhtml">
+				<ui:define name="label">Interests</ui:define>
+				<h:selectManyCheckbox value="#{personHome.instance.interests}" layout="pageDirection">
+					<s:selectItems value="#{interestList.resultList}" 
+						var="interest"
+						label="#{interest.name}" />
+					<s:convertEntity />
+				</h:selectManyCheckbox>
+			</s:decorate>
 
-        <div class="actionButtons">
-	        <h:commandButton id="save"
-						value="Save" action="#{personHome.persist}"
-						rendered="#{!personHome.managed}" /> 
-					<h:commandButton id="update"
-						value="Save" action="#{personHome.update}"
-						rendered="#{personHome.managed}" /> 
-					<h:commandButton id="delete"
-						value="Delete" action="#{personHome.remove}" immediate="true"
-						rendered="#{personHome.managed}" /> 
-					<s:button id="done"
-						propagation="end" value="Done" view="/view/personList.xhtml" />
-        </div>
+			<div style="clear: both" />
+		</rich:panel>
 
-    </h:form>
+		<div class="actionButtons">
+			<h:commandButton id="save"
+				value="Save" 
+				action="#{personHome.persist}"
+				rendered="#{!personHome.managed}" />
+				 
+			<h:commandButton id="update"
+				value="Update" 
+				action="#{personHome.update}"
+				rendered="#{personHome.managed}" />
+				 
+			<h:commandButton id="delete"
+				value="Delete" 
+				action="#{personHome.remove}" 
+				immediate="true"
+				rendered="#{personHome.managed}" />
+				 
+			<s:button id="done"
+				propagation="end" 
+				value="Done" 
+				view="/view/personList.xhtml" />
+		 </div>
+
+   </h:form>
 
 </ui:define>
 

@@ -11,7 +11,7 @@
 	<ui:define name="body">
 	
 		<rich:panel>
-			<f:facet name="header">personList</f:facet>
+			<f:facet name="header">Person List</f:facet>
 	
 			<div class="results">
 			<h:outputText value="No person exists"
@@ -19,7 +19,8 @@
 				 
 			<h:dataTable id="personList" 
 				var="person" 
-				value="#{personList.resultList}"
+				value="#{personList.resultList}" 
+				cellspacing="10"
 				rendered="#{not empty personList.resultList}">
 				
 				<h:column>
@@ -38,8 +39,13 @@
 				</h:column>
 
 				<h:column>
-					<f:facet name="header">Groups</f:facet>
-					<h:outputText value="#{person.interestsString}" />
+					<f:facet name="header">Email</f:facet>
+					<h:outputText value="#{person.email}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Interests</f:facet>
+					<h:outputText value="#{person.interestsAsString}" />
 				</h:column>
 
 			</h:dataTable>
