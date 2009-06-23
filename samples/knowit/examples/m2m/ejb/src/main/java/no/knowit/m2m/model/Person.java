@@ -1,21 +1,27 @@
 package no.knowit.m2m.model;
 
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.CascadeType.MERGE;
-import javax.persistence.Entity;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import no.knowit.entity.BaseEntity;
+
+import org.hibernate.validator.Email;
+import org.hibernate.validator.NotNull;
 
 /**
  * @author Leif Olsen.
@@ -28,16 +34,32 @@ public class Person extends BaseEntity<Long> {
   
   @Column(length=40, nullable=false)
   private String name;
+
+  @Email
+	@NotNull
+	private String email;
   
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { PERSIST, MERGE }) 
+	@ManyToMany(
+    fetch = FetchType.LAZY, 
+    cascade = { PERSIST, MERGE, REFRESH } 
+	) 
   @JoinTable(
-		name = "PERSON_INTEREST",
-		joinColumns = @JoinColumn(name = "PERSON_ID"),
-		inverseJoinColumns = @JoinColumn(name = "INTEREST_ID")
+		name = "Person_Interest",
+		joinColumns = @JoinColumn( name = "person_id" ),
+		inverseJoinColumns = @JoinColumn( name = "interest_id" )
   )
-	private List<Interest> interests = new ArrayList<Interest>();
-  
+	@OrderBy("name")
+  private List<Interest> interests = new ArrayList<Interest>();	
+
+	@ManyToMany(
+    mappedBy = "contactPersons", 
+    fetch = FetchType.LAZY, 
+    cascade = { PERSIST, MERGE, REFRESH } 
+	)
+	private List<Company> contactForCompanies;
+	
 	public Person () {
+		super();
   }
 
   public String getName() { 
@@ -48,6 +70,13 @@ public class Person extends BaseEntity<Long> {
   	this.name = name;
   }
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
   public List<Interest> getInterests() {
   	return interests;
   }
@@ -57,20 +86,39 @@ public class Person extends BaseEntity<Long> {
   }
 
 	@Transient
-	public String getInterestsString() {
-		StringBuilder sb = new StringBuilder();
-		for (Iterator<Interest> i = interests.iterator(); i.hasNext();) {
-			sb.append(i.next().getName());
-			if (i.hasNext()) sb.append(",");
+	public String getInterestsAsString() {
+		final StringBuilder sb = new StringBuilder();
+		for ( Iterator<Interest> i = interests.iterator(); i.hasNext(); ) {
+			sb.append( i.next().getName() );
+			if ( i.hasNext() ) 
+				sb.append( ", " );
+		}
+		return sb.toString();
+	}
+
+	public List<Company> getContactForCompanies() {
+	  return contactForCompanies;
+  }
+	
+	public void setContactForCompanies( List<Company> contactForCompanies ) {
+	  this.contactForCompanies = contactForCompanies;
+  }
+
+	@Transient
+	public String getContactForCompaniesAsString() {
+		final StringBuilder sb = new StringBuilder();
+		for ( Iterator<Company> i = contactForCompanies.iterator(); i.hasNext(); ) {
+			sb.append( i.next().getName() );
+			if (i.hasNext()) 
+				sb.append( ", " );
 		}
 		return sb.toString();
 	}
 
   @Override
+  @Transient
   public String toString() {
     final StringBuilder sb = new StringBuilder(super.toString());
-    sb.append("name='").append(name)
-    	.append("'}");
-    return sb.toString();    
-  }  
+    return sb.append("name='").append(name).append("'}").toString();
+  }
 }

@@ -10,11 +10,11 @@ import no.knowit.m2m.model.Interest;
 @Name("interestHome")
 public class InterestHome extends EntityHome<Interest> {
 	@RequestParameter
-	Long personId;
+	Long interestId;
 
 	@Override
 	public Object getId() {
-		return personId == null ? super.getId() : personId;
+		return interestId == null ? super.getId() : interestId;
 	}
 
 	@Override
