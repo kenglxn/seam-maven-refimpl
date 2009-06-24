@@ -2,8 +2,33 @@
 
 = Introduction =
 
-TBD!
+English version: TBD!
 
+For the Norwegian readers:<br/>
+Prosjektet viser bruken av følgende UI komponenter for å håndtere JPA
+@ManyToMany:
+
+{{{
+<h:selectManyCheckbox>
+<h:selectManyListbox>
+<rich:pickList>
+<rich:listShuttle>
+}}}
+
+Modell:
+
+{{{
+Language*<------*Person*<----->*Company
+Interest*<---------*
+}}}
+
+Person `*<->*` Company er en "bi-directional" assosiasjon hvor Person er
+den inverse siden av assosiasjonen. Det som er viktig å merke seg når
+man jobber med "bi-directionale" assosiasjoner er at man må huske på å
+oppdatere kolleksjonen på "owning" side (Company.java) før man
+persisterer den inverse siden  (PersonHome.java). Legg også merke til
+at et HashSet er benyttet på  "owning" side, noe som gjør at vi unngår
+redundans på assosiasjonen. 
 
 == Howto ==
 The steps required to get the project up and running:
