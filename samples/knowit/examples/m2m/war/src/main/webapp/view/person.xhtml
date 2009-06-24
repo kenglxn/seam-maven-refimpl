@@ -1,12 +1,13 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:s="http://jboss.com/products/seam/taglib"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:rich="http://richfaces.org/rich"
-    template="/layout/template.xhtml">
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" 
+	template="/layout/template.xhtml">
 
 <ui:define name="body">
 
@@ -35,6 +36,33 @@
 						label="#{interest.name}" />
 					<s:convertEntity />
 				</h:selectManyCheckbox>
+			</s:decorate>
+
+			<s:decorate template="/layout/edit.xhtml">
+				<ui:define name="label">Spoken Languages</ui:define>
+				<h:selectManyListbox value="#{personHome.instance.spokenLanguages}" >
+					<s:selectItems value="#{languageList.resultList}" 
+						var="language" 
+						label="#{language.code}, #{language.name}" />
+						
+					<s:convertEntity />
+				</h:selectManyListbox>
+			</s:decorate>
+
+			<div style="clear: both" />
+			<s:decorate template="/layout/edit.xhtml">
+				<ui:define name="label">Available Companies</ui:define>
+				
+				<div style="float:left; margin-top:-34px; margin-left:-10px;">
+				<p style="text-align:right; margin-right:80px;"><strong>Contact for</strong></p>
+				<rich:pickList id="contactFor"
+					value="#{personHome.contactForCompanies}">
+					<s:selectItems value="#{companyList.resultList}" 
+						var="pickListCompany" 
+						label="#{pickListCompany.name}" />
+					<s:convertEntity />
+				</rich:pickList>
+				</div>
 			</s:decorate>
 
 			<div style="clear: both" />

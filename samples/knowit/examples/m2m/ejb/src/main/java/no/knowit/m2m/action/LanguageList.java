@@ -5,19 +5,20 @@ import no.knowit.m2m.model.Interest;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityQuery;
 
-@Name("interestList")
-public class InterestList extends EntityQuery<Interest> {
+@Name("languageList")
+public class LanguageList extends EntityQuery<Interest> {
 	
 	@Override
   public String getEjbql()  { 
-		return "select interest from Interest interest";
+		return "select language from Language language";
 	}
-
+	
 	@Override
 	public String getOrder() {
 		if (super.getOrder() == null) {
-			setOrder("name asc");
+			setOrder("code asc");
 		}
 		return super.getOrder();
 	}
+
 }

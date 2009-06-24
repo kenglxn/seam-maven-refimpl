@@ -24,7 +24,7 @@ public class PersonList extends EntityQuery<Person> {
 	}
 
 	public void setResultList(List<Person> p) {
-		// Needed to shut up RichFaces ListShuttle 
+		// Needed to shut up RichFaces ListShuttle in company.xhtml
 		;
 	}
 }

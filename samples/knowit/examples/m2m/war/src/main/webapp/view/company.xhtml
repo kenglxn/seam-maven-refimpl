@@ -7,7 +7,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+	xmlns:a4j="http://richfaces.org/a4j" 
+	template="/layout/template.xhtml">
 
 	<ui:define name="body">
 
@@ -31,8 +32,9 @@
 					<rich:listShuttle sourceValue="#{personList.resultList}"
 						targetValue="#{companyHome.contactPersons}" 
 						var="person"
-						listHeight="300" 
-						listWidth="300"
+						listsHeight="200" 
+						sourceListWidth="200"
+						targetListWidth="200"
 						sourceCaptionLabel="Available Persons"
 						targetCaptionLabel="Contact Persons" 
 						orderControlsVisible="false"
@@ -50,20 +52,8 @@
 						
 					</rich:listShuttle>
 
-
-					<!--  
-					<rich:pickList id="contactPersons"
-						value="#{companyHome.instance.contactPersons}">
-						<s:selectItems value="#{personList.resultList}" 
-							var="pickListPerson" 
-							label="#{pickListPerson.name}"/>
-						<s:convertEntity />
-					</rich:pickList>
-					-->
-
 				</rich:panel>
 				<div style="clear: both" />
-
 
 			</rich:panel>
 
