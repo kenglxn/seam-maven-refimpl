@@ -45,12 +45,25 @@ public class PersonHome extends EntityHome<Person> {
 	*/
 
 	private void createOrUpdate() {
-		// Update the owning side
-		for(Company c : contactForCompanies) {
+		
+		// Update the owning side (Company)
+		// The owning association is maintained by a Hash collection
+		// which helps us avoid redundant entity instances.
+
+		// 1: Remove original
+		for( Company c : getInstance().getContactForCompanies() ) {
+			c.getContactPersons().remove( getInstance() );
+		}
+		
+		// 2: Update inverse side (Person)
+		getInstance().setContactForCompanies( contactForCompanies );
+		
+		// 3: Add changes  to owning side
+		for( Company c : contactForCompanies ) {
 			c.getContactPersons().add( getInstance() );
 		}
-		// Update inverse side
-		getInstance().setContactForCompanies( contactForCompanies );
+		
+		// Note: This is not among the most efficient algorithms on the planet :)
 	}
 	
 	@Override
