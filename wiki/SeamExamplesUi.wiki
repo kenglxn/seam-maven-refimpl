@@ -1,6 +1,6 @@
-#summary A Mavenized Version of JBossSeam/examples/ui.
+#summary A Mavenized Version of the jboss-seam-2.1.2/examples/ui project
 
-= A Mavenized Version of JBossSeam/examples/ui =
+= A Mavenized Version of the jboss-seam-2.1.2/examples/ui project =
 
 This is a Mavenized version of the jboss-seam-2.1.2/examples/ui project.
 
