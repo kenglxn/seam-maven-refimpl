@@ -5,7 +5,7 @@
 English version: TBD!
 
 For the Norwegian readers:<br/>
-Prosjektet viser bruken av følgende UI komponenter for å håndtere JPA ManyToMany
+Prosjektet viser bruken av følgende UI komponenter for å håndtere JPA `@ManyToMany`.
 
 {{{
 <h:selectManyCheckbox>
