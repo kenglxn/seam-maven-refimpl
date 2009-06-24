@@ -13,14 +13,14 @@
 	<url>http://code.google.com/p/seam-maven-refimpl/</url>
 	<packaging>pom</packaging>
 	
+  <!-- 
 	<modules>
-	  <!-- 
 			Needed to get pluginManagement to work in child modules.
 			Without this we'll have to repeat pluginManagement for each project's parent module.
-		-->
 		<module>jboss-seam/examples/ui</module>
 		<module>seaminaction/stages/projects-baseline/open18ee</module>
 	</modules>
+	-->
 	
 	<prerequisites>
 		<maven>2.0.9</maven>

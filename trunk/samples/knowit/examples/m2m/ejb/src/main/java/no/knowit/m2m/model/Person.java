@@ -52,11 +52,24 @@ public class Person extends BaseEntity<Long> {
   private List<Interest> interests = new ArrayList<Interest>();	
 
 	@ManyToMany(
+    fetch = FetchType.LAZY, 
+    cascade = { PERSIST, MERGE, REFRESH } 
+	) 
+  @JoinTable(
+		name = "Person_Language",
+		joinColumns = @JoinColumn( name = "person_id" ),
+		inverseJoinColumns = @JoinColumn( name = "language_id" )
+  )
+	@OrderBy("code")
+  private List<Language> spokenLanguages = new ArrayList<Language>();	
+
+	@ManyToMany(
     mappedBy = "contactPersons", 
     fetch = FetchType.LAZY, 
     cascade = { PERSIST, MERGE, REFRESH } 
 	)
-	private List<Company> contactForCompanies;
+	@OrderBy("name")
+	private List<Company> contactForCompanies = new ArrayList<Company>();	
 	
 	public Person () {
 		super();
@@ -96,14 +109,33 @@ public class Person extends BaseEntity<Long> {
 		return sb.toString();
 	}
 
-	public List<Company> getContactForCompanies() {
-	  return contactForCompanies;
+	public void setSpokenLanguages( List<Language> spokenLanguages ) {
+	  this.spokenLanguages = spokenLanguages;
+  }
+
+	public List<Language> getSpokenLanguages() {
+	  return spokenLanguages;
   }
 	
+	@Transient
+	public String getSpokenLanguagesAsString() {
+		final StringBuilder sb = new StringBuilder();
+		for ( Iterator<Language> i = spokenLanguages.iterator(); i.hasNext(); ) {
+			sb.append( i.next().getCode() );
+			if (i.hasNext()) 
+				sb.append( ", " );
+		}
+		return sb.toString();
+	}
+
 	public void setContactForCompanies( List<Company> contactForCompanies ) {
 	  this.contactForCompanies = contactForCompanies;
   }
 
+	public List<Company> getContactForCompanies() {
+	  return contactForCompanies;
+  }
+	
 	@Transient
 	public String getContactForCompaniesAsString() {
 		final StringBuilder sb = new StringBuilder();

@@ -48,6 +48,16 @@
 					<h:outputText value="#{person.interestsAsString}" />
 				</h:column>
 
+				<h:column>
+					<f:facet name="header">Contactperson for</f:facet>
+					<h:outputText value="#{person.contactForCompaniesAsString}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Spoken Languages</f:facet>
+					<h:outputText value="#{person.spokenLanguagesAsString}" />
+				</h:column>
+
 			</h:dataTable>
 			</div>
 	
