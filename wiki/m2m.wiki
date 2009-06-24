@@ -2,12 +2,13 @@
 
 = Introduction =
 
-Add your content here.
+TBD!
 
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+== Howto ==
+The steps required to get the project up and running:
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/knowit/examples/m2m Export project from svn]
+  * Copy m2m/config/profiles.xml to m2m/. Modify profiles.xml as needed.
+  * Execute *mvn install -Pexplode*
+  * You're ready to go!
