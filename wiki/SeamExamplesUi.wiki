@@ -1,13 +1,13 @@
-#summary One-sentence summary of this page.
+#summary A Mavenized Version of JBossSeam/examples/ui.
 
-= Introduction =
+= A Mavenized Version of JBossSeam/examples/ui =
 
-Add your content here.
+This is a Mavenized version of the jboss-seam-2.1.2/examples/ui project.
 
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+== Howto ==
+The steps required to get the project up and running:
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-baseline/open18ee Export project from svn]
+  * Copy ui/config/profiles.xml to ui/. Modify profiles.xml as needed.
+  * Execute *mvn install -Pexplode*
+  * You're ready to go!
