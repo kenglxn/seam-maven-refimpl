@@ -32,6 +32,6 @@ public class Interest extends BaseEntity<Long> {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder( super.toString() );
-		return sb.append( "name='" ).append( name ).append( "'}" ).toString();
+		return sb.append( "name:'" ).append( name ).append( "'}" ).toString();
 	}
 }

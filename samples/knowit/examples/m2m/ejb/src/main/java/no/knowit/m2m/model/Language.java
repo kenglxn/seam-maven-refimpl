@@ -44,9 +44,8 @@ public class Language extends BaseEntity<Long> {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder( super.toString() );
 		return sb
-			.append( "code='" ).append( code )
-			.append( "name='" ).append( name )
-			.append( "'}" )
+			.append( "code:'" ).append( code ).append( "', ")
+			.append( "name:'" ).append( name ).append( "'}" )
 			.toString();
 	}
 }

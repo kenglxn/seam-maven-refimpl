@@ -151,6 +151,6 @@ public class Person extends BaseEntity<Long> {
   @Transient
   public String toString() {
     final StringBuilder sb = new StringBuilder(super.toString());
-    return sb.append("name='").append(name).append("'}").toString();
+    return sb.append( "name:'" ).append( name ).append( "'}" ).toString();
   }
 }
