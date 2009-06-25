@@ -63,7 +63,8 @@ public class PersonHome extends EntityHome<Person> {
 			c.getContactPersons().add( getInstance() );
 		}
 		
-		// Note: This is not among the most efficient algorithms on the planet :)
+		// Note: This is not among the most efficient algorithms on the planet -
+		// better strategies can be found :)
 	}
 	
 	@Override

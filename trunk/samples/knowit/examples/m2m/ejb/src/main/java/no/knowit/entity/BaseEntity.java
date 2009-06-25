@@ -25,8 +25,6 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class BaseEntity<ID> implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-
 	@Id @GeneratedValue
   private ID id;
   
@@ -91,8 +89,8 @@ public abstract class BaseEntity<ID> implements Serializable {
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     return sb.append(getClass().getName())
-    	.append("{id='").append(id).append("', ")
-    	.append("uuid='").append(uuid).append("', ").toString();
+    	.append( "{id:'" ).append( id ).append( "', " )
+    	.append( "uuid:'" ).append( uuid ).append( "', " ).toString();
   }
   
 }
