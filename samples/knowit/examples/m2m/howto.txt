@@ -1,0 +1,2 @@
+see:
+http://code.google.com/p/seam-maven-refimpl/wiki/m2mExample
