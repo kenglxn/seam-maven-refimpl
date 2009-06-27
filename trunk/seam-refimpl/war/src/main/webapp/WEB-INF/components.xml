@@ -46,10 +46,6 @@
 		</core:bundle-names>
 	</core:resource-loader>
 
-  <web:hot-deploy-filter url-pattern="*.seam"/>
-
-  <transaction:ejb-transaction />
-  
   <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-9.3.1-p362 -->
 	<persistence:entity-manager-factory
 		name="entityManagerFactory"
@@ -69,16 +65,22 @@
 		entity-manager-factory="#{entityManagerFactory}"
 		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
 
+  <transaction:ejb-transaction />
   
+  <web:hot-deploy-filter url-pattern="*.seam"/>
+
   <drools:rule-base name="securityRules">
     <drools:rule-files>
        <value>/security.drl</value>
     </drools:rule-files>
   </drools:rule-base>
 
-  <security:rule-based-permission-resolver security-rules="#{securityRules}"/>
+  <security:rule-based-permission-resolver 
+  	security-rules="#{securityRules}"/>
 
-  <security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
+  <security:identity 
+	  authenticate-method="#{authenticator.authenticate}" 
+	  remember-me="true"/>
 
   <event type="org.jboss.seam.security.notLoggedIn">
     <action execute="#{redirect.captureCurrentView}"/>
