@@ -23,9 +23,9 @@
 
      
   <!-- 
-  	Note: debug="true" requires "jboss-seam-debug" in pom, SiA-4.5.2-p154
-  	Note: Seam managed transactions are enabled by default, but as a reminder: 
-  				transaction-management-enabled="true", SiA-9.4.1-p370
+	 	Note: debug="true" requires "jboss-seam-debug" in pom, SiA-4.5.2-p154
+	 	Note: Seam managed transactions are enabled by default, but as a reminder: 
+	 				transaction-management-enabled="true", SiA-9.4.1-p370
   -->
 	<core:init
 		debug="true"
