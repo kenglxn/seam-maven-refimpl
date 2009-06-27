@@ -69,6 +69,12 @@
   
   <web:hot-deploy-filter url-pattern="*.seam"/>
 
+	<!-- Force encoding of submitted and sent data -->
+	<web:character-encoding-filter 
+		encoding="UTF-8" 
+		override-client="true"  
+		url-pattern="*.seam" />
+					  
   <drools:rule-base name="securityRules">
     <drools:rule-files>
        <value>/security.drl</value>
