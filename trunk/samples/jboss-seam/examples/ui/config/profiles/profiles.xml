@@ -122,7 +122,7 @@
       <properties>
         <as>jboss423</as>
         <as.version>4.2</as.version>
-        <as.home>C:/ide/server/jboss-4.2.3.GA</as.home>
+        <as.home>C:/ide/server/jboss-4.2.3.GA-jdk6</as.home>
         <as.deploy>${as.home}/server/default/deploy</as.deploy>
         <as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
       </properties>
