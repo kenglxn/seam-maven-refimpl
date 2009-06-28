@@ -1810,7 +1810,7 @@
 				<!--
 				  see:   http://mojo.codehaus.org/maven-hibernate3/hibernate3-maven-plugin/
 				  see:   http://unmaintainable.wordpress.com/2008/04/12/hibernate3-schema-creation/
-					usage: mvn hibernate3:hbm2ddl	 
+					usage: mvn hibernate3:hbm2ddl	 (note: the project must be installed, mvn install)
 				-->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
