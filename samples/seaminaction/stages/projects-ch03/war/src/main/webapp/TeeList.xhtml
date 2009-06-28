@@ -13,7 +13,8 @@
 <ui:define name="body">
     
     <h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
-    
+
+<!--   
     <h:form id="teeSearch" styleClass="edit">
     
         <rich:simpleTogglePanel label="Tee search parameters" switchType="ajax">
@@ -26,7 +27,7 @@
         </div>
         
     </h:form>
-    
+-->
     <rich:panel>
         <f:facet name="header">Tee search results</f:facet>
     <div class="results" id="teeList">
@@ -88,7 +89,8 @@
 
     </div>
     </rich:panel>
-    
+		
+<!-- LOO-20090627
     <div class="tableControl">
       
         <s:link view="/TeeList.xhtml" 
@@ -123,7 +125,7 @@
         </s:link>
         
     </div>
-    
+-->
     <s:div styleClass="actionButtons" rendered="#{empty from}">
         <s:button view="/TeeEdit.xhtml"
                     id="create" 
