@@ -1,0 +1,56 @@
+Original code: 
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch03
+
+
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch03/chapter-developments.txt:
+Seam in Action: Chapter 04
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
+covered in the book.
+
+NOTE: Not all of the features will be migrated from chapter to chapter. If I
+feel that I feature was just for demonstration purposes and not all that useful
+for the application itself, I don't migrate it. Thus, don't be suprised if
+chapter 4 doesn't have all of the code added in chapter 3.
+
+open18-db:
+
+  - updated using top-down development with MEMBER and GOLFER tables
+  - if you want to make the changes to the schema before running the application, execute the following command from the example code root directory:
+
+java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-incremental-chaper04.sql
+
+open18:
+
+  - hibernate.hbm2ddl.auto changed from validate to update to support top-down development 
+  - added Member and Golfer entities; Golfer extends from Member using joined inheritence (see JPA documentation)
+  - added Gender enum
+  - added RegisterAction, which serves as action handler for register screen
+  - added register.xhtml page for signing up a new golfer into the system
+  - added PasswordBean for capturing password and PasswordManager for validating password entry and encrypting password
+  - added RegisterActionTest to serve as unit test for RegisterAction component
+  - added RegisterGolferIntegerationTest for doing in-container testing of registration logic; currently test must be run with Java 5
+  - added note on login page that the authentication is not hooked up to member registration 
+  - the seam-gen command was used twice in this chapter, with the following responses
+
+./seam new-entity
+
+entity class name: Golfer
+master page name: GolferList
+detail page name: Golfer
+
+./seam new-action
+
+Seam component name: registerAction
+local interface name: RegisterAction
+action method name: register
+page name: register
+
+
+-------------
+LOO-20090628: 
+-------------
+The wiki page explaing the steps needed to to get the mavenized project running is here:
+http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04
+
