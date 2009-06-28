@@ -1,15 +1,10 @@
-The wiki page explaing the steps needed to to get the project running is here:
-http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh03
-
-
 Original code: 
 http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch03
 
 
 http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch03/chapter-developments.txt:
-
 Seam in Action: Chapter 03
-----------------------------------------------------
+--------------------------
 This file details developments made to the application source code during this
 chapter. Please note that the enhancements described here my go beyond what is
 covered in the book.
@@ -25,12 +20,20 @@ open18:
   - one example page parameter converter is installed, to strip erronous characters from phone number
   - the reference to the stylesheet in the master template has been fixed to be fully qualified using <a:loadStyle src="/stylesheet/theme.css"/>
 
----------------------------------------------
-LOO-20090627: Modifications to original code:
----------------------------------------------
-*List.java
- - Removed getRestrictions() method in all *List.java files. Found that this method was the cause of
-   the following error:
+	
+
+-------------
+LOO-20090627: 
+-------------
+The wiki page explaing the steps needed to to get the mavenized project running is here:
+http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh03
+
+-------------------------------
+Modifications to original code:
+-------------------------------
+action/src/main/java/org/open18/action/*List.java
+- Removed getRestrictions() method in all *List.java files. Found that this method was the cause of
+  the following error:
 
 	10:50:31,734 ERROR [STDERR] 28.jun.2009 10:50:31 com.sun.facelets.FaceletViewHandler handleRenderException
 	SEVERE: Error Rendering View[/CourseList.xhtml]
@@ -148,9 +151,10 @@ LOO-20090627: Modifications to original code:
  - Added setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor 
    to bypass the problem.
 		
-TeeList.java, TeeList.xhtml
- - getFirstLastResult did not work. had to remove <div class="tableControl"> tag from 
-   TeeList.xhtml. Found that this tag was the cause of the following error:
+action/src/main/java/org/open18/action/TeeList.java, 
+war/src/webapp//TeeList.xhtml
+- getFirstLastResult did not work. had to remove <div class="tableControl"> tag from 
+  TeeList.xhtml. Don't know how to fix but found that this tag was the cause of the following error:
 	 
 	11:03:56,921 INFO  [STDOUT] Hibernate: 
 			select
@@ -307,4 +311,20 @@ TeeList.java, TeeList.xhtml
 		... 106 more
 	11:03:57,343 ERROR [lifecycle] JSF1054: (Phase ID: RENDER_RESPONSE 6, View ID: /TeeList.xhtml) Exception thrown during phase execution: javax.faces.event.PhaseEvent[source=com.sun.faces.lifecycle.LifecycleImpl@133b5db]
 
+	
+moved action/src/main/java/org/open18/converter/*.java to
+      war/src/main/java/org/open18/converter/
+			
+moved action/src/main/java/org/open18/validator/*.java to
+      war/src/main/java/org/open18/validator/
+
+- I moved the converter and validator java files to the war module to get rid of some errors during 
+  application startup. It still does not work as intended, the following error occurs if you fill in 
+  search parameters in the FacilityList.xhtml view:
+	
+	Exception during request processing:
+	Caused by javax.faces.FacesException with message: "Expression Error: Named Object: org.open18.StateValidator not found."
+
+  The error is probably connected to wrong deployment of the validator- and converter files. Have to
+  figure out where to place these files to get a correct deploy.
 	
