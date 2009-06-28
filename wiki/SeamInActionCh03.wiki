@@ -1,4 +1,4 @@
-#summary A Mavenized Version of Seam In Action, Chapter Two.
+#summary A Mavenized Version of Seam In Action, Chapter Three.
 
 = A Mavenized Version of Seam In Action, Chapter Three. =
 
