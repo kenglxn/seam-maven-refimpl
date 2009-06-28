@@ -181,7 +181,7 @@
         <env>dev</env>
 				<env.debug>false</env.debug>
         <env.unpack.modules>true</env.unpack.modules>
-        <env.hibernate.hbm2ddl.auto>update</env.hibernate.hbm2ddl.auto>
+        <env.hibernate.hbm2ddl.auto>validate</env.hibernate.hbm2ddl.auto>
         <env.hibernate.show_sql>true</env.hibernate.show_sql>
         <env.hibernate.format_sql>true</env.hibernate.format_sql>
         <jdk.debug>${env.debug}</jdk.debug>
