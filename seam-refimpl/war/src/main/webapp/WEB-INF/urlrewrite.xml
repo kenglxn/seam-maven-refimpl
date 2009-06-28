@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.1//EN" "http://tuckey.org/res/dtds/urlrewrite3.1.dtd">
+<urlrewrite>
+
+	<!-- http://code.google.com/p/urlrewritefilter/             -->
+	<!-- see: http://www.warski.org/blog/?p=7 for a short intro -->
+	
+	<rule>
+		<from>^/$</from>
+		<to>/home.seam</to>
+	</rule>
+	
+	<rule>
+	   <from>^/index.html$</from>
+	   <to>/home.seam</to>
+	</rule>
+	
+	<rule>
+		<from>^/([/a-zA-Z]*)$</from>
+		<to last="true">/$1.seam</to>
+	</rule>
+
+	<outbound-rule>
+		<from>^/${app.context}/home.seam$</from>
+		<to>/${app.context}/</to>
+	</outbound-rule>
+	
+	<outbound-rule>
+		<from>/([a-z]+)\.seam</from>
+		<to>/$1</to>
+	</outbound-rule>
+	
+</urlrewrite>
+

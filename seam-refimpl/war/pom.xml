@@ -86,6 +86,7 @@
 								<include>components.xml</include>
 								<include>jboss-web.xml</include>
 								<include>web.xml</include>
+								<include>urlrewrite.xml</include>
 							</includes>
 						</webResource>
 					</webResources>
@@ -205,6 +206,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<scope>provided</scope>
+		</dependency>
+
+		<!-- url rewrite filter -->
+		<dependency>
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewritefilter</artifactId>
 		</dependency>
 
 	</dependencies>

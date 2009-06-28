@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <web-app version="2.5"
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   
 	<display-name>${app.display.name} Web</display-name>
 	
+	<!--
+		Uncomment if urlrewritefilter is not applied. Also add index.html to context root!
+		  
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
@@ -14,6 +17,7 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+	-->
 	
   <!-- RichFaces  -->
 	<context-param>
@@ -22,6 +26,39 @@
 	</context-param>
 
 	<!-- JSF -->
+	<context-param>
+		<description>
+			JSF 1.2 detects the ViewHandler/StateManager version from the
+			faces-config.xml DTD/XML schema name. The faces-config.xml files in
+			the RichFaces JARs use the JSF 1.1 DTDs, causing JSF to use 1.1
+			behavior. Setting this flag to false ignores the version of the DTD
+			used in these files, thus ensuring that JSF uses 1.2 behavior.
+			
+			One of the critical improvements in JSF 1.2 is that it throws a
+			ViewExpiredException on a session timeout.
+			
+			See http://jira.jboss.com/jira/browse/RF-2294 and
+			http://lists.jboss.org/pipermail/seam-dev/2008-February/000024.html.
+		</description>
+		<param-name>com.sun.faces.disableVersionTracking</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<!-- Facelets development mode (disable in production) --> 
+	<context-param>
+		<param-name>facelets.DEVELOPMENT</param-name>
+		<param-value>${env.debug}</param-value>
+	</context-param>
+
+	<!-- 
+		Strip html comments from the page before it is rendred - meaning that you will 
+		no longer be bugged down by EL evaluating expressions inside a comment tag  
+	-->
+	<context-param>
+		<param-name>facelets.SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	 
 	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
@@ -38,21 +75,6 @@
 		<url-pattern>*.seam</url-pattern>
 	</servlet-mapping>
 
-	<!-- Facelets development mode (disable in production) --> 
-	<context-param>
-		<param-name>facelets.DEVELOPMENT</param-name>
-		<param-value>${env.debug}</param-value>
-	</context-param>
-
-	<!-- 
-		Strip html comments from the page before it is rendred - meaning that you will 
-		no longer be bugged down by EL evaluating expressions inside a comment tag  
-	-->
-	<context-param>
-		<param-name>facelets.SKIP_COMMENTS</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	 
   <!-- Seam -->
 	<listener>
 		<listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
@@ -77,6 +99,27 @@
 		<servlet-name>Seam Resource Servlet</servlet-name>
 		<url-pattern>/seam/resource/*</url-pattern>
 	</servlet-mapping>
+
+	<!-- URL Rewrite Filter - declare after seam filter -->
+	<filter>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+		<!--
+		<init-param>
+			<param-name>logLevel</param-name>
+			<param-value>DEBUG</param-value>
+		</init-param>
+		<init-param>
+			<param-name>statusPath</param-name>
+			<param-value>/status</param-value>
+		</init-param>
+		-->
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<!-- -->
 	<security-constraint>
