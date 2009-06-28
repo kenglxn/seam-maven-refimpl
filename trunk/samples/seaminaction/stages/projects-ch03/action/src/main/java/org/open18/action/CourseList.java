@@ -52,6 +52,6 @@ public class CourseList extends EntityQuery {
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
 	}
-*/
+ */
 
 }
