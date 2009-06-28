@@ -6,7 +6,9 @@ Original code:
 http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch03
 
 
-Seam in Action: Chapter 03, chapter-developments.txt
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch03/chapter-developments.txt:
+
+Seam in Action: Chapter 03
 ----------------------------------------------------
 This file details developments made to the application source code during this
 chapter. Please note that the enhancements described here my go beyond what is
