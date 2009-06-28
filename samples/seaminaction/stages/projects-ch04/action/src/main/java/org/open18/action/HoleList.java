@@ -13,6 +13,10 @@ public class HoleList extends EntityQuery {
 
 	private Hole hole = new Hole();
 
+	public HoleList() {
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+	}
+	
 	@Override
 	public String getEjbql() {
 		return "select hole from Hole hole";
@@ -27,9 +31,14 @@ public class HoleList extends EntityQuery {
 		return hole;
 	}
 
+/*
+ * LOO-20090627, NOTE: This does not work. 
+ * Must use setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor
+ *
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
 	}
+ */
 
 }

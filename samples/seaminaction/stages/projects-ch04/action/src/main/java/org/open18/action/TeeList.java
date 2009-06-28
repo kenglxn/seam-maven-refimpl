@@ -16,6 +16,7 @@ public class TeeList extends EntityQuery {
 	public TeeList() {
 		tee = new Tee();
 		tee.setId(new TeeId());
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 	}
 
 	@Override
@@ -32,9 +33,14 @@ public class TeeList extends EntityQuery {
 		return tee;
 	}
 
+/*
+ * LOO-20090627, NOTE: This does not work. 
+ * Must use setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor
+ *
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
 	}
+ */
 
 }
