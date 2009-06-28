@@ -1902,7 +1902,7 @@
 						<componentProperties>
 							<persistenceunit>${app.persistence.unit.name}</persistenceunit>
 							<outputfilename>schema.ddl</outputfilename>
-							<drop>false</drop>
+							<drop>true</drop>
 							<create>true</create>
 							<export>false</export>
 							<format>true</format>
