@@ -30,6 +30,10 @@ public class FacilityList extends EntityQuery {
 
 	private Facility facility = new Facility();
 
+	public FacilityList() {
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+	}
+	
 	@Override
 	public String getEjbql() {
 		return "select facility from Facility facility";
@@ -52,11 +56,16 @@ public class FacilityList extends EntityQuery {
 		return facility;
 	}
 
+/*
+ * LOO-20090627, NOTE: This does not work. 
+ * Must use setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor
+ *
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
 	}
-
+ */
+ 
 	public void preloadFacilities() {
 		log.debug("begin preloading facilities (current phase: " + FacesLifecycle.getPhaseId() + ")");
 		getResultList();

@@ -18,6 +18,10 @@ public class CourseList extends EntityQuery {
 
 	private Course course = new Course();
 
+	public CourseList() {
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+	}
+	
 	@Override
 	public String getEjbql() {
 		return "select course from Course course";
@@ -40,9 +44,14 @@ public class CourseList extends EntityQuery {
 		return course;
 	}
 
+/*
+ * LOO-20090627, NOTE: This does not work. 
+ * Must use setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor
+ *
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
 	}
+ */
 
 }

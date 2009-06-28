@@ -51,6 +51,291 @@ page name: register
 -------------
 LOO-20090628: 
 -------------
-The wiki page explaing the steps needed to to get the mavenized project running is here:
+The wiki page explaing the steps needed to to get the mavenized project up and running is here:
 http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04
 
+
+-------------------------------
+Modifications to original code:
+-------------------------------
+action/src/main/java/org/open18/action/*List.java
+- Removed getRestrictions() method in all *List.java files. Found that this method was the cause of
+  the following error:
+
+	10:50:31,734 ERROR [STDERR] 28.jun.2009 10:50:31 com.sun.facelets.FaceletViewHandler handleRenderException
+	SEVERE: Error Rendering View[/CourseList.xhtml]
+	javax.faces.FacesException: javax.el.ELException: /CourseList.xhtml @60,59 rendered="#{empty courseList.resultList}": Error reading 'resultList' on type org.open18.action.CourseList_$$_javassist_seam_4
+		at javax.faces.component.UIComponentBase.isRendered(UIComponentBase.java:393)
+		at org.ajax4jsf.renderkit.RendererBase.renderChild(RendererBase.java:271)
+		at org.ajax4jsf.renderkit.RendererBase.renderChildren(RendererBase.java:258)
+		at org.richfaces.renderkit.html.PanelRenderer.doEncodeChildren(PanelRenderer.java:220)
+		at org.richfaces.renderkit.html.PanelRenderer.doEncodeChildren(PanelRenderer.java:215)
+		at org.ajax4jsf.renderkit.RendererBase.encodeChildren(RendererBase.java:120)
+		at javax.faces.component.UIComponentBase.encodeChildren(UIComponentBase.java:837)
+		at javax.faces.component.UIComponent.encodeAll(UIComponent.java:936)
+		at javax.faces.component.UIComponent.encodeAll(UIComponent.java:942)
+		at com.sun.facelets.FaceletViewHandler.renderView(FaceletViewHandler.java:592)
+		at org.ajax4jsf.application.ViewHandlerWrapper.renderView(ViewHandlerWrapper.java:100)
+		at org.ajax4jsf.application.AjaxViewHandler.renderView(AjaxViewHandler.java:176)
+		at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:109)
+		at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+		at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:139)
+		at javax.faces.webapp.FacesServlet.service(FacesServlet.java:266)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+		at org.tuckey.web.filters.urlrewrite.RuleChain.handleRewrite(RuleChain.java:164)
+		at org.tuckey.web.filters.urlrewrite.RuleChain.doRules(RuleChain.java:141)
+		at org.tuckey.web.filters.urlrewrite.UrlRewriter.processRequest(UrlRewriter.java:90)
+		at org.tuckey.web.filters.urlrewrite.UrlRewriteFilter.doFilter(UrlRewriteFilter.java:417)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:83)
+		at org.jboss.seam.web.IdentityFilter.doFilter(IdentityFilter.java:40)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.MultipartFilter.doFilter(MultipartFilter.java:90)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.ExceptionFilter.doFilter(ExceptionFilter.java:64)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.RedirectFilter.doFilter(RedirectFilter.java:45)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.CharacterEncodingFilter.doFilter(CharacterEncodingFilter.java:42)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.ajax4jsf.webapp.BaseXMLFilter.doXmlFilter(BaseXMLFilter.java:178)
+		at org.ajax4jsf.webapp.BaseFilter.handleRequest(BaseFilter.java:290)
+		at org.ajax4jsf.webapp.BaseFilter.processUploadsAndHandleRequest(BaseFilter.java:368)
+		at org.ajax4jsf.webapp.BaseFilter.doFilter(BaseFilter.java:495)
+		at org.jboss.seam.web.Ajax4jsfFilter.doFilter(Ajax4jsfFilter.java:56)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.LoggingFilter.doFilter(LoggingFilter.java:60)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.HotDeployFilter.doFilter(HotDeployFilter.java:53)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.servlet.SeamFilter.doFilter(SeamFilter.java:158)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+		at org.jboss.web.tomcat.filters.ReplyHeaderFilter.doFilter(ReplyHeaderFilter.java:96)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+		at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:230)
+		at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:175)
+		at org.jboss.web.tomcat.security.SecurityAssociationValve.invoke(SecurityAssociationValve.java:182)
+		at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:432)
+		at org.jboss.web.tomcat.security.JaccContextValve.invoke(JaccContextValve.java:84)
+		at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+		at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+		at org.jboss.web.tomcat.service.jca.CachedConnectionValve.invoke(CachedConnectionValve.java:157)
+		at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+		at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:262)
+		at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:844)
+		at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:583)
+		at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:446)
+		at java.lang.Thread.run(Thread.java:619)
+	Caused by: javax.el.ELException: /CourseList.xhtml @60,59 rendered="#{empty courseList.resultList}": Error reading 'resultList' on type org.open18.action.CourseList_$$_javassist_seam_4
+		at com.sun.facelets.el.TagValueExpression.getValue(TagValueExpression.java:76)
+		at javax.faces.component.UIComponentBase.isRendered(UIComponentBase.java:390)
+		... 64 more
+	Caused by: java.lang.ClassCastException: java.lang.String cannot be cast to org.jboss.seam.core.Expressions$ValueExpression
+		at org.jboss.seam.framework.Query.parseEjbql(Query.java:225)
+		at org.jboss.seam.framework.EntityQuery.createQuery(EntityQuery.java:175)
+		at org.jboss.seam.framework.EntityQuery.initResultList(EntityQuery.java:79)
+		at org.jboss.seam.framework.EntityQuery.getResultList(EntityQuery.java:71)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+		at java.lang.reflect.Method.invoke(Method.java:597)
+		at org.jboss.seam.util.Reflections.invoke(Reflections.java:22)
+		at org.jboss.seam.intercept.RootInvocationContext.proceed(RootInvocationContext.java:32)
+		at org.jboss.seam.intercept.SeamInvocationContext.proceed(SeamInvocationContext.java:56)
+		at org.jboss.seam.transaction.RollbackInterceptor.aroundInvoke(RollbackInterceptor.java:28)
+		at org.jboss.seam.intercept.SeamInvocationContext.proceed(SeamInvocationContext.java:68)
+		at org.jboss.seam.transaction.TransactionInterceptor$1.work(TransactionInterceptor.java:97)
+		at org.jboss.seam.util.Work.workInTransaction(Work.java:47)
+		at org.jboss.seam.transaction.TransactionInterceptor.aroundInvoke(TransactionInterceptor.java:91)
+		at org.jboss.seam.intercept.SeamInvocationContext.proceed(SeamInvocationContext.java:68)
+		at org.jboss.seam.core.MethodContextInterceptor.aroundInvoke(MethodContextInterceptor.java:44)
+		at org.jboss.seam.intercept.SeamInvocationContext.proceed(SeamInvocationContext.java:68)
+		at org.jboss.seam.intercept.RootInterceptor.invoke(RootInterceptor.java:107)
+		at org.jboss.seam.intercept.JavaBeanInterceptor.interceptInvocation(JavaBeanInterceptor.java:185)
+		at org.jboss.seam.intercept.JavaBeanInterceptor.invoke(JavaBeanInterceptor.java:103)
+		at org.open18.action.CourseList_$$_javassist_seam_4.getResultList(CourseList_$$_javassist_seam_4.java)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native 
+	10:50:31,750 ERROR [STDERR] Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+		at java.lang.reflect.Method.invoke(Method.java:597)
+		at javax.el.BeanELResolver.getValue(BeanELResolver.java:62)
+		at javax.el.CompositeELResolver.getValue(CompositeELResolver.java:53)
+		at com.sun.faces.el.FacesCompositeELResolver.getValue(FacesCompositeELResolver.java:72)
+		at org.jboss.el.parser.AstPropertySuffix.getValue(AstPropertySuffix.java:53)
+		at org.jboss.el.parser.AstValue.getValue(AstValue.java:67)
+		at org.jboss.el.parser.AstEmpty.getValue(AstEmpty.java:29)
+		at org.jboss.el.ValueExpressionImpl.getValue(ValueExpressionImpl.java:186)
+		at com.sun.facelets.el.TagValueExpression.getValue(TagValueExpression.java:71)
+		... 65 more
+	10:50:31,750 ERROR [lifecycle] JSF1054: (Phase ID: RENDER_RESPONSE 6, View ID: /CourseList.xhtml) Exception thrown during phase execution: javax.faces.event.PhaseEvent[source=com.sun.faces.lifecycle.LifecycleImpl@137d0cf]
+	 
+	 
+ - Added setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor 
+   to bypass the problem.
+
+	 
+	 
+action/src/main/java/org/open18/action/TeeList.java, 
+war/src/webapp//TeeList.xhtml
+- getFirstLastResult did not work. had to remove <div class="tableControl"> tag from 
+  TeeList.xhtml. Don't know how to fix but found that this tag was the cause of the following error:
+	 
+	11:03:56,921 INFO  [STDOUT] Hibernate: 
+			select
+					tee0_.TEE_SET_ID as TEE1_3_,
+					tee0_.HOLE_ID as HOLE2_3_,
+					tee0_.DISTANCE as DISTANCE3_ 
+			from
+					TEE tee0_ limit ?
+	11:03:57,328 INFO  [STDOUT] Hibernate: 
+			select
+					count((tee0_.TEE_SET_ID,
+					tee0_.HOLE_ID)) as col_0_0_ 
+			from
+					TEE tee0_
+	11:03:57,328 WARN  [JDBCExceptionReporter] SQL Error: 1241, SQLState: 21000
+	11:03:57,328 ERROR [JDBCExceptionReporter] Operand should contain 1 column(s)
+	11:03:57,343 ERROR [STDERR] 28.jun.2009 11:03:57 com.sun.facelets.FaceletViewHandler handleRenderException
+	SEVERE: Error Rendering View[/TeeList.xhtml]
+	javax.faces.FacesException: javax.el.ELException: /TeeList.xhtml @125,57 value="#{teeList.lastFirstResult}": Error reading 'lastFirstResult' on type org.open18.action.TeeList_$$_javassist_seam_7
+		at javax.faces.component.UIParameter.getValue(UIParameter.java:170)
+		at org.jboss.seam.ui.util.ViewUrlBuilder.addParameter(ViewUrlBuilder.java:43)
+		at org.jboss.seam.ui.component.UISeamCommandBase.getUrl(UISeamCommandBase.java:56)
+		at org.jboss.seam.ui.renderkit.LinkRendererBase.doEncodeBegin(LinkRendererBase.java:26)
+		at org.jboss.seam.ui.util.cdk.RendererBase.encodeBegin(RendererBase.java:79)
+		at javax.faces.component.UIComponentBase.encodeBegin(UIComponentBase.java:813)
+		at javax.faces.component.UIComponent.encodeAll(UIComponent.java:934)
+		at javax.faces.component.UIComponent.encodeAll(UIComponent.java:942)
+		at com.sun.facelets.FaceletViewHandler.renderView(FaceletViewHandler.java:592)
+		at org.ajax4jsf.application.ViewHandlerWrapper.renderView(ViewHandlerWrapper.java:100)
+		at org.ajax4jsf.application.AjaxViewHandler.renderView(AjaxViewHandler.java:176)
+		at com.sun.faces.lifecycle.RenderResponsePhase.execute(RenderResponsePhase.java:109)
+		at com.sun.faces.lifecycle.Phase.doPhase(Phase.java:100)
+		at com.sun.faces.lifecycle.LifecycleImpl.render(LifecycleImpl.java:139)
+		at javax.faces.webapp.FacesServlet.service(FacesServlet.java:266)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+		at org.tuckey.web.filters.urlrewrite.RuleChain.handleRewrite(RuleChain.java:164)
+		at org.tuckey.web.filters.urlrewrite.RuleChain.doRules(RuleChain.java:141)
+		at org.tuckey.web.filters.urlrewrite.UrlRewriter.processRequest(UrlRewriter.java:90)
+		at org.tuckey.web.filters.urlrewrite.UrlRewriteFilter.doFilter(UrlRewriteFilter.java:417)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:83)
+		at org.jboss.seam.web.IdentityFilter.doFilter(IdentityFilter.java:40)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.MultipartFilter.doFilter(MultipartFilter.java:90)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.ExceptionFilter.doFilter(ExceptionFilter.java:64)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.RedirectFilter.doFilter(RedirectFilter.java:45)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.CharacterEncodingFilter.doFilter(CharacterEncodingFilter.java:42)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.ajax4jsf.webapp.BaseXMLFilter.doXmlFilter(BaseXMLFilter.java:178)
+		at org.ajax4jsf.webapp.BaseFilter.handleRequest(BaseFilter.java:290)
+		at org.ajax4jsf.webapp.BaseFilter.processUploadsAndHandleRequest(BaseFilter.java:368)
+		at org.ajax4jsf.webapp.BaseFilter.doFilter(BaseFilter.java:495)
+		at org.jboss.seam.web.Ajax4jsfFilter.doFilter(Ajax4jsfFilter.java:56)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.LoggingFilter.doFilter(LoggingFilter.java:60)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.web.HotDeployFilter.doFilter(HotDeployFilter.java:53)
+		at org.jboss.seam.servlet.SeamFilter$FilterChainImpl.doFilter(SeamFilter.java:69)
+		at org.jboss.seam.servlet.SeamFilter.doFilter(SeamFilter.java:158)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+		at org.jboss.web.tomcat.filters.ReplyHeaderFilter.doFilter(ReplyHeaderFilter.java:96)
+		at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+		at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+		at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:230)
+		at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:175)
+		at org.jboss.web.tomcat.security.SecurityAssociationValve.invoke(SecurityAssociationValve.java:182)
+		at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:432)
+		at org.jboss.web.tomcat.security.JaccContextValve.invoke(JaccContextValve.java:84)
+		at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+		at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+		at org.jboss.web.tomcat.service.jca.CachedConnectionValve.invoke(CachedConnectionValve.java:157)
+		at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+		at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:262)
+		at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:844)
+		at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:583)
+		at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:446)
+		at java.lang.Thread.run(Thread.java:619)
+	Caused by: javax.el.ELException: /TeeList.xhtml @125,57 value="#{teeList.lastFirstResult}": Error reading 'lastFirstResult' on type org.open18.action.TeeList_$$_javassist_seam_7
+		at com.sun.facelets.el.TagValueExpression.getValue(TagValueExpression.java:76)
+		at javax.faces.component.UIParameter.getValue(UIParameter.java:167)
+		... 63 more
+	Caused by: javax.persistence.PersistenceException: org.hibernate.exception.DataException: could not execute query
+		at org.hibernate.ejb.AbstractEntityManagerImpl.throwPersistenceException(AbstractEntityManagerImpl.java:629)
+		at org.hibernate.ejb.QueryImpl.getSingleResult(QueryImpl.java:99)
+		at org.jboss.seam.framework.EntityQuery.initResultCount(EntityQuery.java:135)
+		at org.jboss.seam.framework.EntityQuery.getResultCount(EntityQuery.java:126)
+		at org.jboss.seam.framework.Query.getPageCount(Query.java:206)
+		at org.jboss.seam.framework.Query.getLastFirstResult(Query.java:167)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+		at java.lang.reflect.Method.invoke(Method.java:597)
+		at org.jboss.seam.util.Reflections.invoke(Reflections.java:22)
+		at org.jboss.seam.intercept.RootInvocationContext.proceed(RootInvocationContext.java:32)
+		at org.jboss.seam.intercept.SeamInvocationContext.proceed(SeamInvocationContext.java:56)
+		at org.jboss.seam.transaction.RollbackInterceptor.aroundInvoke(RollbackInterceptor.java:28)
+		at org.jboss.seam.intercept.SeamInvocationContext.proceed(SeamInvocationContext.java:68)
+		at org.jboss.seam.transaction.TransactionInterceptor$1.work(TransactionInterceptor.java:97)
+		at org.jboss.seam.util.Work.workInTransaction(Work.java:47)
+		at org.jboss.seam.transaction.TransactionInterceptor.aroundInvoke(TransactionInterceptor.java:91)
+		at org.jboss.seam.intercept.SeamInvocationContext.proceed(SeamInvocationContext.java:68)
+		at org.jboss.seam.core.MethodContextInterceptor.aroundInvoke(MethodContextInterceptor.java:44)
+		at org.jboss.seam.intercept.SeamInvocationContext.proceed(SeamInvocationContext.java:68)
+		at org.jboss.seam.intercept.RootInterceptor.invoke(RootInterceptor.java:107)
+		at org.jboss.seam.intercept.JavaBeanInterceptor.interceptInvocation(JavaBeanInterceptor.java:185)
+		at org.jboss.seam.intercept.JavaBeanInterceptor.invoke(JavaBeanInterceptor.java:103)
+		at org.open18.action.TeeList_$$_javassist_seam_7.getLastFirstResult(TeeList_$$_javassist_seam_7.java)
+		at s
+	11:03:57,343 ERROR [STDERR] un.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+		at java.lang.reflect.Method.invoke(Method.java:597)
+		at javax.el.BeanELResolver.getValue(BeanELResolver.java:62)
+		at javax.el.CompositeELResolver.getValue(CompositeELResolver.java:53)
+		at com.sun.faces.el.FacesCompositeELResolver.getValue(FacesCompositeELResolver.java:72)
+		at org.jboss.el.parser.AstPropertySuffix.getValue(AstPropertySuffix.java:53)
+		at org.jboss.el.parser.AstValue.getValue(AstValue.java:67)
+		at org.jboss.el.ValueExpressionImpl.getValue(ValueExpressionImpl.java:186)
+		at com.sun.facelets.el.TagValueExpression.getValue(TagValueExpression.java:71)
+		... 64 more
+	Caused by: org.hibernate.exception.DataException: could not execute query
+		at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:77)
+		at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:43)
+		at org.hibernate.loader.Loader.doList(Loader.java:2223)
+		at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2104)
+		at org.hibernate.loader.Loader.list(Loader.java:2099)
+		at org.hibernate.loader.hql.QueryLoader.list(QueryLoader.java:378)
+		at org.hibernate.hql.ast.QueryTranslatorImpl.list(QueryTranslatorImpl.java:338)
+		at org.hibernate.engine.query.HQLQueryPlan.performList(HQLQueryPlan.java:172)
+		at org.hibernate.impl.SessionImpl.list(SessionImpl.java:1121)
+		at org.hibernate.impl.QueryImpl.list(QueryImpl.java:79)
+		at org.hibernate.ejb.QueryImpl.getSingleResult(QueryImpl.java:80)
+		... 98 more
+	Caused by: java.sql.SQLException: Operand should contain 1 column(s)
+		at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:946)
+		at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:2985)
+		at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:1631)
+		at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:1723)
+		at com.mysql.jdbc.Connection.execSQL(Connection.java:3283)
+		at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1332)
+		at com.mysql.jdbc.PreparedStatement.executeQuery(PreparedStatement.java:1467)
+		at org.jboss.resource.adapter.jdbc.WrappedPreparedStatement.executeQuery(WrappedPreparedStatement.java:342)
+		at org.hibernate.jdbc.AbstractBatcher.getResultSet(AbstractBatcher.java:186)
+		at org.hibernate.loader.Loader.getResultSet(Loader.java:1787)
+		at org.hibernate.loader.Loader.doQuery(Loader.java:674)
+		at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:236)
+		at org.hibernate.loader.Loader.doList(Loader.java:2220)
+		... 106 more
+	11:03:57,343 ERROR [lifecycle] JSF1054: (Phase ID: RENDER_RESPONSE 6, View ID: /TeeList.xhtml) Exception thrown during phase execution: javax.faces.event.PhaseEvent[source=com.sun.faces.lifecycle.LifecycleImpl@133b5db]
