@@ -50,6 +50,11 @@
 		<param-value>${env.debug}</param-value>
 	</context-param>
 
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+
 	<!-- 
 		Strip html comments from the page before it is rendred - meaning that you will 
 		no longer be bugged down by EL evaluating expressions inside a comment tag  
@@ -59,22 +64,6 @@
 		<param-value>true</param-value>
 	</context-param>
 	 
-	<context-param>
-		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-		<param-value>.xhtml</param-value>
-	</context-param>
-
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.seam</url-pattern>
-	</servlet-mapping>
-
   <!-- Seam -->
 	<listener>
 		<listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
@@ -121,6 +110,22 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!-- Faces Servlet --> 
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.seam</url-pattern>
+	</servlet-mapping>
+
+	<session-config>
+		<session-timeout>10</session-timeout> 
+	</session-config>
+  
 	<!-- -->
 	<security-constraint>
 		<display-name>Restrict raw XHTML Documents</display-name>
