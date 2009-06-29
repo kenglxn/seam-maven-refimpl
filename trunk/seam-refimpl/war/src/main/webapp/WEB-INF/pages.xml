@@ -6,7 +6,33 @@
 	login-view-id="/login.xhtml
 ">
 
+	<page view-id="/home.xhtml">
+		<rewrite pattern="/" />
+
+		<!-- This is not optimal, how do we implement so all these urls is rewritten to "/" ? -->
+		<rewrite pattern="/home" />
+		<rewrite pattern="/index" />
+		<rewrite pattern="/index.html" />
+		
+		<!--
+		<rewrite pattern="/index.htm" />
+		<rewrite pattern="/index.jsf" />
+		<rewrite pattern="/index.jsp" />
+		<rewrite pattern="/index.jspx" />
+		<rewrite pattern="/index.asp" />
+		<rewrite pattern="/index.aspx" />
+		-->
+	</page>
+	
+	<page view-id="/login.seam">
+		<rewrite pattern="/login"/> 
+	</page>
+
 	<page view-id="*">
+		<navigation from-action="#{identity.logout}">
+			<redirect view-id="/home.xhtml"/>
+		</navigation>
+   
 		<navigation>
 			<rule if-outcome="home">
 				<redirect view-id="/home.xhtml" />
