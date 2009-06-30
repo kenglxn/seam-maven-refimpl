@@ -7,21 +7,7 @@
 ">
 
 	<page view-id="/home.xhtml">
-		<rewrite pattern="/" />
-
-		<!-- This is not optimal, how do we implement so all these urls is rewritten to "/" ? -->
-		<rewrite pattern="/home" />
-		<rewrite pattern="/index" />
-		<rewrite pattern="/index.html" />
-		
-		<!--
-		<rewrite pattern="/index.htm" />
-		<rewrite pattern="/index.jsf" />
-		<rewrite pattern="/index.jsp" />
-		<rewrite pattern="/index.jspx" />
-		<rewrite pattern="/index.asp" />
-		<rewrite pattern="/index.aspx" />
-		-->
+		<rewrite pattern="/{.*}" />
 	</page>
 	
 	<page view-id="/login.seam">
