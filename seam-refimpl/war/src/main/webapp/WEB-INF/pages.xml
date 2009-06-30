@@ -7,9 +7,7 @@
 ">
 
 	<page view-id="/home.xhtml">
-		<rewrite pattern="/" />
-		<rewrite pattern="/index" />
-		<rewrite pattern="/index.{*}" />
+		<rewrite pattern="/index{.*}" />
 	</page>
 	
 	<page view-id="/login.seam">
