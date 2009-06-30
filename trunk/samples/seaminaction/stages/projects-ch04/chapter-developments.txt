@@ -1,8 +1,8 @@
 Original code: 
-http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch03
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch04
 
 
-http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch03/chapter-developments.txt:
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch04/chapter-developments.txt:
 Seam in Action: Chapter 04
 --------------------------
 This file details developments made to the application source code during this
