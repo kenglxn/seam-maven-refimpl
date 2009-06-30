@@ -7,6 +7,7 @@
 ">
 
 	<page view-id="/home.xhtml">
+		<rewrite pattern="/" />
 		<rewrite pattern="/index{.*}" />
 	</page>
 	
