@@ -38,7 +38,7 @@
 			This project is built using the seam-refimpl Maven template. Original source code: 
 			http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch06
 		</app.description>
-		<app.database.name>open18ch05_db</app.database.name>
+		<app.database.name>open18ch04_db</app.database.name>
 
 		<app.jndi.name>${app.context}Datasource</app.jndi.name>
 		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
