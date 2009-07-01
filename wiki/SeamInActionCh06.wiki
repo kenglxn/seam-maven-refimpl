@@ -9,7 +9,7 @@ You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 Here are the steps required to get the project up and running.
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch06 Export project from svn]
-  * In MySql
+  * In MYSQL
     # Create database "*open18ch05_db*"
     # Execute ./projects-ch06/config/schema/open18-schema-ch04.sql
     # Execute ./projects-ch06/config/schema/open18-seed-data-mysql-ch04.sql
