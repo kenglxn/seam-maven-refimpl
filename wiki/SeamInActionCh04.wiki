@@ -11,8 +11,8 @@ Here are the steps required to get the project up and running.
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04 Export project from svn]
   * In MYSQL
     # Create database "*open18ch04_db*"
-    # Execute ./projects-ch04/config/schema/open18-schema-ch04.sql
-    # Execute ./projects-ch04/config/schema/open18-seed-data-mysql-ch04.sql
+    # Execute ./samples/seaminaction/etc/schema/open18-schema-ch04.sql
+    # Execute ./samples/seaminaction/etcschema/open18-seed-data-mysql-ch04.sql
   * Copy ./projects-ch04/config/profiles.xml to the project root folder, ./projects-ch04. Modify profiles.xml as explained in the getting started tutorial.
   * Execute *mvn install -Pexplode*
   * You're ready to go!
