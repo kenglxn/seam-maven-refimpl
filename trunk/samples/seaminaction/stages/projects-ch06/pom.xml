@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>no.knowit.seam.example</groupId>
+		<artifactId>seam-examples</artifactId>
+		<version>2.1.2</version>
+		<relativePath>../../../pom.xml</relativePath>
+	</parent>
+	
+	<groupId>org.open18.stages</groupId> 
+	<artifactId>open18-ch06</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
+	<name>${app.display.name} ${project.version}</name>
+	<version>0.1-SNAPSHOT</version>
+	<description>Open18 stages ch06 parent pom</description>
+	<url>http://code.google.com/p/seam-maven-refimpl/</url>
+	<packaging>pom</packaging>
+
+	<prerequisites>
+		<maven>2.0.9</maven>
+	</prerequisites>
+
+	<modules>
+		<module>model</module>
+		<module>action</module>
+		<module>war</module>
+		<module>ear</module>
+	</modules>
+
+	<properties>
+		<app.context>open18-ch06</app.context>  <!-- hint: same value as artifactId -->
+		<app.display.name>Seam In Action open18-ch06</app.display.name>
+		<app.description>
+			This project is built using the seam-refimpl Maven template. Original source code: 
+			http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch06
+		</app.description>
+		<app.database.name>open18ch05_db</app.database.name>
+
+		<app.jndi.name>${app.context}Datasource</app.jndi.name>
+		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
+		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
+		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
+
+		<!--
+			Default profile attribute values. The values can be removed if a profiles.xml file is present
+		-->
+		<as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
+		<as.version>4.2</as.version>
+	</properties>
+
+	<dependencyManagement>
+		
+		<dependencies>
+
+			<!-- project modules -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-ear</artifactId>
+				<version>${project.version}</version>
+				<type>ear</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-war</artifactId>
+				<version>${project.version}</version>
+				<type>war</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-action</artifactId>
+				<version>${project.version}</version>
+				<type>ejb</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-model</artifactId>
+				<version>${project.version}</version>
+				<type>ejb</type>
+			</dependency>
+			
+			<!-- other project modules 
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-jar</artifactId>
+				<version>${project.version}</version> 
+				<type>jar</type> 
+			</dependency>
+			-->
+
+		</dependencies>
+	</dependencyManagement>
+
+</project>

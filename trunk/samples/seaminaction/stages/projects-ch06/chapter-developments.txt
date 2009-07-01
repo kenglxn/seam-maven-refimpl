@@ -1,0 +1,56 @@
+Original code: 
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch06
+
+
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch06/chapter-developments.txt:
+--------------------------
+Seam in Action: Chapter 06
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
+covered in the book.
+
+open18:
+
+  - used seam-gen to create a new action component with the following responses:
+
+./seam new-action
+
+Seam component name: profileAction
+local interface name: ProfileAction
+action method name: view
+page name: profile
+
+  - designed ProfileAction to support both bookmarkable URL and data model selection
+  - used bijection in RegisterAction
+  - moved validation in RegisterAction to GolferValidator
+  - raise the event golferRegistered when a golfer is registered
+  - split the home page into two columns and added style classes panel-column, main-column, and module-box to suit
+  - added styles to make RichFaces list look better
+  - add list of new golfers to the home page
+  - observer golferRegistered event to log when golfer is registered and to update list of new golfers
+  - added @BypassInterceptors to PasswordManager and PasswordBean
+
+
+	
+-------------
+LOO-20090630: 
+-------------
+The wiki page explaing the steps needed to to get the mavenized project up and running is here:
+http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh06
+
+-------------------------------
+Modifications to original code:
+-------------------------------
+action/src/main/java/org/open18/action/*List.java
+- Removed getRestrictions() method in all *List.java files. Cause for this is outlined in 
+  http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
+
+action/src/main/java/org/open18/action/TeeList.java, 
+war/src/webapp//TeeList.xhtml
+- Fixed problem described in http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
+- Solution here: http://www.seamframework.org/Community/OrghibernatehqlastQuerySyntaxExceptionExpectingCLOSEFoundNull
+  
+Pagination
+- Fixed search/pagination problem as described here:
+  http://seamframework.org/Community/PaginationAndEntityQuery
