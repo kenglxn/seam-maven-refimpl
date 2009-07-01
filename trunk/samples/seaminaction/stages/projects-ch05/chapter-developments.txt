@@ -1,0 +1,46 @@
+Original code: 
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch05
+
+
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch05/chapter-developments.txt:
+--------------------------
+Seam in Action: Chapter 05
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
+covered in the book.
+
+open18-db:
+
+  - updated using top-down development with additional properties on Golfer entity (proStatus, specialty)
+  - if you want to make the changes to the schema before running the application, execute the following command from the example code root directory:
+
+java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-incremental-chaper04.sql
+
+open18:
+
+  - replace the application title and tagline with message keys from resource bundle
+  - use a message key to welcome the user to the application after registering
+
+	
+-------------
+LOO-20090630: 
+-------------
+The wiki page explaing the steps needed to to get the mavenized project up and running is here:
+http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh05
+
+-------------------------------
+Modifications to original code:
+-------------------------------
+action/src/main/java/org/open18/action/*List.java
+- Removed getRestrictions() method in all *List.java files. Cause for this is outlined in 
+  http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
+
+action/src/main/java/org/open18/action/TeeList.java, 
+war/src/webapp//TeeList.xhtml
+- Fixed problem described in http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
+- Solution here: http://www.seamframework.org/Community/OrghibernatehqlastQuerySyntaxExceptionExpectingCLOSEFoundNull
+  
+Pagination
+- Fixed search/pagination problem as described here:
+  http://seamframework.org/Community/PaginationAndEntityQuery
