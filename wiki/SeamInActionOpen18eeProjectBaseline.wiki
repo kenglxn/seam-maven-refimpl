@@ -11,8 +11,8 @@ Here are the steps required to get the project up and running.
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-baseline/open18ee Export project from svn]
   * In MYSQL
     # Create database "*open18initial_db*"
-    # Execute projects-ch03/config/schema/open18-initial-schema-mysql.sql
-    # Execute projects-ch03/config/schema/open18-initial-seed-data-mysql.sql
+    # Execute ./samples/seaminaction/etc/schema/open18-initial-schema-mysql.sql
+    # Execute ./samples/seaminaction/etc/schema/open18-initial-seed-data-mysql.sql
   * Copy open18ee/config/profiles.xml to open18ee. Modify profiles.xml as explained in the getting started tutorial.
   * Execute *mvn install -Pexplode*
   * You're ready to go!
