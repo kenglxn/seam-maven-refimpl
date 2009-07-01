@@ -56,6 +56,13 @@ public class FacilityList extends EntityQuery<Facility> {
 		return facility;
 	}
 
+	public void preloadFacilities() {
+		log.debug("begin preloading facilities (current phase: " + FacesLifecycle.getPhaseId() + ")");
+		getResultList();
+		getResultCount();
+		log.debug("finished preloading facilities");
+	}
+
 /*
  * LOO-20090630, NOTE: This does not work. 
  * Must use setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor
@@ -66,13 +73,6 @@ public class FacilityList extends EntityQuery<Facility> {
 	}
  */
  
-	public void preloadFacilities() {
-		log.debug("begin preloading facilities (current phase: " + FacesLifecycle.getPhaseId() + ")");
-		getResultList();
-		getResultCount();
-		log.debug("finished preloading facilities");
-	}
-
 /*
  * LOO-20090630. fixed pagination propblem as described here:
  * http://seamframework.org/Community/PaginationAndEntityQuery
@@ -85,7 +85,7 @@ public class FacilityList extends EntityQuery<Facility> {
 			setFirstResult(0);
 			refresh();
 		}
-	return super.getResultList();
+		return super.getResultList();
 	}
 
 }

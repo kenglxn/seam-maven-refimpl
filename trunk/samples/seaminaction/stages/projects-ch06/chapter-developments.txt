@@ -43,13 +43,15 @@ http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh06
 Modifications to original code:
 -------------------------------
 action/src/main/java/org/open18/action/*List.java
-- Removed getRestrictions() method in all *List.java files. Cause for this is outlined in 
+- Removed getRestrictions() method in all *List.java files. 
+- Added constructor with setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)) method call 
+- Cause for this is outlined in:
   http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
 
 action/src/main/java/org/open18/action/TeeList.java, 
 war/src/webapp//TeeList.xhtml
-- Fixed problem described in http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
-- Solution here: http://www.seamframework.org/Community/OrghibernatehqlastQuerySyntaxExceptionExpectingCLOSEFoundNull
+- Fixed count query problem as described here:
+  http://www.seamframework.org/Community/OrghibernatehqlastQuerySyntaxExceptionExpectingCLOSEFoundNull
   
 Pagination
 - Fixed search/pagination problem as described here:

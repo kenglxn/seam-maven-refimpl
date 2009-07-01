@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Arrays;
 
 @Name("courseList")
-public class CourseList extends EntityQuery {
+public class CourseList extends EntityQuery<Course> {
 
 	private static final String[] RESTRICTIONS = {
 			"lower(course.description) like concat(lower(#{courseList.course.description}),'%')",
@@ -18,6 +18,10 @@ public class CourseList extends EntityQuery {
 
 	private Course course = new Course();
 
+	public CourseList() {
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+	}
+	
 	@Override
 	public String getEjbql() {
 		return "select course from Course course";
@@ -39,10 +43,29 @@ public class CourseList extends EntityQuery {
 	public Course getCourse() {
 		return course;
 	}
-
+	
+	/*
+	 * LOO-20090630, NOTE: This does not work. 
+	 * Must use setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor
+	 *
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
 	}
+	 */
 
+	/*
+	 * LOO-20090630. fixed pagination propblem as described here:
+	 * http://seamframework.org/Community/PaginationAndEntityQuery
+	 */ 
+	@Override
+	public List<Course> getResultList() {
+		List<Course> result = super.getResultList();
+		if (getFirstResult() != null && getFirstResult() > 0 
+				&& (result == null ||  result.size() == 0)) {
+			setFirstResult(0);
+			refresh();
+		}
+		return super.getResultList();
+	}
 }

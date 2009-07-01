@@ -67,7 +67,7 @@ public class CourseList extends EntityQuery<Course> {
 			setFirstResult(0);
 			refresh();
 		}
-	return super.getResultList();
+		return super.getResultList();
 	}
 
 }
