@@ -49,7 +49,6 @@ action/src/main/java/org/open18/action/*List.java
   http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
 
 action/src/main/java/org/open18/action/TeeList.java, 
-war/src/webapp//TeeList.xhtml
 - Fixed count query problem as described here:
   http://www.seamframework.org/Community/OrghibernatehqlastQuerySyntaxExceptionExpectingCLOSEFoundNull
   
