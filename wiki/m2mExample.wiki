@@ -2,10 +2,7 @@
 
 = Introduction =
 
-English version: TBD!
-
-For the Norwegian readers:<br/>
-Prosjektet viser bruken av følgende UI komponenter for å håndtere JPA `@ManyToMany`.
+The project shows how to usse the following UI components to handle JPA `@ManyToMany` CRUD.
 
 {{{
 <h:selectManyCheckbox>
@@ -14,20 +11,14 @@ Prosjektet viser bruken av følgende UI komponenter for å håndtere JPA `@ManyT
 <rich:listShuttle>
 }}}
 
-Modell:
+Model:
 
 {{{
 Language*<------*Person*<----->*Company
 Interest*<---------*
 }}}
 
-Person `*<->*` Company er en "bi-directional" assosiasjon hvor Person er
-den inverse siden av assosiasjonen. Det som er viktig å merke seg når
-man jobber med "bi-directionale" assosiasjoner er at man må huske på å
-oppdatere kolleksjonen på "owning" side (Company.java) før man
-persisterer den inverse siden  (PersonHome.java). Legg også merke til
-at et HashSet er benyttet på  "owning" side, noe som gjør at vi unngår
-redundans på assosiasjonen. 
+Person `*<->*` Company is a "bi-directional" association where Person holds the inverse side of the association and Company is the owning side. The important thing to remember when working with many to many bidirectional associations is to remember to update the collection at the owning side (Company.java) before the inverse side is persisted (PersonHome.java). Also  note that a  HashSet is used on the owning side, which makes it easy to avoid redundant associations. 
 
 == Howto ==
 The steps required to get the project up and running:
