@@ -94,6 +94,18 @@
 		<url-pattern>/seam/resource/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- Faces Servlet --> 
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.seam</url-pattern>
+	</servlet-mapping>
+
 	<!-- URL Rewrite Filter - declare after seam filter -->
 	<!--
 		There are two rewrite options in Seam, you can choose to either use the org.tuckey 
@@ -115,18 +127,6 @@
 	</filter-mapping>
 	-->
 	
-	<!-- Faces Servlet --> 
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.seam</url-pattern>
-	</servlet-mapping>
-
 	<session-config>
 		<session-timeout>10</session-timeout> 
 	</session-config>
