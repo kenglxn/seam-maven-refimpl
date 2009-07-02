@@ -55,13 +55,10 @@ function toggle( target ) {
 
 <h2>Download and Install Software</h2>
 <ul>
-  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-1.5</a></li>
+  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-1.5 or jdk-1.6</a></li>
   <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
     <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
     <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.<br/>
-    A Maven-2.2.0 release candidate can be found 
-    <a href="https://repository.apache.org/content/repositories/maven-staging-010/org/apache/maven/apache-maven/2.2.0-RC2/">
-    here</a>.
   </li>
   <li>
     <a href="http://tortoisesvn.tigris.org/">Tortoise SVN</a> or a SVN client of your choice.<br/> 
@@ -115,67 +112,9 @@ function toggle( target ) {
 </ol>
 
 <h2><a name="switch-to-development-mode">Switch to Development Mode</a></h2>
+<p>In develop mode the application will be deployed as an exploded EAR archive.</p>
 <ol class="vspace">
-  <li>Svn ignore<br/>
-    The following folders and files are added to <strong>svn ignore</strong>.
-    <code>
-    <ul>
-      <li>
-        In ${SEAM_REFIMPL} folder
-        <ul>
-					<li>.externalToolBuilders/</li>
-          <li>.metadata/</li>
-          <li>.settings/</li>
-          <li>target/</li>
-          <li>.classpath</li>
-          <li>.project</li>
-          <li>*.launch</li>
-          <li>profiles.xml</li>
-        </ul>
-      </li>
-      <li>
-        In ${SEAM_REFIMPL}/<strong>ear</strong> folder
-        <ul>
-					<li>.externalToolBuilders/</li>
-          <li>.settings/</li>
-          <li>target/</li>
-          <li>.classpath</li>
-          <li>.project</li>
-          <li>*.launch</li>
-        </ul>
-      </li>
-      <li>
-        In ${SEAM_REFIMPL}/<strong>ejb</strong> folder
-        <ul>
-					<li>.externalToolBuilders/</li>
-          <li>.settings/</li>
-          <li>target/</li>
-          <li>.classpath</li>
-          <li>.project</li>
-          <li>hibernate-console.properties</li>
-          <li>*.launch</li>
-        </ul>
-      </li>
-      <li>
-        In ${SEAM_REFIMPL}/<strong>war</strong> folder
-        <ul>
-					<li>.externalToolBuilders/</li>
-          <li>.settings/</li>
-          <li>target/</li>
-          <li>.classpath</li>
-          <li>.project</li>
-          <li>*.launch</li>
-          <li>src/main/webapp/WEB-INF/.pages.xml.spdia</li>
-          <li>src/main/webapp/WEB-INF/.faces-config.xml.jsfdia</li>
-        </ul>
-      </li>
-    </ul>
-    </code>
-    <br/><strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
-    probably be more IDE spesific files to add as other IDEs are put to use. Please
-    take care when files are checked into svn, if you find an IDE spesific file then list it here 
-    add it to <strong>svn ignore</strong>!
-  </li>
+
   <li>
     Activate <code>profiles.xml</code><br/>
     Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code>.<br/>
@@ -376,6 +315,67 @@ The following profiles are active:
     This completes the basic steps of the tutorial!
   </li>
 </ol>
+
+<h2>Files Added to Svn Ignore</h2>
+<P>The following folders and files are added to <strong>svn ignore</strong>.</P>
+    <code>
+    <ul>
+      <li>
+        In ${SEAM_REFIMPL} folder
+        <ul>
+					<li>.externalToolBuilders/</li>
+          <li>.metadata/</li>
+          <li>.settings/</li>
+          <li>target/</li>
+          <li>.classpath</li>
+          <li>.project</li>
+          <li>*.launch</li>
+          <li>profiles.xml</li>
+        </ul>
+      </li>
+      <li>
+        In ${SEAM_REFIMPL}/<strong>ear</strong> folder
+        <ul>
+					<li>.externalToolBuilders/</li>
+          <li>.settings/</li>
+          <li>target/</li>
+          <li>.classpath</li>
+          <li>.project</li>
+          <li>*.launch</li>
+        </ul>
+      </li>
+      <li>
+        In ${SEAM_REFIMPL}/<strong>ejb</strong> folder
+        <ul>
+					<li>.externalToolBuilders/</li>
+          <li>.settings/</li>
+          <li>target/</li>
+          <li>.classpath</li>
+          <li>.project</li>
+          <li>hibernate-console.properties</li>
+          <li>*.launch</li>
+        </ul>
+      </li>
+      <li>
+        In ${SEAM_REFIMPL}/<strong>war</strong> folder
+        <ul>
+					<li>.externalToolBuilders/</li>
+          <li>.settings/</li>
+          <li>target/</li>
+          <li>.classpath</li>
+          <li>.project</li>
+          <li>*.launch</li>
+          <li>src/main/webapp/WEB-INF/.pages.xml.spdia</li>
+          <li>src/main/webapp/WEB-INF/.faces-config.xml.jsfdia</li>
+        </ul>
+      </li>
+    </ul>
+    </code>
+<P><strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
+probably be more IDE spesific files to add as other IDEs are put to use. Please
+take care when files are checked into svn, if you find an IDE spesific file then list it here 
+and add it to <strong>svn ignore</strong>!
+</P>
 </div>
 
 

@@ -1,0 +1,1 @@
+﻿target .externalToolBuilders .settings .classpath .project .pages.xml.spdia .faces-config.xml.jsfdia .metadata *.launch hibernate-console.properties
