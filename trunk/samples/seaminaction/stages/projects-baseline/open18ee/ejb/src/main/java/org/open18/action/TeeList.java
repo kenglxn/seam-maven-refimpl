@@ -16,7 +16,7 @@ public class TeeList extends EntityQuery {
 	public TeeList() {
 		tee = new Tee();
 		tee.setId(new TeeId());
-        setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));        
+    setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));        
 	}
 
 	@Override
@@ -33,4 +33,12 @@ public class TeeList extends EntityQuery {
 		return tee;
 	}
 
+	/*
+   * LOO-20090630, see:
+	 * http://www.seamframework.org/Community/OrghibernatehqlastQuerySyntaxExceptionExpectingCLOSEFoundNull
+   */
+	@Override
+	public String getCountEjbql()  {
+		return "select count(*) from Tee";
+	}
 }

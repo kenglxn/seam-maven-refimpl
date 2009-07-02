@@ -339,3 +339,7 @@ war/src/webapp//TeeList.xhtml
 		at org.hibernate.loader.Loader.doList(Loader.java:2220)
 		... 106 more
 	11:03:57,343 ERROR [lifecycle] JSF1054: (Phase ID: RENDER_RESPONSE 6, View ID: /TeeList.xhtml) Exception thrown during phase execution: javax.faces.event.PhaseEvent[source=com.sun.faces.lifecycle.LifecycleImpl@133b5db]
+
+NOTE: 
+This is fixed in chapter 05 source code, see:
+http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh05/chapter-developments.txt

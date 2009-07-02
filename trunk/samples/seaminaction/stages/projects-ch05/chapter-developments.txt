@@ -37,7 +37,6 @@ action/src/main/java/org/open18/action/*List.java
   http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
 
 action/src/main/java/org/open18/action/TeeList.java, 
-war/src/webapp//TeeList.xhtml
 - Fixed problem described in http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
 - Solution here: http://www.seamframework.org/Community/OrghibernatehqlastQuerySyntaxExceptionExpectingCLOSEFoundNull
   
