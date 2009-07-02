@@ -10,7 +10,7 @@
 
 <ui:define name="body">
 
-    <h:form id="login">
+    <h:form id="loginForm">
 
         <rich:panel>
             <f:facet name="header">Login</f:facet>
@@ -27,7 +27,7 @@
                                 value="#{credentials.password}"/>
                     <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
                     <h:selectBooleanCheckbox id="rememberMe"
-                                          value="#{identity.rememberMe}"/>
+                                          value="#{rememberMe.enabled}"/>
                 </h:panelGrid>
             </div>
 
@@ -38,7 +38,7 @@
         </rich:panel>
 
         <div class="actionButtons">
-            <h:commandButton value="Login" action="#{identity.login}"/>
+            <h:commandButton id="submit" value="Login" action="#{identity.login}"/>
         </div>
 
     </h:form>
