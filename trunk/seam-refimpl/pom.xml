@@ -52,13 +52,11 @@
 			</roles>
 			<timezone>GMT +1</timezone>
 		</developer>
-        <developer>
+		<developer>
 			<id>krg@knowit.no</id>
 			<name>Ken Gullaksen</name>
 			<email>krg@knowit.no</email>
-			<organization>Knowit Objectnet
-
-                Oslo</organization>
+			<organization>Knowit Objectnet Oslo</organization>
 			<organizationUrl>http://www.knowit.no</organizationUrl>
 			<roles>
 				<role>Developer</role>
