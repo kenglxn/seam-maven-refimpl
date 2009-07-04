@@ -6,13 +6,13 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>no.knowit.seam.example</groupId>
+		<groupId>no.knowit.seam.examples</groupId>
 		<artifactId>m2m</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>no.knowit.seam.example</groupId>
+	<groupId>no.knowit.seam.examples</groupId>
 	<artifactId>m2m-ejb</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${app.display.name} EJB ${project.version}</name>
 	<description>Seam Many to Many UI Example EJB module</description>
