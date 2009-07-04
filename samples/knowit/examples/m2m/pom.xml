@@ -45,10 +45,12 @@
 		<app.persistence.emf.startup>false</app.persistence.emf.startup>
 		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create>
 		
+		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
+		<app.distributable>false</app.distributable> <!-- for ejb/src/main/resources/META-INF/jboss.xml -->
+
 		<!--
 			Default profile attribute values. The values can be removed if a profiles.xml file is present
 		-->
-		<as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
 		<as.version>4.2</as.version>
 	</properties>
 

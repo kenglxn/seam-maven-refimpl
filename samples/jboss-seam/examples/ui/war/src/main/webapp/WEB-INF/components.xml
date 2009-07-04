@@ -17,7 +17,7 @@
 	<core:init
 		debug="true"
 		transaction-management-enabled="true"
-		jndi-pattern="${as.jndi.pattern}" />
+		jndi-pattern="${app.jndi.pattern}" />
 
 	<core:manager conversation-timeout="120000"/>
 
