@@ -124,7 +124,6 @@
         <as.version>4.2</as.version>
         <as.home>C:/ide/server/jboss-4.2.3.GA-jdk6</as.home>
         <as.deploy>${as.home}/server/default/deploy</as.deploy>
-        <as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
       </properties>
     </profile>
     
@@ -142,7 +141,6 @@
         <as.version>5</as.version>
         <as.home>C:/ide/server/jboss-5.1.0.GA-jdk6</as.home>
         <as.deploy>${as.home}/server/default/deploy</as.deploy>
-        <as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
       </properties>
     </profile>
 
