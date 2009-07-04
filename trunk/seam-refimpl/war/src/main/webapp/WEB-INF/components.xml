@@ -23,14 +23,22 @@
 
      
   <!-- 
-	 	Note: debug="true" requires "jboss-seam-debug" in pom, SiA-4.5.2-p154
-	 	Note: Seam managed transactions are enabled by default, but as a reminder: 
-	 				transaction-management-enabled="true", SiA-9.4.1-p370
+	 	debug="true" requires "jboss-seam-debug" in pom, SiA-4.5.2-p154
+	 	
+	 	Seam managed transactions are enabled by default, but as a reminder: 
+	 	transaction-management-enabled="true", SiA-9.4.1-p370
+	 	
+	 	The ManagedEntityInterceptor (MEI) is an optional interceptor in Seam that gets  applied
+		to conversation-scoped components when enabled. Enabling it is simple. You just set the
+		distributable property on the org.jboss.seam.init.core component to true. More simply put,
+		you add (or  update) the following component declaration in the component descriptor  (i.e.,
+		components.xml), seam_reference-35.2.			
   -->
 	<core:init
-		debug="true"
+		debug="${env.debug}"
 		transaction-management-enabled="true"
-		jndi-pattern="${app.jndi.pattern}" />
+		jndi-pattern="${app.jndi.pattern}" 
+		distributable="${app.distributable}"/>
 
 	<core:manager
 		concurrent-request-timeout="500"
