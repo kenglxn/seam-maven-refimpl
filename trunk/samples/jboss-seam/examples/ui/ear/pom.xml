@@ -6,13 +6,13 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jboss.seam.example</groupId>
+		<groupId>org.jboss.seam.examples</groupId>
 		<artifactId>seam-ui</artifactId>
 		<version>2.1.2</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.jboss.seam.example</groupId>
+	<groupId>org.jboss.seam.examples</groupId>
 	<artifactId>seam-ui-ear</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${app.display.name} EAR ${project.version}</name>
 	<description>The Seam UI Example EAR module</description>

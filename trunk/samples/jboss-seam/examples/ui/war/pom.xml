@@ -8,13 +8,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.jboss.seam.example</groupId>
+		<groupId>org.jboss.seam.examples</groupId>
 		<artifactId>seam-ui</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 		<version>2.1.2</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.jboss.seam.example</groupId>
+	<groupId>org.jboss.seam.examples</groupId>
 	<artifactId>seam-ui-war</artifactId>
 	<name>${app.display.name} WAR ${project.version}</name>
 	<description>The Seam UI Example WAR module</description>
