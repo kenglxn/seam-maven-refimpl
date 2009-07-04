@@ -4,9 +4,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   
-	<display-name>${app.display.name}</display-name>
-	
+	<!-- For cluster, add distributable as the first child element, seam_reference-35.1.2 -->
 	<!-- <distributable /> -->
+	
+	<display-name>${app.display.name}</display-name>
 	
 	<!--
 		Uncomment if urlrewritefilter or web:rewrite-filter is not applied. Also add index.html to context root!
