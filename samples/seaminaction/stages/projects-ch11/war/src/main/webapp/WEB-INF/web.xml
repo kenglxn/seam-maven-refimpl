@@ -27,10 +27,23 @@
 			See http://jira.jboss.com/jira/browse/RF-2294 and
 			http://lists.jboss.org/pipermail/seam-dev/2008-February/000024.html.
 		</description>
+		
 		<param-name>com.sun.faces.disableVersionTracking</param-name>
 		<param-value>true</param-value>
 	</context-param>
-	
+
+	<context-param>
+		<description>
+			If the view cannot be found in the session on a JSF postback, rebuild
+			the view again before executing the Restore View phase. This step
+			prevents "stale" public form pages. Enable this feature if you need it.
+		</description>
+		
+		<param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+		
 	<!-- Facelets development mode (disable in production) --> 
 	<context-param>
 		<param-name>facelets.DEVELOPMENT</param-name>
@@ -65,7 +78,8 @@
 			<filter-name>Seam Filter</filter-name>
 			<url-pattern>/*</url-pattern>
 	</filter-mapping>
-			
+	
+	<!-- UrlRewriteFilter, define after SeamFilter-->
 	<filter>
 		<filter-name>UrlRewriteFilter</filter-name>
 		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
