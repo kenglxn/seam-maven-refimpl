@@ -31,14 +31,20 @@ Modifications to original code:
 -------------------------------
 Created two source trees in ejb module using the Build Helper Maven Plugin,
 http://mojo.codehaus.org/build-helper-maven-plugin/. 
-This plugin allows you to add additional source directories to your module.
+The plugin allows you to add additional source directories to your module.
 
 The original source code does not follow the default Maven convention. By default with maven you can 
 only specify a single source directory, but the Seam In Action code is split into several source 
-trees. Mavenizing the code can be done i two ways: either by splitting the source code into two 
-separate ejb modules (as I have done in ch03-ch06) or by using the Build Helper Maven Plugin to 
-maintain more than source tree within the same (ejb) module. Although the latter might be considered 
-as bad practice it can be convinient in some situations to add an extra source path to the build. 
+trees. Mavenizing the code can be done i two ways: either by splitting the source code into  
+separate (ejb) modules (as I have done in ch03-ch06) or by using the Build Helper Maven Plugin to 
+maintain more than one source tree within the same (ejb) module. Although the latter might be 
+considered as bad practice, it can be convinient in some situations to add an extra source path to 
+the build. 
+
+Blogs explaining how to use the Build Helper Maven Plugin can be found here:
+http://chadthedeveloper.blogspot.com/2008/02/maven2-multiple-source-directories-and.html
+http://www.pascalalma.net/2009/03/03/adding-extra-source-path-to-your-maven-build/
+
 
 action/src/action/java/org/open18/action/*List.java
 - Removed getRestrictions() method in all *List.java files. 
