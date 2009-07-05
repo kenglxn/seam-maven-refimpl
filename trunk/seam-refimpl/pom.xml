@@ -1925,9 +1925,9 @@
 				
 
 				<!--
-				  see: http://mojo.codehaus.org/build-helper-maven-plugin/
-				  see: http://www.pascalalma.net/2009/03/03/adding-extra-source-path-to-your-maven-build/
-					see: http://chadthedeveloper.blogspot.com/2008/02/maven2-multiple-source-directories-and.html
+				  see:   http://mojo.codehaus.org/build-helper-maven-plugin/
+				  usage: http://www.pascalalma.net/2009/03/03/adding-extra-source-path-to-your-maven-build/
+					usage: http://chadthedeveloper.blogspot.com/2008/02/maven2-multiple-source-directories-and.html
 				-->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
