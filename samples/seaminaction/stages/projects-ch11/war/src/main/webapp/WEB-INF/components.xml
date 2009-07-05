@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+  xmlns:core="http://jboss.com/products/seam/core"
+  xmlns:persistence="http://jboss.com/products/seam/persistence"
+  xmlns:drools="http://jboss.com/products/seam/drools"
+  xmlns:bpm="http://jboss.com/products/seam/bpm"
+  xmlns:security="http://jboss.com/products/seam/security"
+  xmlns:mail="http://jboss.com/products/seam/mail"
+  xmlns:web="http://jboss.com/products/seam/web"
+  xmlns:transaction="http://jboss.com/products/seam/transaction"
+	xmlns:auth="http://open18.org/components/auth"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+		http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd
+		http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
+		http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.1.xsd
+		http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.1.xsd
+		http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.1.xsd
+		http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.1.xsd
+		http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.1.xsd
+		http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.1.xsd
+		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.1.xsd
+		http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
+">
+
+  <!-- 
+  	Note: debug="true" requires "jboss-seam-debug" in pom
+  	Note: Seam managed transactions are enabled by default, but as a reminder: 
+  				transaction-management-enabled="true"
+  -->
+	<core:init
+		debug="true"
+		transaction-management-enabled="true"
+		jndi-pattern="${app.jndi.pattern}" />
+
+	<core:manager
+		concurrent-request-timeout="500"
+		conversation-timeout="120000"
+		conversation-id-parameter="cid"
+		parent-conversation-id-parameter="pid" />
+
+	<core:resource-loader>
+		<core:bundle-names>
+			<value>messages</value>
+      <!-- Add more message bundles as needed -->
+			<!-- <value>mymessagebundle</value> -->
+		</core:bundle-names>
+	</core:resource-loader>
+
+  <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-p362 -->
+	<persistence:entity-manager-factory
+		name="entityManagerFactory"
+		persistence-unit-name="${app.persistence.unit.name}"
+		installed="false"
+		startup="false" />
+
+	<!--
+		If Seam loads the persistence unit (JBoss 4.x), the
+		EntityManagerFactory will be resolved from #{entityManagerFactory}. 
+		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
+		binding occurs during application deployment), SiA-p362.
+	-->
+	<persistence:managed-persistence-context
+		name="entityManager"
+		auto-create="true"
+		entity-manager-factory="#{entityManagerFactory}"
+		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
+
+  <transaction:ejb-transaction />
+  
+  <web:hot-deploy-filter url-pattern="*.seam"/>
+
+	<!-- Force encoding of submitted and sent data -->
+	<web:character-encoding-filter 
+		encoding="UTF-8" 
+		override-client="true"  
+		url-pattern="*.seam" />
+		
+  <drools:rule-base name="securityRules">
+    <drools:rule-files>
+       <value>/security.drl</value>
+    </drools:rule-files>
+  </drools:rule-base>
+
+	<security:identity 
+		authenticate-method="#{authenticator.authenticate}" 
+		remember-me="true"/>
+
+	<event type="org.jboss.seam.security.notLoggedIn">
+		<action execute="#{redirect.captureCurrentView}"/>
+	</event>
+	
+	<event type="org.jboss.seam.security.loginSuccessful">
+		<action execute="#{redirect.returnToCapturedView}"/>
+	</event>
+
+	<!--
+	<mail:mail-session 
+		host="localhost" 
+		port="2525" 
+		username="test" 
+		password="test" />
+	-->
+	
+  <!-- For use with jBPM pageflow or process management -->
+  <!--
+  <bpm:jbpm>
+    <bpm:process-definitions></bpm:process-definitions>
+    <bpm:pageflow-definitions></bpm:pageflow-definitions>
+  </bpm:jbpm>
+  -->
+
+	
+   <!-- ===== Open 18 component definitions and configurations ===== -->
+
+   <import>org.open18.auth</import>
+
+   <!-- newGolfer | generic-style component *definition* -->
+   <component name="newGolfer" class="org.open18.model.Golfer" scope="event">
+      <property name="dateJoined">#{currentDatetime}</property>
+   </component>
+
+   <!-- selectedGolfer | component role to centralize scope for outjected context variable -->
+   <!--
+   <component name="selectedGolfer" class="org.open18.model.Golfer"/>
+   -->
+
+   <!-- passwordBean | generic-style component *definition* -->
+   <!--
+   <component name="passwordBean" class="org.open18.auth.PasswordBean" scope="event"/>
+   -->
+
+   <!-- passwordBean | namespace-style component *definition* -->
+   <auth:password-bean name="passwordBean" scope="event"/>
+   
+   <!-- passwordManager | generic-style component *configuration* -->
+   <!--
+   <component name="passwordManager">
+      <property name="digestAlgorithm">SHA-1</property>
+      <property name="charset">UTF-8</property>
+   </component>
+   -->
+   
+   <!-- passwordManager | partial namespace-style component *configuration* -->
+   <!--
+   <component name="passwordManager">
+      <digestAlgorithm>SHA-1</digestAlgorithm>
+      <charset>UTF-8</charset>
+   </component>
+   -->
+   
+   <!-- passwordManager | namespace-style component *configuration* (attribute variant) -->
+   <auth:password-manager digest-algorithm="SHA-1" charset="UTF-8"/>
+
+   <!-- passwordManager | namespace-style component *configuration* (element variant) -->
+   <!--
+   <auth:password-manager>
+      <auth:digest-algorithm>SHA-1</auth:digest-algorithm>
+      <auth:charset>UTF-8</auth:charset>
+   </auth:password-manager>
+   -->
+
+   <!-- registerAction | property configuration (note that property names can use either hyphenated or humpback syntax) -->
+   <component name="registerAction">
+      <property name="pro-status-types">amateur pro semi-pro</property>
+      <property name="specialtyTypes">
+         <value>#{messages['specialty.drive']}</value>
+         <value>#{messages['specialty.chip']}</value>
+         <value>#{messages['specialty.putt']}</value>
+         <value>#{messages['specialty.iron']}</value>
+         <value>#{messages['specialty.looks']}</value>
+      </property>
+   </component>
+	
+</components>
