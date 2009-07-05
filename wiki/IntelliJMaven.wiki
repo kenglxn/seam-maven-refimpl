@@ -1,4 +1,5 @@
 #summary Using IntelliJ and Maven
+#labels Featured
 
 =Using IntelliJ and Maven=
 
