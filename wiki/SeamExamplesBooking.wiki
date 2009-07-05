@@ -1,0 +1,14 @@
+#summary A Mavenized Version of the jboss-seam-2.1.2/examples/booking project
+
+= A Mavenized Version of the jboss-seam-2.1.2/examples/booking project =
+
+This is a Mavenized version of the jboss-seam-2.1.2/examples/booking project.
+
+== Howto ==
+The steps required to get the project up and running:
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/jboss-seam/examples/booking Export project from svn]
+  * Copy booking/config/profiles.xml to the project root folder, booking. Modify profiles.xml as needed.
+  * Execute *mvn install -Pexplode*
+  * You're ready to go!
+  * Also read the *readme.txt* from the original example
