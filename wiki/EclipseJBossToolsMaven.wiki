@@ -1,4 +1,5 @@
 #summary Using Eclipse, JBoss Tools and Maven
+#labels Featured
 
 =Using Eclipse, JBoss Tools and Maven=
 
