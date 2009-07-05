@@ -1,4 +1,5 @@
 #summary Getting Started Tutorial.
+#labels Featured
 =Getting Started=
 The getting started tutorial outlines the necessary steps to get a Mavenized Seam project up and running.
 
