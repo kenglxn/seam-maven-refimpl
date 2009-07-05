@@ -110,14 +110,6 @@
 
 	<dependencies>
 
-		<!-- project modules 
-		<dependency> 
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-jar</artifactId> 
-			<type>jar</type>
-		</dependency>
-		-->
-
 		<!-- seam -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
@@ -188,6 +180,12 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- -->
 		<dependency>
 			<groupId>org.drools</groupId>
@@ -200,11 +198,10 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-jpdl</artifactId>
 		</dependency>
-
+		
 	</dependencies>
 
 </project>

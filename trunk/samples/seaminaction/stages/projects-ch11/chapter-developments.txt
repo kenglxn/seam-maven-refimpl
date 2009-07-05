@@ -38,7 +38,7 @@ only specify a single source directory, but the Seam In Action code is split int
 trees. Mavenizing the code can be done i two ways: either by splitting the source code into  
 separate (ejb) modules (as I have done in the previous chapters, ch03-ch06) or by using the Build 
 Helper Maven Plugin to maintain more than one source tree within the same (ejb) module. Although the 
-latter might be considered as bad practice, it can be convinient in some situations to add an extra 
+latter might be considered as bad practice, in some situations it can be convinient to add an extra 
 source path to the build. 
 
 Blogs explaining how to use the Build Helper Maven Plugin can be found here:
