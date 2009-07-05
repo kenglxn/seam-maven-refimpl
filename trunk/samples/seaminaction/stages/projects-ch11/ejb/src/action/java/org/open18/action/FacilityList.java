@@ -10,7 +10,7 @@ import org.jboss.seam.contexts.FacesLifecycle;
 import org.jboss.seam.log.Log;
 
 @Name("facilityList")
-public class FacilityList extends EntityQuery {
+public class FacilityList extends EntityQuery<Facility>  {
 
 	@Logger
 	private Log log;
@@ -30,6 +30,10 @@ public class FacilityList extends EntityQuery {
 
 	private Facility facility = new Facility();
 
+	public FacilityList() {
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+	}
+	
 	@Override
 	public String getEjbql() {
 		return "select facility from Facility facility";
@@ -52,16 +56,36 @@ public class FacilityList extends EntityQuery {
 		return facility;
 	}
 
-	@Override
-	public List<String> getRestrictions() {
-		return Arrays.asList(RESTRICTIONS);
-	}
-
 	public void preloadFacilities() {
 		log.debug("begin preloading facilities (current phase: " + FacesLifecycle.getPhaseId() + ")");
 		getResultList();
 		getResultCount();
 		log.debug("finished preloading facilities");
+	}
+
+/*
+ * LOO-20090630, NOTE: This does not work. 
+ * Must use setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)); in constructor
+ *
+	@Override
+	public List<String> getRestrictions() {
+		return Arrays.asList(RESTRICTIONS);
+	}
+ */
+ 
+/*
+ * LOO-20090630. fixed pagination problem as described here:
+ * http://seamframework.org/Community/PaginationAndEntityQuery
+ */ 
+	@Override
+	public List<Facility> getResultList() {
+		List<Facility> result = super.getResultList();
+		if (getFirstResult() != null && getFirstResult() > 0 
+				&& (result == null ||  result.size() == 0)) {
+			setFirstResult(0);
+			refresh();
+		}
+		return super.getResultList();
 	}
 
 }

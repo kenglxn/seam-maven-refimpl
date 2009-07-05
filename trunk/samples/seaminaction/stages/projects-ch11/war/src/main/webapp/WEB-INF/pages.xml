@@ -3,11 +3,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
 	no-conversation-view-id="/home.xhtml"
-	login-view-id="/login.xhtml
-">
+	login-view-id="/login.xhtml"
+	http-port="8080"
+	https-port="8443"	
+>
 
-	<conversation name="Course" parameter-name="courseId"
-			parameter-value="#{redirect.parameters.courseId != null ? redirect.parameters.courseId : (courseHome.instance.id != null ? courseHome.instance.id : '')}"/>
+	<conversation 
+		name="Course" 
+		parameter-name="courseId"
+		parameter-value="#{redirect.parameters.courseId != null ? redirect.parameters.courseId : (courseHome.instance.id != null ? courseHome.instance.id : '')}" />
 
 	<page view-id="*" scheme="http">
 			<navigation>
