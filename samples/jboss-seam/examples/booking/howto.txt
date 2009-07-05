@@ -1,1 +1,1 @@
-see: http://code.google.com/p/seam-maven-refimpl/wiki/SeamBooking
+see: http://code.google.com/p/seam-maven-refimpl/wiki/SeamExamplesBooking
