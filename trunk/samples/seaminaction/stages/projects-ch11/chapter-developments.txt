@@ -1,0 +1,55 @@
+Original code: 
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch11
+
+
+http://seaminaction.googlecode.com/svn/trunk/stages/projects-ch11/chapter-developments.txt:
+--------------------------
+Seam in Action: Chapter 11
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
+covered in the book.
+
+TODO:
+  - backport fix for preserving course search in conversation
+
+open18:
+  - add @Name("golfer") and @Role(name = "currentGolfer", scope = ScopeType.SESSION) to the Golfer entity
+  - changed all checks for currentGolfer to s:hasRole('golfer')
+  - added encoding and saltPhrase to PasswordManager
+    - prepares for Identity Management in Seam 2.1, which uses base64 rather than hex and allows for the use of a salt
+
+	
+-------------
+LOO-20090705: 
+-------------
+The wiki page explaing the steps needed to to get the mavenized project up and running is here:
+http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh11
+
+-------------------------------
+Modifications to original code:
+-------------------------------
+Created two source trees in ejb module using the Build Helper Maven Plugin,
+http://mojo.codehaus.org/build-helper-maven-plugin/. 
+This plugin allows you to add additional source directories to your module.
+
+The original source code does not follow the default Maven convention. By default with maven you can 
+only specify a single source directory, but the Seam In Action code is split into several source 
+trees. Mavenizing the code can be done i two ways: either by splitting the source code into two 
+separate ejb modules (as I have done in ch03-ch06) or by using the Build Helper Maven Plugin to 
+maintain more than source tree within the same (ejb) module. Although the latter might be considered 
+as bad practice it can be convinient in some situations to add an extra source path to the build. 
+
+action/src/action/java/org/open18/action/*List.java
+- Removed getRestrictions() method in all *List.java files. 
+- Added constructor with setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS)) method call 
+- Cause for this is outlined in:
+  http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh04/chapter-developments.txt
+
+action/src/action/java/org/open18/action/TeeList.java, 
+- Fixed count query problem as described here:
+  http://www.seamframework.org/Community/OrghibernatehqlastQuerySyntaxExceptionExpectingCLOSEFoundNull
+  
+Pagination
+- Fixed search/pagination problem as described here:
+  http://seamframework.org/Community/PaginationAndEntityQuery
