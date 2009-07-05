@@ -17,7 +17,7 @@ open18:
   - add @Name("golfer") and @Role(name = "currentGolfer", scope = ScopeType.SESSION) to the Golfer entity
   - changed all checks for currentGolfer to s:hasRole('golfer')
   - added encoding and saltPhrase to PasswordManager
-    - prepares for Identity Management in Seam 2.1, which uses base64 rather than hex and allows for the use of a salt
+  - prepares for Identity Management in Seam 2.1, which uses base64 rather than hex and allows for the use of a salt
 
 	
 -------------
@@ -36,10 +36,10 @@ The plugin allows you to add additional source directories to your module.
 The original source code does not follow the default Maven convention. By default with maven you can 
 only specify a single source directory, but the Seam In Action code is split into several source 
 trees. Mavenizing the code can be done i two ways: either by splitting the source code into  
-separate (ejb) modules (as I have done in ch03-ch06) or by using the Build Helper Maven Plugin to 
-maintain more than one source tree within the same (ejb) module. Although the latter might be 
-considered as bad practice, it can be convinient in some situations to add an extra source path to 
-the build. 
+separate (ejb) modules (as I have done in the previous chapters, ch03-ch06) or by using the Build 
+Helper Maven Plugin to maintain more than one source tree within the same (ejb) module. Although the 
+latter might be considered as bad practice, it can be convinient in some situations to add an extra 
+source path to the build. 
 
 Blogs explaining how to use the Build Helper Maven Plugin can be found here:
 http://chadthedeveloper.blogspot.com/2008/02/maven2-multiple-source-directories-and.html
