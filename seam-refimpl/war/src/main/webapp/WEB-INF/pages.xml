@@ -53,6 +53,12 @@
 	  </redirect>
 	</exception>
 	
+	<exception class="javax.persistence.PersistenceException">
+		<redirect view-id="/error.xhtml">
+			<message>The operation failed. Please try again.</message>
+		</redirect>
+	</exception>
+	
 	<exception class="org.jboss.seam.security.AuthorizationException">
 	  <redirect view-id="/error.xhtml">
 	    <message severity="error">You don't have permission to access this resource</message>
