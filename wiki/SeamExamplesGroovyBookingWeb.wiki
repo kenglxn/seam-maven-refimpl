@@ -28,7 +28,7 @@ Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of 
   </executions>
 </plugin>		
 }}}
-Note that `<targetBytecode>1.6</targetBytecode>` corresponds to groovy-all version 1.6.x!
+Note that `<targetBytecode>1.6</targetBytecode>` corresponds to groovy-all version 1.6.x
 
 == Differences from the original application ==
   * The datasource file, `seam-groovybooking-web-ds.xml`, is moved to the project root folder
