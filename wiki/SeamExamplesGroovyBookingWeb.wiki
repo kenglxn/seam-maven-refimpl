@@ -4,6 +4,32 @@
 
 This is a Mavenized Version of the jboss-seam-2.1.2/examples/groovybooking WEB example project. The example application is tested on JBoss Application Server 4.2.3 GA jdk6.
 
+Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of experimenting to get Groovy to play nice in a Seam Maven environment. I had to upgrade the groovy-all jar to version 1.6.3 which in turn affected the gmaven plugin:
+{{{
+<plugin>
+  <groupId>org.codehaus.groovy.maven</groupId>
+  <artifactId>gmaven-plugin</artifactId>
+  <configuration>
+    <debug>true</debug>
+    <stacktrace>true</stacktrace>
+    <targetBytecode>1.6</targetBytecode>
+    <verbose>true</verbose>
+    <sourceEncoding>utf-8</sourceEncoding>
+  </configuration>
+  <executions>
+    <execution>
+      <goals>
+      <goal>generateStubs</goal>
+      <goal>compile</goal>
+      <goal>generateTestStubs</goal>
+      <goal>testCompile</goal>
+    </goals>
+    </execution>
+  </executions>
+</plugin>		
+}}}
+Note that `<targetBytecode>1.6</targetBytecode>` corresponds to groovy-all version 1.6.x!
+
 == Differences from the original application ==
   * The datasource file, `seam-groovybooking-web-ds.xml`, is moved to the project root folder
   * Uses standard Maven directory layout
