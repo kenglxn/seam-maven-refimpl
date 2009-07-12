@@ -9,6 +9,7 @@ The steps required to get the project up and running:
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/jboss-seam/examples/booking Export project from svn]
   * Copy booking/config/profiles.xml to the project root folder, booking. Modify profiles.xml as needed.
+  * Open a command shell and cd to project folder: booking
   * Execute *mvn install -Pexplode*
-  * You're ready to go!
+  * Access the application at http://localhost:8080/seam-booking
   * Also read the *readme.txt* from the original example
