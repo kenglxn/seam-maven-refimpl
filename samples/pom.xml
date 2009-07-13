@@ -13,14 +13,6 @@
 	<url>http://code.google.com/p/seam-maven-refimpl/</url>
 	<packaging>pom</packaging>
 	
-  <!-- 
-	<modules>
-			Needed to get pluginManagement to work in child modules.
-			Without this we'll have to repeat pluginManagement for each project's parent module.
-		<module>jboss-seam/examples/ui</module>
-		<module>seaminaction/stages/projects-baseline/open18ee</module>
-	</modules>
-	-->
 	
 	<prerequisites>
 		<maven>2.0.9</maven>
@@ -49,11 +41,25 @@
 		<version.meldware.mailjmx>1.0M8</version.meldware.mailjmx>
 		<version.lowagie.itext>2.1.2</version.lowagie.itext>
 
-		<!-- -->
-		<app.persistence.emf.installed>false</app.persistence.emf.installed>
+		<!--  -->
+		<app.context>myapp</app.context>  <!-- hint: same value as artifactId -->
+		<app.display.name>My App</app.display.name>
+		<app.description>My App description</app.description>
+		<app.database.name>myapp_db</app.database.name>
+
+		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
+		<app.jndi.name>${app.context}Datasource</app.jndi.name>
+		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+		<app.entity.manager.factory.name>entityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g seam-refimplEntityManagerFactory is illegal-->
+		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
+		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
+		<app.persistence.emf.installed>false</app.persistence.emf.installed> <!-- false for JBoss4, true for JBoss 5 -->
 		<app.persistence.emf.startup>false</app.persistence.emf.startup>
 		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create>
+		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
+		<app.distributable>false</app.distributable> <!-- for ejb/src/main/resources/META-INF/jboss.xml -->
 		
+		<!-- -->
 		<env>prod</env>
 		<env.debug>false</env.debug>
 		<env.unpack.modules>false</env.unpack.modules>
@@ -72,6 +78,8 @@
 		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
 		<ds.user.name>sa</ds.user.name>
 		<ds.password></ds.password>
+		
+		<as.version>4.2</as.version>
 	</properties>
 
 	<pluginRepositories>
@@ -88,12 +96,21 @@
       <url>http://snapshots.jboss.org/maven2</url>
     </pluginRepository>
     
-		<!-- Add more repos as needed 
+    <pluginRepository>
+      <id>repository.codehaus</id>
+      <name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+    </pluginRepository>
+		
+		<!-- Add more repos as needed -->
+		<!--
 		<pluginRepository>
 			<id>apache.snapshots</id>
 			<url>http://people.apache.org/maven-snapshot-repository/</url>
 		</pluginRepository>
+		-->
 		
+		<!-- http://mojo.codehaus.org/using-sandbox-plugins.html 
 		<pluginRepository>
 			<id>codehaus.snapshots</id>
 			<url>http://snapshots.repository.codehaus.org/</url>
@@ -127,6 +144,11 @@
       <url>http://snapshots.jboss.org/maven2</url>
     </repository> 
 		
+    <repository>
+      <id>repository.codehaus</id>
+      <name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+    </repository>
 		<!-- Add more repos as needed -->
 	</repositories>
 
@@ -1853,6 +1875,13 @@
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>1.3</version>
 				</plugin>
+
+				
+				<plugin>
+					<groupId>org.codehaus.groovy.maven</groupId>
+					<artifactId>gmaven-plugin</artifactId>
+					<version>1.0</version>
+				</plugin>		
 
 				
 				<!-- ide -->
