@@ -92,9 +92,9 @@
 		<app.entity.manager.factory.name>entityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g seam-refimplEntityManagerFactory is illegal-->
 		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
 		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
-		<app.persistence.emf.installed>false</app.persistence.emf.installed> <!-- false for JBoss4, true for JBoss 5 -->
-		<app.persistence.emf.startup>false</app.persistence.emf.startup>
-		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create>
+		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for JBoss 4.2.3 or newer -->
+		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
+		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
 		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
 		<app.distributable>false</app.distributable> <!-- for ejb/src/main/resources/META-INF/jboss.xml -->
 		
