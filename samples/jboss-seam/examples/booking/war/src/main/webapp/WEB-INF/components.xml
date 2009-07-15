@@ -61,11 +61,30 @@
 		installed="false"
 		startup="false" />
 
+  <!-- 
+		BOOTSTRAPPING A JPA ENTITYMANAGERFACTORY, SiA-9.3.1-p362
+		installed=true for JBoss 4.2.3 or newer
+		To have Seam defer loading of the persistence unit until it's needed, perhaps for a quicker 
+		deployment turnaround, you can  disable the startup behavior of this component, SiA-9.3.1-p363
+
+		entity-manager-factory name also referenced in in persistence.xml: 
+		persistence-unit name="${app.persistence.unit.name}"
+	-->
+	<persistence:entity-manager-factory 
+		name="groovyEntityManagerFactory"
+		persistence-unit-name="groovy" 
+		installed="${app.persistence.emf.installed}"
+		startup="${app.persistence.emf.startup}" />
+
 	<!--
 		If Seam loads the persistence unit (JBoss 4.x), the
-		EntityManagerFactory will be resolved from #{entityManagerFactory}. 
+		EntityManagerFactory will be resolved from #{${app.entity.manager.factory.name}}. 
 		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-9.3.1-p362.
+		
+		By default, the Seam-managed persistence context components are defined with the autocreate 
+		feature disabled. By enabling this feature, you can inject these components using an 
+		@In annotation without having to supply the create attribute, SiA-9.3.2-p366.
 	-->
 	<persistence:managed-persistence-context
 		name="entityManager"
