@@ -139,11 +139,11 @@
       <url>http://snapshots.jboss.org/maven2</url>
     </pluginRepository>
     
-    <pluginRepository>
-      <id>repository.codehaus</id>
-      <name>Codehaus Repository</name>
+		<pluginRepository>
+			<id>repository.codehaus</id>
+			<name>Codehaus Repository</name>
 			<url>http://repository.codehaus.org</url>
-    </pluginRepository>
+		</pluginRepository>
 		
 		<!-- Add more repos as needed -->
 		<!--
@@ -188,11 +188,11 @@
       <url>http://snapshots.jboss.org/maven2</url>
     </repository> 
 		
-    <repository>
-      <id>repository.codehaus</id>
-      <name>Codehaus Repository</name>
+		<repository>
+			<id>repository.codehaus</id>
+			<name>Codehaus Repository</name>
 			<url>http://repository.codehaus.org</url>
-    </repository>
+		</repository>
 		
 		<!-- Add more repos as needed -->
 	</repositories>
@@ -1305,11 +1305,15 @@
 				<version>1.2.14</version>
 			</dependency>
 					
-			<!-- grovy -->
+			<!-- 
+				Groovy 
+				IMPOTANT! Version 1.5.4 provided by
+				the Seam-2.1.2 root POM, does not work 
+			-->
 			<dependency>
 				<groupId>org.codehaus.groovy</groupId>
 				<artifactId>groovy-all</artifactId>
-				<version>1.5.4</version>
+				<version>1.6.3</version>
 				<exclusions>
 					<!-- groovy-all imports a lot of stuff, would be better to just use specific bits	-->
 					<exclusion>
@@ -1952,11 +1956,27 @@
 					<version>1.3</version>
 				</plugin>
 
-				
 				<plugin>
 					<groupId>org.codehaus.groovy.maven</groupId>
 					<artifactId>gmaven-plugin</artifactId>
 					<version>1.0</version>
+					<configuration>
+						<debug>${jdk.debug}</debug>
+						<stacktrace>${jdk.debug}</stacktrace>
+						<targetBytecode>1.6</targetBytecode>
+						<verbose>true</verbose>
+						<sourceEncoding>utf-8</sourceEncoding>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>generateStubs</goal>
+								<goal>compile</goal>
+								<goal>generateTestStubs</goal>
+								<goal>testCompile</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>		
 				
 				<!-- ide -->
