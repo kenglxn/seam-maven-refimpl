@@ -57,7 +57,7 @@
 	</core:resource-loader>
 
   <!-- 
-		BOOTSTRAPPING A JPA ENTITYMANAGERFACTORY, , SiA-9.3.1-p362
+		BOOTSTRAPPING A JPA ENTITYMANAGERFACTORY, SiA-9.3.1-p362
 		installed=true for JBoss 4.2.3 or newer
 	  To have Seam defer loading of the persistence unit until it's needed, perhaps for a quicker 
 		deployment turnaround, you can  disable the startup behavior of this component, SiA-9.3.1-p363
