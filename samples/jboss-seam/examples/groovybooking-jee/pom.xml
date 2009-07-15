@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>no.knowit.seam.examples</groupId>
+		<artifactId>seam-examples</artifactId>
+		<version>2.1.2</version>
+		<relativePath>../../../pom.xml</relativePath>
+	</parent>
+
+	<groupId>org.jboss.seam.examples</groupId>
+	<artifactId>seam-groovybooking-jee</artifactId> <!-- m2eclipse does not like: ${app.context}-jee -->
+	<name>${app.display.name} ${project.version}</name>
+	<version>0.1-SNAPSHOT</version>
+	<description>The JBoss Seam Groovy Booking JEE Example parent pom</description>
+	<packaging>pom</packaging>
+
+	<prerequisites>
+		<maven>2.0.9</maven>
+	</prerequisites>
+
+	<modules>
+		<module>ear</module>
+		<module>ejb</module>
+		<module>war</module>
+	</modules>
+
+	<properties>
+		<app.context>seam-groovybooking-jee</app.context>  <!-- hint: same value as artifactId -->
+		<app.display.name>Seam Groovy Booking JEE example</app.display.name>
+		<app.description>The JBoss Seam Groovy Booking JEE Example</app.description>
+		<app.database.name>refimpl_db</app.database.name> <!-- Does not matter as long as we are using Hypersonic db -->
+		
+		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for jboss-4.2.3.GA and newer -->
+	</properties>
+
+	<dependencyManagement>
+	
+		<dependencies>
+
+			<!-- project modules -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-ear</artifactId>
+				<version>${project.version}</version>
+				<type>ear</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-ejb</artifactId>
+				<version>${project.version}</version>
+				<type>ejb</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-war</artifactId>
+				<version>${project.version}</version>
+				<type>war</type>
+			</dependency>
+
+		</dependencies>
+		
+	</dependencyManagement>
+
+</project>
