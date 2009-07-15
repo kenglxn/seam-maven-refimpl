@@ -54,13 +54,6 @@
 		</core:bundle-names>
 	</core:resource-loader>
 
-  <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-9.3.1-p362 -->
-	<persistence:entity-manager-factory
-		name="entityManagerFactory"
-		persistence-unit-name="${app.persistence.unit.name}"
-		installed="false"
-		startup="false" />
-
   <!-- 
 		BOOTSTRAPPING A JPA ENTITYMANAGERFACTORY, SiA-9.3.1-p362
 		installed=true for JBoss 4.2.3 or newer
@@ -70,11 +63,11 @@
 		entity-manager-factory name also referenced in in persistence.xml: 
 		persistence-unit name="${app.persistence.unit.name}"
 	-->
-	<persistence:entity-manager-factory 
-		name="groovyEntityManagerFactory"
-		persistence-unit-name="groovy" 
-		installed="${app.persistence.emf.installed}"
-		startup="${app.persistence.emf.startup}" />
+	<persistence:entity-manager-factory
+		name="entityManagerFactory"
+		persistence-unit-name="${app.persistence.unit.name}"
+		installed="false"
+		startup="false" />
 
 	<!--
 		If Seam loads the persistence unit (JBoss 4.x), the
