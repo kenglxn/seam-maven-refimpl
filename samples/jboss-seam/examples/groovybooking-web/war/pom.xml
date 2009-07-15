@@ -193,13 +193,13 @@
 			<type>jar</type>
 		</dependency>
 
-		<!-- groovy -->
+		<!-- Groovy -->
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
 		</dependency>
 
-		<!-- antlr -->
+		<!-- antlr, needed by Groovy -->
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr-runtime</artifactId>

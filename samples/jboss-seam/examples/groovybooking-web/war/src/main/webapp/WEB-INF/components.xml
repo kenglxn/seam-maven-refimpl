@@ -23,6 +23,8 @@
 		conversation-timeout="120000" 
 		conversation-id-parameter="cid" />
     
+  <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-9.3.1-p362 -->
+	<!-- note: installed=true for JBoss 4.2.3 or newer -->
 	<persistence:entity-manager-factory 
 		name="groovyEntityManagerFactory"
 		persistence-unit-name="groovy" 
