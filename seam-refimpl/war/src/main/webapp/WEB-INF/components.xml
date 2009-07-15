@@ -23,7 +23,7 @@
 
      
   <!-- 
-	 	debug="true" requires "jboss-seam-debug" in pom, SiA-4.5.2-p154
+	 	debug="true" requires "jboss-seam-debug" dependency in pom, SiA-4.5.2-p154
 	 	
 	 	Seam managed transactions are enabled by default, but as a reminder: 
 	 	transaction-management-enabled="true", SiA-9.4.1-p370
@@ -32,7 +32,9 @@
 		to conversation-scoped components when enabled. Enabling it is simple. You just set the
 		distributable property on the org.jboss.seam.init.core component to true. More simply put,
 		you add (or  update) the following component declaration in the component descriptor  (i.e.,
-		components.xml), seam_reference-35.2.			
+		components.xml), seam_reference-35.2.
+
+		For cluster: distributable="true". Also uncomment the distributable tag in web.xml
   -->
 	<core:init
 		debug="${env.debug}"
@@ -54,8 +56,15 @@
 		</core:bundle-names>
 	</core:resource-loader>
 
-  <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-9.3.1-p362 -->
-	<!-- note: installed=false for JBoss4, installed=true for JBoss 5 -->
+  <!-- 
+		BOOTSTRAPPING A JPA ENTITYMANAGERFACTORY, , SiA-9.3.1-p362
+		installed=true for JBoss 4.2.3 or newer
+	  To have Seam defer loading of the persistence unit until it's needed, perhaps for a quicker 
+		deployment turnaround, you can  disable the startup behavior of this component, SiA-9.3.1-p363
+		
+		entity-manager-factory name is also referenced in in persistence.xml: 
+		persistence-unit name="${app.persistence.unit.name}"
+	-->
 	<persistence:entity-manager-factory
 		name="${app.entity.manager.factory.name}"
 		persistence-unit-name="${app.persistence.unit.name}"
@@ -67,6 +76,10 @@
 		EntityManagerFactory will be resolved from #{${app.entity.manager.factory.name}}. 
 		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-9.3.1-p362.
+		
+		By default, the Seam-managed persistence context components are defined with the autocreate 
+		feature disabled. By enabling this feature, you can inject these components using an 
+		@In annotation without having to supply the create attribute, SiA-9.3.2-p366.
 	-->
 	<persistence:managed-persistence-context
 		name="entityManager"
