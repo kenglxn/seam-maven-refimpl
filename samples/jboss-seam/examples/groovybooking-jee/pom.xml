@@ -35,6 +35,9 @@
 		<app.description>The JBoss Seam Groovy Booking JEE Example</app.description>
 		<app.database.name>refimpl_db</app.database.name> <!-- Does not matter as long as we are using Hypersonic db -->
 		
+		<app.jndi.name>groovyDatasource</app.jndi.name>
+		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+		<app.persistence.unit.name>groovy</app.persistence.unit.name>
 		<app.entity.manager.factory.name>groovyEntityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g seam-refimplEntityManagerFactory is illegal-->
 		<app.persistence.unit.jndi.name>java:/${app.entity.manager.factory.name}</app.persistence.unit.jndi.name>
 		

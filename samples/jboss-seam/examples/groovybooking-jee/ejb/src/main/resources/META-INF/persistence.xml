@@ -6,9 +6,9 @@
 		http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" 
 >
   
-  <persistence-unit name="groovy" transaction-type="JTA">  
+  <persistence-unit name="${app.persistence.unit.name}" transaction-type="JTA">  
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <jta-data-source>java:/groovyDatasource</jta-data-source>
+    <jta-data-source>${app.jta.data.source}</jta-data-source>
     <properties>
     	<!--	
     		Binds the EntityManagerFactory to JNDI where Seam can look it up. This is only relevant when 

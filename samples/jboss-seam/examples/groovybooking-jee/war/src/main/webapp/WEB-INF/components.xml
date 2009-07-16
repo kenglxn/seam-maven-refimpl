@@ -65,7 +65,7 @@
 
 	<persistence:entity-manager-factory 
 		name="${app.entity.manager.factory.name}"
-		persistence-unit-name="groovy" 
+		persistence-unit-name="${app.persistence.unit.name}" 
 		installed="${app.persistence.emf.installed}"
 		startup="${app.persistence.emf.startup}" />
 
