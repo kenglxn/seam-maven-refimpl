@@ -34,26 +34,6 @@
 		<param-value>blueSky</param-value>
 	</context-param>
 
-	<!-- JSF -->
-	<context-param>
-		<description>
-			JSF 1.2 detects the ViewHandler/StateManager version from the
-			faces-config.xml DTD/XML schema name. The faces-config.xml files in
-			the RichFaces JARs use the JSF 1.1 DTDs, causing JSF to use 1.1
-			behavior. Setting this flag to false ignores the version of the DTD
-			used in these files, thus ensuring that JSF uses 1.2 behavior.
-			
-			One of the critical improvements in JSF 1.2 is that it throws a
-			ViewExpiredException on a session timeout.
-			
-			See http://jira.jboss.com/jira/browse/RF-2294 and
-			http://lists.jboss.org/pipermail/seam-dev/2008-February/000024.html.
-		</description>
-		
-		<param-name>com.sun.faces.disableVersionTracking</param-name>
-		<param-value>true</param-value>
-	</context-param>
-
 	<!-- SiA source code, ch11 -->
 	<!--
 	<context-param>
