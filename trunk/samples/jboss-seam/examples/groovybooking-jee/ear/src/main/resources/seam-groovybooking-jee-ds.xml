@@ -7,7 +7,7 @@
 <datasources>
    
    <local-tx-datasource>
-      <jndi-name>groovyDatasource</jndi-name>
+      <jndi-name>${app.jndi.name}</jndi-name>
       <connection-url>jdbc:hsqldb:.</connection-url>
       <driver-class>org.hsqldb.jdbcDriver</driver-class>
       <user-name>sa</user-name>
