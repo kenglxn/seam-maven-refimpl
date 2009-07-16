@@ -44,7 +44,7 @@ Note that `<targetBytecode>1.6</targetBytecode>` corresponds to groovy-all versi
       installed="true"/>
 }}}
   * "groovy-all" must be upgraded to version 1.6.3. Version 1.5.4 provided by the Seam-2.1.2 root POM, does not work.
-  * Used gmaven-plugin to compile Groovy files
+  * Uses gmaven-plugin to compile Groovy files
   * No hot code replacement, all compiled code deployed to `WEB-INF/classes`. It should be realtivly easy to make a Maven hot code replacement version but this was not the goal for this excercise :-)
   * Fixed transient dependencies
 
