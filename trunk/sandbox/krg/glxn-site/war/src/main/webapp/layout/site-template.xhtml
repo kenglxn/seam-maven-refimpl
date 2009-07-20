@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://richfaces.org/a4j"
+      xmlns:s="http://jboss.com/products/seam/taglib">
+<f:view>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <script src="/js/prototype.js" type="text/javascript" charset="utf-8"></script>
+        <!--<script src="js/effects.js" type="text/javascript" charset="utf-8"></script>-->
+        <!--<script src="js/glider.js" type="text/javascript" charset="utf-8"></script>-->
+
+
+        <link rel="stylesheet" href="#{request.contextPath}/css/blueprint/screen.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="#{request.contextPath}/css/blueprint/print.css" type="text/css" media="print"/>
+        <!--[if IE]>
+        <link rel="stylesheet" href="../../styles/blueprint/ie.css" type="text/css" media="screen, projection" />
+        <![endif]-->
+        <link rel="stylesheet" href="#{request.contextPath}/css/clear-float.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="#{request.contextPath}/css/inline-block.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="#{request.contextPath}/css/page-layout.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="#{request.contextPath}/css/horisontal-tabbed.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="#{request.contextPath}/css/form.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="#{request.contextPath}/css/form.search-bar.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="#{request.contextPath}/css/site.css" type="text/css" media="screen, projection"/>
+
+
+
+
+        <link rel="stylesheet" href="#{request.contextPath}/css/cleanpage.css" type="text/css" media="screen, projection"/>
+
+        <link rel="shortcut icon" href="#{request.contextPath}/img/favicon.ico"/>
+
+        <ui:insert name="head-title">
+            <title>GLXN - Home of Ken Gullaksen</title>
+        </ui:insert>
+    </head>
+
+    <body>
+
+    <div id="sizer">
+        <div id="expander">
+
+            <div id="page-wrapper">
+
+                <div id="header">
+                    <div>
+                        <div class="sitelogo"></div>
+                        <div id="horisontal-menu">
+                            <div>
+                                <div>
+                                    <h:form id="menuform">
+
+                                        <ul class="menu">
+                                            <ui:insert name="menu">
+                                                <li class="home"><span><a href="index">Home</a></span></li>
+                                                <li class="howtos"><span><a href="howtos">How-Tos</a></span></li>
+                                                <li class="execution-plans hidetab"><span><a
+                                                        href="#">Execution</a></span>
+                                                </li>
+                                                <li class="services current hidetab"><span><a
+                                                        href="#">Services</a></span>
+                                                </li>
+                                                <li class="planning hidetab"><span><a href="#">Planning</a></span></li>
+                                                <li class="hidetab"><span><a href="#">Administration</a></span></li>
+                                                <li class="login hidetab"><span><a href="#">Log In</a></span></li>
+                                                <li class="about hidetab"><span><a href="#">About</a></span></li>
+                                                <li class="help hidetab"><span><a href="#">Help</a></span></li>
+
+                                                <li class="search">
+                                                    <form id="search-bar" class="ki-form" action="" method="post">
+                                                        <fieldset class="clear-float">
+                                                            <input id="search" name="search" type="text"
+                                                                   value="search..."
+                                                                   onfocus="javascript: SearchHelper.removeHint(this);"
+                                                                   onblur="javascript: SearchHelper.appendHint(this);"
+                                                                    />
+                                                            <input id="search-submit" name="search-submit" type="submit"
+                                                                   value=""
+                                                                   onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
+                                                                   onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
+                                                                    />
+
+                                                            <input id="search-help" name="search-help" type="button"
+                                                                   value=""
+                                                                   onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
+                                                                   onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
+                                                                    />
+
+                                                            <!--
+                                                            <a href="#" id="search-help"
+                                                              onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
+                                                              onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
+                                                            >Help
+                                                            </a>
+                                                            -->
+
+
+                                                        </fieldset>
+                                                    </form>
+                                                </li>
+                                            </ui:insert>
+                                        </ul>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #horisontal-menu -->
+                    </div>
+                </div>
+                <!-- #header -->
+
+                <div id="page">
+                    <ui:insert name="page-title">
+                        <h2>Welcome to my website.</h2>
+                    </ui:insert>
+
+                    <div class="inline-block left-content">
+                        <ui:insert name="left-content">
+                            <p>On this site you will find...</p>
+                        </ui:insert>
+                    </div>
+
+                    <div class="inline-block main-content">
+                        <div id="main-content-body">
+                            <div>
+                                <div>
+                                    <h:messages id="messages"
+                                                globalOnly="true"
+                                                styleClass="message"
+                                                errorClass="errormsg"
+                                                infoClass="infomsg"
+                                                warnClass="warnmsg"
+                                                rendered="#{showGlobalMessages != 'false'}"/>
+                                    <ui:insert name="main-content-body">
+                                        <p>[pic] who am i?</p>
+
+                                        <p>career and ed</p>
+
+                                        <p>academic interests</p>
+
+                                        <p>personal interests</p>
+                                    </ui:insert>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inline-block banner">
+                        <script type="text/javascript"><!--
+                        google_ad_client = "pub-4879279033823175";
+                        /* 120x240, opprettet 29.04.09 */
+                        google_ad_slot = "2563915601";
+                        google_ad_width = 120;
+                        google_ad_height = 240;
+                        //-->
+                        </script>
+                        <script type="text/javascript"
+                                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                        </script>
+                    </div>
+                </div>
+                <!-- #page -->
+            </div>
+            <!-- #page-wrapper -->
+
+            <div id="footer" style="">
+                <div>
+                    <ui:insert name="footer">
+                        <h4>adm 'at' glxn.net </h4>
+                    </ui:insert>
+                </div>
+            </div>
+            <!-- #footer -->
+
+        </div>
+        <!-- #expander -->
+    </div>
+    <!-- #sizer -->
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        try {
+            var pageTracker = _gat._getTracker("UA-9570909-1");
+            pageTracker._trackPageview();
+        } catch(err) {
+        }</script>
+    </body>
+</f:view>
+</html>

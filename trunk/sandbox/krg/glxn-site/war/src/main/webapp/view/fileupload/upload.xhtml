@@ -1,0 +1,116 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j"
+                template="../../layout/site-template.xhtml">
+
+    <ui:define name="head-title">
+        <title>GLXN - Home of Ken Gullaksen</title>
+    </ui:define>
+
+    <ui:define name="menu">
+        <ui:include src="../includes/menu/menuform.xhtml"/>
+    </ui:define>
+
+    <ui:define name="page-title">
+        <h2>Create a page</h2>
+    </ui:define>
+
+    <ui:define name="left-content">
+        <rich:panel id="fileinfo">
+            <f:facet name="header">files with no filesets:</f:facet>
+            <rich:dataList var="_file" value="#{fileList.filesWithoutFilesets}">
+                <s:graphicImage value="#{_file.image}"
+                                fileName="#{_file.id}"
+                                alt="[image]">
+                    <s:transformImageSize height="32"
+                                          maintainRatio="true"/>
+                </s:graphicImage>
+            </rich:dataList>
+        </rich:panel>
+        <rich:panel id="filesetinfo">
+            <f:facet name="header">filesets:</f:facet>
+            <rich:dataList var="_fileSet" value="#{fileSetList.resultList}">
+                <s:link id="fileset"
+                        value="#{_fileSet.name}">
+                    <f:param name="fileSetId" value="#{_fileSet.id}"/>
+                </s:link>
+                <rich:toolTip for="fileset"
+                              value="#{_fileSet.description}"/>
+            </rich:dataList>
+        </rich:panel>
+        <rich:panel id="filesetcontentinfo" rendered="#{!empty param.fileSetId}">
+            <f:facet name="header">files in selected fileset:</f:facet>
+            <rich:dataList var="_file" value="#{fileList.filesForFileSet}">
+                <s:graphicImage value="#{_file.image}"
+                                fileName="#{_file.id}"
+                                alt="[image]">
+                    <s:transformImageSize height="32"
+                                          maintainRatio="true"/>
+                </s:graphicImage>
+            </rich:dataList>
+        </rich:panel>
+    </ui:define>
+
+    <ui:define name="main-content-body">
+
+        <h:form id="pageform" styleClass="ki-form">
+            <rich:messages styleClass="message"
+                           errorClass="errormsg"
+                           infoClass="infomsg"
+                           warnClass="warnmsg"
+                           ajaxRendered="true"/>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Create FileSet:
+                </legend>
+                <h:outputLabel value="name:"
+                               for="name"/>
+                <h:inputText id="name"
+                             value="#{fileSetHome.instance.name}"/>
+
+                <h:outputLabel value="description:"
+                               for="desc"/>
+                <h:inputTextarea id="desc"
+                                 value="#{fileSetHome.instance.description}"
+                                 style="height: 75px"/>
+                <fieldset class="buttons">
+                    <a4j:commandButton value="create fileset"
+                                       action="#{fileSetHome.persist}"
+                                       reRender="fileuploadpanel">
+                        <s:conversationId/>
+                    </a4j:commandButton>
+                </fieldset>
+            </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Upload Files
+                </legend>
+                <a4j:outputPanel id="fileuploadpanel">
+
+                    <h:outputLabel value="to fileset:"
+                                   for="fileset"/>
+                    <h:inputText id="fileset"
+                                 value="#{!empty fileSetHome.instance.name ? fileSetHome.instance.name : 'no fileset'}"
+                                 readonly="true"/>
+
+                    <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
+                                     maxFilesQuantity="100"
+                                     listHeight="150">
+                        <a4j:support event="onuploadcomplete" reRender="fileinfo, filesetcontentinfo, filesetinfo"/>
+                    </rich:fileUpload>
+                </a4j:outputPanel>
+
+            </fieldset>
+        </h:form>
+
+    </ui:define>
+
+    <ui:define name="footer">
+        <h4>adm 'at' glxn.net </h4>
+    </ui:define>
+</ui:composition>

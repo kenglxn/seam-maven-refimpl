@@ -1,0 +1,276 @@
+/* 
+ * File        : horisontal-tabbed.css
+ * Created     : 20090307
+ * Version     : 1.0
+ * Author      : loo@knowit.no
+ * Copyright   : (c)2009, 
+ *               Do not use (or abuse) this code without permission.
+ *
+ * Description : horisontal tab menu
+ * Notes       : Inspirations for this css: 
+ *               Stu Nichols    : http://www.cssplay.co.uk/menus/
+ *              
+ *             : This css does not support ie6
+ *
+ * Tested in   : IE5.5                                  : Not Applicable (NA)
+ *               IE6 win Quirks mode                    : NA
+ *               IE6 win Standards mode                 : NA, 
+ *               IE7                                    : OK
+ *               Firefox 1.5 win                        : NT, 
+ *               Firefox 1.5 linux                      : NT, 
+ *               Firefox 2   win                        : NT, 
+ *               Firefox 2   linux                      : NT, 
+ *               Firefox 3   win                        : OK, 
+ *               Firefox 3   linux                      : NT, 
+ *               Opera 9     win                        : OK, 
+ *               Opera 9     linux                      : NT, 
+ *               Safari 3.1 win                         : OK
+ *               Chrome 1.x win                         : OK
+ *
+ * Dependencies: 
+ * Recommended : 
+ * History     : 
+ */
+#horisontal-menu {
+  position: relative;           /* can use e.g. position:absolute; bottom: 0; */
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+                                /* can use e.g. border-bottom: 1px solid #C9910F; */
+  width: 100%;
+  text-align: left;
+  background:transparent url(../img/menu.menu-bar-l.png) no-repeat top left;
+}
+
+#horisontal-menu>*:first-child {
+  display: block;
+  margin: 0 0 0 10px;
+  padding: 0;
+  border: 0;
+  width: auto;
+  background:transparent url(../img/menu.menu-bar-r.png) no-repeat top right;
+}
+#horisontal-menu>*:first-child>*:first-child {
+  display: block;
+  margin: 0 10px 0 0;
+  padding: .2em 0 0 0;
+  border: 0;
+  width: auto;
+  min-height: 2em;
+  height: 100%;
+  background:transparent url(../img/menu.menu-bar-c.png) repeat-x top;
+}
+
+#horisontal-menu ul.menu {
+  position: relative;
+  margin: 0 0 0 -6px;
+  *margin-left: -9px;           /* 3px more for ie */
+  padding: 0; 
+  list-style-type: none;
+  white-space: nowrap;          /* keep text on one line */
+  cursor: default;              /* neede by ie */
+}
+
+#horisontal-menu .menu li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  
+  position: relative;          /* reference point for positioning of ft elements */
+  max-height: 190px;           /* lte. height of background image */
+  max-width: 180px;            /* lte. width of background image */
+  padding-left: 7px;           /* Same value as the background image width */
+  margin-bottom: 0;            /* Make room for bottom background image */
+  background:transparent url(../img/menu.button-l.png) no-repeat left -84px;
+  
+  /* begin: inline-block */
+  width: auto;
+  min-height: .1em;
+  min-width: .1em;
+  vertical-align: top;         /* results in a great looking grid: */
+  display: -moz-inline-stack;  /* Firefox need this to simulate display:inline-block */
+  display: inline-block;       /* ie does not apply this to Block Element, and Firefox */
+                               /* does not render this, too                            */
+  zoom:1;                      /* fix ie7, trigger hasLayout */
+  *display:inline;             /* fix ie6+ie7, once hasLayout is true, set display:inline to block  */
+                               /* element will make display:inline behave like display:inline-block */
+  *margin-left: 3px;           /* we3c already have 3px  */
+  /* end: inline-block */
+}
+#horisontal-menu .menu li:hover {
+  /*margin-top: 1px;             /* push the button ... */
+  /*margin-bottom: -1px;         /* ... down 1px        */
+  background: transparent url(../img/menu.button-l.png) no-repeat left -28px;
+}
+#horisontal-menu .menu li:focus, 
+#horisontal-menu .menu li:active {
+  /*margin-top: 1px;             /* push the button ... */
+  /*margin-bottom: -1px;         /* ... down 1px        */
+  background: transparent url(../img/menu.button-l.png) no-repeat left -56px;
+}
+
+#horisontal-menu .menu li>*:first-child {
+  display: block;
+  height: 100%;                /* Needed by ie7 if contained element is floated */
+  background:transparent url(../img/menu.button-r.png) no-repeat right -84px;
+}
+#horisontal-menu .menu li:hover>*:first-child {
+  background: transparent url(../img/menu.button-r.png) no-repeat right -28px;
+}
+#horisontal-menu .menu li:focus>*:first-child,
+#horisontal-menu .menu li:active>*:first-child {
+  background:transparent url(../img/menu.button-r.png) no-repeat right -56px;
+}
+
+#horisontal-menu .menu li a, 
+#horisontal-menu .menu li a:visited {
+  float: none;        /* be careful! clear-float class is needed if floated, see form.custom-buttons.css */
+  display: block; 
+  margin: 0;
+  border: 0;  
+  padding: .3em .6em;
+  text-indent: -7px;  /* same value as li.padding-left value */
+                      /* note: should have use margin-left:-3px, but ie7 looses clickable area */
+  font-size: 1.2em;
+  line-height:1.5;
+  color: #FAFAFA; 
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  -moz-outline: none;
+  outline: none;
+  background: transparent;  /* set background according to rest of design */
+}
+#horisontal-menu .menu li a:hover, 
+#horisontal-menu .menu li a:focus, 
+#horisontal-menu .menu li a:active {
+  color: #ffffff; 
+}
+
+/* current tab */
+#horisontal-menu .menu li.current,
+#horisontal-menu .menu li.current:hover,
+#horisontal-menu .menu li.current:focus, 
+#horisontal-menu .menu li.current:active {
+  /*margin-top: 1px;             *//* push the button ... */
+  /*margin-bottom: -1px;         *//* ... down 1px        */
+  background: transparent url(../img/menu.button-l.png) no-repeat left -56px;
+}
+#horisontal-menu .menu li.current>*:first-child,
+#horisontal-menu .menu li.current:hover>*:first-child,
+#horisontal-menu .menu li.current:focus>*:first-child,
+#horisontal-menu .menu li.current:active>*:first-child {
+  background:transparent url(../img/menu.button-r.png) no-repeat right -56px;
+}
+/*
+ * decorate some menu items with a sensible icon 
+ * the class names and background images will vary from project to project 
+ * remove and/or modify as needed
+ */
+
+#horisontal-menu .menu li.home a, 
+#horisontal-menu .menu li.home a:visited {
+  /*padding-left: 24px; *//* make room for 16px wide bg.image */
+  /*background: transparent url(../img/menu.home.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.home a:hover, 
+#horisontal-menu .menu li.home a:focus, 
+#horisontal-menu .menu li.home a:active {
+  /*background-image: url(../img/menu.home.hover.png);*/
+}
+#horisontal-menu .menu li.login a, 
+#horisontal-menu .menu li.login a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(../img/menu.login.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.login a:hover, 
+#horisontal-menu .menu li.login a:focus, 
+#horisontal-menu .menu li.login a:active {
+  /*background-image: url(../img/menu.login.hover.png);*/
+}
+
+#horisontal-menu .menu li.help a, 
+#horisontal-menu .menu li.help a:visited {
+  padding-left: 24px;
+  background: transparent url(../img/menu.help.png) 2px center no-repeat;
+}
+#horisontal-menu .menu li.help a:hover, 
+#horisontal-menu .menu li.help a:focus, 
+#horisontal-menu .menu li.help a:active {
+  background-image: url(../img/menu.help.hover.png);
+}
+
+#horisontal-menu .menu li.about a, 
+#horisontal-menu .menu li.about a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(../img/menu.about.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.about a:hover, 
+#horisontal-menu .menu li.about a:focus, 
+#horisontal-menu .menu li.about a:active {
+  /*background-image: url(../img/menu.about.hover.png);*/
+}
+
+
+
+
+
+
+
+#horisontal-menu .menu li.transport-requests a, 
+#horisontal-menu .menu li.transport-requests a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(menu.transport-requests.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.transport-requests a:hover, 
+#horisontal-menu .menu li.transport-requests a:focus, 
+#horisontal-menu .menu li.transport-requests a:active {
+  /*background-image: url(menu.transport-requests.hover.png);*/
+}
+
+#horisontal-menu .menu li.execution-plans a, 
+#horisontal-menu .menu li.execution-plans a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(menu.execution-plans.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.execution-plans a:hover, 
+#horisontal-menu .menu li.execution-plans a:focus, 
+#horisontal-menu .menu li.execution-plans a:active {
+  /*background-image: url(menu.execution-plans.hover.png);*/
+}
+
+#horisontal-menu .menu li.services a, 
+#horisontal-menu .menu li.services a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(menu.services.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.services a:hover, 
+#horisontal-menu .menu li.services a:focus, 
+#horisontal-menu .menu li.services a:active {
+  /*background-image: url(menu.services.hover.png);*/
+}
+
+#horisontal-menu .menu li.planning a, 
+#horisontal-menu .menu li.planning a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(menu.planning.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.planning a:hover, 
+#horisontal-menu .menu li.planning a:focus, 
+#horisontal-menu .menu li.planning a:active {
+  /*background-image: url(menu.planning.hover.png);*/
+}
+
+#horisontal-menu .menu li.administration a, 
+#horisontal-menu .menu li.administration a:visited {
+  padding-left: 24px;
+  background: transparent url(menu.administration.png) 2px center no-repeat;
+}
+#horisontal-menu .menu li.administration a:hover, 
+#horisontal-menu .menu li.administration a:focus, 
+#horisontal-menu .menu li.administration a:active {
+  background-image: url(menu.administration.hover.png);
+}

@@ -1,0 +1,66 @@
+/* 
+ * File        : clear-float.css
+ * Version     : 1.0
+ * Author      : leif.olsen@communityr.com
+ * Copyright   : 
+ * Description : Easy clearing of floats without extra markup.
+ *               Based on How To Clear Floats Without Structural Markup by PiE, see:
+ *               http://www.positioniseverything.net/easyclearing.html
+ * Notes       : This is very similar to blueprints clearing class.
+ * Created     : 20060315
+ * Tested in   : IE5.5                                  : Not tested (NT), don't think it will work!
+ *               IE6 win Quirks mode                    : NA, this is XHTML!
+ *               IE6 win Standards mode                 : OK 
+ *               IE7 Standards mode                     : OK,
+ *               Firefox 1.5 win                        : OK, 
+ *               Firefox 2   win                        : OK, 
+ *               Firefox 2   linux                      : OK, 
+ *               Firefox 3   win                        : OK, 
+ *               Firefox 3   linux                      : NT, 
+ *               Opera 9  win                           : OK, 
+ *               Opera 9  linux                         : OK, 
+ *               Safari 2.0.3 mac                       : OK
+ *               Safari 3.1 win                         : OK
+ *               Chrome 1.x win                         : OK
+ * Dependencies: none
+ * Recommended : 
+ * History     : 
+ */
+
+br.clear-float,
+.clear-float:after {
+  content: "\0020"; 
+  display: block; 
+  clear: both; 
+  visibility: hidden;
+  overflow: hidden;
+  height: 0;
+  line-height: 0; 
+  font-size: 0;
+  background-color: transparent;
+}
+.clear-float {
+  display: block;
+}
+* html .clear-float {
+  height: 1%;
+}
+*:first-child+html .clear-float { 
+  display: inline-block; /* ie7 needs inline-block */
+}
+
+
+/* Clearing floats without extra markup
+   Based on How To Clear Floats Without Structural Markup by PiE
+   [http://www.positioniseverything.net/easyclearing.html] */
+/*
+.clearfix:after, .container:after {
+    content: "\0020"; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden; 
+    overflow:hidden; 
+}
+.clearfix, .container {display: block;}
+*/

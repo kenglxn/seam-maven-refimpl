@@ -1,0 +1,111 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="layout/site-template.xhtml">
+
+    <ui:define name="head-title">
+        <title>GLXN - Home of Ken Gullaksen</title>
+    </ui:define>
+
+    <ui:define name="menu">
+        <ui:include src="view/includes/menu/menuform.xhtml"/>
+    </ui:define>
+
+    <ui:define name="page-title">
+        <h2>#{pageHome.instance.title}</h2>
+    </ui:define>
+
+    <ui:define name="left-content">
+        child pages:
+        <ul>
+            <ui:repeat var="_page" value="#{pageList.childPages}">
+                <li class="page">
+                    <span>
+                        <s:link value="#{_page.title}"
+                                view="/page.xhtml"
+                                title="#{_page.title}"
+                                propagation="none">
+                            <f:param name="pageId" value="#{pageHome.instance.id}"/>
+                            <f:param name="childId" value="#{_page.id}"/>
+                        </s:link>
+                    </span>
+                </li>
+            </ui:repeat>
+        </ul>
+    </ui:define>
+
+    <ui:define name="main-content-body">
+        <f:subview id="childIdNotPresentSubview"
+                   rendered="#{empty childId}">
+            <h1><h:outputText value="#{pageHome.instance.title}"/></h1>
+            <f:subview id="_filesetPagePre"
+                       rendered="#{pageHome.instance.fileSet ne null and pageHome.instance.fileSetPosition eq 'pre'}">
+                <ui:include src="view/page/fileset.xhtml">
+                    <ui:param name="fileSet" value="#{pageHome.instance.fileSet}"/>
+                </ui:include>
+            </f:subview>
+            <h:outputText value="#{pageHome.instance.content}"
+                          escape="false"/>
+            <f:subview id="_filesetPagePost"
+                       rendered="#{pageHome.instance.fileSet ne null and pageHome.instance.fileSetPosition eq 'post'}">
+                <ui:include src="view/page/fileset.xhtml">
+                    <ui:param name="fileSet" value="#{pageHome.instance.fileSet}"/>
+                </ui:include>
+            </f:subview>
+            <s:link value="edit page"
+                    view="/view/page/crud.xhtml"
+                    rendered="#{identity.hasRole('admin')}"/>
+        </f:subview>
+        <f:subview id="childIdPresentSubview"
+                   rendered="#{not empty childId}">
+            <h1><h:outputText value="#{child.title}"/></h1>
+            <f:subview id="_filesetChildPre"
+                       rendered="#{child.fileSet ne null and child.fileSetPosition eq 'pre'}">
+                <ui:include src="view/page/fileset.xhtml">
+                    <ui:param name="fileSet" value="#{child.fileSet}"/>
+                </ui:include>
+            </f:subview>
+            <h:outputText value="#{child.content}"
+                          escape="false"/>
+            <f:subview id="_filesetChildPost"
+                       rendered="#{child.fileSet ne null and child.fileSetPosition eq 'post'}">
+                <ui:include src="view/page/fileset.xhtml">
+                    <ui:param name="fileSet" value="#{child.fileSet}"/>
+                </ui:include>
+            </f:subview>
+            <a4j:repeat id="pages"
+                        value="#{pageList.childPages}"
+                        var="_page"
+                        rowKeyVar="pg">
+                <h:outputText value="["
+                              rendered="#{_page.id eq childId}"/>
+                <s:link id="childPage"
+                        value="#{pg+1}">
+                    <f:param name="pageId" value="#{pageHome.instance.id}"/>
+                    <f:param name="childId" value="#{_page.id}"/>
+                </s:link>
+                <h:outputText value="]"
+                              rendered="#{_page.id eq childId}"/>
+            </a4j:repeat>
+
+            <s:link value="edit page"
+                    view="/view/page/crud.xhtml"
+                    rendered="#{identity.hasRole('admin')}"
+                    propagation="none">
+                <f:param name="pageId" value="#{child.id}"/>
+            </s:link>
+        </f:subview>
+
+
+    </ui:define>
+
+    <ui:define name="footer">
+        <h4>adm 'at' glxn.net </h4>
+    </ui:define>
+</ui:composition>
