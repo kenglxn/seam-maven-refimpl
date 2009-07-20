@@ -1,0 +1,39 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich" template="layout/site-template.xhtml">
+
+    <ui:define name="head-title">
+        <title>GLXN - Home of Ken Gullaksen</title>
+    </ui:define>
+
+    <ui:define name="menu">
+        <ui:include src="view/includes/menu/menuform.xhtml"/>
+    </ui:define>
+
+    <ui:define name="page-title">
+        <h2>Welcome to my website.</h2>
+    </ui:define>
+
+    <ui:define name="left-content">
+        <p>On this site you will find...</p>
+    </ui:define>
+
+    <ui:define name="main-content-body">
+        <p>[pic] who am i?</p>
+
+        <p>career and ed</p>
+
+        <p>academic interests</p>
+
+        <p>personal interests</p>
+    </ui:define>
+
+    <ui:define name="footer">
+        <h4>adm 'at' glxn.net </h4>
+    </ui:define>
+</ui:composition>

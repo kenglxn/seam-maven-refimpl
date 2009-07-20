@@ -1,0 +1,681 @@
+/* 
+ * File        : form.css
+ * Created     : 20051017
+ * Version     : 1.0
+ * Author      : leif.olsen@start.no
+ * Copyright   : (c)2005-2009, 
+ *               Do not use (or abuse) this code without permission.
+ *
+ * Description : x-browser Form styling.
+ * Notes       : Inspirations for this css: 
+ *               The Man in Blue: http://www.themaninblue.com/writing/perspective/2004/03/24/
+ *               Stu Nichols    : http://www.cssplay.co.uk/menu/form.html
+ *               Quirksmode     : http://www.quirksmode.org/css/forms.html
+ *               A List Apart   : http://www.alistapart.com/
+ *               And            : ME
+ *               This css will no longer support ie6, hipp, hipp horray!
+ *
+ * Tested in   : IE5.5                                  : Not tested (NT), don't think it will work (and who cares)!
+ *               IE6 win Quirks mode                    : Not Applicable (NA)
+ *               IE6 win Standards mode                 : NA, 
+ *               IE7                                    : OK
+ *               Firefox 1.5 win                        : NT, 
+ *               Firefox 1.5 linux                      : NT, 
+ *               Firefox 2   win                        : T, Tested(T). Borders around input fields 
+ *                                                           not rendered as in ff3.
+ *               Firefox 2   linux                      : NT, 
+ *               Firefox 3   win                        : OK, 
+ *               Firefox 3   linux                      : NT, 
+ *               Opera 9     win                        : OK, 
+ *               Opera 9     linux                      : NT, 
+ *               Netscape 8.1 win "Display Like IE"     : NA, 
+ *               Netscape 8.1 win "Display Like Firefox": NA
+ *               Safari 3.1 win                         : OK
+ *               Chrome 1.x win                         : OK
+ *
+ * Dependencies: blueprint.css (or reset.css and typography.css), 
+ *               clear-float.css, viewport.css, grid-layout.css
+ * Recommended : 
+ * History     : 20090215 - Start removing of ie6 spesific css.
+ *               20090221 - Finally got rid of ie6 spesific css!
+ *                          Internet Exploder 6 is no longer maintained in this code
+ */
+ 
+/* -----------------------------------------------------------
+ * Tags contained inside the form tag that can not be classed
+ * ----------------------------------------------------------- */
+form br {
+  clear: left;
+}
+/* Easy clearing (see main.css) fix for firefox fieldset. 
+ * <fieldset class="clear-float">: When the clear-float class is applied to the 
+ * fieldset tag strange things happen to input fields in firefox 1.5 and 2.0,
+ * caret disappears, select boxes won't drop down, etc.
+ * We can not remove content:''; from the original class, but setting content:inherit; 
+ * for fieldset tags seems to fix the problem.
+ */
+fieldset.clear-float:after {
+  content: inherit;
+}
+/* hack for Opera 7+ */
+@media all and (min-width: 0px) {
+  fieldset.clear-float:after {
+    content: "";  /* Opera8.5+ needs the original setting */
+  }
+}
+
+/* --------------------------------------------------------
+ * Generic Form styling
+ * -------------------------------------------------------- */
+.ki-form {
+  font-family: inherit;   /* FireFox: font-family does not cascade */
+  margin: 0;
+  padding: .3em;          /* Make space for fieldsets */
+  border: 0;
+  
+  font-size: 10px;        /* To maintain ems to pixel ratio: 1em == 10px */ 
+}
+.ki-form p,
+.ki-form ul, 
+.ki-form ol,
+.ki-form dl,
+.ki-form blockquote,
+
+.ki-form label,  
+.ki-form input,  
+.ki-form textarea, 
+.ki-form select, 
+.ki-form option, 
+.ki-form legend {
+  font-size  : 1.2em;
+  line-height: 1.2;       /* Use same (unitless) value as font-size ()*/
+  font-family: inherit;   /* FireFox: font-family does not cascade    */
+}
+
+/* --------------------------------------------------------
+ * fieldset and legend styling
+ * -------------------------------------------------------- */
+.ki-form fieldset {
+  margin: .5em 0 0 0;        /* for ie6+7: bottom margin collapses when the element is floated left */
+                             /* so it is useless to set the bottom margin to anything else than 0   */
+  padding: 0 .3em .3em .3em;   
+  position: relative;
+  display: block;
+  border: 0px solid #dddddd; /* Use the bordered-fieldset(s) class add borders to a fieldset */
+  font-size: 10px;           /* To maintain ems to pixel ratio: 1em == 10px */ 
+}
+.ki-form fieldset fieldset {
+  margin-top: .3em;
+  border: 0px solid #ffffff;
+}
+.ki-form fieldset legend {
+  padding: .2em .3em;
+  text-align: left;
+  font-weight: bold; 
+  border: 1px solid #cccccc; 
+  background: #eeeeee url(form.legend.gif) repeat-x center left;
+  margin-bottom: .5em;
+}
+.ki-form fieldset fieldset legend {
+  padding: 0;
+  text-align: left;
+  font-weight: bold; 
+  border: 0px solid #cccccc; 
+  background: transparent url(none);
+}
+
+/* legend fix for ie7+6:
+ * The problem occurs when you are building a form with a fieldset tag and a legend tag, 
+ * and then style the fieldset with a background color different from the the forms
+ * bg-color. For complete explanation see:
+ * http://www.mattheerema.com/archive/getting-fieldset-backgrounds-and-legends-to-behave-in-ie
+ * NOTE: The bug still remians in ie7 
+ */
+*:first-child+html .ki-form fieldset.legend-fix {
+  position: relative; 
+  margin-top: 1.8em;  
+  padding-top: 1.6em;
+}
+*:first-child+html .ki-form fieldset.legend-fix legend {
+  position: absolute;
+  top: -1em;
+  left: -0.2em; /*-0.6em;*/
+}
+  
+*:first-child+html .ki-form fieldset.legend-fix fieldset.legend-fix {
+  margin-top: 1em;  
+  padding-top: 1em;
+}
+
+/* Fieldsets with borders. 
+ * Put this class on the form element to give all fieldsets a border. 
+ * Put the class on a particular fieldset to give that fieldset a border.
+ */
+.ki-form.bordered-fieldsets fieldset,
+.ki-form fieldset.bordered-fieldset {
+  border: 1px solid #dddddd; 
+}
+.ki-form.bordered-fieldsets fieldset>fieldset,
+.ki-form fieldset.bordered-fieldset>fieldset {
+  padding-bottom: 0; 
+}
+.ki-form.bordered-fieldsets fieldset fieldset,
+.ki-form fieldset.bordered-fieldset fieldset {
+  border: 0px solid #FFFFFF; /* no borders on nested fieldsets */
+}
+
+/* --------------------------------------------------------
+ * label, input, textarea and select styling
+ * -------------------------------------------------------- */
+.ki-form label,
+.ki-form input, 
+.ki-form textarea, 
+.ki-form select {
+  margin: .3em 0 0 0;    /* for ie6+7: bottom margin collapses when the element is floated left */
+                         /* so it is useless to set the bottom margin to anything else than 0   */
+  padding: 0;
+  float: left;
+  display: block;
+  color: #333333;
+}
+
+.ki-form select,
+.ki-form textarea,
+.ki-form input[type='text'], 
+.ki-form input[type='password'] {
+  border: .1em solid #7F9DB9;      /* standard windows (light blue) color */
+  padding: .1em .1em .1em .2em;
+}
+
+/* label */
+.ki-form label {
+  padding: .2em 0 0 0; 
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align:right;
+  word-wrap: break-word; /* Guard against ie uglyness */ 
+  margin-right: .5em;    /* spacing between label and input */
+  height: 1.4em;         /* this height aligns w. input elements height */
+  width: 8em;            /* no particular reason to pick this number, pick any number you like */
+}
+
+/* Standard label widths. */
+.ki-form fieldset.narrow-labels label {
+   width: 6em;
+}
+.ki-form fieldset.medium-labels label {
+   width: 12em;
+}
+.ki-form fieldset.wide-labels label {
+   width: 18em;
+}
+
+/* input */
+.ki-form input {
+  padding: 0;
+  height: 1.25em;   /* This height should align with the select element */
+  width: 11em;      /* no particular reason to pick this number, pick any number you like */
+}
+
+/* Standard input field widths. */
+.ki-form fieldset.narrow-fields input[type='text'],
+.ki-form fieldset.narrow-fields input[type='password'] {
+  width: 8em;
+}
+.ki-form fieldset.medium-fields input[type='text'],
+.ki-form fieldset.medium-fields input[type='password'] {
+  width: 14em;
+}
+.ki-form fieldset.wide-fields input[type='text'],
+.ki-form fieldset.wide-fields input[type='password'] {
+  width: 20em;
+}
+
+.ki-form input[type='hidden'] {
+  display: none;
+}
+
+/* input type='radio', input type='checkbox' */
+.ki-form input[type='radio'],
+.ki-form input[type='checkbox'] {
+  height: 1.6em;
+  width: 1.4em;
+  margin-right: .5em;
+}
+/* hack for Opera 7+, Safari 3+ and Google Chrome 1+ */
+@media all and (min-width: 0px) {
+  .ki-form input[type='radio'],
+  .ki-form input[type='checkbox'] {
+    height: 1.5em;
+  }
+}
+/* ie7 hack */
+*:first-child+html .ki-form input[type='radio'],
+*:first-child+html .ki-form input[type='checkbox'] {
+  height: 1.5em;
+}
+
+/* 
+ * To control styling of radiobuttons we'll contain them in a fieldset with class=radio.
+ * To control styling of checkboxes we'll contain them in a fieldset with class=checkbox.
+ */
+.ki-form fieldset.radio,
+.ki-form fieldset.checkbox {
+  margin: .3em 0 0 0; 
+  float: left;
+  border: 0;
+  padding: 0;
+  min-height: 1.4em;
+  min-width: 13.7em; /* Align with input fields */
+}
+
+/* Standard field widths. */
+.ki-form fieldset.narrow-fields fieldset.radio,
+.ki-form fieldset.narrow-fields fieldset.checkbox {
+  min-width: 10.2em;
+}
+.ki-form fieldset.medium-fields fieldset.radio,
+.ki-form fieldset.medium-fields fieldset.checkbox {
+  min-width: 17.35em;
+}
+.ki-form fieldset.wide-fields fieldset.radio,
+.ki-form fieldset.wide-fields fieldset.checkbox {
+  min-width: 24.55em;
+}
+
+/* Do not use the legend element with radiobuttons and checkboxes */
+.ki-form fieldset.radio legend,
+.ki-form fieldset.checkbox legend {
+  display: none;
+}
+
+.ki-form fieldset.radio label, 
+.ki-form fieldset.checkbox label { 
+  font-weight: normal;
+  width: auto !important;
+  text-align: left;
+  margin-top: 0;
+}
+
+.ki-form fieldset.radio input[type='radio'],
+.ki-form fieldset.radio input[type='checkbox'],
+.ki-form fieldset.checkbox input[type='radio'],
+.ki-form fieldset.checkbox input[type='checkbox'] {
+  margin-top: 0;
+}
+
+/* 
+ * Vertical layout of radiobuttons and checkboxes
+ * @TODO: use first-child and last-child for this
+ */
+.ki-form fieldset.radio.vertical-buttons input[type='radio'],
+.ki-form fieldset.radio.vertical-buttons input[type='checkbox'],
+.ki-form fieldset.checkbox.vertical-buttons input[type='radio'] ,
+.ki-form fieldset.checkbox.vertical-buttons input[type='checkbox'] {
+  clear: left;
+}
+
+.ki-form fieldset.radio.vertical-buttons label, 
+.ki-form fieldset.checkbox.vertical-buttons label {
+  clear: none;
+}
+/* ie7 hack */
+*:first-child+html .ki-form fieldset.radio.vertical-buttons label,
+*:first-child+html fieldset.checkbox.vertical-buttons label {
+  float: none;
+}
+
+/*
+ * JSF uses a table to render radiobuttons and checkboxes, so this is 
+ * the only place inside a fieldset element where we can use a table.
+ */
+.ki-form fieldset table {
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  border-spacing: 0;
+  border-collapse: collapse;  /* Needed by ie7 bc. ie7 does not understand border-spacing */
+                              /* see: http://www.quirksmode.org/css/tables.html           */
+  min-width: 13.7em;          /* Align with input fields */
+                              /* NOTE: min-width does not work om ie7 */
+}
+/* Standard field widths for the table. */
+.ki-form fieldset.narrow-fields table {
+  min-width: 10.2em;
+}
+.ki-form fieldset.medium-fields table {
+  min-width: 17.35em;
+}
+.ki-form fieldset.wide-fields table {
+  min-width: 24.55em;
+}
+
+.ki-form fieldset tr {
+  margin: 0;
+  padding: 0;
+}
+.ki-form fieldset td {
+  margin: 0;
+  padding: 0;
+}
+
+.ki-form fieldset td label {
+  font-weight: normal;
+  width: auto !important;
+  text-align: left;
+}
+.ki-form fieldset td label,
+.ki-form fieldset td input[type='radio'],
+.ki-form fieldset td input[type='checkbox'] {
+  margin-top: 0;
+}
+.ki-form fieldset tr:first-child td label,
+.ki-form fieldset tr:first-child td input[type='radio'],
+.ki-form fieldset tr:first-child td input[type='checkbox'] {
+  margin-top: .3em; /* Only the first table row should have margin-top */
+}
+/* END JSF table mod. */
+ 
+/* 
+ * input type='button', input type='submit', input type='reset' 
+ */
+.ki-form input[type='button'],
+.ki-form input[type='submit'],
+.ki-form input[type='reset'] {
+  height: 1.6em;
+  width: auto;
+  cursor: pointer;
+  margin-left: .3em;
+  margin-right: 0;
+  padding: 0 .5em;
+  display: block;
+  background-image: url(../img/form.button.gif);
+  background-color: #fafafa;  /* do re mi fafafa :) */
+  background-repeat: repeat-x;
+  border: 1px solid #cccccc;
+  font-weight: bold;
+  color: #333333;
+}
+
+*:first-child+html .ki-form input[type='button'],
+*:first-child+html .ki-form input[type='submit'],
+*:first-child+html .ki-form input[type='reset'] {
+  padding: 0;
+}
+
+/* input type=file  */
+.ki-form input[type='file'] {
+  width: auto;
+  height: 1.83em; /* this height aligns w. the browse button */
+}
+*:first-child+html .ki-form input[type='file'] {
+  height:1.8em;
+}
+
+/* textarea */
+.ki-form textarea {
+  overflow: auto;
+  width: 98.5%; 
+  height: 12em;          /* Default height, use whatever height you desire */ 
+  word-wrap: break-word; /* Or else text flow won't wrap in ie6+7*/
+}
+
+/* select, option, optgroup */
+.ki-form select {
+  width: 11.5em;  /* To align with input */
+  height: 1.6em;  /* Aligns with 1.2em on input element */
+  padding:0;
+}
+/* Standard field widths. */
+.ki-form fieldset.narrow-fields select {
+  width: 8.5em;
+}
+.ki-form fieldset.medium-fields select {
+  width: 14.5em;
+}
+.ki-form fieldset.wide-fields select {
+  width: 20.5em;
+}
+
+.ki-form select[multiple='multiple'],
+.ki-form select.multiple {
+  height: auto;  /* NOTE: ie7 does not understand select[multiple='multiple'] */
+                 /* You have to use the .multiple class in addition           */
+}
+*:first-child+html .ki-form select.multiple {
+  height: auto;  /* NOTE: ie7 does not understand select[multiple='multiple'] */
+                 /* You have to use the .multiple class in addition           */
+}
+.ki-form option {
+  background:#ffffff;
+  font-size: 99%;  /* Or else ff cuts off the bottom border */
+}
+html>body .ki-form option {
+  margin-right: .2em;     /* firefox need a small margin, */
+                          /* Does not work in Opera9, don't know how to fix. */
+}
+.ki-form optgroup {
+  background:#f9f9f9; 
+  color: #222222;
+}
+.ki-form optgroup option {
+}
+html>body .ki-form optgroup option {
+  padding-left: .5em;    /* firefox only, no effect on Opera, but Opera is OK regardless of this value */
+}
+
+/* 
+ * :hover and :focus 
+ */
+.ki-form input[type='text']:hover,
+.ki-form input[type='password']:hover {
+  background-image: url(../img/form.button.gif);
+  background-color: #FFFFFF;
+  background-position: -30px; 
+  background-repeat: repeat-x;
+}
+.ki-form input[type='button']:hover,
+.ki-form input[type='submit']:hover,
+.ki-form input[type='reset']:hover,
+.ki-form input.button:hover,
+.ki-form input.button.hover {
+  background-image: url(../img/form.button.gif);
+  background-color: #677ABC;
+  background-position: -30px;
+  background-repeat: repeat-x;
+  color: #000000;
+}
+
+/* Focus: ie7 does not support the :focus pseudo class 
+ * Must use a .focus class and JavaScript to solve this. for ie7 
+ */ 
+.ki-form select:focus                , .ki-form select.focus,
+.ki-form textarea:focus              , .ki-form textarea.focus,
+.ki-form input[type='text']:focus    , .ki-form input[type='text'].focus,
+.ki-form input[type='password']:focus, .ki-form input[type='password'].focus {
+  background-color: #F9F9F9;
+  color:#000000;
+  border-color: #3A88D6; /* darker blue color */
+}
+
+/* Columnar layout for .ki-form>fieldset elements */
+.ki-form fieldset.columnar label {
+  clear: left;
+}
+
+/* hack for Opera 7+, Safari 3+ and Google Chrome 1+ */
+@media all and (min-width: 0px) {
+  .ki-form fieldset.columnar table {
+    display: block  /* needed by opera or table collapses */
+  }
+}
+.ki-form fieldset.columnar table, 
+.ki-form fieldset.columnar input, 
+.ki-form fieldset.columnar textarea, 
+.ki-form fieldset.columnar select,
+.ki-form fieldset.columnar fieldset.radio,
+.ki-form fieldset.columnar fieldset.checkbox {
+  clear: right;
+}
+/* ie7 hack */
+*:first-child+html .ki-form fieldset.columnar table, 
+*:first-child+html .ki-form fieldset.columnar input, 
+*:first-child+html .ki-form fieldset.columnar textarea, 
+*:first-child+html .ki-form fieldset.columnar select,
+*:first-child+html .ki-form fieldset.columnar fieldset.radio,
+*:first-child+html .ki-form fieldset.columnar fieldset.checkbox {
+  float: none;
+}
+
+.ki-form fieldset.columnar fieldset.radio label,
+.ki-form fieldset.columnar fieldset.checkbox label {
+  clear: none;
+}
+.ki-form fieldset.columnar fieldset.radio input,
+.ki-form fieldset.columnar fieldset.checkbox input {
+  clear: none;
+  float: left;
+}
+
+.ki-form fieldset.columnar td input[type='radio'],
+.ki-form fieldset.columnar td input[type='checkbox'] {
+  float: left;
+  clear: left;
+}
+.ki-form fieldset.columnar td label {
+  clear: right;
+}
+
+
+/* Label on top of input */
+.ki-form fieldset.label-top label {
+  clear: left;
+  text-align: left;
+  padding-top: 0;
+  width: auto;
+  margin-top: 0.3em;
+}
+
+.ki-form fieldset.label-top table, 
+.ki-form fieldset.label-top input, 
+.ki-form fieldset.label-top textarea, 
+.ki-form fieldset.label-top select,
+.ki-form fieldset.label-top fieldset.radio,
+.ki-form fieldset.label-top fieldset.checkbox {
+  clear: both;
+  margin-top: 0;
+}
+
+.ki-form fieldset.label-top fieldset.radio,
+.ki-form fieldset.label-top fieldset.checkbox {
+  /*width: 100%;   /* needed by ie6+7: 100% == 3 hours+ work - urgh!!!!!!! I hate m$ie */
+                 /* without this label text somtimes disappears.                     */
+}
+
+.ki-form fieldset.label-top fieldset.radio input,
+.ki-form fieldset.label-top fieldset.checkbox input {
+  clear: none;
+}
+.ki-form fieldset.label-top fieldset.radio label,
+.ki-form fieldset.label-top fieldset.checkbox label {
+  clear: none;
+}
+
+
+/* 
+ * fieldset container for buttons
+ */
+.ki-form fieldset.buttons,
+.ki-form fieldset.left-buttons,
+.ki-form fieldset.right-buttons {
+  border: 0px solid #ffffff;
+  float: right;
+  clear: both;
+}
+.ki-form fieldset.left-buttons {
+  float: none;
+}
+
+/*
+.ki-form fieldset.buttons input[type='button'],
+.ki-form fieldset.buttons input[type='submit'],
+.ki-form fieldset.buttons input[type='reset'],
+.ki-form fieldset.left-buttons input[type='button'],
+.ki-form fieldset.left-buttons input[type='submit'],
+.ki-form fieldset.left-buttons input[type='reset'],
+.ki-form fieldset.right-buttons input[type='button'],
+.ki-form fieldset.right-buttons input[type='submit'],
+.ki-form fieldset.right-buttons input[type='reset'] {
+*/
+.ki-form fieldset.buttons input,
+.ki-form fieldset.left-buttons input,
+.ki-form fieldset.right-buttons input {
+  height: 2em;
+  line-height: 1.5;  /* looks good on ie, opera, safari and chrome, no effect on ff */
+}
+
+.ki-form fieldset.buttons input:first-child,
+.ki-form fieldset.left-buttons input:first-child,
+.ki-form fieldset.right-buttons input:first-child {
+  margin-left: 0;
+}
+
+/*
+.ki-form fieldset.columnar input[type='button'],
+.ki-form fieldset.columnar input[type='submit'],
+.ki-form fieldset.columnar input[type='reset'] {
+*/
+.ki-form fieldset.buttons.columnar input,
+.ki-form fieldset.left-buttons.columnar input,
+.ki-form fieldset.right-buttons.columnar input {
+  float: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Grid layout. Note: grid-layout.css is required to use this */
+.ki-form dl.cr_grid-layout {
+  line-height: 1;
+  font-size: 100%;  /* inherit does not work on IE, but 100% makes the  */
+                    /* font size the same as the container's font size. */
+                    /* The container's font size shuld be 1em == 10px . */
+}
+.ki-form fieldset dl.cr_grid-layout dt, 
+.ki-form fieldset dl.cr_grid-layout dd { 
+  min-height: 2.4em; 
+}
+.ki-form fieldset.label-top dl.cr_grid-layout dt, 
+.ki-form fieldset.label-top dl.cr_grid-layout dd { 
+  min-height: 4.1em;
+}
+
+/* Button alignment
+ * We want to right align the input buttons to the width of the fieldset that contains the
+ * input fields. For this case we do not want to set a spesific width on the fieldset elements
+ * due to the fact that the width of the fieldset that contains the input elements can vary
+ * dependent on the contained input elemenets. This would have been really simple if we did 
+ * not have to account for IE7 - but sadly enough we have to. Follow these steps to make this 
+ * work cross browser.
+ * 1: Add class="ki-form clear-float"to the form element
+ * 2: Contain fieldsets in a div element with class="button-alignment clear-float"
+ */
+.ki-form .button-alignment {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 3.8em; /* Make room for button fieldset */
+}
+
+/* ie7 hack */
+*:first-child+html .ki-form .button-alignment {
+  display: inline;
+}
+.ki-form .button-alignment fieldset.buttons,
+.ki-form .button-alignment fieldset.right-buttons,
+.ki-form .button-alignment fieldset.left-buttons {
+  position: absolute;
+  right: 0;
+}
+
