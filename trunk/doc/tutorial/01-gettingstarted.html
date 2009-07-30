@@ -18,7 +18,7 @@ function toggle( target ) {
 
 <title>Seam Maven reference Implentation - Getting Started</title>
 </head>
-<body onload="javascript: toggle('checkout-install'); toggle('export-template');">
+<body> <!-- onload="javascript: toggle('checkout-install'); toggle('export-template');" -->
 
 <div id="sizer">
 <div id="expander">
@@ -112,9 +112,8 @@ function toggle( target ) {
 </ol>
 
 <h2><a name="switch-to-development-mode">Switch to Development Mode</a></h2>
-<p>In develop mode the application will be deployed as an exploded EAR archive.</p>
+<p>In development mode the application will be deployed as an exploded EAR archive.</p>
 <ol class="vspace">
-
   <li>
     Activate <code>profiles.xml</code><br/>
     Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code>.<br/>
@@ -137,7 +136,6 @@ function toggle( target ) {
   &lt;properties&gt;
     <strong style="color:blue;">&lt;as.home&gt;C:/jboss-4.2.3.GA&lt;/as.home&gt;</strong>
     &lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;
-    &lt;as.jndi.pattern&gt;${app.context}-ear/#{ejbName}/local&lt;/as.jndi.pattern&gt;
   &lt;/properties&gt;
 &lt;/profile&gt;</pre>
       </li>
@@ -246,9 +244,9 @@ The following profiles are active:
       mysql-connector-java-*-bin.jar file if exist).
   </li>
   <li>
-    Create database schema <code>"refimpl_db"</code>, use e.g. the MySql Administrator GUI.<br/>
-    Or, if you are a MySql macho, you can type the following SQL DDL by hand:<br/>
-    <code>CREATE DATABASE refimpl_db CHARACTER SET utf8 COLLATE utf8_general_ci;</code><br/>
+    Start the database server and create schema <code>"refimpl_db"</code>, use e.g. the MySql Administrator GUI.<br/>
+    Or, if you are a MySql macho, you can type the following SQL DDL by hand:<br style="margin-bottom:.6em;" />
+    <code><strong>CREATE DATABASE refimpl_db CHARACTER SET utf8 COLLATE utf8_general_ci;</strong></code><br/>
     <strong>Note:</strong> Allways use UTF8 for i18n.
   </li>
   <li>
@@ -270,8 +268,8 @@ The following profiles are active:
       &lt;ds.hibernate.dialect&gt;org.hibernate.dialect.MySQL5InnoDBDialect&lt;/ds.hibernate.dialect&gt;
       &lt;ds.driver.class&gt;com.mysql.jdbc.Driver&lt;/ds.driver.class&gt;
       <strong style="color:blue;">&lt;ds.connection.url&gt;jdbc:mysql://localhost:3306/${app.database.name}?characterEncoding=UTF-8&lt;/ds.connection.url&gt;
-      &lt;ds.user.name&gt;root&lt;/ds.user.name&gt;
-      &lt;ds.password&gt;&lt;/ds.password&gt;</strong>
+     &lt;ds.user.name&gt;root&lt;/ds.user.name&gt;
+     &lt;ds.password&gt;&lt;/ds.password&gt;</strong>
     &lt;/properties&gt;
   &lt;/profile&gt;</pre>
   Locate the <code>&lt;activeProfiles&gt;</code> tag and activate the <code>ds-mysql5</code> profile.
@@ -316,66 +314,6 @@ The following profiles are active:
   </li>
 </ol>
 
-<h2>Files Added to Svn Ignore</h2>
-<P>The following folders and files are added to <strong>svn ignore</strong>.</P>
-    <code>
-    <ul>
-      <li>
-        In ${SEAM_REFIMPL} folder
-        <ul>
-					<li>.externalToolBuilders/</li>
-          <li>.metadata/</li>
-          <li>.settings/</li>
-          <li>target/</li>
-          <li>.classpath</li>
-          <li>.project</li>
-          <li>*.launch</li>
-          <li>profiles.xml</li>
-        </ul>
-      </li>
-      <li>
-        In ${SEAM_REFIMPL}/<strong>ear</strong> folder
-        <ul>
-					<li>.externalToolBuilders/</li>
-          <li>.settings/</li>
-          <li>target/</li>
-          <li>.classpath</li>
-          <li>.project</li>
-          <li>*.launch</li>
-        </ul>
-      </li>
-      <li>
-        In ${SEAM_REFIMPL}/<strong>ejb</strong> folder
-        <ul>
-					<li>.externalToolBuilders/</li>
-          <li>.settings/</li>
-          <li>target/</li>
-          <li>.classpath</li>
-          <li>.project</li>
-          <li>hibernate-console.properties</li>
-          <li>*.launch</li>
-        </ul>
-      </li>
-      <li>
-        In ${SEAM_REFIMPL}/<strong>war</strong> folder
-        <ul>
-					<li>.externalToolBuilders/</li>
-          <li>.settings/</li>
-          <li>target/</li>
-          <li>.classpath</li>
-          <li>.project</li>
-          <li>*.launch</li>
-          <li>src/main/webapp/WEB-INF/.pages.xml.spdia</li>
-          <li>src/main/webapp/WEB-INF/.faces-config.xml.jsfdia</li>
-        </ul>
-      </li>
-    </ul>
-    </code>
-<P><strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
-probably be more IDE spesific files to add as other IDEs are put to use. Please
-take care when files are checked into svn, if you find an IDE spesific file then list it here 
-and add it to <strong>svn ignore</strong>!
-</P>
 </div>
 
 
@@ -614,6 +552,7 @@ and add it to <strong>svn ignore</strong>!
 	</li>
 </ol>
 
+
 <h2>Tips for Debugging</h2>
 <p>
   When your application starts up it will print all components being created (Seam and your own) 
@@ -633,6 +572,69 @@ and add it to <strong>svn ignore</strong>!
   Open your browser and point to the following URL to see the debug page.
   <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
 </p>
+
+<h2>Files Added to Svn Ignore</h2>
+<p>Some files and folders, like user spesific settings and generated files shall not be under revision 
+control. The following folders and files are added to <strong>svn ignore</strong>.</p>
+<code>
+	<ul>
+		<li>
+			In ${SEAM_REFIMPL} folder
+			<ul>
+				<li>.externalToolBuilders/</li>
+				<li>.metadata/</li>
+				<li>.settings/</li>
+				<li>target/</li>
+				<li>.classpath</li>
+				<li>.project</li>
+				<li>*.launch</li>
+				<li>profiles.xml</li>
+			</ul>
+		</li>
+		<li>
+			In ${SEAM_REFIMPL}/<strong>ear</strong> folder
+			<ul>
+				<li>.externalToolBuilders/</li>
+				<li>.settings/</li>
+				<li>target/</li>
+				<li>.classpath</li>
+				<li>.project</li>
+				<li>*.launch</li>
+			</ul>
+		</li>
+		<li>
+			In ${SEAM_REFIMPL}/<strong>ejb</strong> folder
+			<ul>
+				<li>.externalToolBuilders/</li>
+				<li>.settings/</li>
+				<li>target/</li>
+				<li>.classpath</li>
+				<li>.project</li>
+				<li>hibernate-console.properties</li>
+				<li>*.launch</li>
+			</ul>
+		</li>
+		<li>
+			In ${SEAM_REFIMPL}/<strong>war</strong> folder
+			<ul>
+				<li>.externalToolBuilders/</li>
+				<li>.settings/</li>
+				<li>target/</li>
+				<li>.classpath</li>
+				<li>.project</li>
+				<li>*.launch</li>
+				<li>src/main/webapp/WEB-INF/.pages.xml.spdia</li>
+				<li>src/main/webapp/WEB-INF/.faces-config.xml.jsfdia</li>
+			</ul>
+		</li>
+	</ul>
+</code>
+<p><strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
+probably be more IDE spesific files to add as other IDEs are put to use. Please
+take care when files are checked into svn, if you find an IDE spesific file then list it here 
+and add it to <strong>svn ignore</strong>!
+</p>
+
 </div>
 
 <br/>
