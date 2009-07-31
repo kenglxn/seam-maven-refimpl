@@ -173,6 +173,26 @@ ALTER TABLE FACILITY
 	ADD CONSTRAINT FK_FACILITY_REF_MEMBER 
 		FOREIGN KEY(AGENT_ID) 
 		REFERENCES MEMBER(ID);
+		
+DROP TABLE IF EXISTS `ROLE`;
+CREATE TABLE `ROLE` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `name` varchar(255) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `MEMBER_ROLE`;
+CREATE TABLE `MEMBER_ROLE` (
+  `member_id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL,
+  PRIMARY KEY  (`member_id`,`role_id`),
+  KEY `member_id` (`member_id`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `fk_member` FOREIGN KEY (`member_id`) REFERENCES `MEMBER` (`id`),
+  CONSTRAINT `fk_role` FOREIGN KEY (`role_id`) REFERENCES `ROLE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
