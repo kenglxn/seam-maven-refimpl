@@ -53,21 +53,21 @@
 
   <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-p362 -->
 	<persistence:entity-manager-factory
-		name="entityManagerFactory"
+		name="${app.entity.manager.factory.name}"
 		persistence-unit-name="${app.persistence.unit.name}"
 		installed="false"
 		startup="false" />
 
 	<!--
 		If Seam loads the persistence unit (JBoss 4.x), the
-		EntityManagerFactory will be resolved from #{entityManagerFactory}. 
+		EntityManagerFactory will be resolved from #{${app.entity.manager.factory.name}}. 
 		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-p362.
 	-->
 	<persistence:managed-persistence-context
 		name="entityManager"
 		auto-create="true"
-		entity-manager-factory="#{entityManagerFactory}"
+		entity-manager-factory="#{${app.entity.manager.factory.name}}"
 		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
 
   <transaction:ejb-transaction />

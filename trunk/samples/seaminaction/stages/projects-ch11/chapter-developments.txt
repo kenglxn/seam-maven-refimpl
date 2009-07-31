@@ -30,7 +30,7 @@ http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh11
 Modifications to original code:
 -------------------------------
 Created three source trees in ejb module; action, main and model, using the Build Helper Maven Plugin
-to maintain additional source directories in the ejb module,
+to maintain additional source directories in the ejb module:
 http://mojo.codehaus.org/build-helper-maven-plugin/. 
 The Groovy file, org.open18.action.MultiRoundAction.groovy, is moved to src/main/groovy folder.
 

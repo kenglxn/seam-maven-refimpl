@@ -40,19 +40,6 @@
 		</app.description>
 		
 		<app.database.name>open18ch10_db</app.database.name>
-		<app.jndi.name>${app.context}Datasource</app.jndi.name>
-		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
-		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
-		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
-		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
-
-		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
-		<app.distributable>false</app.distributable> <!-- for ejb/src/main/resources/META-INF/jboss.xml -->
-
-		<!--
-			Default profile attribute values. The values can be removed if a profiles.xml file is present
-		-->
-		<as.version>4.2</as.version>
 	</properties>
 
 	<dependencyManagement>
