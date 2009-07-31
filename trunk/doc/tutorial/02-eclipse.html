@@ -35,6 +35,7 @@
 
 <h2>Download and install software:</h2>
 <ul class="vspace">
+  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-1.5 or jdk-1.6</a></li>
   <li><a href="http://www.eclipse.org/">Eclipse Ganymede 3.4 (with WTP installed)</a></li>
   <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
     <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
@@ -50,7 +51,7 @@
 	-->
 </ul>
 
-<h2>Configure Eclipse</h2>
+<h2>Configure Workspace</h2>
 <ol class="vspace">
   <li>
 		Create an empty workspace folder, e.g. C:/ide/workspaces<br/>
@@ -65,35 +66,42 @@
 	  <strong>Import code styles - To be done!</strong>
 	</li>
 	-->
-	<li>
-	  Set editors to UTF-8:
-    <img src="img/eclipse-utf8-01.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-02.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-03.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-04.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-05.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-06.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-07.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-08.png" style="width:700px; display:block;" />
+</ol>
+
+<h3>Set editors to UTF-8</h3>
+<ol>
+	<li>Make shure that all files are saved with UTF-8 encoding
+		<img src="img/eclipse-utf8-01.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-02.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-03.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-04.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-05.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-06.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-07.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-08.png" style="width:700px; display:block;" />
 	</li>
 </ol>
 
-<h2>Configure Maven Eclipse Plugin</h2>
+<h3>Configure The Maven Eclipse Plugin</h3>
 <ol class="vspace">
   <li>
-	  Install <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a> and configure the
-		plugin to use an external Maven installation.<br/>
+		Make sure that Eclipse is running on a JDK and not a JRE.
+		<img src="img/eclipse-installed-jres.png" style="width:640px; display:block;" />
+		<img src="img/eclipse-compiler.png" style="width:640px; display:block;" />
+	</li>
+  <li>
+	  Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.
+		<img src="img/eclipse-maven-plugin.png" style="width:640px; display:block;" />
 		According to 
 		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
 		this blog</a> there is a problem when running embedded Maven from Eclipse, so we need to configure 
-		Eclipse to use an external Maven installation.<br/> 
-		Select <strong>Window>Preferences</strong>, navigate to <strong>Maven>Installations</strong> 
-		and edit details as outlined in the image below.
+		Eclipse to use an external Maven installation. Select <strong>Window>Preferences</strong>, 
+		navigate to <strong>Maven>Installations</strong> and edit details as outlined in the image below.
 		<img src="img/eclipse-maven-installations.png" style="width:640px; display:block;" />
 	</li>
 </ol>
 
-<h2>Create a WTP Server Reference</h2>
+<h3>Create a WTP Server Reference</h3>
 <ol class="vspace">	
 	<li>
 	  Install the <a href="http://www.jboss.org/jbossas/">Jboss Application Server</a>, 
@@ -104,18 +112,18 @@
 	</li>
 	<li>
 		In Preferences, navigate to <strong>Server>Runtime Environments</strong>. Click 
-		<strong>Add...</strong>. Browse to the folder named <strong>JBoss, a division of Red Hat</strong> 
+		<strong>Add...</strong>. Browse to the folder named <strong>JBoss Community</strong> 
 		and select <strong>JBoss 4.2 Runtime</strong>.
 		<img src="img/eclipse-server-runtime-01.png" style="width:750px; display:block;" />
 	</li>
 	<li>
-		Click <strong>Next</strong>, name the server runtime, e.g. JBoss 4.2.3 Runtime, and point the 
+		Click <strong>Next</strong>, name the server runtime, e.g. JBoss 4.2.3-jdk6 Runtime, and point the 
 		<strong>Home Directory</strong> to the folder where you installed the	server. Select the 
-		<strong>Default</strong> configuration. 
+		<strong>default</strong> configuration. 
 		<img src="img/eclipse-server-runtime-02.png" style="width:400px; display:block;" />
 	</li>
 	<li>
-		Click <strong>Next</strong>, name the server, e.g. JBoss 4.2.3 Server, and click 
+		Click <strong>Next</strong>, name the server, e.g. JBoss 4.2.3-jdk6 Server, and click 
 		<strong>Finish</strong>.
 		<img src="img/eclipse-server-runtime-03.png" style="width:400px; display:block;" />
 	</li>
@@ -124,8 +132,8 @@
 		<img src="img/eclipse-jboss-perspective.png" style="width:300px; display:block;" />
 	</li>
 	<li>
-		Doubleclick on the JBoss 4.2.3 Server to open the JBoss 4.2.3 Server Overview tab.
-		<img src="img/eclipse-jboss-server-view.png" style="width:190px; display:block;" />
+		Doubleclick on the JBoss 4.2.3-jdk6 Server to open the JBoss 4.2.3-jdk6 Server Overview tab.
+		<img src="img/eclipse-jboss-server-view.png" style="width:240px; display:block;" />
 	</li>
 	<li>
 		Verify that the <strong>Use the JBoss deploy folder</strong> radio button is checked.
@@ -144,7 +152,7 @@
   </li>
 </ol>
 
-<h2>Configure JBoss Tools</h2>
+<h3>Configure JBoss Tools</h3>
 <p>JBoss Tools is a perfect match for Seam devolpers using Maven and the Elipse IDE. It helps you 
 with a a lot of tasks you otherwise would have used hours and days to complete.
 The Tools is not essential for developing a Mavenized Seam application, but it has a lot of 
@@ -168,13 +176,26 @@ setting up the tools. Play with the tools and study the code that the various to
 	</li>
 </ol>
 
-<h2> Define a Data Source</h2>
-<p>If you plan to ues JBoss Tools to do reverse engeneering, then you need to define and connect to
+<h3> Define a Data Source</h3>
+<p>If you plan to use JBoss Tools to do reverse engeneering, then you need to define and connect to
 a datasource. The screenshots below outlines one possible way to accomplish this.</p>
 <ol class="vspace">
-	<li>
-		<a href="01-gettingstarted.html#activate-a-database-profile">Create a database as outlined here.</a>
-	</li>
+  <li>Download and install necessary software: 
+  <ul>
+    <li><a href="http://dev.mysql.com/downloads/">MySql5+</a></li>
+    <li><a href="http://dev.mysql.com/downloads/connector/j/5.0.html">MySql connector</a></li>
+  </ul>
+  </li>
+  <li>Copy mysql-connector-java-*-bin.jar to <code>${JBOSS_CONFIG}/lib</code> (delete any other 
+      mysql-connector-java-*-bin.jar file if exist).
+  </li>
+  <li>
+    Start the database server and create schema <code>"refimpl_db"</code>, use e.g. the MySql Administrator GUI.<br/>
+    Or, if you are a MySql macho, you can type the following SQL DDL by hand:<br style="margin-bottom:.6em;" />
+    <code><strong>CREATE DATABASE refimpl_db CHARACTER SET utf8 COLLATE utf8_general_ci;</strong></code><br/>
+    <strong>Note:</strong> Allways use UTF8 for i18n.
+  </li>
+	
 	<li>
 		In Preferences, navigate to <strong>Data Management>Connectivity>Driver Definitions</strong>.
 		Click <strong>Add...</strong> to add a new driver.
@@ -189,7 +210,7 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 		<img src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
 		<img src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
 		<img src="img/eclipse-connection-profile-02.png" style="width:420px; display:block;" />
-		<img src="img/eclipse-connection-profile-03.png" style="width:420px; display:block;" />
+		<!-- <img src="img/eclipse-connection-profile-03.png" style="width:420px; display:block;" /> -->
 		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
 	</li>
 </ol>
@@ -210,13 +231,16 @@ a datasource. The screenshots below outlines one possible way to accomplish this
   <li>
 		Navigate to the <code>${SEAM_TUTORIAL}</code> folder using a command shell and execute maven commands:<br/>
     <code>mvn clean -Punexplode<br/>
-    mvn install -Pexplode (remember to point the server to the correct deploy folder in
-		<code>profiles.xml</code>)<br/>
-    mvn eclipse:m2eclipse</code><br/> 
+    mvn install -Pexplode (remember to point the server to the correct deploy folder in profiles.xml)<br/>
+		mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true<br/>
+		mvn eclipse:m2eclipse
+		</code><br/> 
     The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
-    files that now makes the project a valid Eclipse project.<br/>
-    <strong>Note:</strong> Do not use the <code>eclipse:eclipse</code> command, it does not seem to 
-		work properly when m2eclipse is installed.
+    files that now makes the project a valid Eclipse project.<br/><br/>
+    <strong>Note:</strong> The <code>m2eclipse</code> plugin seems to be a bit unpredictable when
+		it comes to downloading sourcecode and javadocs for the projects dependencies. If you find that 
+		sourcecode and javadocs are missing for some dependencis then try to run 
+		<code style="white-space:nowrap">mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true</code>
   </li>
   <li>
     Import the project:
@@ -359,6 +383,14 @@ configuration. After completion you can revert from SVN or restore the old <code
     <img src="img/eclipse-ear-properties-01.png" style="width:750px; display:block;" />
 	</li>
 	<li>
+	  The EJB module:
+    <img src="img/eclipse-ejb-properties-02.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ejb-properties-06.png" style="width:400px; display:block;" />
+    <img src="img/eclipse-ejb-properties-04.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ejb-properties-05.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ejb-properties-03.png" style="width:750px; display:block;" />
+	</li>
+	<li>
 	  The WAR module:
     <img src="img/eclipse-war-properties-03.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-02.png" style="width:450px; display:block;" />
@@ -368,14 +400,6 @@ configuration. After completion you can revert from SVN or restore the old <code
     <img src="img/eclipse-war-properties-04.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-08.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-09.png" style="width:750px; display:block;" />
-	</li>
-	<li>
-	  The EJB module:
-    <img src="img/eclipse-ejb-properties-02.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-properties-06.png" style="width:400px; display:block;" />
-    <img src="img/eclipse-ejb-properties-04.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-properties-05.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-properties-03.png" style="width:750px; display:block;" />
 	</li>
 </ol>
 <p>That's it. Shouldn't take you more than a couple of minutes to complete!</p>
