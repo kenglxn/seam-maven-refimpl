@@ -81,7 +81,6 @@
 			<plugin>
 				<groupId>org.codehaus.groovy.maven</groupId>
 				<artifactId>gmaven-plugin</artifactId>
-				<version>1.0</version>
 
 		    <configuration>
 	        <debug>${jdk.debug}</debug>
@@ -236,7 +235,7 @@
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
-			<scope>compile</scope>
+			<scope>provided</scope>
 			<!-- <version>1.6.3</version> -->
 		</dependency>
 		
