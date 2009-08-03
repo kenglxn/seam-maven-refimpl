@@ -10,7 +10,7 @@ import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
 @Entity
-@Table(name="users")
+@Table
 public class User implements Serializable
 {
 	private static final long serialVersionUID = 1881413500711441951L;
