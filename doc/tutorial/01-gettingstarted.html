@@ -343,53 +343,59 @@ The following profiles are active:
   &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
   &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
   &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
-  &lt;description&gt;<font color="blue">Seam Maven tutorial parent pom</font>&lt;/description&gt;
+  &lt;description&gt;<font color="blue">The Seam Tutorial parent pom</font>&lt;/description&gt;
   .
   .
   &lt;properties&gt;
     &lt;app.context&gt;<font color="blue">seam-tutorial</font>&lt;/app.context&gt;
     &lt;app.display.name&gt;<font color="blue">Seam Tutorial</font>&lt;/app.display.name&gt;
-    &lt;app.description&gt;<font color="blue">Happy Seam Maven hacking</font>&lt;/app.description&gt;
+    &lt;app.description&gt;<font color="blue">The Seam Tutorial uses seam-refimpl as a project template</font>&lt;/app.description&gt;
     &lt;app.database.name&gt;<font color="blue">refimpl_db</font>&lt;/app.database.name&gt;
     .
     .
   &lt;/properties&gt;
   .
-  &lt;/project&gt;</pre>
+  &lt;/project&gt;
+	</pre>
     </li>
     <li>
       The EAR pom:
-  <pre>
+			<pre>
   &lt;parent&gt;
     &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
   &lt;/parent&gt;
-  
-  &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+
   &lt;artifactId&gt;<font color="blue">seam-tutorial-ear</font>&lt;/artifactId&gt;
-  &lt;description&gt;<font color="blue">Seam Maven tutorial ear ....</font>&lt;/description&gt;</pre>
+  &lt;description&gt;<font color="blue">The Seam Tutorial EAR module</font>&lt;/description&gt;
+			</pre>
     </li>
     <li>
       The EJB pom:
-  <pre>
+			<pre>
   &lt;parent&gt;
     &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
   &lt;/parent&gt;
-  
-  &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
-  &lt;artifactId&gt;<font color="blue">seam-tutorial-ejb</font>&lt;/artifactId&gt;</pre>
+
+  &lt;artifactId&gt;<font color="blue">seam-tutorial-ejb</font>&lt;/artifactId&gt;
+  &lt;description&gt;<font color="blue">The Seam Tutorial EJB module</font>&lt;/description&gt;
+			</pre>
     </li>
     <li>
       The WAR pom:
-  <pre>
+			<pre>
   &lt;parent&gt;
     &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
   &lt;/parent&gt;
-  
-  &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
-  &lt;artifactId&gt;<font color="blue">seam-tutorial-war</font>&lt;/artifactId&gt;</pre>
+
+  &lt;artifactId&gt;<font color="blue">seam-tutorial-war</font>&lt;/artifactId&gt;
+  &lt;description&gt;<font color="blue">The Seam Tutorial WAR module</font>&lt;/description&gt;
+			</pre>
     </li>
     </ul>
   </li>
