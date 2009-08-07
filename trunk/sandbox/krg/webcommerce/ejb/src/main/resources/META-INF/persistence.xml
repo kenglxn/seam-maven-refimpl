@@ -7,7 +7,11 @@
   <persistence-unit name="${app.persistence.unit.name}" transaction-type="JTA">  
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>${app.jta.data.source}</jta-data-source>
-    <properties>
+      <class>net.glxn.webcommerce.model.Category</class>
+      <class>net.glxn.webcommerce.model.Product</class>
+      <class>net.glxn.webcommerce.model.Order</class>
+      <class>net.glxn.webcommerce.model.Settings</class>
+      <properties>
     	<!--	
     		Binds the EntityManagerFactory to JNDI where Seam can look it up. This is only relevant when 
     		the container automatically loads the persistence unit,	as is the case in JBoss AS 5.	

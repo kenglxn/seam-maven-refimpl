@@ -1,11 +1,15 @@
 package net.glxn.webcommerce.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Version;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
@@ -13,13 +17,15 @@ import org.hibernate.validator.NotNull;
 @Table
 public class User implements Serializable
 {
-	private static final long serialVersionUID = 1881413500711441951L;
-	
+
+    private static final long serialVersionUID = -7294196286809711838L;
+    
     private Long id;
     private Integer version;
-	private String username;
+    private String username;
     private String password;
     private String name;
+    private RoleType roleType;
 
     @Id @GeneratedValue
     public Long getId() {
@@ -69,5 +75,24 @@ public class User implements Serializable
     public String toString() 
     {
        return "User(" + username + ")";
+    }
+
+    private Collection<Order> orders;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    public Collection<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Collection<Order> orders) {
+        this.orders = orders;
+    }
+
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
     }
 }
