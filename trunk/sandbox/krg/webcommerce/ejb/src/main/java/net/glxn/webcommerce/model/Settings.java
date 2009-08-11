@@ -2,6 +2,7 @@ package net.glxn.webcommerce.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,7 +16,7 @@ public class Settings {
     private Long id;
     private String filePath;
 
-    @Id
+    @Id @GeneratedValue
     public Long getId() {
         return id;
     }

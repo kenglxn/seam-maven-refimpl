@@ -1,0 +1,90 @@
+/* 
+ * File        : form.search-bar.css
+ * Created     : 20090307
+ * Version     : 1.0
+ * Author      : loo@knowit.no
+ * Copyright   : (c)2009, 
+ *               Do not use (or abuse) this code without permission.
+ *
+ * Description : A search bar styled like the firefox search bar
+ * Notes       : This css does not support ie6
+ *
+ * Tested in   : IE5.5                                  : Not Applicable (NA)
+ *               IE6 win Quirks mode                    : NA
+ *               IE6 win Standards mode                 : NA, 
+ *               IE7                                    : OK
+ *               Firefox 1.5 win                        : NT, 
+ *               Firefox 1.5 linux                      : NT, 
+ *               Firefox 2   win                        : NT, 
+ *               Firefox 2   linux                      : NT, 
+ *               Firefox 3   win                        : OK, 
+ *               Firefox 3   linux                      : NT, 
+ *               Opera 9     win                        : OK, 
+ *               Opera 9     linux                      : NT, 
+ *               Safari 3.1 win                         : OK
+ *               Chrome 1.x win                         : OK
+ *
+ * Dependencies: form.css
+ * Recommended : 
+ * History     : 
+ */
+
+#search-bar, 
+#search-bar * {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#search-bar {
+  /* begin: inline-block */
+  width: auto;
+  min-height: .1em;
+  min-width: .1em;
+  vertical-align: top;         /* results in a great looking grid: */
+  display: -moz-inline-stack;  /* Firefox need this to simulate display:inline-block */
+  display: inline-block;       /* ie does not apply this to Block Element, and Firefox */
+                               /* does not render this, too                            */
+  zoom:1;                      /* fix ie7, trigger hasLayout */
+  *display:inline;             /* fix ie6+ie7, once hasLayout is true, set display:inline to block  */
+                               /* element will make display:inline behave like display:inline-block */
+  /* end: inline-block */
+}
+#search-bar fieldset {
+  border: 1px solid #7F9DB9;   /* light blue */
+  background-color: #ffffff;
+}
+#search-bar fieldset input[type='text'] {
+  height:1.4em;
+  background-color: transparent;
+}
+#search-bar fieldset a,
+#search-bar fieldset input[type='submit'],
+#search-bar fieldset input[type='button'] {
+  height:1.4em;
+  width:1.7em;
+  text-indent: -1000px;
+  background-image: url(../img/form.search.png);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#search-bar fieldset a {
+  height: 1.6em;
+  display: block;
+  float: left;
+  text-decoration: none;
+  -moz-outline: none;
+  outline: none;
+}
+  
+#search-bar fieldset input[type='submit']:hover {
+    background-image: url(../img/form.search.hover.png);
+}
+#search-bar fieldset a,
+#search-bar fieldset input[type='button'] {
+  background-image: url(../img/form.help.png);
+}
+#search-bar fieldset a:hover,
+#search-bar fieldset input[type='button']:hover {
+    background-image: url(../img/form.help.hover.png);
+}

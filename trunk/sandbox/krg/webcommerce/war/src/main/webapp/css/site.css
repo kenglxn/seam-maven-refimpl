@@ -1,0 +1,176 @@
+body {
+    font-size: 62.5%; /* This body font-size fixes an IE bug and maintains x-browser uniformity   */
+/* By setting body.font-size:62.5% we ensures that ems to pixel ratio = 10  */
+    line-height: 1; /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000;
+    background-color: #fefefe;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+/*
+* Typical modifications to page-layout.css
+*/
+#sizer {
+    min-width: 100.4em;
+    max-width: 127.8em;
+}
+
+#expander {
+}
+
+#page {
+    padding-top: 1em; /* space between header and page */
+    padding-bottom: .1em; /* must be less or equal the #footer height value */
+/* a smaller value makes the footer shadow blend into the page */
+    padding-left: .5em; /* horisontal spacing */
+    padding-right: .5em; /* horisontal spacing */
+}
+
+#header {
+    height: 13em;
+}
+
+#header>*:first-child {
+/* this is where you put the header content */
+/*border-bottom: 1px solid #000000;*/
+}
+
+#footer {
+    height: 2em; /* footer must have a fixed height */
+    padding-top: 3em; /* space for bg image */
+    padding-bottom: 1em; /* vertical bottom spacing */
+    margin-top: -6em; /* negative value of footer height+padding */
+    text-align: center;
+}
+
+/* end: Typical modifications to page-layout.css */
+
+/*
+* Modifications to menu (horisontal-tabbed.css)
+*/
+#horisontal-menu {
+    position: absolute;
+    bottom: 0;
+}
+
+#horisontal-menu .menu li.login {
+    margin-left: 6%;
+}
+
+#horisontal-menu .menu li.about {
+    margin-left: 1%;
+}
+
+#horisontal-menu .menu li.help {
+    position: absolute;
+    right: -.5em;
+    bottom: 2.6em;
+}
+
+#horisontal-menu .menu li.help a,
+    #horisontal-menu .menu li.help a:visited {
+    padding-left: 16px;
+    text-indent: -1000px; /* hides the text */
+    overflow: hidden; /* needed by ie when text-indent is negative */
+}
+
+#horisontal-menu .menu li.help a:hover,
+    #horisontal-menu .menu li.help a:focus,
+    #horisontal-menu .menu li.help a:active {
+    padding-left: 24px;
+    text-indent: 0;
+}
+
+#horisontal-menu .menu li.search {
+    position: absolute;
+    right: 8px;
+    bottom: 4px;
+}
+
+#horisontal-menu .menu li.search:focus,
+    #horisontal-menu .menu li.search:active {
+    margin-top: 0; /* suspend button ... */
+    margin-bottom: 0; /* ... down effect    */
+}
+
+/* remove bg image for search menu  */
+#horisontal-menu .menu li.search,
+    #horisontal-menu .menu li.search:hover,
+    #horisontal-menu .menu li.search:focus,
+    #horisontal-menu .menu li.search:active,
+    #horisontal-menu .menu li.search>*:first-child,
+    #horisontal-menu .menu li.search:hover>*:first-child,
+    #horisontal-menu .menu li.search:focus>*:first-child,
+    #horisontal-menu .menu li.search:active>*:first-child {
+    background: transparent url(menu.pixel.png) no-repeat top left;
+}
+
+/* end: Modifications to menu */
+
+/* site specific css */
+
+.sitelogo {
+    background: transparent url(../img/logo.png) no-repeat -4px top;
+    height: 102px;
+}
+
+#page-wrapper {
+    background: transparent url(../img/bg.png) no-repeat bottom left;
+}
+
+.left-content {
+    width: 18%;
+    margin-right: 2%;
+}
+
+.main-content {
+/*background: transparent url(body.png) no-repeat scroll -1em top;*/
+    height: 56em; /*padding: 2em 2em 0 2em;*/
+    width: 65%;
+}
+
+.main-content p {
+    width: 95%;
+}
+
+.banner {
+    margin: 0.7em;
+    width: 10%;
+}
+
+#main-content-body {
+    position: relative; /* can use e.g. position:absolute; bottom: 0; */
+    display: block;
+    margin: 0;
+    padding-bottom: 1em;
+    border: 0; /* can use e.g. border-bottom: 1px solid #C9910F; */
+    width: 100%;
+    height: 102%;
+    text-align: left;
+    background: transparent url(../img/body-l.png) no-repeat top left;
+}
+
+#main-content-body>*:first-child {
+    display: block;
+    margin: 0 0 0 49px;
+    padding-bottom: 1em;
+    border: 0;
+    width: auto;
+    height: 100%;
+    background: transparent url(../img/body-r.png) no-repeat top right;
+}
+
+#main-content-body>*:first-child>*:first-child {
+    display: block;
+    margin: 0 48px 0 0;
+    padding: 3em 0 0 0;
+    border: 0;
+    width: auto;
+    min-height: 2em;
+    height: 100%;
+    background: transparent url(../img/body-c.png) repeat-x top;
+}

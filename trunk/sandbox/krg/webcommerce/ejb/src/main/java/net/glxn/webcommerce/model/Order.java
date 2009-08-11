@@ -6,7 +6,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,8 +21,17 @@ import java.util.Collection;
 public class Order {
 
     private Long id;
-    private Collection<Product> products;
+    private Collection<Product> products = new ArrayList<Product>();
     private User customer;
+
+    @Id @GeneratedValue
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @OneToMany
     public Collection<Product> getProducts() {
@@ -38,14 +49,5 @@ public class Order {
 
     public void setCustomer(User customer) {
         this.customer = customer;
-    }
-
-    @Id
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
