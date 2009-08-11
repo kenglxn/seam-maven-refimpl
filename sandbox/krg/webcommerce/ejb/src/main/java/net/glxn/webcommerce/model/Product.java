@@ -5,6 +5,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,7 +16,17 @@ import javax.persistence.Id;
  */
 @Entity
 public class Product {
+    private Long id;
     private Category category;
+
+    @Id @GeneratedValue
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     public Category getCategory() {
@@ -24,16 +35,5 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    private Long id;
-
-    @Id
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

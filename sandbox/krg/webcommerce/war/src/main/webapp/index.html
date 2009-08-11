@@ -1,5 +1,447 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Refresh" content="0; URL=home.seam">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+  <link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection"/>
+  <link rel="stylesheet" href="css/blueprint/print.css" type="text/css" media="print"/>
+  <!--[if IE]>
+  <link rel="stylesheet" href="../../styles/blueprint/ie.css" type="text/css" media="screen, projection" />
+  <![endif]-->
+
+  <style type="text/css">
+    @import url(css/clear-float.css);
+    @import url(css/inline-block.css);
+    @import url(css/page-layout.css);
+    @import url(css/horisontal-tabbed.css);
+    @import url(css/form.css);
+    @import url(css/form.search-bar.css);
+  </style>
+
+  <style type="text/css">
+    /* <![CDATA[ */
+    body {
+      font-size: 62.5%; /* This body font-size fixes an IE bug and maintains x-browser uniformity   */
+    /* By setting body.font-size:62.5% we ensures that ems to pixel ratio = 10  */
+      line-height: 1; /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #fefefe;
+      background-color: #1a171b;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color : #fefefe;
+    }
+
+    p {
+      font-size: 1.2em;
+    }
+
+      /*
+      * Typical modifications to page-layout.css
+      */
+    #sizer {
+      min-width: 100.4em;
+      max-width: 127.8em;
+    }
+
+    #expander {
+    }
+
+    #page {
+      padding-top: 1em; /* space between header and page */
+      padding-bottom: .1em; /* must be less or equal the #footer height value */
+    /* a smaller value makes the footer shadow blend into the page */
+      padding-left: .5em; /* horisontal spacing */
+      padding-right: .5em; /* horisontal spacing */
+    }
+
+    #header {
+      height: 17em;
+    }
+
+    #header>*:first-child {
+    /* this is where you put the header content */
+    /*border-bottom: 1px solid #000000;*/
+    }
+
+    #footer {
+      height: 2em; /* footer must have a fixed height */
+      padding-top: 3em; /* space for bg image */
+      padding-bottom: 1em; /* vertical bottom spacing */
+      margin-top: -6em; /* negative value of footer height+padding */
+      text-align: center;
+    }
+
+    /* end: Typical modifications to page-layout.css */
+
+      /*
+      * Modifications to menu (horisontal-tabbed.css)
+      */
+    #horisontal-menu {
+      position: absolute;
+      bottom: 0;
+    }
+
+    #horisontal-menu .menu li.login {
+      margin-left: 6%;
+    }
+
+    #horisontal-menu .menu li.about {
+      margin-left: 1%;
+    }
+
+    #horisontal-menu .menu li.help {
+      position: absolute;
+      right: -.5em;
+      bottom: 2.6em;
+    }
+
+    #horisontal-menu .menu li.help a,
+      #horisontal-menu .menu li.help a:visited {
+      padding-left: 16px;
+      text-indent: -1000px; /* hides the text */
+      overflow: hidden; /* needed by ie when text-indent is negative */
+    }
+
+    #horisontal-menu .menu li.help a:hover,
+      #horisontal-menu .menu li.help a:focus,
+      #horisontal-menu .menu li.help a:active {
+      padding-left: 24px;
+      text-indent: 0;
+    }
+
+    #horisontal-menu .menu li.search {
+      position: absolute;
+      right: 8px;
+      bottom: 4px;
+    }
+
+    #horisontal-menu .menu li.search:focus,
+      #horisontal-menu .menu li.search:active {
+      margin-top: 0; /* suspend button ... */
+      margin-bottom: 0; /* ... down effect    */
+    }
+
+    /* remove bg image for search menu  */
+    #horisontal-menu .menu li.search,
+      #horisontal-menu .menu li.search:hover,
+      #horisontal-menu .menu li.search:focus,
+      #horisontal-menu .menu li.search:active,
+      #horisontal-menu .menu li.search>*:first-child,
+      #horisontal-menu .menu li.search:hover>*:first-child,
+      #horisontal-menu .menu li.search:focus>*:first-child,
+      #horisontal-menu .menu li.search:active>*:first-child {
+      background: transparent url(menu.pixel.png) no-repeat top left;
+    }
+
+    /* end: Modifications to menu */
+
+    /* site specific css */
+
+    .sitelogo {
+      background: transparent url(logo.png) no-repeat -4px top;
+      height: 100%;
+    }
+
+    #page-wrapper {
+      background: transparent url(bg.png) no-repeat bottom left;
+    }
+
+    .left-content {
+      width: 18%;
+      margin-right: 2%;
+    }
+
+    .main-content {
+      /*background: transparent url(body.png) no-repeat scroll -1em top;*/
+      height: 56em;
+      /*padding: 2em 2em 0 2em;*/
+      width: 65%;
+    }
+
+    .main-content p {
+      width: 95%;
+    }
+
+    .banner {
+      margin:0.7em;
+      width:10%;
+    }
+
+    #main-content-body {
+      position: relative; /* can use e.g. position:absolute; bottom: 0; */
+      display: block;
+      margin: 0;
+      padding-bottom:1em;
+      border: 0; /* can use e.g. border-bottom: 1px solid #C9910F; */
+      width: 100%;
+      height:102%;
+      text-align: left;
+      background: transparent url(img/body-l.png) no-repeat top left;
+    }
+
+    #main-content-body>*:first-child {
+      display: block;
+      margin: 0 0 0 49px;
+      padding-bottom:1em;
+      border: 0;
+      width: auto;
+      height:100%;
+      background: transparent url(img/body-r.png) no-repeat top right;
+    }
+
+    #main-content-body>*:first-child>*:first-child {
+      display: block;
+      margin: 0 48px 0 0;
+      padding: 3em 0 0 0;
+      border: 0;
+      width: auto;
+      min-height: 2em;
+      height: 100%;
+      background: transparent url(img/body-c.png) repeat-x top;
+    }
+    p , h2{
+        visibility: hidden;
+    }
+
+    /* ]]> */
+  </style>
+
+  <script type="text/javascript" language="javascript">
+    //<![CDATA[
+
+    // Search helper Singleton object
+    SearchHelper = ( function() {
+      // Private attributes and methods
+      var searchHint = 'search...';
+
+      return ({
+        // Public attributes and methods
+
+        /**
+         * Removes the string 'search...' from the search field if present
+         * @method removeHint
+         * @param target {HTMLElement} the element to remove the string 'search...' value from
+         * @return {void}
+         * @public
+         */
+        removeHint: function(target) {
+          if (target && new RegExp('^\\s*' + searchHint + '\\s*', 'i').test(target.value)) {
+            target.value = '';
+          }
+        },
+
+        /**
+         * Appends the string 'search...' to the search field if search field value is blank
+         * @method appendHint
+         * @param target {HTMLElement} the element to append the string 'search...' value to
+         * @return {void}
+         * @public
+         */
+        appendHint: function(target) {
+          if (target && (/^\s*$/.test(target.value) )) {
+            target.value = searchHint;
+          }
+        }
+      }); //~return public attributes and methods
+    } )(); //~SearchHelper, anonymous function immediately invoked with ()
+
+    //]]>
+  </script>
+
+  <title>Sticky Footer - More Design</title>
 </head>
+
+<body>
+
+<div id="sizer">
+  <div id="expander">
+
+    <div id="page-wrapper">
+
+      <div id="header">
+        <div>
+          <div class="sitelogo"></div>
+          <div id="horisontal-menu">
+            <div>
+              <div>
+                <ul class="menu">
+                  <li class="home current"><span><a href="#">Hovedsiden</a></span></li>
+                  <li class="transport-requests"><span><a href="#">Side1</a></span></li>
+                  <li class="execution-plans"><span><a href="#">Side2</a></span></li>
+                  <li class="services"><span><a href="#">Side3</a></span></li>
+                  <li class="planning"><span><a href="#">Side4</a></span></li>
+                  <li><span><a href="#">Admin</a></span></li>
+                  <li class="login"><span><a href="#">Log In</a></span></li>
+                  <li class="about"><span><a href="#">Om oss</a></span></li>
+                  <li class="help"><span><a href="#">Hjelp</a></span></li>
+
+                  <li class="search">
+                    <form id="search-bar" class="ki-form" action="" method="post">
+                      <fieldset class="clear-float">
+                        <input id="search" name="search" type="text"
+                               value="search..."
+                               onfocus="javascript: SearchHelper.removeHint(this);"
+                               onblur="javascript: SearchHelper.appendHint(this);"
+                            />
+                        <input id="search-submit" name="search-submit" type="submit" value=""
+                               onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
+                               onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
+                            />
+
+                        <input id="search-help" name="search-help" type="button" value=""
+                               onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
+                               onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
+                            />
+
+                        <!--
+                        <a href="#" id="search-help"
+                          onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
+                          onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
+                        >Help
+                        </a>
+                        -->
+
+
+                      </fieldset>
+                    </form>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- #horisontal-menu -->
+        </div>
+      </div>
+      <!-- #header -->
+
+      <div id="page">
+
+        <h2>Sticky Footer - More Design :-)</h2>
+
+        <div class="inline-block left-content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nulla mollis vestibulum dui. Aenean ipsum elit, tempor a, semper eu,
+            condimentum sed, nisi. Mauris dictum fermentum felis. Quisque sit
+            amet turpis sit amet quam imperdiet dapibus. Donec interdum, ipsum
+            vel lobortis elementum, eros tellus fermentum risus, lacinia euismod
+            lacus nisi id nisl. Cras venenatis faucibus est. Pellentesque quis
+            mauris. Fusce nisi tellus, lacinia eget, consectetur id, convallis
+            id, tellus. Integer nisl. Aenean et arcu a arcu malesuada elementum.
+            Etiam ac magna. Quisque eu quam id quam lacinia eleifend. Cras
+            pulvinar urna non elit. Quisque molestie, augue dapibus feugiat
+            mattis, neque velit porttitor ligula, sit amet laoreet eros metus a
+            risus. Phasellus euismod metus et nisi. Aliquam leo ipsum, feugiat
+            quis, euismod eget, adipiscing eu, tellus. Donec non orci sit amet
+            mauris vestibulum tempus.</p>
+        </div>
+
+        <div class="inline-block main-content">
+          <div id="main-content-body">
+            <div>
+              <div>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  ac neque vitae justo feugiat ultrices. Quisque a erat. Duis a diam
+                  sed mi pellentesque posuere. Sed nisi ligula, convallis sit amet,
+                  sollicitudin sed, pharetra ut, felis. Fusce vel justo. Vivamus
+                  consectetur sodales urna. Aliquam pharetra ultricies risus. Maecenas
+                  interdum. Proin facilisis. Praesent magna mi, elementum sit amet,
+                  dapibus at, commodo sit amet, justo. Duis ipsum neque, rhoncus eget,
+                  tempus et, ornare eu, risus.</p>
+
+                <p>Proin id nisl sed orci cursus bibendum. Praesent consequat
+                  justo eu lacus. Nullam metus neque, molestie at, venenatis et,
+                  cursus ac, urna. Maecenas iaculis tortor eget quam. Nulla
+                  pellentesque, ipsum ut faucibus elementum, felis massa luctus risus,
+                  eget accumsan metus sapien ac quam. Suspendisse interdum suscipit
+                  justo. Donec ultrices. Mauris sit amet dui. Pellentesque eu tortor.
+                  Vivamus faucibus nulla. Vestibulum eu augue in sapien adipiscing
+                  venenatis. Pellentesque habitant morbi tristique senectus et netus
+                  et malesuada fames ac turpis egestas. Aenean vestibulum, orci vel
+                  mollis feugiat, mi tortor laoreet justo, ac vulputate orci arcu quis
+                  nisl.</p>
+
+                <p>Vestibulum bibendum urna eu purus. In in lorem. Nam dignissim
+                  tellus at quam. Fusce accumsan nisl in metus. Nunc pharetra tortor
+                  id nunc. Etiam lacus felis, sodales vel, egestas eget, faucibus
+                  quis, mauris. Vestibulum erat elit, euismod vitae, cursus id,
+                  posuere nec, libero. Fusce sit amet massa vitae purus auctor
+                  eleifend. Nam vitae enim id est eleifend condimentum. Nam metus
+                  nisl, cursus eu, convallis eget, sodales a, metus. Morbi fermentum.
+                  Praesent fringilla nisl vel eros. Pellentesque sit amet nibh sed
+                  libero iaculis viverra. Class aptent taciti sociosqu ad litora
+                  torquent per conubia nostra, per inceptos himenaeos. Curabitur
+                  lobortis, urna sit amet luctus pellentesque, dolor urna fringilla
+                  metus, venenatis porttitor nibh elit in turpis. Cras cursus, turpis
+                  eget elementum aliquam, tortor arcu varius justo, eget tincidunt
+                  turpis dui id lectus. Sed et urna. Mauris feugiat porta augue.</p>
+
+                <p>Nunc consequat. Sed pulvinar, lacus eu vehicula porta, ipsum
+                  augue pretium massa, id egestas enim tellus volutpat quam. Nunc
+                  posuere malesuada diam. Nulla cursus gravida tortor. Fusce velit.
+                  Integer felis. Nullam gravida lectus non dolor adipiscing semper.
+                  Maecenas nulla mauris, sollicitudin vel, pretium ut, faucibus non,
+                  urna. Suspendisse laoreet eleifend sem. Nulla sed sem. Donec et sem.
+                  Morbi eu lectus placerat felis iaculis mattis. Vivamus ligula
+                  mauris, eleifend vel, convallis nec, feugiat sit amet, tellus.
+                  Aenean ac lorem id sapien vehicula rutrum. Vivamus ac mauris non
+                  erat volutpat ultricies. Aenean lobortis, neque consectetur gravida
+                  porttitor, nibh elit fermentum velit, eu convallis purus sem at
+                  ligula. In nec arcu ac turpis porta placerat. Pellentesque habitant
+                  morbi tristique senectus et netus et malesuada fames ac turpis
+                  egestas. Morbi mi erat, molestie sed, iaculis nec, aliquam id,
+                  tortor.</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="inline-block banner">
+          <script type="text/javascript"><!--
+          google_ad_client = "pub-4879279033823175";
+          /* 120x240, opprettet 29.04.09 */
+          google_ad_slot = "2563915601";
+          google_ad_width = 120;
+          google_ad_height = 240;
+          //-->
+          </script>
+          <script type="text/javascript"
+                  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+          </script>
+        </div>
+        <!--<div class="inline-block">-->
+        <!--<p>Nullam vitae ligula id lectus condimentum commodo. Quisque-->
+        <!--scelerisque. Fusce molestie, sapien et ultrices tristique, odio urna-->
+        <!--condimentum est, non aliquam diam erat vel arcu. Sed rutrum justo-->
+        <!--nec felis. Donec lacus massa, pharetra a, rhoncus nec, consectetur-->
+        <!--hendrerit, dolor. Aenean arcu lectus, laoreet ac, dictum vel, dictum-->
+        <!--sed, velit. Vestibulum ante ipsum primis in faucibus orci luctus et-->
+        <!--ultrices posuere cubilia Curae; Aenean hendrerit nisi sed mauris.-->
+        <!--Proin erat justo, egestas ultrices, ultrices vel, venenatis-->
+        <!--tristique, lacus. Ut sagittis ante et elit. Integer consequat.-->
+        <!--Curabitur congue adipiscing arcu. Nullam fermentum sagittis dui. In-->
+        <!--ut mauris. Nunc vitae diam eu odio facilisis lobortis. Nulla-->
+        <!--molestie massa ut nibh. Nunc nulla.</p>-->
+        <!--</div>-->
+
+      </div>
+      <!-- #page -->
+    </div>
+    <!-- #page-wrapper -->
+
+    <div id="footer" style="">
+      <div>
+        <h4>adm 'at' glxn.net </h4>
+      </div>
+    </div>
+    <!-- #footer -->
+
+  </div>
+  <!-- #expander -->
+</div>
+<!-- #sizer -->
+
+</body>
 </html>

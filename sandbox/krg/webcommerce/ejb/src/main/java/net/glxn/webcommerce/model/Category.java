@@ -6,7 +6,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +19,19 @@ import java.util.Collection;
  */
 @Entity
 public class Category {
+    private Long id;
     private Category parent;
+    private Collection<Product> products = new ArrayList<Product>();
+    private Collection<Category> children = new ArrayList<Category>();
+
+    @Id @GeneratedValue
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     public Category getParent() {
@@ -28,8 +42,6 @@ public class Category {
         this.parent = parent;
     }
 
-    private Collection<Category> children;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     public Collection<Category> getChildren() {
         return children;
@@ -39,10 +51,6 @@ public class Category {
         this.children = children;
     }
 
-    private Collection<Product> products;
-
-    private Collection<Product> products;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     public Collection<Product> getProducts() {
         return products;
@@ -50,16 +58,5 @@ public class Category {
 
     public void setProducts(Collection<Product> products) {
         this.products = products;
-    }
-
-    private Long id;
-
-    @Id
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
