@@ -2,11 +2,9 @@
 <project
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
->
-
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
-
 	<parent>
 		<groupId>no.knowit.seam</groupId>
 		<artifactId>seam-refimpl</artifactId>
@@ -14,10 +12,9 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>no.knowit.seam</groupId>
 	<artifactId>seam-refimpl-war</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
-	<name>${app.display.name} WAR ${project.version}</name>
-	<description>The Seam Reference Implementation WAR module ....</description>
+	<name>${project.artifactId} : ${project.version}</name>
+	<description>The Seam Maven reference implementation WAR module</description>
 	<packaging>war</packaging>
 
 	<profiles>
@@ -121,8 +118,8 @@
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam</artifactId>
-			<scope>provided</scope>
 			<type>ejb</type>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -207,7 +204,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- url rewrite filter, uncomment if you do not use native Seam url rewrite filter 
+		<!-- url rewrite filter, uncomment if you do not use the native Seam url rewrite filter 
 		<dependency>
 			<groupId>org.tuckey</groupId>
 			<artifactId>urlrewritefilter</artifactId>
