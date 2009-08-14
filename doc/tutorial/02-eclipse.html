@@ -15,7 +15,7 @@
 <div id="page-wrapper">
 <div id="header">
 <div class="header">
-  <h1>Maven, Eclipse and JBoss Tools</h1>
+  <h1>Using Maven, Eclipse and JBoss Tools</h1>
 </div>
 </div> 
 <div id="page">
@@ -25,7 +25,7 @@
 <p>The shortcuts are listed here so we don't have to type the tedious file 
   paths over and over again in this document.</p>
 <ul>
-  <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation folder, e.g. C:\servers\jboss-4.2.3.GA</li>
+  <li><code>${JBOSS_HOME}</code> - refers to Jboss installation folder, e.g. C:\servers\jboss-4.2.3.GA</li>
   <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
   <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy folder, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
   <li><code>${PROJECT}</code> - the project root folder, i.e. seam-maven-refimpl</li>
@@ -42,7 +42,13 @@
     <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.
   </li>
   <li><a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a> (0.9.8 or later)</li>
-  <li><a href="http://subclipse.tigris.org/">SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE</a></li>
+  <li><a href="http://subclipse.tigris.org/">
+		SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE</a><br/>
+		<strong/>Note for Pulse users:</strong> Currently the SubClipse plugin provided by Pulse is not 
+		compatible with the latest Tortoise SVN. If you are using both Tortoise and SubClipse then you 
+		need to uninstall the Subclipse plugin provided by Pulse and add a update site in Pulse to 
+		<a href="http://subclipse.tigris.org/update_1.6.x/">SubClipse-1.6.x</a>.
+	</li>
 	<li><a href="http://www.seamframework.org/Download">JBoss Seam 2.x</a></li>
   <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a></li>
   <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.</li>
@@ -51,10 +57,10 @@
 	-->
 </ul>
 
-<h2>Configure Workspace</h2>
+<h2>Configure the Workspace</h2>
 <ol class="vspace">
   <li>
-		Create an empty workspace folder, e.g. C:/ide/workspaces<br/>
+		Create an empty workspace folder, e.g. C:/dev/ide/workspaces<br/>
     <strong>Note:</strong> Do not use your project folder, ${SEAM_TUTORIAL}, as a workspace folder.
 	</li>
   <li>
@@ -84,13 +90,14 @@
 
 <h3>Configure The Maven Eclipse Plugin</h3>
 <ol class="vspace">
+	<li>Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.</li>
   <li>
 		Make sure that Eclipse is running on a JDK and not a JRE.
 		<img src="img/eclipse-installed-jres.png" style="width:640px; display:block;" />
 		<img src="img/eclipse-compiler.png" style="width:640px; display:block;" />
 	</li>
   <li>
-	  Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.
+	  Configure the Maven Eclipse plugin</a>.
 		<img src="img/eclipse-maven-plugin.png" style="width:640px; display:block;" />
 		According to 
 		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
@@ -159,7 +166,7 @@ The Tools is not essential for developing a Mavenized Seam application, but it h
 useful wizards and automated tasks. If you have an existing database then you can use the Tools to 
 generate a full CRUD application with entities, Seam framework classes (home- and list classes) and 
 a user interface with navigation an drilldown. For a database with ten tables this will take no more 
-than 30 seconds to complete. Show me a RoR that can do that! If you use the Tools to create an entity 
+than 30 seconds to complete. I don't think RoR that can do that! If you use the Tools to create an entity 
 then the Tools will automatically generate the corresponding Seam framework classes as well as a 
 xhtml page with CRUD functionality. 
 </p>
@@ -214,15 +221,14 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
 	</li>
 </ol>
+<p>This ends the steps needed to prepare the Eclipse workspace for Maven and JBoss Tools.</p>
 
-<h2>Import a Mavenized Seam Project</h2>
-<p>To import a mavenized Seam project to Eclipse (i.e. a project that is already installed on your 
-	computer), follow these steps:
-</p>
+<h2>Import a Mavenized Seam Project to Eclipse</h2>
+<p>In this section we'll explain the steps needed to import a mavenized Seam project to Eclipse.</p>
 <ol class="vspace">
   <li>
 		<a href="01-gettingstarted.html#use-as-template">Export the <code>seam-refimpl</code> project</a> 
-		to a folder of your choice, the <code>${SEAM_TUTORIAL}</code> folder.
+		from svn to a folder of your choice, the <code>${SEAM_TUTORIAL}</code> folder.
 	</li>
   <li>
 		<a href="01-gettingstarted.html#modfy-the-poms">Modify the POMs</a> and
@@ -230,22 +236,26 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 	</li>
   <li>
 		Navigate to the <code>${SEAM_TUTORIAL}</code> folder using a command shell and execute maven commands:<br/>
-    <code>mvn clean -Punexplode<br/>
-    mvn install -Pexplode (remember to point the server to the correct deploy folder in profiles.xml)<br/>
-		mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true<br/>
-		mvn eclipse:m2eclipse
-		</code><br/> 
+		<ul>
+    <li><code>mvn clean -Punexplode</code></li>
+    <li><code>mvn install -Pexplode (remember to point the server to the correct deploy folder in profiles.xml)</code></li>
+		<li><code>mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true</code></li>
+		<li><code>mvn eclipse:m2eclipse</code></li>
+		</ul>
+		<br/>
     The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
-    files that now makes the project a valid Eclipse project.<br/><br/>
+    files that now makes the project a valid Eclipse project.<br/>
     <strong>Note:</strong> The <code>m2eclipse</code> plugin seems to be a bit unpredictable when
 		it comes to downloading sourcecode and javadocs for the projects dependencies. If you find that 
-		sourcecode and javadocs are missing for some dependencis then try to run 
+		sourcecode and javadocs are missing for some dependencis, then try to run 
 		<code style="white-space:nowrap">mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true</code>
   </li>
   <li>
     Import the project:
     <img src="img/eclipse-import.png" style="width:250px; display:block;" />
+		Select <strong>Maven Projects</strong> and click <strong>Next</strong>.
     <img src="img/eclipse-import-maven-01.png" style="width:340px; display:block;" />
+		Browse to the folder where the project is located, select it an click <strong>Finish</strong>.
     <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
 		You will notice a build error in the Maven console:<br/>
     <img src="img/eclipse-import-maven-08.png" style="width:750px; display:block;" />
@@ -254,26 +264,39 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 			Invalid or missing parameters: [Mojo parameter [name: 'outputDirectory'; alias: 'null'], Mojo 
 			parameter [name: 'resources'; alias: 'null']] for mojo: 
 			org.apache.maven.plugins:maven-resources-plugin:2.3:copy-resources</font></code>
-		</a><br/>
+		</a><br/><br/>
 		We fix :-)
     <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
-    Modify Maven properties for parent project; seam-tutotrial:
-    <img src="img/eclipse-project-properties-maven-01.png" style="width:500px; display:block;" />
+    Modify Maven properties for parent project; seam-tutotrial.<br/>
+		<strong>NOTE: <font color="red">DO NOT CHECK THE INCLUDE MODULES CHECKBOX - EVER!</font></strong>  
+		This will effectly block the possibility to use WTP to deploy your project. The selection is
+		irreversible and you will have to remove the project from Eclipse, delete all Eclipse spesific
+		settings and set up the project from scratch. See the section 
+		<a href="#remove-eclipse-settings">Remove Eclipse Spesific Settings From a Project</a> for how
+		to completly remove Eclipse spesific settings from a project.
+    <img src="img/eclipse-project-properties-maven-01.png" style="width:580px; display:block;" />
     Modify Maven properties for ear module; seam-tutotrial-ear:
-    <img src="img/eclipse-project-properties-maven-02.png" style="width:500px; display:block;" />
+    <img src="img/eclipse-project-properties-maven-02.png" style="width:580px; display:block;" />
     Modify Maven properties for ejb and war modules; seam-tutotrial-ejb and seam-tutotrial-war:
-    <img src="img/eclipse-project-properties-maven-03.png" style="width:500px; display:block;" />
+    <img src="img/eclipse-project-properties-maven-03.png" style="width:580px; display:block;" />
 		Now we have fixed and the build errors should be gone :-))
   </li>
   <li>
-    Create a Maven <code>install -Pexplode</code> run configuration:<br/>
-		The Maven install goal does not work from Eclipse. You should read 
-    <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
+    Create a Maven <code>install -Pexplode</code> and a Maven <code>clean -Punexplode</code> 
+		run configuration:<br/>
+		The <code>install</code> goal with the <code>explode</code> profile is needed to do an initial 
+		deploy to	the server and also to fix some WTP issues (more on that later). It is also reported 
+		that the Maven install goal does not work properly from Eclipse. You should read 
+		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
     this blog</a> and follow the screenshots 
 		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
 		there</a> and here to fix the problem.
-    <img src="img/eclipse-run-configurations-01.png" style="width:640px; display:block;" />
+    <img src="img/eclipse-run-configurations-01.png" style="width:540px; display:block;" />
+		Below is the screenshot for the Maven <code>install -Pexplode</code> run configuration. Also 
+		create a run configuration for the Maven <code>clean -Punexplode</code> goal. Remenber to use the
+		external Maven Runtime you configured for the workspace.
     <img src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
+		Running the goal should give the following output:<br/><br/>
 		<pre style="font-size:9px">
 [INFO] Executing tasks
      [echo] Exploding to C:/ide/server/jboss-4.2.3.GA/server/default/deploy/seam-tutorial-ear.ear
@@ -298,11 +321,12 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESSFUL
 [INFO] ------------------------------------------------------------------------
+
 </pre>
 		
-		You can run the goal as needed by selecting the 
+		You can run the goal(s) as needed by selecting the 
 		<code><strong>Run As &gt; Maven build</strong> </code>
-		from the project menu.
+		from the <strong>parent</strong> project menu.
     <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
 	  Start the server:
     <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
@@ -310,6 +334,14 @@ a datasource. The screenshots below outlines one possible way to accomplish this
     <img src="img/eclipse-server-view-start-server-02.png" style="width:750px; display:block;" />
 		Open a browser and point the URL to <a href="http://localhost:8080/seam-tutorial">
 		http://localhost:8080/seam-tutorial</a>
+	</li>
+	<li>
+		Project Facets for EAR, EJB and WAR modules<br/>
+		It should not be necessary to make any changes to the Project Facets, just verify that the 
+		facets are selected as shown in the screenshots below.
+    <img src="img/eclipse-ear-facets.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-ejb-facets.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-war-facets.png" style="width:750px; display:block;" />
 	</li>
 	<li>
 	  Set up Maven Builder:<br/>
@@ -373,7 +405,6 @@ configuration. After completion you can revert from SVN or restore the old <code
 	<li>
 	  The parent module:<br/>
 		Should not be necessary to do anything here in connection with the Tools. Use default values.
-    <img src="img/eclipse-parent-properties-01.png" style="width:750px; display:block;" />
     <img src="img/eclipse-parent-properties-02.png" style="width:750px; display:block;" />
     <img src="img/eclipse-parent-properties-05.png" style="width:750px; display:block;" />
 	</li>
@@ -384,17 +415,12 @@ configuration. After completion you can revert from SVN or restore the old <code
 	</li>
 	<li>
 	  The EJB module:
-    <img src="img/eclipse-ejb-properties-02.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-properties-06.png" style="width:400px; display:block;" />
     <img src="img/eclipse-ejb-properties-04.png" style="width:750px; display:block;" />
     <img src="img/eclipse-ejb-properties-05.png" style="width:750px; display:block;" />
     <img src="img/eclipse-ejb-properties-03.png" style="width:750px; display:block;" />
 	</li>
 	<li>
 	  The WAR module:
-    <img src="img/eclipse-war-properties-03.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-war-properties-02.png" style="width:450px; display:block;" />
-    <img src="img/eclipse-war-properties-01.png" style="width:450px; display:block;" />
     <img src="img/eclipse-war-properties-07.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-05.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-properties-04.png" style="width:750px; display:block;" />
@@ -407,8 +433,11 @@ configuration. After completion you can revert from SVN or restore the old <code
 Run <code style="white-space:pre">mvn clean -Punexplode</code> and 
 <code style="white-space:pre">mvn install -Pexplode</code>.
 </p>
-<p>Here is a sample of JBoss Tolls cleverness:</p>
+<p>Here is a sample of JBoss Tools cleverness:</p>
 <img src="img/eclipse-clever-jboss-tools-01.png" style="width:750px; display:block;" />
+
+<h2 id="remove-eclipse-settings">Remove Eclipse Spesific Settings From a Project</h2>
+
 
 <h2>Play With the JBoss Tools</h2>
 <p>In this section we'll play with the tools.</p>
@@ -437,16 +466,17 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
 </div> <!-- #footer -->
 </div> <!-- #expander -->
 </div> <!-- #sizer -->
-
-<script type="text/javascript">
-        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
-        try {
-            var pageTracker = _gat._getTracker("UA-9570909-1");
-            pageTracker._trackPageview();
-        } catch(err) {
-        }</script>
+<!--
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try {
+				var pageTracker = _gat._getTracker("UA-9570909-1");
+				pageTracker._trackPageview();
+		} catch(err) {
+		}</script>
+-->
 </body>
 </html>
