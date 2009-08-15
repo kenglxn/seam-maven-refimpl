@@ -53,5 +53,5 @@ Note that `<targetBytecode>1.6</targetBytecode>` relates to groovy-all version 1
   * Open a command shell and cd to project folder: groovybooking-web
   * Execute mvn install
   * Copy `groovybooking-web/jboss-seam-groovybooking-web-ds.xml` to your appserver's deploy folder, e.g. `C:\dev\server\jboss-4.2.3.GA-jdk6\server\default\deploy`
-  * copy directory `groovybooking-web/war/target/seam-groovybooking-web.war` to your appserver's deploy folder
+  * copy `groovybooking-web/war/target/seam-groovybooking-web.war` to your appserver's deploy folder
   * Start the server and point your browser to [http://localhost:8080/seam-groovybooking-web]
