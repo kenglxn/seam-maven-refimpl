@@ -1,3 +1,6 @@
+see: http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionOpen18eeProjectBaseline
+
+
 #summary A Mavenized Version of Seam In Action, Chapter Two.
 
 = A Mavenized Version of Seam In Action, Chapter Two. =
@@ -7,16 +10,16 @@ You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 
 == Howto ==
 Here are the steps required to get the project up and running.
-  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn and install it] (mvn install). This is the "root" POM for all example applications and you need to install to your local m2 repo.	
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps].
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn and install it]. This is the "root" POM for all example applications and you need to install to your local m2 repo.	
     * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.	
     * Execute *mvn install* to install the pom.
-  * In MYSQL
+  * In MYSQL.
     * Create database "*open18initial_db*"
     * Execute ./samples/seaminaction/etc/schema/open18-initial-schema-mysql.sql
     * Execute ./samples/seaminaction/etc/schema/open18-initial-seed-data-mysql.sql
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-baseline/open18ee Export project from svn]
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-baseline/open18ee Export project from svn].
     * Copy open18ee/config/profiles.xml to open18ee. Modify profiles.xml as explained in the getting started tutorial.
-    * Open a command shell and cd to project folder, open18ee 
-    * Execute *mvn install -Pexplode*
-  * Start the server and access the application at [http://localhost:8080/open18-baseline]
+    * Open a command shell and cd to project folder, open18ee.
+    * Execute *mvn install -Pexplode*.
+  * Start the server and access the application at [http://localhost:8080/open18-baseline].
