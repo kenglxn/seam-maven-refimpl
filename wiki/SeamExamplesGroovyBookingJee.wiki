@@ -24,4 +24,3 @@ Differences from the original app:
   * Copy config/profiles.xml to the project root folder, groovybooking-jee. Modify profiles.xml as needed.
   * Execute *mvn install -Pexplode*
   * Access the application at http://localhost:8080/seam-groovybooking-jee
-  * Also read the *readme.txt* from the original JBoss Seam example
