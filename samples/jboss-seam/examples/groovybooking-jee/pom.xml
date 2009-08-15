@@ -6,21 +6,20 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>no.knowit.seam.examples</groupId>
-		<artifactId>seam-examples</artifactId>
-		<version>2.1.2</version>
-		<relativePath>../../../pom.xml</relativePath>
+		<groupId>no.knowit.seam</groupId>
+		<artifactId>root</artifactId>
+		<version>2.1.2-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.jboss.seam.examples</groupId>
-	<artifactId>seam-groovybooking-jee</artifactId> <!-- m2eclipse does not like: ${app.context}-jee -->
-	<name>${app.display.name} ${project.version}</name>
-	<version>0.1-SNAPSHOT</version>
+	<groupId>no.knowit.seam.examples</groupId>
+	<artifactId>jboss-seam-groovybooking-jee</artifactId> <!-- m2eclipse does not like: ${app.context}-jee -->
+	<name>${project.artifactId} : ${project.version}</name>
+	<version>2.1.2-SNAPSHOT</version>
 	<description>The JBoss Seam Groovy Booking JEE Example parent pom</description>
 	<packaging>pom</packaging>
 
 	<prerequisites>
-		<maven>2.0.9</maven>
+		<maven>2.0.10</maven>
 	</prerequisites>
 
 	<modules>
@@ -30,23 +29,52 @@
 	</modules>
 
 	<properties>
-		<app.context>seam-groovybooking-jee</app.context>  <!-- hint: same value as artifactId -->
+		<!-- application properties -->
+		<app.context>jboss-seam-groovybooking-jee</app.context>  <!-- hint: same value as artifactId -->
+		<app.web.context>seam-groovybooking-jee</app.web.context>
 		<app.display.name>Seam Groovy Booking JEE example</app.display.name>
 		<app.description>The JBoss Seam Groovy Booking JEE Example</app.description>
 		<app.database.name>refimpl_db</app.database.name> <!-- Does not matter as long as we are using Hypersonic db -->
 		
-		<app.jndi.name>groovyDatasource</app.jndi.name>
+		<!--  -->
+		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
+		<app.jndi.name>groovyJeeDatasource</app.jndi.name>
 		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+		<app.entity.manager.factory.name>groovyJeeEntityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g seam-refimplEntityManagerFactory is illegal-->
 		<app.persistence.unit.name>groovy</app.persistence.unit.name>
-		<app.entity.manager.factory.name>groovyEntityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g seam-refimplEntityManagerFactory is illegal-->
 		<app.persistence.unit.jndi.name>java:/${app.entity.manager.factory.name}</app.persistence.unit.jndi.name>
-		
+		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for JBoss 4.2.3 or newer -->
+		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
+		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
+		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
+		<app.distributable>false</app.distributable> <!-- see: WEB-INF/components.xml and ejb/../resources/META-INF/jboss.xml -->
+
+		<!-- Developer environment properties. Can be modified by developer in "profiles.xml" -->
+		<env>prod</env>
+		<env.debug>false</env.debug>
+		<env.unpack.modules>false</env.unpack.modules>
+		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+		<env.hibernate.show_sql>true</env.hibernate.show_sql>
+		<env.hibernate.format_sql>true</env.hibernate.format_sql>
+		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+		<jdk.debug>${env.debug}</jdk.debug>
+		<jdk.optimize>true</jdk.optimize>
+		<jdk.source>1.5</jdk.source>
+		<jdk.target>1.5</jdk.target>
+		<as>jboss423</as>
+		<as.version>4.2</as.version>
+		<ds>hsqldb</ds>
+		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
+		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
+		<ds.server.name></ds.server.name>
+		<ds.database.name>${app.database.name}</ds.database.name>
+		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
+		<ds.user.name>sa</ds.user.name>
+		<ds.password></ds.password>		
 	</properties>
 
 	<dependencyManagement>
-	
 		<dependencies>
-
 			<!-- project modules -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
@@ -66,9 +94,7 @@
 				<version>${project.version}</version>
 				<type>war</type>
 			</dependency>
-
 		</dependencies>
-		
 	</dependencyManagement>
 
 </project>

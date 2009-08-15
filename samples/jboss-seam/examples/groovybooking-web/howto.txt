@@ -58,3 +58,4 @@ Note that `<targetBytecode>1.6</targetBytecode>` relates to groovy-all version 1
   * Copy `groovybooking-web/jboss-seam-groovybooking-web-ds.xml` to your appserver's deploy folder, e.g. `C:\dev\server\jboss-4.2.3.GA-jdk6\server\default\deploy`
   * copy `groovybooking-web/war/target/seam-groovybooking-web.war` to your appserver's deploy folder
   * Start the server and point your browser to [http://localhost:8080/seam-groovybooking-web]
+  * Remember to `delete seam-groovybooking-web-ds.xml` and `seam-groovybooking-web-ds.war` from the server when you have finished the example
