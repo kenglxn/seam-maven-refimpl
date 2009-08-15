@@ -2,7 +2,7 @@
 
 = Introduction =
 
-The project shows how to usse the following UI components to handle JPA `@ManyToMany` CRUD.
+The project shows how to use the following UI components to handle JPA `@ManyToMany` CRUD:
 
 {{{
 <h:selectManyCheckbox>
@@ -15,15 +15,17 @@ Model:
 
 {{{
 Language*<------*Person*<----->*Company
-Interest*<---------*
+                   *
+Interest*<----------
 }}}
 
 Person `*<->*` Company is a "bi-directional" association where Person holds the inverse side of the association and Company is the owning side. The important thing to remember when working with many to many bi-directional associations is to remember to update the collection at the owning side (Company.java) before the inverse side is persisted (PersonHome.java). Also  note that a  HashSet is used on the owning side, which makes it easy to avoid redundant associations. 
 
 == Howto ==
 The steps required to get the project up and running:
-  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/knowit/examples/m2m Export project from svn]
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps.]
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/pom.xml Export the samples POM from svn and install it.] This is the "root" POM for all example applications and you need to install in your local m2 repo.
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/knowit/examples/m2m Export project from svn.]
   * Copy m2m/config/profiles.xml to m2m/. Modify profiles.xml as needed.
-  * Execute *mvn install -Pexplode*
+  * Execute *mvn install -Pexplode*.
   * You're ready to go!
