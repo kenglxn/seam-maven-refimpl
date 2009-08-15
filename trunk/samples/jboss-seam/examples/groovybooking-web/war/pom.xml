@@ -2,22 +2,19 @@
 <project
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
->
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jboss.seam.examples</groupId>
-		<artifactId>seam-groovybooking-web</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<groupId>no.knowit.seam.examples</groupId>
+		<artifactId>jboss-seam-groovybooking-web</artifactId>
+		<version>2.1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.jboss.seam.examples</groupId>
-	<artifactId>seam-groovybooking-web-war</artifactId> <!-- m2eclipse does not like: ${app.context}-war -->
-	<name>${app.display.name} WAR ${project.version}</name>
+	<artifactId>jboss-seam-groovybooking-web-war</artifactId> <!-- m2eclipse does not like: ${app.context}-war -->
+	<name>${project.artifactId} : ${project.version}</name>
 	<description>The JBoss Seam Groovy Booking WEB Example WAR module</description>
-	<version>0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<build>
@@ -48,6 +45,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<webappDirectory>${project.build.directory}/${app.context}.war</webappDirectory>
+					<warName>${app.web.context}</warName>
 					<webResources>
 						<webResource>
 							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
