@@ -345,7 +345,7 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 	</li>
 </ol>
 
-<h2>Manage the Edit Compile Deploy Cycle</h2>
+<h2>The Edit Compile Deploy Cycle</h2>
 <p>To have an effective development environment we need to automate the edit compile deploy cycle.
 You can either add the project to the server as a WTP project or define a Maven builder that 
 hooks in to the <code>process-classes</code> goal. For the latter, the seam-refimpl POMs has alredy
@@ -365,9 +365,9 @@ that utilizes this profile on the <code>process-classes</code> goal.
     <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
     <img src="img/eclipse-maven-builder-01.png" style="width:450px; display:block;" />
     <img src="img/eclipse-maven-builder-02.png" style="width:450px; display:block;" />
-		<p><strong>Note</strong>: Experiment with the <code>Base directory</code> variable. If you use 
+		<strong>Note</strong>: Experiment with the <code>Base directory</code> variable. If you use 
 		<code>${project_loc}</code> then the builder will run only on the sub project that contains
-		the modified file - resulting in a faster build cycle.</p>
+		the modified file - resulting in a faster build cycle.
     <img src="img/eclipse-maven-builder-03.png" style="width:450px; display:block;" />
 		Test the Builder:<br/>
 		Open a java class, e.g. <code>Authenticator.java</code>. Modify the source, save and check
