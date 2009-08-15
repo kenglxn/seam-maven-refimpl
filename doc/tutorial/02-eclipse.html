@@ -113,7 +113,7 @@
 	<li>
 	  Install the <a href="http://www.jboss.org/jbossas/">Jboss Application Server</a>, 
 		install <a href="http://www.jboss.org/tools">JBoss Tools 3</a>. The 
-		<a href="http://docs.jboss.com/seam/2.1.1.GA/reference/en-US/html/gettingstartedwithjbosstools.html">
+		<a href="http://docs.jboss.org/seam/2.1.2/reference/en-US/html/gettingstartedwithjbosstools.html">
 		JBoss Seam documentation</a> explains these steps in detail. The screenshots below outlines the 
 		steps needed to configure a WTP server reference for JBoss 4.2.3.
 	</li>
@@ -265,9 +265,9 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 			parameter [name: 'resources'; alias: 'null']] for mojo: 
 			org.apache.maven.plugins:maven-resources-plugin:2.3:copy-resources</font></code>
 		</a><br/><br/>
-		We fix :-)
-    <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
+		We fix :-)<br/><br/>
     Modify Maven properties for parent project; seam-tutotrial.<br/>
+    <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
 		<strong>NOTE: <font color="red">DO NOT CHECK THE INCLUDE MODULES CHECKBOX - EVER!</font></strong>  
 		This will effectly block the possibility to use WTP to deploy your project. The selection is
 		irreversible and you will have to remove the project from Eclipse, delete all Eclipse spesific
@@ -338,11 +338,26 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 	<li>
 		Project Facets for EAR, EJB and WAR modules<br/>
 		It should not be necessary to make any changes to the Project Facets, just verify that the 
-		facets are selected as shown in the screenshots below.
+		facets are selected <strong>excactly</strong> as shown in the screenshots below.
     <img src="img/eclipse-ear-facets.png" style="width:750px; display:block;" />
     <img src="img/eclipse-ejb-facets.png" style="width:750px; display:block;" />
     <img src="img/eclipse-war-facets.png" style="width:750px; display:block;" />
 	</li>
+</ol>
+
+<h2>Manage the Edit Compile Deploy Cycle</h2>
+<p>To have an effective development environment we need to automate the edit compile deploy cycle.
+You can either add the project to the server as a WTP project or define a Maven builder that 
+hooks in to the <code>process-classes</code> goal. For the latter, the seam-refimpl POMs has alredy
+defined an explode profile for the Maven process-classes goal. You only need to define a Maven builder
+that utilizes this profile on the <code>process-classes</code> goal.
+</p>
+<h3>WTP</h3>
+<p>This section explains how to set up the project as a WTP project</p>
+
+<h3>Maven Builder</h3>
+<p>This section explains how to set up the maven builder for the <code>process-classes</code> goal.</p>
+<ol>
 	<li>
 	  Set up Maven Builder:<br/>
 		You must set up a Maven builder to execute the <strong>explode</strong> profile during the edit- 
@@ -392,6 +407,8 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 	</li>
 </ol>
 
+<h3>Don't Kill One Bird With Two Stones</h3>
+<p>Choose either to add the project to the server or to define a Maven builder. (more text here....)</p>
 
 <h2>Configure JBoss Tools for a Project (optional)</h2>
 <p>This section explains the steps needed to configure JBoss Toos for a project. 
