@@ -326,8 +326,8 @@ moved action/src/main/java/org/open18/validator/*.java to
   application startup. It still does not work as intended, the following error occurs if you fill in 
   search parameters in the FacilityList.xhtml view:
 	
-	Exception during request processing:
-	Caused by javax.faces.FacesException with message: "Expression Error: Named Object: org.open18.StateValidator not found."
+		Exception during request processing:
+		Caused by javax.faces.FacesException with message: "Expression Error: Named Object: org.open18.StateValidator not found."
 
   The error is probably connected to wrong deployment of the validator- and converter files. Have to
   figure out where to place these files to get a correct deploy.
