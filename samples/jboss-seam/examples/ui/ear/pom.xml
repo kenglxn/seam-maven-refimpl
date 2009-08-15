@@ -6,15 +6,14 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jboss.seam.examples</groupId>
-		<artifactId>seam-ui</artifactId>
-		<version>2.1.2</version>
+		<groupId>no.knowit.seam.examples</groupId>
+		<artifactId>jboss-seam-ui</artifactId>
+		<version>2.1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.jboss.seam.examples</groupId>
-	<artifactId>seam-ui-ear</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
-	<name>${app.display.name} EAR ${project.version}</name>
+	<artifactId>jboss-seam-ui-ear</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
+	<name>${project.artifactId} : ${project.version}</name>
 	<description>The Seam UI Example EAR module</description>
 	<packaging>ear</packaging>
 
@@ -214,7 +213,7 @@
 						<webModule>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${app.context}-war</artifactId>
-							<contextRoot>/${app.context}</contextRoot>
+							<contextRoot>/${app.web.context}</contextRoot>
 							<unpack>${env.unpack.modules}</unpack>
 						</webModule>
 
