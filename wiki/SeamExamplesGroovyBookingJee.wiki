@@ -19,6 +19,7 @@ Differences from the original app:
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn].
   * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.
   * Execute *mvn install* to install the pom. This is the "root" POM for all example applications and you need to install it to your local m2 repo.
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/jboss-seam/examples/groovybooking-jee Export project from svn].
   * CD to ./samples/jboss-seam/examples/groovybooking-jee
   * Copy config/profiles.xml to the project root folder, groovybooking-jee. Modify profiles.xml as needed.
   * Execute *mvn install -Pexplode*
