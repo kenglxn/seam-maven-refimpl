@@ -21,5 +21,5 @@ Here are the steps required to get the project up and running.
     * Execute *mvn install -Pexplode*.
   * Start the server and access the application at [http://localhost:8080/open18-ch03].
 
-=== Modification to original code ===
+=== Modifications to original code ===
 see: [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch03/chapter-developments.txt chapter-developments.txt]
