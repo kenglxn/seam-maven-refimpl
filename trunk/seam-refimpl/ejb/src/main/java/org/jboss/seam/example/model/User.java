@@ -21,6 +21,15 @@ public class User implements Serializable
     private String password;
     private String name;
 
+    public User(String name, String password, String username) {
+        this.name = name;
+        this.password = password;
+        this.username = username;
+    }
+
+    public User() {
+    }
+
     @Id @GeneratedValue
     public Long getId() {
         return id;
