@@ -11,27 +11,24 @@
 		<version>2.1.2</version>
 	</parent>
 
-	<groupId>org.jboss.seam.examples</groupId>
-	<artifactId>seam-groovybooking-web</artifactId> <!-- m2eclipse does not like: ${app.context} -->
-	<name>${app.display.name} ${project.version}</name>
-	<version>0.1-SNAPSHOT</version>
+	<groupId>no.knowit.seam.examples</groupId>
+	<artifactId>jboss-seam-groovybooking-web</artifactId> <!-- m2eclipse does not like: ${app.context} -->
+	<name>${project.artifactId} : ${project.version}</name>
+	<version>2.1.2-SNAPSHOT</version>
 	<description>The JBoss Seam Groovy Booking WEB Example parent pom</description>
 	<packaging>pom</packaging>
 
 	<properties>
-		<version.seam>2.1.2</version.seam>
+		<version.seam>2.1.2</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
 		<version.richfaces>3.3.1.GA</version.richfaces>
-		
-		<app.context>seam-groovybooking-web</app.context>  <!-- hint: same value as artifactId -->
-		<app.display.name>Seam Groovy Booking WEB example</app.display.name>
+		<app.context>jboss-seam-groovybooking-web</app.context>  <!-- hint: same value as artifactId -->
+		<app.web.context>seam-groovybooking-web</app.web.context>
+		<app.display.name>JBoss Seam Groovy Booking WEB example</app.display.name>
 		<app.description>The JBoss Seam Groovy Booking WEB Example</app.description>
 		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
-		
 		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for jboss-4.2.3.GA and newer -->
 		<app.jndi.pattern>#{ejbName}/local</app.jndi.pattern>
-		
 		<env.debug>true</env.debug>
-		
 		<jdk.debug>true</jdk.debug>
 		<jdk.optimize>true</jdk.optimize>
 		<jdk.source>1.5</jdk.source>
@@ -368,15 +365,14 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.6</version>
+					<version>2.7</version>
 					<configuration>
 						<downloadSources>true</downloadSources>
 						<downloadJavadocs>true</downloadJavadocs>
 						<addVersionToProjectName>false</addVersionToProjectName>
-						<version>2.6</version>
 						<projectNameTemplate>[artifactId]</projectNameTemplate>
-						<wtpmanifest>true</wtpmanifest>
-						<wtpapplicationxml>true</wtpapplicationxml>
+						<wtpmanifest>false</wtpmanifest>
+						<wtpapplicationxml>false</wtpapplicationxml>
 						<wtpversion>2.0</wtpversion>
 					</configuration>
 				</plugin>
