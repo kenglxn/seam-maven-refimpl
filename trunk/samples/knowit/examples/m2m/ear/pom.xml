@@ -8,13 +8,12 @@
 	<parent>
 		<groupId>no.knowit.seam.examples</groupId>
 		<artifactId>m2m</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>2.1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>no.knowit.seam.examples</groupId>
 	<artifactId>m2m-ear</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
-	<name>${app.display.name} EAR ${project.version}</name>
+	<name>${project.artifactId} : ${project.version}</name>
 	<description>Seam Many to Many UI Example EAR module</description>
 	<packaging>ear</packaging>
 
@@ -160,6 +159,28 @@
 				</executions>
 			</plugin>
 
+			<!-- Build Number Maven Plugin -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<configuration>
+					<format>{0,date,yyyy-MM-dd HH:mm}</format>
+					<items>
+						<item>timestamp</item>
+					</items>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 			<!-- Maven EAR plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -206,15 +227,20 @@
 
 					<archive>
 						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addClasspath>true</addClasspath>
 						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+							<Build-Machine>${env.COMPUTERNAME}</Build-Machine>
+						</manifestEntries>
 					</archive>
 
 					<modules>
 						<webModule>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${app.context}-war</artifactId>
-							<contextRoot>/${app.context}</contextRoot>
+							<contextRoot>/${app.web.context}</contextRoot>
 							<unpack>${env.unpack.modules}</unpack>
 						</webModule>
 
