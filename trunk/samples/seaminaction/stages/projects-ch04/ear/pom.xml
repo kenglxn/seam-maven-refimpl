@@ -6,15 +6,14 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.open18.stages</groupId>
-		<artifactId>open18-ch04</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<groupId>no.knowit.seam.examples</groupId> 
+		<artifactId>open18-stages-ch04</artifactId>
+		<version>2.1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.open18.stages</groupId>
-	<artifactId>open18-ch04-ear</artifactId>  <!-- m2eclipse does not like: ${app.context}-ear -->
-	<name>${app.display.name} EAR ${project.version}</name>
+	<artifactId>open18-stages-ch04-ear</artifactId>  <!-- m2eclipse does not like: ${app.context}-ear -->
+	<name>${project.artifactId} : ${project.version}</name>
 	<description>Open18 stages ch04 EAR module</description>
 	<packaging>ear</packaging>
 
@@ -214,7 +213,7 @@
 						<webModule>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${app.context}-war</artifactId>
-							<contextRoot>/${app.context}</contextRoot>
+							<contextRoot>/${app.web.context}</contextRoot>
 							<unpack>${env.unpack.modules}</unpack>
 						</webModule>
 
