@@ -20,7 +20,7 @@ Language*<------*Person*<----->*Company
 Interest*<----------
 }}}
 
-Person `*<->*` Company is a "bi-directional" association where Person holds the inverse side of the association and Company is the owning side. The important thing to remember when working with many to many bi-directional associations is to remember to update the collection at the owning side (Company.java) before the inverse side is persisted (PersonHome.java). Also  note that a  HashSet is used on the owning side, which makes it easy to avoid redundant associations. 
+Person `*<->*` Company is a "bi-directional" association where Person holds the inverse side of the association and Company is the owning side. The important thing to remember when working with many to many bi-directional associations is to remember to update the collection at the owning side `(Company.java)` before the inverse side is persisted `(PersonHome.java)`. Also  note that a  `HashSet` is used on the owning side, which makes it easy to avoid redundant associations. 
 
 == Howto ==
 The steps required to get the project up and running:
