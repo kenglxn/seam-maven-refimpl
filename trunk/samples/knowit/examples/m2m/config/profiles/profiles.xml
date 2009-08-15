@@ -111,7 +111,7 @@
 				<ds.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</ds.hibernate.dialect>
 				<ds.driver.class>com.mysql.jdbc.Driver</ds.driver.class>
 				<ds.server.name>localhost:3306</ds.server.name>
-				<ds.database.name>refimpl_db</ds.database.name>
+				<ds.database.name>${app.database.name}</ds.database.name>
 				<ds.connection.url>jdbc:mysql://${ds.server.name}/${ds.database.name}?characterEncoding=UTF-8</ds.connection.url>
 				<ds.user.name>root</ds.user.name>
 				<ds.password></ds.password>
@@ -132,7 +132,7 @@
 				<ds.hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</ds.hibernate.dialect>
 				<ds.driver.class>org.postgresql.Driver</ds.driver.class>
 				<ds.server.name>localhost:5432</ds.server.name>
-				<ds.database.name>refimpl_db</ds.database.name>
+				<ds.database.name>${app.database.name}</ds.database.name>
 				<ds.connection.url>jdbc:postgresql://${ds.server.name}/${ds.database.name}?charSet=UTF8</ds.connection.url>
 				<ds.user.name>username</ds.user.name>
 				<ds.password>password</ds.password>
@@ -153,7 +153,7 @@
 				<ds.hibernate.dialect>org.hibernate.dialect.SQLServerDialect</ds.hibernate.dialect>
 				<ds.driver.class>net.sourceforge.jtds.jdbc.Driver</ds.driver.class>
 				<ds.server.name>192.168.106.9</ds.server.name>
-				<ds.database.name>refimpl_db</ds.database.name>
+				<ds.database.name>${app.database.name}</ds.database.name>
 				<ds.connection.url>jdbc:jtds:sqlserver://${ds.server.name}/${ds.database.name};tds=8.0;lastupdatecount=true</ds.connection.url>
 				<ds.user.name>username</ds.user.name>
 				<ds.password>password</ds.password>

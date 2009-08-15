@@ -9,10 +9,11 @@ This is a Mavenized version of the jboss-seam-2.1.2/examples/ui project.
 == Howto ==
 The steps required to get the project up and running:
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps].
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn and install it] (mvn install). This is the "root" POM for all example applications and you need to install to your local m2 repo.	
+    * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.	
+    * Execute *mvn install* to install the pom.
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/jboss-seam/examples/ui Export project from svn].
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn].
-  * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.
-  * Execute *mvn install* to install the pom. This is the "root" POM for all example applications and you need to install it to your local m2 repo.
-  * Copy ui/config/profiles.xml to ui/. Modify profiles.xml as needed.
-  * Execute *mvn install -Pexplode*
+    * Copy ui/config/profiles.xml to ui/. Modify profiles.xml as needed.
+    * Open a command shell and cd to project folder, ui 
+    * Execute *mvn install -Pexplode*
   * Access the application at http://localhost:8080/seam-ui

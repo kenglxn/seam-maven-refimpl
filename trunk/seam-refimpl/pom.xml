@@ -54,6 +54,7 @@
 		<!--  -->
 		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
 		<app.jndi.name>${app.context}Datasource</app.jndi.name>
+		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
 		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
 		<app.entity.manager.factory.name>entityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g seam-refimplEntityManagerFactory is illegal-->
 		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
@@ -61,7 +62,6 @@
 		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for JBoss 4.2.3 or newer -->
 		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
 		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
-		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
 		<app.distributable>false</app.distributable> <!-- see: WEB-INF/components.xml and ejb/../resources/META-INF/jboss.xml -->
 
 		<!-- Developer environment properties. Can be modified by developer in "profiles.xml" -->
