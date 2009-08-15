@@ -183,7 +183,7 @@
 				Fix transitive dependencies in Seam root pom.
 				Exclusions defined in seam root pom DO NOT inherit so we have to duplicate them :-(
 				
-				Sections marked with ** are the exclusions not found in the seam root pom
+				Sections marked with ** are additional exclusions not found in the seam root pom
 				
 				The following sites has helped figuring out the transitive dependencies:
 				http://www.reverttoconsole.com/blog/java/maven-transitive-dependencies-with-jboss-seam-richfaces-in-ear-deployement/
