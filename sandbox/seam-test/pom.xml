@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>no.knowit.seam</groupId>
+		<artifactId>root</artifactId>
+		<version>2.1.2-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>no.knowit.seam</groupId>
+	<artifactId>seam-test</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
+	<version>1.0-SNAPSHOT</version>
+	<name>${project.artifactId} : ${project.version}</name>
+	<description>Setting up Maven test environment</description>
+	<url>http://code.google.com/p/seam-maven-refimpl</url>
+	<packaging>pom</packaging>
+
+	<prerequisites>
+		<maven>2.0.10</maven>
+	</prerequisites>
+
+	<organization>
+		<name>Know IT Objectnet AS</name>
+		<url>http://www.knowit.no/</url>
+	</organization>
+
+	<modules>
+		<module>ear</module>
+		<module>ejb</module>
+		<module>war</module>
+	</modules>
+
+	<properties>
+		<!-- application properties -->
+		<app.context>seam-test</app.context>  <!-- hint: same value as artifactId -->
+		<app.web.context>${app.context}</app.web.context>
+		<app.display.name>Setting up Maven test environment</app.display.name>
+		<app.description>Setting up Maven test environment</app.description>
+		<app.database.name>refimpl_db</app.database.name>
+
+		<!--  -->
+		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
+		<app.jndi.name>${app.context}Datasource</app.jndi.name>
+		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+		<app.entity.manager.factory.name>entityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g seam-refimplEntityManagerFactory is illegal-->
+		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
+		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
+		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for JBoss 4.2.3 or newer -->
+		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
+		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
+		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
+		<app.distributable>false</app.distributable> <!-- see: WEB-INF/components.xml and ejb/../resources/META-INF/jboss.xml -->
+
+		<!-- Developer environment properties. Can be modified by developer in "profiles.xml" -->
+		<env>prod</env>
+		<env.debug>false</env.debug>
+		<env.unpack.modules>false</env.unpack.modules>
+		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+		<env.hibernate.show_sql>true</env.hibernate.show_sql>
+		<env.hibernate.format_sql>true</env.hibernate.format_sql>
+		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+		<jdk.debug>${env.debug}</jdk.debug>
+		<jdk.optimize>true</jdk.optimize>
+		<jdk.source>1.5</jdk.source>
+		<jdk.target>1.5</jdk.target>
+		<as>jboss423</as>
+		<as.version>4.2</as.version>
+		<ds>hsqldb</ds>
+		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
+		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
+		<ds.server.name></ds.server.name>
+		<ds.database.name>${app.database.name}</ds.database.name>
+		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
+		<ds.user.name>sa</ds.user.name>
+		<ds.password></ds.password>
+	</properties>
+	
+	<repositories>
+		<repository>
+			<id>repository.jboss.org</id>
+			<name>JBoss Repository</name>
+			<url>http://repository.jboss.org/maven2</url>
+		</repository>
+	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- project modules -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-ear</artifactId>
+				<version>${project.version}</version>
+				<type>ear</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-war</artifactId>
+				<version>${project.version}</version>
+				<type>war</type>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>${app.context}-ejb</artifactId>
+				<version>${project.version}</version>
+				<type>ejb</type>
+			</dependency>
+			
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+	</build>
+
+</project>
