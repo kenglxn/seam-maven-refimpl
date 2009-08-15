@@ -31,4 +31,4 @@ The steps required to get the project up and running:
   * Execute *mvn install -Pexplode*.
   * You're ready to go!
 
-The example uses the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate manifest data for the EAR mainfest. Open the m2m.ear/META-INF/MANIFEST.MF to see the result.
+The example utilizes the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate manifest data for the EAR mainfest. Open the m2m.ear/META-INF/MANIFEST.MF to see the result.
