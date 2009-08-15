@@ -33,6 +33,6 @@ The steps required to get the project up and running:
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/knowit/examples/m2m Export project from svn.]
   * Copy m2m/config/profiles.xml to m2m/. Modify profiles.xml as needed.
   * Execute *mvn install -Pexplode*.
-  * Start the server and browse to [http://localhost:8080/m2m]
+  * Start the server and point your browser to [http://localhost:8080/m2m]
 
 The example utilizes the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate manifest data for the EAR mainfest. Open the m2m.ear/META-INF/MANIFEST.MF to see the result.
