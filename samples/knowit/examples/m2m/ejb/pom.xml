@@ -8,13 +8,12 @@
 	<parent>
 		<groupId>no.knowit.seam.examples</groupId>
 		<artifactId>m2m</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>2.1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>no.knowit.seam.examples</groupId>
 	<artifactId>m2m-ejb</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
-	<name>${app.display.name} EJB ${project.version}</name>
+	<name>${project.artifactId} : ${project.version}</name>
 	<description>Seam Many to Many UI Example EJB module</description>
 	<packaging>ejb</packaging>
 
