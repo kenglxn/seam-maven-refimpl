@@ -94,13 +94,6 @@
 		</dependency>
 		-->
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
-            <classifier>jdk15</classifier>
-        </dependency>
-
 		<!-- seam -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
@@ -176,36 +169,46 @@
 			<artifactId>drools-compiler</artifactId>
 		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.seam.embedded</groupId>
-            <artifactId>jboss-embedded-api</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<!-- test -->
+		<!-- WORK IN PROGRESS
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+			<classifier>jdk15</classifier>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.seam.embedded</groupId>
-            <artifactId>hibernate-all</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.seam.embedded</groupId>
+			<artifactId>jboss-embedded-api</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.seam.embedded</groupId>
-            <artifactId>jboss-embedded-all</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.seam.embedded</groupId>
+			<artifactId>hibernate-all</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.seam.embedded</groupId>
-            <artifactId>thirdparty-all</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.seam.embedded</groupId>
+			<artifactId>jboss-embedded-all</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>el-api</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.seam.embedded</groupId>
+			<artifactId>thirdparty-all</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-    </dependencies>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		-->
+		
+	</dependencies>
 
 </project>

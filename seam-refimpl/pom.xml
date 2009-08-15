@@ -725,7 +725,7 @@
 			<dependency>
 				<groupId>javax.transaction</groupId>
 				<artifactId>jta</artifactId>
-				<version>1.1</version> <!-- seam root version: 1.0.1B -->
+				<version>1.1</version> <!-- seam 2.1.2-root version is 1.0.1B -->
 			</dependency>
 
 			<!-- 
@@ -985,6 +985,21 @@
 			
 			<!-- test -->
 			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.junit}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.testng</groupId>
+				<artifactId>testng</artifactId>
+				<version>${version.testng}</version>
+				<scope>test</scope>
+				<classifier>jdk15</classifier>
+			</dependency>
+			
+			<dependency>
 				<groupId>org.jboss.seam.embedded</groupId>
 				<artifactId>jboss-embedded-api</artifactId>
 				<version>${version.jboss.embedded}</version>
@@ -1012,20 +1027,6 @@
 				<scope>test</scope>
 			</dependency>
 			
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${version.junit}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>${version.testng}</version>
-				<scope>test</scope>
-				<classifier>jdk15</classifier>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
