@@ -31,6 +31,7 @@
 	</modules>
 
 	<properties>
+		<!-- application properties -->
 		<app.context>open18-stages-ch05</app.context>  <!-- hint: same value as artifactId -->
 		<app.web.context>open18-ch05</app.web.context>
 		<app.display.name>Seam In Action open18-ch05</app.display.name>
