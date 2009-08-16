@@ -16,7 +16,7 @@ Here are the steps required to get the project up and running.
     * Execute ./samples/seaminaction/etc/schema/open18-schema-mysql-ch10.sql
     * Execute ./samples/seaminaction/etc/schema/open18-seed-data-mysql-ch10.sql
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch11 Export project from svn]
-    * Copy ./projects-ch06/config/profiles.xml to the project root folder, ./projects-ch06. Modify profiles.xml as explained in the getting started tutorial.
+    * Copy ./projects-ch11/config/profiles.xml to the project root folder, ./projects-ch11. Modify profiles.xml as explained in the getting started tutorial.
     * Open a command shell and cd to the project folder.
     * Execute *mvn install -Pexplode*.
   * Start the server and access the application at [http://localhost:8080/open18-ch11].
