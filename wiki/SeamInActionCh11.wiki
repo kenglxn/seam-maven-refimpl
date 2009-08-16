@@ -5,6 +5,9 @@
 This is a Mavenized version of the source code from chapter eleven in the excellent Seam In Action book using the *seam-refimpl* project as a template. 
 You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 
+== NOTE ==
+The project is not fully working yet.
+
 == Howto ==
 Here are the steps required to get the project up and running.
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps].
