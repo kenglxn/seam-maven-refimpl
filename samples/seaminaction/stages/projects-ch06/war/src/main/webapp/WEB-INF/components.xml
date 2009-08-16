@@ -161,15 +161,14 @@
    -->
 
    <!-- registerAction | property configuration (note that property names can use either hyphenated or humpback syntax) -->
-   <component name="registerAction">
-      <property name="pro-status-types">amateur pro semi-pro</property>
-      <property name="specialtyTypes">
-         <value>#{messages['specialty.drive']}</value>
-         <value>#{messages['specialty.chip']}</value>
-         <value>#{messages['specialty.putt']}</value>
-         <value>#{messages['specialty.iron']}</value>
-         <value>#{messages['specialty.looks']}</value>
-      </property>
-   </component>
-	
+	<component name="registerAction">
+		<property name="pro-status-types">amateur pro semi-pro</property>
+		<property name="specialtyTypes">
+			 <value>#{messages['specialty.drive']}</value>
+			 <value>#{messages['specialty.chip']}</value>
+			 <value>#{messages['specialty.putt']}</value>
+			 <value>#{messages['specialty.iron']}</value>
+			 <value>#{messages['specialty.looks']}</value>
+		</property>
+	</component>
 </components>
