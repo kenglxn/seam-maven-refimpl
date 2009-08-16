@@ -88,7 +88,8 @@
 		</pluginRepository>
 		-->
 		
-		<!-- see: http://mojo.codehaus.org/using-sandbox-plugins.html 
+		<!-- see: http://mojo.codehaus.org/using-sandbox-plugins.html -->
+		<!--
 		<pluginRepository>
 			<id>codehaus.snapshots</id>
 			<url>http://snapshots.repository.codehaus.org/</url>
@@ -104,36 +105,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-
-			<!-- project modules -->
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>${app.context}-ear</artifactId>
-				<version>${project.version}</version>
-				<type>ear</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>${app.context}-war</artifactId>
-				<version>${project.version}</version>
-				<type>war</type>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>${app.context}-ejb</artifactId>
-				<version>${project.version}</version>
-				<type>ejb</type>
-			</dependency>
-			
-			<!-- other project modules 
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>${app.context}-jar</artifactId>
-				<version>${project.version}</version> 
-				<type>jar</type> 
-			</dependency>
-			-->
-
 			<!-- 
 				Fix transitive dependencies in Seam root pom.
 				Exclusions defined in seam root pom DO NOT inherit so we have to duplicate them :-(
