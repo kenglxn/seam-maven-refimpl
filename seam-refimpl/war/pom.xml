@@ -114,25 +114,12 @@
 		</dependency>
 		-->
 
-		<!-- seam core -->
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam</artifactId>
-			<type>ejb</type>
-			<scope>provided</scope>
-		</dependency>
-
+		<!-- seam -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam-ui</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.jboss.el</groupId>
-			<artifactId>jboss-el</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
 		<!-- optional, but a reasonable requirement for a newly created project -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
@@ -159,12 +146,6 @@
 		<!-- richfaces -->
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
-			<artifactId>richfaces-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.richfaces.framework</groupId>
 			<artifactId>richfaces-impl</artifactId>
 		</dependency>
 		
@@ -179,31 +160,6 @@
 			<artifactId>jsf-facelets</artifactId>
 		</dependency>
 		
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-impl</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- url rewrite filter, uncomment if you do not use the native Seam url rewrite filter 
 		<dependency>
 			<groupId>org.tuckey</groupId>
