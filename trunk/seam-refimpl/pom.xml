@@ -155,18 +155,23 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-ear</artifactId>
 				<version>${project.version}</version>
+				<scope>provided</scope>
 				<type>ear</type>
 			</dependency>
+			
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-war</artifactId>
 				<version>${project.version}</version>
+				<scope>provided</scope>
 				<type>war</type>
 			</dependency>
+			
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-ejb</artifactId>
 				<version>${project.version}</version>
+				<scope>provided</scope>
 				<type>ejb</type>
 			</dependency>
 			
@@ -175,9 +180,11 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-jar</artifactId>
 				<version>${project.version}</version> 
+				<scope>provided</scope>
 				<type>jar</type> 
 			</dependency>
 			-->
+
 
 			<!-- 
 				Fix transitive dependencies in Seam root pom.
@@ -1255,6 +1262,7 @@
 	</build>
 
 	<dependencies>
+		
 		<!-- All provided dependencies goes into parent pom -->
 		
 		<!-- seam -->
@@ -1287,12 +1295,6 @@
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 			<scope>provided</scope>
 		</dependency>
@@ -1303,13 +1305,25 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- jee -->
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- jee -->
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>ejb-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
@@ -1329,8 +1343,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax.ejb</groupId>
-			<artifactId>ejb-api</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
@@ -1341,6 +1355,12 @@
 		</dependency>
 
 		<!-- -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
