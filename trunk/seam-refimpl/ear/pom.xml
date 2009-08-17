@@ -262,7 +262,6 @@
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam</artifactId>
 			<type>ejb</type>
-			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -291,18 +290,6 @@
 			<type>jar</type>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<scope>provided</scope>
-		</dependency>
-			
 	</dependencies>
 
 </project>
