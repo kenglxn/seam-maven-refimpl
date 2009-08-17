@@ -98,22 +98,6 @@
 
 	<dependencies>
 
-		<!-- project modules -->
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-ejb</artifactId>
-			<type>ejb</type>
-			<scope>provided</scope>
-		</dependency>
-		
-		<!-- other project modules 
-		<dependency> 
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-jar</artifactId> 
-			<scope>provided</scope>
-		</dependency>
-		-->
-
 		<!-- seam -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
