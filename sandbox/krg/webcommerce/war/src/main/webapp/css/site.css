@@ -3,17 +3,14 @@ body {
 /* By setting body.font-size:62.5% we ensures that ems to pixel ratio = 10  */
     line-height: 1; /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #000;
-    background-color: #fefefe;
+    color: #fefefe;
+    background-color: #1a171b;
 }
 
 p {
     font-size: 1.2em;
 }
 
-/*
-* Typical modifications to page-layout.css
-*/
 #sizer {
     min-width: 100.4em;
     max-width: 127.8em;
@@ -31,7 +28,7 @@ p {
 }
 
 #header {
-    height: 13em;
+    height: 17em;
 }
 
 #header>*:first-child {
@@ -47,16 +44,12 @@ p {
     text-align: center;
 }
 
-/* end: Typical modifications to page-layout.css */
-
-/*
-* Modifications to menu (horisontal-tabbed.css)
-*/
 #horisontal-menu {
     position: absolute;
     bottom: 0;
 }
 
+#horisontal-menu .menu li.products,
 #horisontal-menu .menu li.login {
     margin-left: 6%;
 }
@@ -97,7 +90,6 @@ p {
     margin-bottom: 0; /* ... down effect    */
 }
 
-/* remove bg image for search menu  */
 #horisontal-menu .menu li.search,
     #horisontal-menu .menu li.search:hover,
     #horisontal-menu .menu li.search:focus,
@@ -109,13 +101,9 @@ p {
     background: transparent url(menu.pixel.png) no-repeat top left;
 }
 
-/* end: Modifications to menu */
-
-/* site specific css */
-
 .sitelogo {
     background: transparent url(../img/logo.png) no-repeat -4px top;
-    height: 102px;
+    height: 100%;
 }
 
 #page-wrapper {
@@ -173,4 +161,12 @@ p {
     min-height: 2em;
     height: 100%;
     background: transparent url(../img/body-c.png) repeat-x top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #fefefe;
+}
+
+p, h2 {
+    visibility: hidden;
 }

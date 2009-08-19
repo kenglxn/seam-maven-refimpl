@@ -1,4 +1,4 @@
-package net.glxn.webcommerce.action;
+package net.glxn.webcommerce.action.list;
 
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityQuery;
