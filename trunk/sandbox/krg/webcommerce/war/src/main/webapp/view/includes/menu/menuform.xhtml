@@ -6,19 +6,28 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:rich="http://richfaces.org/rich">
-    <ui:repeat var="_file" value="#{pageList.parentPages}">
-        <li class="page">
+    <ui:repeat var="_page" value="#{pageList.parentPages}">
+        <li class="page #{_page.id eq pageHome.id ? 'current' : ''}">
             <span>
-                <s:link value="#{_file.title}"
+                <s:link value="#{_page.title}"
                         view="/page.xhtml"
-                        title="#{_file.title}"
-                        styleClass="#{_file.id eq pageHome.id ? 'current' : ''}"
+                        title="#{_page.title}"
                         propagation="none">
-                    <f:param name="pageId" value="#{_file.id}"/>
+                    <f:param name="pageId" value="#{_page.id}"/>
                 </s:link>
             </span>
         </li>
     </ui:repeat>
+    <li class="products #{isProductPage eq 'true' ? 'current' : ''}">
+            <span>
+                <s:link value="#{messages.products}"
+                        view="/products.xhtml"
+                        title="#{messages.products}"
+                        propagation="none">
+                    <f:param name="pageId" value="#{_page.id}"/>
+                </s:link>
+            </span>
+        </li>
     <li class="login">
         <span>
             <s:link rendered="#{!identity.loggedIn}"

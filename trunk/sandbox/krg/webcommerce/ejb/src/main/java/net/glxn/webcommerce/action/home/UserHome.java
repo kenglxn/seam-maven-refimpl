@@ -1,4 +1,4 @@
-package net.glxn.webcommerce.action;
+package net.glxn.webcommerce.action.home;
 
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Begin;

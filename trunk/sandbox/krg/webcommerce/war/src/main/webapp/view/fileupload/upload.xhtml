@@ -22,38 +22,16 @@
 
     <ui:define name="left-content">
         <rich:panel id="fileinfo">
-            <f:facet name="header">files with no filesets:</f:facet>
-            <rich:dataList var="_file" value="#{fileList.filesWithoutFilesets}">
-                <s:graphicImage value="#{_file.image}"
-                                fileName="#{_file.id}"
+            <f:facet name="header">files:</f:facet>
+            <rich:dataList var="_page" value="#{fileList.resultList}">
+                <s:graphicImage value="#{_page.image}"
+                                fileName="#{_page.id}"
                                 alt="[image]">
                     <s:transformImageSize height="32"
                                           maintainRatio="true"/>
                 </s:graphicImage>
             </rich:dataList>
-        </rich:panel>
-        <rich:panel id="filesetinfo">
-            <f:facet name="header">filesets:</f:facet>
-            <rich:dataList var="_fileSet" value="#{fileSetList.resultList}">
-                <s:link id="fileset"
-                        value="#{_fileSet.name}">
-                    <f:param name="fileSetId" value="#{_fileSet.id}"/>
-                </s:link>
-                <rich:toolTip for="fileset"
-                              value="#{_fileSet.description}"/>
-            </rich:dataList>
-        </rich:panel>
-        <rich:panel id="filesetcontentinfo" rendered="#{!empty param.fileSetId}">
-            <f:facet name="header">files in selected fileset:</f:facet>
-            <rich:dataList var="_file" value="#{fileList.filesForFileSet}">
-                <s:graphicImage value="#{_file.image}"
-                                fileName="#{_file.id}"
-                                alt="[image]">
-                    <s:transformImageSize height="32"
-                                          maintainRatio="true"/>
-                </s:graphicImage>
-            </rich:dataList>
-        </rich:panel>
+        </rich:panel>        
     </ui:define>
 
     <ui:define name="main-content-body">
@@ -66,38 +44,9 @@
                            ajaxRendered="true"/>
             <fieldset class="columnar label-top">
                 <legend>
-                    Create FileSet:
-                </legend>
-                <h:outputLabel value="name:"
-                               for="name"/>
-                <h:inputText id="name"
-                             value="#{fileSetHome.instance.name}"/>
-
-                <h:outputLabel value="description:"
-                               for="desc"/>
-                <h:inputTextarea id="desc"
-                                 value="#{fileSetHome.instance.description}"
-                                 style="height: 75px"/>
-                <fieldset class="buttons">
-                    <a4j:commandButton value="create fileset"
-                                       action="#{fileSetHome.persist}"
-                                       reRender="fileuploadpanel">
-                        <s:conversationId/>
-                    </a4j:commandButton>
-                </fieldset>
-            </fieldset>
-            <fieldset class="columnar label-top">
-                <legend>
                     Upload Files
                 </legend>
                 <a4j:outputPanel id="fileuploadpanel">
-
-                    <h:outputLabel value="to fileset:"
-                                   for="fileset"/>
-                    <h:inputText id="fileset"
-                                 value="#{!empty fileSetHome.instance.name ? fileSetHome.instance.name : 'no fileset'}"
-                                 readonly="true"/>
-
                     <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
                                      maxFilesQuantity="100"
                                      listHeight="150">
