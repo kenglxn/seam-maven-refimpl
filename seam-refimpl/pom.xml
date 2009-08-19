@@ -79,13 +79,13 @@
 		<as>jboss423</as>
 		<as.version>4.2</as.version>
 		<ds>hsqldb</ds>
-		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
-		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
-		<ds.server.name></ds.server.name>
-		<ds.database.name>${app.database.name}</ds.database.name>
-		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
-		<ds.user.name>sa</ds.user.name>
-		<ds.password></ds.password>
+		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect> <!-- persistence.xml -->
+		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class> <!-- *-ds.xml -->
+		<ds.server.name></ds.server.name> <!-- *-ds.xml (if xa) -->
+		<ds.database.name>${app.database.name}</ds.database.name> <!-- *-ds.xml (if xa) -->
+		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url> <!-- *-ds.xml -->
+		<ds.user.name>sa</ds.user.name> <!-- *-ds.xml -->
+		<ds.password></ds.password> <!-- *-ds.xml -->
 	</properties>
 	
 	<repositories>
