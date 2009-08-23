@@ -3,8 +3,8 @@ body {
 /* By setting body.font-size:62.5% we ensures that ems to pixel ratio = 10  */
     line-height: 1; /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #fefefe;
-    background-color: #1a171b;
+    color: #333333;
+    background-color: #ffff99;
 }
 
 p {
@@ -168,5 +168,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p, h2 {
+    /*visibility: hidden;*/
+}
+.hide {
     visibility: hidden;
+    display: none;
+}
+table {
+    margin-bottom:0 !important;
+    width:100%;
 }

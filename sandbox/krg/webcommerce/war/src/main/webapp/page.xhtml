@@ -14,7 +14,7 @@
     </ui:define>
 
     <ui:define name="menu">
-        <ui:include src="view/includes/menu/menuform.xhtml"/>
+        <ui:include src="view/includes/menu/richmenuform.xhtml"/>
     </ui:define>
 
     <ui:define name="page-title">
@@ -22,22 +22,51 @@
     </ui:define>
 
     <ui:define name="left-content">
-        child pages:
-        <ul>
-            <ui:repeat var="_page" value="#{pageList.childPages}">
-                <li class="page">
-                    <span>
-                        <s:link value="#{_page.title}"
-                                view="/page.xhtml"
-                                title="#{_page.title}"
-                                propagation="none">
-                            <f:param name="pageId" value="#{pageHome.instance.id}"/>
-                            <f:param name="childId" value="#{_page.id}"/>
-                        </s:link>
-                    </span>
-                </li>
-            </ui:repeat>
-        </ul>
+        <a4j:repeat rendered="#{pageHome.instance.productPage}"
+                    var="_cat"
+                    value="#{categoryList.resultList}">
+            <rich:panel bodyClass="#{empty _cat.children ? 'hide' : ''}">
+                <f:facet name="header">
+                    <s:link value="#{_cat.name}"
+                            view="/page.xhtml"
+                            title="#{_cat.name}"
+                            propagation="none">
+                        <f:param name="catId"
+                                 value="#{_cat.id}"/>
+                    </s:link>
+                </f:facet>
+                <ui:repeat var="_chcat"
+                           value="#{_cat.children}">
+                    <rich:panel bodyClass="hide">
+                        <f:facet name="header">
+                            <s:link value="#{_chcat.name}"
+                                    view="/page.xhtml"
+                                    title="#{_chcat.name}"
+                                    propagation="none">
+                                <f:param name="catId"
+                                         value="#{_chcat.id}"/>
+                            </s:link>
+                        </f:facet>
+                    </rich:panel>
+                </ui:repeat>
+            </rich:panel>
+        </a4j:repeat>
+        <ui:repeat var="_page"
+                   value="#{pageList.childPages}">
+            <rich:panel bodyClass="hide">
+                <f:facet name="header">
+                    <s:link value="#{_page.title}"
+                            view="/page.xhtml"
+                            title="#{_page.title}"
+                            propagation="none">
+                        <f:param name="pageId"
+                                 value="#{pageHome.instance.id}"/>
+                        <f:param name="childId"
+                                 value="#{_page.id}"/>
+                    </s:link>
+                </f:facet>
+            </rich:panel>
+        </ui:repeat>
     </ui:define>
 
     <ui:define name="main-content-body">
@@ -63,8 +92,10 @@
                               rendered="#{_page.id eq childId}"/>
                 <s:link id="childPage"
                         value="#{pg+1}">
-                    <f:param name="pageId" value="#{pageHome.instance.id}"/>
-                    <f:param name="childId" value="#{_page.id}"/>
+                    <f:param name="pageId"
+                             value="#{pageHome.instance.id}"/>
+                    <f:param name="childId"
+                             value="#{_page.id}"/>
                 </s:link>
                 <h:outputText value="]"
                               rendered="#{_page.id eq childId}"/>
@@ -74,7 +105,8 @@
                     view="/view/page/crud.xhtml"
                     rendered="#{identity.hasRole('admin')}"
                     propagation="none">
-                <f:param name="pageId" value="#{child.id}"/>
+                <f:param name="pageId"
+                         value="#{child.id}"/>
             </s:link>
         </f:subview>
 

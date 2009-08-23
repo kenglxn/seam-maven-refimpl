@@ -14,7 +14,7 @@
     </ui:define>
 
     <ui:define name="menu">
-        <ui:include src="../includes/menu/menuform.xhtml"/>
+        <ui:include src="../includes/menu/richmenuform.xhtml"/>
     </ui:define>
 
     <ui:define name="page-title">
@@ -24,13 +24,15 @@
     <ui:define name="left-content">
         existing pages:
         <ul>
-            <ui:repeat var="_parent" value="#{pageList.parentPages}">
+            <ui:repeat var="_parent"
+                       value="#{pageList.parentPages}">
                 <li class="page">
                     <span>
                         <s:link value="#{_parent.title}"
                                 view="/page.xhtml"
                                 title="#{_parent.title}">
-                            <f:param name="pageId" value="#{_parent.id}"/>
+                            <f:param name="pageId"
+                                     value="#{_parent.id}"/>
                         </s:link>
                     </span>
                 </li>
@@ -39,24 +41,37 @@
     </ui:define>
 
     <ui:define name="main-content-body">
-        <h:form id="pageform" styleClass="ki-form">
+        <h:form id="pageform"
+                styleClass="ki-form">
             <fieldset class="columnar label-top">
 
                 <h:outputLabel value="title:"
                                for="title"/>
                 <h:inputText id="title"
                              value="#{pageHome.instance.title}"/>
+
+                <h:outputLabel value="content:"
+                               for="pageeditor"/>
                 <rich:editor id="pageeditor"
                              value="#{pageHome.instance.content}"
                              theme="advanced"
                              height="275">
                 </rich:editor>
 
+                <h:outputLabel value="isProductPage:"
+                               for="productPage"/>
+                <h:selectBooleanCheckbox id="productPage"
+                                         value="#{pageHome.instance.productPage}"/>
+
                 <a4j:outputPanel rendered="#{!empty pageList.resultList}"
                                  id="parentSetter">
-                    <h:outputLabel for="parentSetBool" value="set parent page:"/>
-                    <h:selectBooleanCheckbox value="#{setParent}" id="parentSetBool">
-                        <a4j:support event="onchange" reRender="parentSetter" ajaxSingle="true"/>
+                    <h:outputLabel for="parentSetBool"
+                                   value="set parent page:"/>
+                    <h:selectBooleanCheckbox value="#{setParent}"
+                                             id="parentSetBool">
+                        <a4j:support event="onchange"
+                                     reRender="parentSetter"
+                                     ajaxSingle="true"/>
                     </h:selectBooleanCheckbox>
                     <f:subview id="parentSelector"
                                rendered="#{setParent}">
@@ -65,37 +80,15 @@
                         <h:selectOneMenu value="#{pageHome.instance.parent}"
                                          id="parent"
                                          required="#{setParent}">
-                            <s:selectItems value="#{pageList.resultList}" var="_page" label="#{_page.title}"
+                            <s:selectItems value="#{pageList.resultList}"
+                                           var="_page"
+                                           label="#{_page.title}"
                                            noSelectionLabel="pick parent"/>
                             <s:convertEntity/>
                         </h:selectOneMenu>
                     </f:subview>
                 </a4j:outputPanel>
 
-                <a4j:outputPanel rendered="#{!empty fileSetList.resultList}"
-                                 id="filesetSetter">
-                    <h:outputLabel for="addFileSetBool" value="add fileset:"/>
-                    <h:selectBooleanCheckbox value="#{addFileSet}" id="addFileSetBool">
-                        <a4j:support event="onchange" reRender="filesetSetter" ajaxSingle="true"/>
-                    </h:selectBooleanCheckbox>
-                    <f:subview id="filesetSelector"
-                               rendered="#{addFileSet}">
-                        <h:outputLabel value="fileset:"
-                                       for="fileset"/>
-                        <h:selectOneMenu value="#{pageHome.instance.fileSet}"
-                                         id="fileset"
-                                         required="#{addFileSet}">
-                            <s:selectItems value="#{fileSetList.resultList}" var="_fileSet" label="#{_fileSet.name}"
-                                           noSelectionLabel="pick fileset"/>
-                            <s:convertEntity/>
-                        </h:selectOneMenu>
-                        <h:selectOneRadio value="#{pageHome.instance.fileSetPosition}"
-                                          required="#{addFileSet}">
-                            <f:selectItem itemValue="pre" itemLabel="pre"/>
-                            <f:selectItem itemValue="post" itemLabel="post"/> 
-                        </h:selectOneRadio>
-                    </f:subview>
-                </a4j:outputPanel>
 
             </fieldset>
             <fieldset class="buttons">

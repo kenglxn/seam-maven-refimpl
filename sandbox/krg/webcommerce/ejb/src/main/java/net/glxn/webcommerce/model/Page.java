@@ -28,8 +28,8 @@ public class Page implements Serializable {
     private String title;
     private String content;
     private Page parent;
+    private boolean isProductPage;
     private List<Page> children = new ArrayList<Page>();
-    private String fileSetPosition;
 
     @Id
     @GeneratedValue
@@ -86,11 +86,11 @@ public class Page implements Serializable {
         this.content = content;
     }
 
-    public String getFileSetPosition() {
-        return fileSetPosition;
+    public boolean isProductPage() {
+        return isProductPage;
     }
 
-    public void setFileSetPosition(String fileSetPosition) {
-        this.fileSetPosition = fileSetPosition;
+    public void setProductPage(boolean productPage) {
+        isProductPage = productPage;
     }
 }
