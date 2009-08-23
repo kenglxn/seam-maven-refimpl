@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components xmlns="http://jboss.com/products/seam/components"
-  xmlns:core="http://jboss.com/products/seam/core"
-  xmlns:persistence="http://jboss.com/products/seam/persistence"
-  xmlns:drools="http://jboss.com/products/seam/drools"
-  xmlns:bpm="http://jboss.com/products/seam/bpm"
-  xmlns:security="http://jboss.com/products/seam/security"
-  xmlns:mail="http://jboss.com/products/seam/mail"
-  xmlns:web="http://jboss.com/products/seam/web"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:transaction="http://jboss.com/products/seam/transaction"
-  xmlns:framework="http://jboss.com/products/seam/framework"
-  xsi:schemaLocation=
-    "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
+            xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:drools="http://jboss.com/products/seam/drools"
+            xmlns:bpm="http://jboss.com/products/seam/bpm"
+            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:mail="http://jboss.com/products/seam/mail"
+            xmlns:web="http://jboss.com/products/seam/web"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:transaction="http://jboss.com/products/seam/transaction"
+            xmlns:framework="http://jboss.com/products/seam/framework"
+            xsi:schemaLocation=
+                    "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
      http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.1.xsd
      http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.1.xsd
      http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.1.xsd
@@ -23,82 +23,103 @@
      http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.1.xsd">
 
 
-  <!--
-  	Note: debug="true" requires "jboss-seam-debug" in pom, SiA-4.5.2-p154
-  	Note: Seam managed transactions are enabled by default, but as a reminder: 
-  				transaction-management-enabled="true", SiA-9.4.1-p370
-  -->
-	<core:init
-		debug="true"
-		transaction-management-enabled="true"
-		jndi-pattern="${as.jndi.pattern}" />
+    <!--
+        Note: debug="true" requires "jboss-seam-debug" in pom, SiA-4.5.2-p154
+        Note: Seam managed transactions are enabled by default, but as a reminder:
+                    transaction-management-enabled="true", SiA-9.4.1-p370
+    -->
+    <core:init
+            debug="true"
+            transaction-management-enabled="true"
+            jndi-pattern="${as.jndi.pattern}"/>
 
-	<core:manager
-		concurrent-request-timeout="500"
-		conversation-timeout="120000"
-		conversation-id-parameter="cid"
-		parent-conversation-id-parameter="pid" />
+    <core:manager
+            concurrent-request-timeout="500"
+            conversation-timeout="120000"
+            conversation-id-parameter="cid"
+            parent-conversation-id-parameter="pid"/>
 
-	<core:resource-loader>
-		<core:bundle-names>
-			<value>messages</value>
-      <!-- Add more message bundles as needed -->
-			<!-- <value>mymessagebundle</value> -->
-		</core:bundle-names>
-	</core:resource-loader>
+    <core:resource-loader>
+        <core:bundle-names>
+            <value>messages</value>
+            <!-- Add more message bundles as needed -->
+            <!-- <value>mymessagebundle</value> -->
+        </core:bundle-names>
+    </core:resource-loader>
 
-  <web:hot-deploy-filter url-pattern="*.seam"/>
+    <web:hot-deploy-filter url-pattern="*.seam"/>
 
-  <transaction:ejb-transaction />
+    <transaction:ejb-transaction/>
 
-  <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-9.3.1-p362 -->
-	<persistence:entity-manager-factory
-		name="entityManagerFactory"
-		persistence-unit-name="${app.persistence.unit.name}"
-		installed="false"
-		startup="false" />
+    <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-9.3.1-p362 -->
+    <persistence:entity-manager-factory
+            name="entityManagerFactory"
+            persistence-unit-name="${app.persistence.unit.name}"
+            installed="false"
+            startup="false"/>
 
-	<!--
-		If Seam loads the persistence unit (JBoss 4.x), the
-		EntityManagerFactory will be resolved from #{entityManagerFactory}. 
-		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
-		binding occurs during application deployment), SiA-9.3.1-p362.
-	-->
-	<persistence:managed-persistence-context
-		name="entityManager"
-		auto-create="true"
-		entity-manager-factory="#{entityManagerFactory}"
-		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
+    <!--
+         If Seam loads the persistence unit (JBoss 4.x), the
+         EntityManagerFactory will be resolved from #{entityManagerFactory}.
+         On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
+         binding occurs during application deployment), SiA-9.3.1-p362.
+     -->
+    <persistence:managed-persistence-context
+            name="entityManager"
+            auto-create="true"
+            entity-manager-factory="#{entityManagerFactory}"
+            persistence-unit-jndi-name="${app.persistence.unit.jndi.name}"/>
 
-
-  <drools:rule-base name="securityRules">
-    <drools:rule-files>
-       <value>/security.drl</value>
-    </drools:rule-files>
-  </drools:rule-base>
-
-  <security:rule-based-permission-resolver security-rules="#{securityRules}"/>
-
-  <security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
-
-  <event type="org.jboss.seam.security.notLoggedIn">
-    <action execute="#{redirect.captureCurrentView}"/>
-  </event>
-  <event type="org.jboss.seam.security.loginSuccessful">
-    <action execute="#{redirect.returnToCapturedView}"/>
-  </event>
+    <!--<transaction:ejb-transaction />-->
 
 	<!--
-  <mail:mail-session host="localhost" port="2525" username="test" password="test" />
-	-->
+		There are two rewrite options in Seam, you can choose to either use the org.tuckey
+		UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both.
+		The native Seam rewriting does not use the org.tuckey rewrite engine at all.
+		If you are going to use Seam's native rewriting, then remove the org.tuckey
+		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file.
+		With Seam 2.1 it is recommend to use Seam's native rewrite engine.
+		see: http://docs.jboss.org/seam/latest/reference/en-US/html/configuration.html
 
-  <!-- For use with jBPM pageflow or process management -->
-  <!--
-  <bpm:jbpm>
-    <bpm:process-definitions></bpm:process-definitions>
-    <bpm:pageflow-definitions></bpm:pageflow-definitions>
-  </bpm:jbpm>
-  -->
+		<web:rewrite-filter view-mapping="/seam/*" />
+	 -->
+	<web:rewrite-filter />
 
+    <web:hot-deploy-filter url-pattern="*.seam"/>
+
+	<!-- Force encoding of submitted and sent data -->
+	<web:character-encoding-filter
+		encoding="UTF-8"
+		override-client="true"
+		url-pattern="*.seam" />
+
+    <drools:rule-base name="securityRules">
+        <drools:rule-files>
+            <value>/security.drl</value>
+        </drools:rule-files>
+    </drools:rule-base>
+
+    <security:rule-based-permission-resolver security-rules="#{securityRules}"/>
+
+    <security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
+
+    <event type="org.jboss.seam.security.notLoggedIn">
+        <action execute="#{redirect.captureCurrentView}"/>
+    </event>
+    <event type="org.jboss.seam.security.loginSuccessful">
+        <action execute="#{redirect.returnToCapturedView}"/>
+    </event>
+
+    <!--
+   <mail:mail-session host="localhost" port="2525" username="test" password="test" />
+     -->
+
+    <!-- For use with jBPM pageflow or process management -->
+    <!--
+    <bpm:jbpm>
+      <bpm:process-definitions></bpm:process-definitions>
+      <bpm:pageflow-definitions></bpm:pageflow-definitions>
+    </bpm:jbpm>
+    -->
 
 </components>

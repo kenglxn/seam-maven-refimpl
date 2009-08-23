@@ -1,12 +1,6 @@
 package net.glxn.webcommerce.model;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -20,6 +14,7 @@ import java.util.ArrayList;
 @Entity
 public class Category {
     private Long id;
+    private String name;
     private Category parent;
     private Collection<Product> products = new ArrayList<Product>();
     private Collection<Category> children = new ArrayList<Category>();
@@ -33,7 +28,16 @@ public class Category {
         this.id = id;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(nullable=true)
     public Category getParent() {
         return parent;
     }

@@ -40,7 +40,7 @@
                                 /* can use e.g. border-bottom: 1px solid #C9910F; */
   width: 100%;
   text-align: left;
-  background:transparent url(../img/menu.menu-bar-l.png) no-repeat top left;
+  /*background:transparent url(../img/menu.menu-bar-l.png) no-repeat top left;*/
 }
 
 #horisontal-menu>*:first-child {
@@ -49,7 +49,7 @@
   padding: 0;
   border: 0;
   width: auto;
-  background:transparent url(../img/menu.menu-bar-r.png) no-repeat top right;
+  /*background:transparent url(../img/menu.menu-bar-r.png) no-repeat top right;*/
 }
 #horisontal-menu>*:first-child>*:first-child {
   display: block;
@@ -59,7 +59,7 @@
   width: auto;
   min-height: 2em;
   height: 100%;
-  background:transparent url(../img/menu.menu-bar-c.png) repeat-x top;
+  /*background:transparent url(../img/menu.menu-bar-c.png) repeat-x top;*/
 }
 
 #horisontal-menu ul.menu {

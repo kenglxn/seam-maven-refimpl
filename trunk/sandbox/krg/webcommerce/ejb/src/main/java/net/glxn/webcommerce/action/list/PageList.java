@@ -1,7 +1,7 @@
+package net.glxn.webcommerce.action.list;
 
-
-import net.glxn.webcommerce.model.Page;
 import net.glxn.webcommerce.action.home.PageHome;
+import net.glxn.webcommerce.model.Page;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;

@@ -1,0 +1,54 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich">
+    <rich:toolBar height="25"
+                  itemSeparator="grid">
+        <rich:toolBarGroup id="pages"
+                           itemSeparator="line">
+            <ui:repeat var="_page"
+                       value="#{pageList.parentPages}">
+                <s:link value="#{_page.title}"
+                        view="/page.xhtml"
+                        title="#{_page.title}"
+                        propagation="none">
+                    <f:param name="pageId"
+                             value="#{_page.id}"/>
+                </s:link>
+            </ui:repeat>
+        </rich:toolBarGroup>
+        <rich:toolBarGroup id="login"
+                           itemSeparator="line">
+            <s:link rendered="#{!identity.loggedIn}"
+                    value="Log In"
+                    view="/login.xhtml">
+            </s:link>
+            <h:commandLink rendered="#{identity.loggedIn}"
+                           value="Log out"
+                           action="#{identity.logout}"/>
+        </rich:toolBarGroup>
+        <rich:toolBarGroup id="adminfunctionality"
+                           itemSeparator="line"
+                           rendered="#{identity.hasRole('admin')}">
+            <s:link value="page"
+                    view="/view/page/crud.xhtml"
+                    propagation="none"/>
+            <s:link value="category"
+                    view="/view/category/crud.xhtml"
+                    propagation="none"/>
+            <s:link value="upload"
+                    view="/view/fileupload/upload.xhtml"
+                    propagation="none"/>
+        </rich:toolBarGroup>
+        <rich:toolBarGroup location="right">
+            <h:inputText styleClass="search"/>
+            <h:commandButton styleClass="searchbutton"
+                             onclick="return false;"
+                             value="Search"/>
+        </rich:toolBarGroup>
+    </rich:toolBar>
+</ui:composition>
