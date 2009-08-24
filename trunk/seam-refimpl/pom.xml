@@ -155,7 +155,6 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-ear</artifactId>
 				<version>${project.version}</version>
-				<scope>provided</scope>
 				<type>ear</type>
 			</dependency>
 			
@@ -163,7 +162,6 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-war</artifactId>
 				<version>${project.version}</version>
-				<scope>provided</scope>
 				<type>war</type>
 			</dependency>
 			
@@ -171,7 +169,6 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-ejb</artifactId>
 				<version>${project.version}</version>
-				<scope>provided</scope>
 				<type>ejb</type>
 			</dependency>
 			
