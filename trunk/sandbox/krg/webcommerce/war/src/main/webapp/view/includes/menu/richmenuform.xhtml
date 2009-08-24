@@ -5,22 +5,28 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.org/rich">
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j">
     <rich:toolBar height="25"
                   itemSeparator="grid">
-        <rich:toolBarGroup id="pages"
-                           itemSeparator="line">
+        <rich:toolBarGroup id="pages">
             <ui:repeat var="_page"
                        value="#{pageList.parentPages}">
-                <s:link value="#{_page.title}"
-                        view="/page.xhtml"
-                        title="#{_page.title}"
-                        propagation="none">
-                    <f:param name="pageId"
-                             value="#{_page.id}"/>
-                </s:link>
+                <td class="dr-toolbar-int rich-toolbar-item">
+                    <s:link value="#{_page.title}"
+                            view="/page.xhtml"
+                            title="#{_page.title}"
+                            propagation="none">
+                        <f:param name="pageId"
+                                 value="#{_page.id}"/>
+                    </s:link>
+                </td>
+                <td align="center">
+                    <img alt="" src="#{request.contextPath}/a4j/g/3_3_1.GAorg.richfaces.renderkit.html.images.LineSeparatorImage/DATB/eAGb0sFw4WTl!!!!GbgZRAAzDQZL"/>
+                </td>
             </ui:repeat>
         </rich:toolBarGroup>
+
         <rich:toolBarGroup id="login"
                            itemSeparator="line">
             <s:link rendered="#{!identity.loggedIn}"
