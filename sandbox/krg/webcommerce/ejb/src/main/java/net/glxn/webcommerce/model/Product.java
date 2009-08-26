@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 public class Product {
     private Long id;
     private Category category;
+    private File product;
 
     @Id @GeneratedValue
     public Long getId() {
@@ -35,5 +36,14 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    public File getProduct() {
+        return product;
+    }
+
+    public void setProduct(File product) {
+        this.product = product;
     }
 }

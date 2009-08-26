@@ -2,6 +2,7 @@ package net.glxn.webcommerce.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,10 +17,9 @@ public class File implements Serializable {
 
     private Long id;
     private Integer version;
-
     private byte[] image;
     private String imageContentType;
-
+    private Collection<Product> files;
 
     @Id
     @GeneratedValue
@@ -55,5 +55,14 @@ public class File implements Serializable {
 
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
+    public Collection<Product> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Collection<Product> files) {
+        this.files = files;
     }
 }
