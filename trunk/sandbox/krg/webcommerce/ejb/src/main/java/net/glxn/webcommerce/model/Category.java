@@ -3,6 +3,7 @@ package net.glxn.webcommerce.model;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,14 +13,16 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-public class Category {
+public class Category implements Serializable {
     private Long id;
     private String name;
     private Category parent;
     private Collection<Product> products = new ArrayList<Product>();
     private Collection<Category> children = new ArrayList<Category>();
+    private static final long serialVersionUID = -2490998798996009141L;
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -37,7 +40,7 @@ public class Category {
     }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(nullable=true)
+    @JoinColumn(nullable = true)
     public Category getParent() {
         return parent;
     }

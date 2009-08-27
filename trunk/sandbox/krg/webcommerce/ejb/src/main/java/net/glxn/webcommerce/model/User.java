@@ -2,24 +2,17 @@ package net.glxn.webcommerce.model;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Version;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
 @Entity
 @Table
-public class User implements Serializable
-{
+public class User implements Serializable {
 
     private static final long serialVersionUID = -7294196286809711838L;
-    
+
     private Long id;
     private Integer version;
     private String username;
@@ -27,7 +20,8 @@ public class User implements Serializable
     private String name;
     private RoleType roleType;
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -45,23 +39,25 @@ public class User implements Serializable
         this.version = version;
     }
 
-    @NotNull @Length(min=5, max=15)
+    @NotNull
+    @Length(min = 3, max = 15)
     public String getUsername() {
-		return username;
-	}
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	@NotNull @Length(min=5, max=15)
-	public String getPassword() {
-		return password;
-	}
+    @NotNull
+    @Length(min = 5, max = 15)
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getName() {
         return name;
@@ -72,9 +68,8 @@ public class User implements Serializable
     }
 
     @Override
-    public String toString() 
-    {
-       return "User(" + username + ")";
+    public String toString() {
+        return "User(" + username + ")";
     }
 
     private Collection<Order> orders;
@@ -88,6 +83,7 @@ public class User implements Serializable
         this.orders = orders;
     }
 
+    @Enumerated(EnumType.STRING)
     public RoleType getRoleType() {
         return roleType;
     }

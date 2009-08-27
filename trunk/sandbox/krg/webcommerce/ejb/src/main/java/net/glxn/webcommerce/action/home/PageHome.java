@@ -7,10 +7,10 @@ import org.jboss.seam.framework.EntityHome;
 import net.glxn.webcommerce.model.Page;
 
 @Name("pageHome")
-public class PageHome extends EntityHome<Page>
-{
+public class PageHome extends EntityHome<Page> {
     @In(required = false)
     @Out(required = false)
     Boolean setParent;
-    
+
+    private static final long serialVersionUID = 5673441719051773010L;
 }

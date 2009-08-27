@@ -29,7 +29,7 @@
                     transaction-management-enabled="true", SiA-9.4.1-p370
     -->
     <core:init
-            debug="true"
+            debug="${env.debug}"
             transaction-management-enabled="true"
             jndi-pattern="${as.jndi.pattern}"/>
 
@@ -72,26 +72,26 @@
 
     <!--<transaction:ejb-transaction />-->
 
-	<!--
-		There are two rewrite options in Seam, you can choose to either use the org.tuckey
-		UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both.
-		The native Seam rewriting does not use the org.tuckey rewrite engine at all.
-		If you are going to use Seam's native rewriting, then remove the org.tuckey
-		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file.
-		With Seam 2.1 it is recommend to use Seam's native rewrite engine.
-		see: http://docs.jboss.org/seam/latest/reference/en-US/html/configuration.html
+    <!--
+         There are two rewrite options in Seam, you can choose to either use the org.tuckey
+         UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both.
+         The native Seam rewriting does not use the org.tuckey rewrite engine at all.
+         If you are going to use Seam's native rewriting, then remove the org.tuckey
+         UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file.
+         With Seam 2.1 it is recommend to use Seam's native rewrite engine.
+         see: http://docs.jboss.org/seam/latest/reference/en-US/html/configuration.html
 
-		<web:rewrite-filter view-mapping="/seam/*" />
-	 -->
-	<web:rewrite-filter />
+         <web:rewrite-filter view-mapping="/seam/*" />
+      -->
+    <web:rewrite-filter/>
 
     <web:hot-deploy-filter url-pattern="*.seam"/>
 
-	<!-- Force encoding of submitted and sent data -->
-	<web:character-encoding-filter
-		encoding="UTF-8"
-		override-client="true"
-		url-pattern="*.seam" />
+    <!-- Force encoding of submitted and sent data -->
+    <web:character-encoding-filter
+            encoding="UTF-8"
+            override-client="true"
+            url-pattern="*.seam"/>
 
     <drools:rule-base name="securityRules">
         <drools:rule-files>

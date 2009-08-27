@@ -6,28 +6,44 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
+import net.glxn.webcommerce.action.home.UserHome;
+import net.glxn.webcommerce.model.User;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 @Name("authenticator")
-public class Authenticator
-{
-    @Logger private Log log;
+public class Authenticator {
+    @Logger
+    private Log log;
 
-    @In Identity identity;
-    @In Credentials credentials;
+    @In
+    Identity identity;
 
-    public boolean authenticate()
-    {
+    @In
+    Credentials credentials;
+
+    @In
+    private EntityManager entityManager;
+
+    public boolean authenticate() {
+
         log.info("authenticating {0}", credentials.getUsername());
-        //write your authentication logic here,
-        //return true if the authentication was
-        //successful, false otherwise. mmm
-        if ("admin".equals(credentials.getUsername()))
-        {
-            identity.addRole("admin");
-            //System.out.println("LOGGED IN!");
-            return true;
+        String hql = "" +
+                "select u from User u " +
+                "   where u.username =:username " +
+                "       and u.password =:password";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("username", credentials.getUsername());
+        query.setParameter("password", credentials.getPassword());
+        User user = (User) query.getSingleResult();
+        if (user == null) {
+            return false;
         }
-        return false;
+        String role = user.getRoleType().name().toLowerCase();
+        log.info("authenticated. role={0}", role);
+        identity.addRole(role);
+        return true;
     }
 
 }

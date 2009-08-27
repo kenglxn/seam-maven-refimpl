@@ -5,7 +5,9 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.org/rich" template="layout/site-template.xhtml">
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="layout/site-template.xhtml">
 
     <ui:define name="head-title">
         <title>GLXN - Home of Ken Gullaksen</title>
@@ -13,7 +15,8 @@
 
     <ui:define name="menu">
         <ui:include src="view/includes/menu/menuform.xhtml">
-            <ui:param name="isProductPage" value="true"/>
+            <ui:param name="isProductPage"
+                      value="true"/>
         </ui:include>
     </ui:define>
 
@@ -22,17 +25,61 @@
     </ui:define>
 
     <ui:define name="left-content">
-        <p>On this site you will find...</p>
+        <a4j:repeat var="_cat"
+                    value="#{categoryList.resultList}">
+            <rich:panel bodyClass="#{empty _cat.children ? 'hide' : ''}">
+                <f:facet name="header">
+                    <s:link value="#{_cat.name}"
+                            view="/page.xhtml"
+                            title="#{_cat.name}"
+                            propagation="none">
+                        <f:param name="catId"
+                                 value="#{_cat.id}"/>
+                    </s:link>
+                </f:facet>
+                <ui:repeat var="_chcat"
+                           value="#{_cat.children}">
+                    <rich:panel bodyClass="hide">
+                        <f:facet name="header">
+                            <s:link value="#{_chcat.name}"
+                                    view="/page.xhtml"
+                                    title="#{_chcat.name}"
+                                    propagation="none">
+                                <f:param name="catId"
+                                         value="#{_chcat.id}"/>
+                            </s:link>
+                        </f:facet>
+                    </rich:panel>
+                </ui:repeat>
+            </rich:panel>
+        </a4j:repeat>
     </ui:define>
 
     <ui:define name="main-content-body">
-        <p>[pic] who am i?</p>
-
-        <p>career and ed</p>
-
-        <p>academic interests</p>
-
-        <p>personal interests</p>
+        <rich:dataGrid value="#{productList.resultList}"
+                       var="_product"
+                       columns="3"
+                       elements="9"
+                       width="600px">
+            <rich:panel bodyClass="pbody">
+                <f:facet name="header">
+                    <h:outputText value="#{_product.name}"/>
+                </f:facet>
+                <h:panelGrid columns="2">
+                    <s:graphicImage value="#{fileHome.instance.image}"
+                                    fileName="#{fileHome.instance.id}"
+                                    alt="[image]">
+                        <s:transformImageSize width="60"
+                                              maintainRatio="true"/>
+                    </s:graphicImage>
+                    <h:outputText value="#{_product.description}"
+                                  escape="false"/>
+                </h:panelGrid>
+            </rich:panel>
+            <f:facet name="footer">
+                <rich:datascroller> </rich:datascroller>
+            </f:facet>
+        </rich:dataGrid>
     </ui:define>
 
     <ui:define name="footer">
