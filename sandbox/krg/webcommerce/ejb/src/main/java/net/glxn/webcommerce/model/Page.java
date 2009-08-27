@@ -21,15 +21,15 @@ import java.util.List;
  */
 @Entity
 public class Page implements Serializable {
-    private static final long serialVersionUID = -1L;
+
 
     private Long id;
     private Integer version;
     private String title;
     private String content;
     private Page parent;
-    private boolean isProductPage;
     private List<Page> children = new ArrayList<Page>();
+    private static final long serialVersionUID = 4044663932205769319L;
 
     @Id
     @GeneratedValue
@@ -59,7 +59,7 @@ public class Page implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(nullable=true)
+    @JoinColumn(nullable = true)
     public Page getParent() {
         return parent;
     }
@@ -68,7 +68,7 @@ public class Page implements Serializable {
         this.parent = parent;
     }
 
-    @OneToMany(mappedBy="parent")
+    @OneToMany(mappedBy = "parent")
     public List<Page> getChildren() {
         return children;
     }
@@ -84,13 +84,5 @@ public class Page implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public boolean isProductPage() {
-        return isProductPage;
-    }
-
-    public void setProductPage(boolean productPage) {
-        isProductPage = productPage;
     }
 }

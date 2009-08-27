@@ -26,6 +26,7 @@ public class PageList extends EntityQuery<Page> {
     @In(required = false)
     @Out(required = false)
     Long childId;
+    private static final long serialVersionUID = 4275971785526395702L;
 
     public PageList() {
         setEjbql("select page from Page page");
@@ -43,10 +44,10 @@ public class PageList extends EntityQuery<Page> {
     }
 
     public Page childById() {
-        if(child == null || !childId.equals(child.getId())) {
+        if (child == null || !childId.equals(child.getId())) {
             child = (Page) entityManager.createQuery("select page from Page page where page.id = :pageId")
-                .setParameter("pageId", childId)
-                .getSingleResult();
+                    .setParameter("pageId", childId)
+                    .getSingleResult();
         }
         return child;
     }

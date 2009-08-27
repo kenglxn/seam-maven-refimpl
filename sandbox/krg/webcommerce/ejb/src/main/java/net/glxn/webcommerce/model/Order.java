@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,13 +19,15 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-public class Order {
+public class Order implements Serializable {
 
     private Long id;
     private Collection<Product> products = new ArrayList<Product>();
     private User customer;
+    private static final long serialVersionUID = 1130567133942358409L;
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     public Long getId() {
         return id;
     }

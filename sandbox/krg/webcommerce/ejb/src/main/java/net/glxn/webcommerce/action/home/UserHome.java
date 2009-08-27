@@ -8,26 +8,6 @@ import org.jboss.seam.framework.EntityHome;
 import net.glxn.webcommerce.model.User;
 
 @Name("userHome")
-public class UserHome extends EntityHome<User>
-{
-    @RequestParameter Long userId;
-
-    @Override
-    public Object getId()
-    {
-        if (userId == null)
-        {
-            return super.getId();
-        }
-        else
-        {
-            return userId;
-        }
-    }
-
-    @Override @Begin
-    public void create() {
-        super.create();
-    }
-
+public class UserHome extends EntityHome<User> {
+    private static final long serialVersionUID = 5875984610758127173L;
 }

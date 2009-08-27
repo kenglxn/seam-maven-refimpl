@@ -22,35 +22,7 @@
     </ui:define>
 
     <ui:define name="left-content">
-        <a4j:repeat rendered="#{pageHome.instance.productPage}"
-                    var="_cat"
-                    value="#{categoryList.resultList}">
-            <rich:panel bodyClass="#{empty _cat.children ? 'hide' : ''}">
-                <f:facet name="header">
-                    <s:link value="#{_cat.name}"
-                            view="/page.xhtml"
-                            title="#{_cat.name}"
-                            propagation="none">
-                        <f:param name="catId"
-                                 value="#{_cat.id}"/>
-                    </s:link>
-                </f:facet>
-                <ui:repeat var="_chcat"
-                           value="#{_cat.children}">
-                    <rich:panel bodyClass="hide">
-                        <f:facet name="header">
-                            <s:link value="#{_chcat.name}"
-                                    view="/page.xhtml"
-                                    title="#{_chcat.name}"
-                                    propagation="none">
-                                <f:param name="catId"
-                                         value="#{_chcat.id}"/>
-                            </s:link>
-                        </f:facet>
-                    </rich:panel>
-                </ui:repeat>
-            </rich:panel>
-        </a4j:repeat>
+        
         <ui:repeat var="_page"
                    value="#{pageList.childPages}">
             <rich:panel bodyClass="hide">

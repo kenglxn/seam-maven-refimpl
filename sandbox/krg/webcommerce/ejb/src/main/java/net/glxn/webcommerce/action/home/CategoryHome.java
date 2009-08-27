@@ -8,10 +8,10 @@ import net.glxn.webcommerce.model.Page;
 import net.glxn.webcommerce.model.Category;
 
 @Name("categoryHome")
-public class CategoryHome extends EntityHome<Category>
-{
+public class CategoryHome extends EntityHome<Category> {
     @In(required = false)
     @Out(required = false)
     Boolean setParent;
 
+    private static final long serialVersionUID = 6855700424374076766L;
 }

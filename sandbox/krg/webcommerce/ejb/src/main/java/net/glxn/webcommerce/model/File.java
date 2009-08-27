@@ -13,13 +13,14 @@ import java.util.Collection;
  */
 @Entity
 public class File implements Serializable {
-    private static final long serialVersionUID = -1L;
+
 
     private Long id;
     private Integer version;
     private byte[] image;
     private String imageContentType;
     private Collection<Product> files;
+    private static final long serialVersionUID = 6807801858063905283L;
 
     @Id
     @GeneratedValue
