@@ -14,7 +14,7 @@
     </ui:define>
 
     <ui:define name="menu">
-        <ui:include src="view/includes/menu/menuform.xhtml">
+        <ui:include src="view/includes/menu/richmenuform.xhtml">
             <ui:param name="isProductPage"
                       value="true"/>
         </ui:include>
@@ -56,30 +56,33 @@
     </ui:define>
 
     <ui:define name="main-content-body">
-        <rich:dataGrid value="#{productList.resultList}"
-                       var="_product"
-                       columns="3"
-                       elements="9"
-                       width="600px">
-            <rich:panel bodyClass="pbody">
-                <f:facet name="header">
-                    <h:outputText value="#{_product.name}"/>
-                </f:facet>
-                <h:panelGrid columns="2">
-                    <s:graphicImage value="#{fileHome.instance.image}"
-                                    fileName="#{fileHome.instance.id}"
-                                    alt="[image]">
-                        <s:transformImageSize width="60"
-                                              maintainRatio="true"/>
-                    </s:graphicImage>
+        <h:form>
+            <rich:dataGrid value="#{productList.resultList}"
+                           var="_product"
+                           columns="3"
+                           elements="9"
+                           width="600px">
+                <rich:panel bodyClass="pbody">
+                    <f:facet name="header">
+                        <h:outputText value="#{_product.name}"/>
+                    </f:facet>
+                    <rich:dataList value="#{_product.files}"
+                                   var="_file">
+                        <s:graphicImage value="#{_file.image}"
+                                        fileName="#{_file.id}"
+                                        alt="[image]">
+                            <s:transformImageSize width="60"
+                                                  maintainRatio="true"/>
+                        </s:graphicImage>
+                    </rich:dataList>
                     <h:outputText value="#{_product.description}"
                                   escape="false"/>
-                </h:panelGrid>
-            </rich:panel>
-            <f:facet name="footer">
-                <rich:datascroller> </rich:datascroller>
-            </f:facet>
-        </rich:dataGrid>
+                </rich:panel>
+                <f:facet name="footer">
+                    <rich:datascroller> </rich:datascroller>
+                </f:facet>
+            </rich:dataGrid>
+        </h:form>
     </ui:define>
 
     <ui:define name="footer">

@@ -9,11 +9,4 @@ import org.jboss.seam.framework.EntityHome;
 public class FileHome extends EntityHome<File> {
     private static final long serialVersionUID = 3932216405937924123L;
 
-    @Override
-    @Begin(join = true)
-    public void create() {
-        super.create();
-    }
-
-
 }

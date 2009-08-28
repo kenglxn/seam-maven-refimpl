@@ -11,8 +11,6 @@ import org.richfaces.model.UploadItem;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 
 @Name("fileUpload")
@@ -29,26 +27,9 @@ public class FileUploader implements Serializable {
     public void listener(UploadEvent event) throws IOException {
         UploadItem item = event.getUploadItem();
         log.debug("uploading file #0", item.getFile().getAbsolutePath());
-        fileHome.getInstance().setImage(item.isTempFile() ? getByteFromFile(item.getFile()) : item.getData());
+        fileHome.getInstance().setImage(item.isTempFile() ? FileUtil.getByteFromFile(item.getFile()) : item.getData());
         fileHome.getInstance().setImageContentType(item.getContentType());
         fileHome.persist();
         fileHome.clearInstance();
-    }
-
-    private byte[] getByteFromFile(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-        long length = file.length();
-        byte[] bytes = new byte[(int)length];
-        int offset = 0;
-        int numRead;
-        while (offset < bytes.length
-               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
-        }
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file "+file.getName());
-        }
-        is.close();
-        return bytes;
     }
 }

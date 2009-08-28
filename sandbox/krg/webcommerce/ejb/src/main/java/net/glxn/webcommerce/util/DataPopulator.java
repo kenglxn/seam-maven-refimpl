@@ -3,11 +3,11 @@ package net.glxn.webcommerce.util;
 import org.jboss.seam.annotations.*;
 import org.jboss.seam.log.Log;
 
-import net.glxn.webcommerce.model.Page;
-import net.glxn.webcommerce.model.User;
-import net.glxn.webcommerce.model.RoleType;
-import net.glxn.webcommerce.action.home.PageHome;
-import net.glxn.webcommerce.action.home.UserHome;
+import net.glxn.webcommerce.model.*;
+import net.glxn.webcommerce.action.home.*;
+import net.glxn.webcommerce.action.upload.FileUtil;
+
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,10 +26,45 @@ public class DataPopulator {
     @In(create = true)
     PageHome pageHome;
 
+    @In(create = true)
+    ProductHome productHome;
+
+    @In(create = true)
+    CategoryHome categoryHome;
+
+    @In(create = true)
+    FileHome fileHome;
+
+    private final String imgBase = "C:\\Users\\ken\\Pictures\\";
+
     @Observer("org.jboss.seam.postInitialization")
     public void observe() {
         createUsers();
         createPages();
+        Category category = categoryHome.getInstance();
+        category.setName("testcat");
+        categoryHome.persist();
+
+        java.io.File image = new java.io.File(imgBase+"coolgif.gif");
+        byte[] byteFromFile = new byte[0];
+        try {
+            byteFromFile = FileUtil.getByteFromFile(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(byteFromFile.length > 0) {
+            Product product = productHome.getInstance();
+            product.setName("testproduct");
+            product.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at erat mi, at cursus orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam in tellus dolor. Nulla erat tortor, pulvinar tincidunt pulvinar eu, pulvinar id augue. Sed id arcu tellus. Vivamus fermentum fermentum hendrerit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.");
+            product.setCategory(category);
+            File file = fileHome.getInstance();
+            file.setImage(byteFromFile);
+            file.setImageContentType("image/gif");
+            file.setProduct(product);
+            product.addFile(file);
+            fileHome.persist();
+            productHome.persist();
+        }
     }
 
     private void createPages() {

@@ -14,13 +14,13 @@ import java.util.Collection;
 @Entity
 public class File implements Serializable {
 
+    private static final long serialVersionUID = 6807801858063905283L;
 
     private Long id;
     private Integer version;
     private byte[] image;
     private String imageContentType;
-    private Collection<Product> files;
-    private static final long serialVersionUID = 6807801858063905283L;
+    private Product product;
 
     @Id
     @GeneratedValue
@@ -58,12 +58,12 @@ public class File implements Serializable {
         this.imageContentType = imageContentType;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
-    public Collection<Product> getFiles() {
-        return files;
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    public Product getProduct() {
+        return product;
     }
 
-    public void setFiles(Collection<Product> files) {
-        this.files = files;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
