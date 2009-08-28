@@ -9,12 +9,4 @@ import org.jboss.seam.framework.EntityHome;
 @Name("productHome")
 public class ProductHome extends EntityHome<Product> {
     private static final long serialVersionUID = 447462015482288188L;
-
-    @Override
-    @Begin(join = true)
-    public void create() {
-        super.create();
-    }
-
-
 }

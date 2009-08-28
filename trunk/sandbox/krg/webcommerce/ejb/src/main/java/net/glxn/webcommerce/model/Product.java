@@ -1,12 +1,9 @@
 package net.glxn.webcommerce.model;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,7 +18,8 @@ public class Product implements Serializable {
     private String name;
     private String description;
     private Category category;
-    private File product;
+    private Collection<File> files = new ArrayList<File>();
+
     private static final long serialVersionUID = -8737857722150690015L;
 
     @Id
@@ -55,16 +53,22 @@ public class Product implements Serializable {
         return category;
     }
 
+
     public void setCategory(Category category) {
         this.category = category;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    public File getProduct() {
-        return product;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    public Collection<File> getFiles() {
+        return files;
     }
 
-    public void setProduct(File product) {
-        this.product = product;
+    public void setFiles(Collection<File> files) {
+        this.files = files;
+    }
+
+    @Transient
+    public void addFile(File file) {
+        this.files.add(file);
     }
 }
