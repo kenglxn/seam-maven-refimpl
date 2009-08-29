@@ -49,7 +49,7 @@ public class Category implements Serializable {
         this.parent = parent;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "parent")
     public Collection<Category> getChildren() {
         return children;
     }
@@ -58,7 +58,7 @@ public class Category implements Serializable {
         this.children = children;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
     public Collection<Product> getProducts() {
         return products;
     }

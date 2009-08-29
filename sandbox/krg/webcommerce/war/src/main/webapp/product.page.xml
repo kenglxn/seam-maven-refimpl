@@ -2,11 +2,6 @@
 <page xmlns="http://jboss.com/products/seam/pages"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
-
-   <navigation from-action="#{identity.login}">
-      <rule if="#{identity.loggedIn}">
-         <redirect view-id="/products.xhtml"/>
-      </rule>
-   </navigation>
-
+    <begin-conversation join="true"/>
+    <param name="prodId" value="#{productHome.id}" converterId="javax.faces.Long"/>
 </page>

@@ -32,12 +32,12 @@ public class PageList extends EntityQuery<Page> {
         setEjbql("select page from Page page");
     }
 
-    public List<Page> getParentPages() {
+    public List getParentPages() {
         return entityManager.createQuery("select page from Page page where page.parent is null")
                 .getResultList();
     }
 
-    public List<Page> getChildPages() {
+    public List getChildPages() {
         return entityManager.createQuery("select page from Page page where page.parent.id = :pageId")
                 .setParameter("pageId", pageHome.getId())
                 .getResultList();

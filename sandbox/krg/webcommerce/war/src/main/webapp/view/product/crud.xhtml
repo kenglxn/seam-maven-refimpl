@@ -1,0 +1,111 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="../../layout/site-template.xhtml">
+
+    <ui:define name="head-title">
+        <title>GLXN - Home of Ken Gullaksen</title>
+    </ui:define>
+
+    <ui:define name="menu">
+        <ui:include src="../includes/menu/richmenuform.xhtml"/>
+    </ui:define>
+
+    <ui:define name="page-title">
+        <h2>Create a product</h2>
+    </ui:define>
+
+    <ui:define name="left-content">
+        existing products:
+        <ul>
+            <ui:repeat var="_product"
+                       value="#{productList.resultList}">
+                <li class="product">
+                    <span>
+                        <s:link value="#{_product.name}"
+                                view="/product.xhtml"
+                                title="#{_product.name}">
+                            <f:param name="prodId"
+                                     value="#{_product.id}"/>
+                        </s:link>
+                    </span>
+                </li>
+            </ui:repeat>
+        </ul>
+    </ui:define>
+
+    <ui:define name="main-content-body">
+        <h:form id="pageform"
+                styleClass="ki-form">
+            <fieldset class="columnar label-top">
+
+                <h:outputLabel value="name:"
+                               for="name"/>
+                <h:inputText id="name"
+                             value="#{productHome.instance.name}"/>
+
+                <h:outputLabel value="description:"
+                               for="descriptioneditor"/>
+                <rich:editor id="descriptioneditor"
+                             value="#{productHome.instance.description}"
+                             theme="advanced"
+                             height="200">
+                </rich:editor>
+            </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Add Files
+                </legend>
+                <h:outputText value="Product must be saved before files can be added!" 
+                              rendered="#{!productHome.managed}"/>
+                <a4j:outputPanel id="fileuploadpanel" rendered="#{productHome.managed}">
+                    <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
+                                     maxFilesQuantity="5"
+                                     listHeight="50">
+                        <a4j:support event="onuploadcomplete">
+                            <s:conversationId />
+                        </a4j:support>
+                    </rich:fileUpload>
+                </a4j:outputPanel>
+            </fieldset>
+            <fieldset class="buttons">
+                <h:commandButton id="save"
+                                 value="Save"
+                                 action="#{productHome.persist}"
+                                 rendered="#{!productHome.managed}"/>
+                <h:commandButton id="update"
+                                 value="Save"
+                                 action="#{productHome.update}"
+                                 rendered="#{productHome.managed}"/>
+                <h:commandButton id="delete"
+                                 value="Delete"
+                                 action="#{productHome.remove}"
+                                 immediate="true"
+                                 rendered="#{productHome.managed}"/>
+                <s:button propagation="none"
+                          action="#{productHome.clearInstance}"
+                          id="new"
+                          value="New"/>
+                <s:button propagation="none"
+                          id="view"
+                          value="View"
+                          view="/product.xhtml"/>
+                <s:button propagation="end"
+                          id="cancel"
+                          value="Cancel"
+                          view="/home.xhtml"/>
+            </fieldset>
+
+        </h:form>
+    </ui:define>
+
+    <ui:define name="footer">
+        <h4>adm 'at' glxn.net </h4>
+    </ui:define>
+</ui:composition>

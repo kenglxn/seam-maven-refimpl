@@ -178,7 +178,12 @@
             <artifactId>richfaces-api</artifactId>
             <version>3.3.1.GA</version>
         </dependency>
-		
-	</dependencies>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.9</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

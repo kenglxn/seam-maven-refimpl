@@ -2,10 +2,10 @@
 <pages xmlns="http://jboss.com/products/seam/pages"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
-       no-conversation-view-id="/home.xhtml"
+       no-conversation-view-id="/products.xhtml"
        login-view-id="/login.xhtml">
 
-    <page view-id="/home.xhtml">
+    <page view-id="/products.xhtml">
         <rewrite pattern="/"/>
         <rewrite pattern="/index{.*}"/>
     </page>
@@ -17,7 +17,12 @@
     <page view-id="*">
         <navigation>
             <rule if-outcome="home">
-                <redirect view-id="/home.xhtml"/>
+                <redirect view-id="/products.xhtml"/>
+            </rule>
+            <rule if-outcome="search">
+                <redirect view-id="/searchresults.xhtml">
+                    <message severity="info">Search yielded #{searchResults.size} results</message>
+                </redirect>
             </rule>
         </navigation>
     </page>

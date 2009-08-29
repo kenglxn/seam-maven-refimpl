@@ -1,6 +1,8 @@
 package net.glxn.webcommerce.action.upload;
 
 import net.glxn.webcommerce.action.home.FileHome;
+import net.glxn.webcommerce.action.home.ProductHome;
+import net.glxn.webcommerce.model.File;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
@@ -10,7 +12,6 @@ import org.richfaces.model.UploadItem;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.File;
 
 
 @Name("fileUpload")
@@ -22,14 +23,22 @@ public class FileUploader implements Serializable {
     @In(create = true)
     FileHome fileHome;
 
+    @In(required = false)
+    ProductHome productHome;
+
     private static final long serialVersionUID = -1L;
 
     public void listener(UploadEvent event) throws IOException {
         UploadItem item = event.getUploadItem();
         log.debug("uploading file #0", item.getFile().getAbsolutePath());
-        fileHome.getInstance().setImage(item.isTempFile() ? FileUtil.getByteFromFile(item.getFile()) : item.getData());
-        fileHome.getInstance().setImageContentType(item.getContentType());
-        fileHome.persist();
         fileHome.clearInstance();
+        File file = fileHome.getInstance();
+        file.setImage(item.isTempFile() ? FileUtil.getByteFromFile(item.getFile()) : item.getData());
+        file.setImageContentType(item.getContentType());
+        if(productHome.isManaged()) {
+            productHome.getInstance().addFile(file);
+            file.setProduct(productHome.getInstance());
+        }
+        fileHome.persist();
     }
 }
