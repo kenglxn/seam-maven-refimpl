@@ -1,14 +1,6 @@
 package net.glxn.webcommerce.model;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import java.util.Collection;
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -22,7 +14,6 @@ import java.io.Serializable;
 public class Order implements Serializable {
 
     private Long id;
-    private Collection<Product> products = new ArrayList<Product>();
     private User customer;
     private static final long serialVersionUID = 1130567133942358409L;
 
@@ -34,15 +25,6 @@ public class Order implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @OneToMany
-    public Collection<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Collection<Product> products) {
-        this.products = products;
     }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)

@@ -7,10 +7,6 @@ body {
     background-color: #ffff99;
 }
 
-p {
-    font-size: 1.2em;
-}
-
 #sizer {
     min-width: 100.4em;
     max-width: 127.8em;
@@ -167,9 +163,6 @@ h1, h2, h3, h4, h5, h6 {
     color: #fefefe;
 }
 
-p, h2 {
-    /*visibility: hidden;*/
-}
 .hide {
     visibility: hidden;
     display: none;
@@ -177,4 +170,25 @@ p, h2 {
 table {
     margin-bottom:0 !important;
     width:100%;
+}
+
+.imagelist {
+    list-style-type: none;
+    display:inline;
+    float:left;
+}
+
+.productpanel {
+    height: 85%;
+}
+
+.productitempanel {
+    height: 220px;
+    overflow: hidden
+}
+.maincontentform {
+    height: 500px;
+}
+.resultsdatagrid {
+    height: 100%;
 }

@@ -58,11 +58,6 @@
                              height="275">
                 </rich:editor>
 
-                <h:outputLabel value="isProductPage:"
-                               for="productPage"/>
-                <h:selectBooleanCheckbox id="productPage"
-                                         value="#{pageHome.instance.productPage}"/>
-
                 <a4j:outputPanel rendered="#{!empty pageList.resultList}"
                                  id="parentSetter">
                     <h:outputLabel for="parentSetBool"
@@ -105,6 +100,10 @@
                                  action="#{pageHome.remove}"
                                  immediate="true"
                                  rendered="#{pageHome.managed}"/>
+                <s:button propagation="none"
+                          action="#{pageHome.clearInstance}"
+                          id="new"
+                          value="New"/>
                 <s:button propagation="end"
                           id="cancel"
                           value="Cancel"

@@ -1,11 +1,13 @@
 package net.glxn.webcommerce.util;
 
 import org.jboss.seam.annotations.*;
+import org.jboss.seam.framework.EntityHome;
 import org.jboss.seam.log.Log;
 
 import net.glxn.webcommerce.model.*;
 import net.glxn.webcommerce.action.home.*;
 import net.glxn.webcommerce.action.upload.FileUtil;
+import net.glxn.webcommerce.action.list.UserList;
 
 import java.io.IOException;
 
@@ -19,6 +21,12 @@ import java.io.IOException;
 @Install(debug = true)
 @Name("dataPopulator")
 public class DataPopulator {
+
+    @Logger
+    private Log log;
+
+    @In(create = true)
+    UserList userList;
 
     @In(create = true)
     UserHome userHome;
@@ -35,34 +43,57 @@ public class DataPopulator {
     @In(create = true)
     FileHome fileHome;
 
-    private final String imgBase = "C:\\Users\\ken\\Pictures\\";
+    private final String imgBase = "C:\\Users\\ken\\Pictures\\devimg\\";
 
     @Observer("org.jboss.seam.postInitialization")
     public void observe() {
+        log.info("dataPopulator observer running");
+        if (userList.getResultList().size() > 0) {
+            log.info("data already initialized, skipping");
+            return;
+        }
         createUsers();
         createPages();
-        Category category = categoryHome.getInstance();
-        category.setName("testcat");
-        categoryHome.persist();
+        createCategoryAndProducts();
+    }
 
-        java.io.File image = new java.io.File(imgBase+"coolgif.gif");
+    private void createCategoryAndProducts() {
+        for (int c = 0; c < 5; c++) {
+            categoryHome.clearInstance();
+            Category category = categoryHome.getInstance();
+            category.setName("category " + (c + 1));
+            categoryHome.persist();
+            for (int i = 0; i < 15; i++) {
+                createProducts(c + 1, i, category);
+            }
+        }
+    }
+
+    private void createProducts(int c, int i, Category category) {
+        int iter = i + 1;
+//        if (iter > 45) iter -= 45;
+//        if (iter <= 45 && iter > 30) iter -= 30;
+//        if (iter <= 30 && iter > 15) iter -= 15;
+
+        java.io.File image = new java.io.File(imgBase + iter + ".jpg");
         byte[] byteFromFile = new byte[0];
         try {
             byteFromFile = FileUtil.getByteFromFile(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(byteFromFile.length > 0) {
+        if (byteFromFile.length > 0) {
+            productHome.clearInstance();
             Product product = productHome.getInstance();
-            product.setName("testproduct");
+            product.setName(c + "product" + iter);
             product.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at erat mi, at cursus orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam in tellus dolor. Nulla erat tortor, pulvinar tincidunt pulvinar eu, pulvinar id augue. Sed id arcu tellus. Vivamus fermentum fermentum hendrerit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.");
             product.setCategory(category);
+            fileHome.clearInstance();
             File file = fileHome.getInstance();
             file.setImage(byteFromFile);
-            file.setImageContentType("image/gif");
+            file.setImageContentType("image/jpeg");
             file.setProduct(product);
             product.addFile(file);
-            fileHome.persist();
             productHome.persist();
         }
     }

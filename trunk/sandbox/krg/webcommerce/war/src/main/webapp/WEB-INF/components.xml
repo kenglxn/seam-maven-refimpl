@@ -47,7 +47,7 @@
         </core:bundle-names>
     </core:resource-loader>
 
-    <web:hot-deploy-filter url-pattern="*.seam"/>
+    <!--<web:hot-deploy-filter url-pattern="*.seam"/>-->
 
     <transaction:ejb-transaction/>
 

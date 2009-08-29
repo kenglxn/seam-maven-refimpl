@@ -48,17 +48,17 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Category getCategory() {
         return category;
     }
-
 
     public void setCategory(Category category) {
         this.category = category;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
     public Collection<File> getFiles() {
         return files;
     }

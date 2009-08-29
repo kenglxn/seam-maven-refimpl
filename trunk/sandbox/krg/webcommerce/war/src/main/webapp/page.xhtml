@@ -56,22 +56,6 @@
             <h1><h:outputText value="#{child.title}"/></h1>
             <h:outputText value="#{child.content}"
                           escape="false"/>
-            <a4j:repeat id="pages"
-                        value="#{pageList.childPages}"
-                        var="_page"
-                        rowKeyVar="pg">
-                <h:outputText value="["
-                              rendered="#{_page.id eq childId}"/>
-                <s:link id="childPage"
-                        value="#{pg+1}">
-                    <f:param name="pageId"
-                             value="#{pageHome.instance.id}"/>
-                    <f:param name="childId"
-                             value="#{_page.id}"/>
-                </s:link>
-                <h:outputText value="]"
-                              rendered="#{_page.id eq childId}"/>
-            </a4j:repeat>
 
             <s:link value="edit page"
                     view="/view/page/crud.xhtml"

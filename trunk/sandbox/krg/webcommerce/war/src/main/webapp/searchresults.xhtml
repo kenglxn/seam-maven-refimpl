@@ -57,7 +57,7 @@
 
     <ui:define name="main-content-body">
         <h:form styleClass="maincontentform">
-            <rich:dataGrid value="#{productForCategory}"
+            <rich:dataGrid value="#{searchResults}"
                            var="_product"
                            columns="3"
                            elements="6"
@@ -65,29 +65,16 @@
                            styleClass="resultsdatagrid">
                 <rich:panel bodyClass="pbody" styleClass="productitempanel">
                     <f:facet name="header">
-                        <s:link value="#{_product.name}"
-                                view="/product.xhtml"
-                                title="#{_product.name}"
-                                propagation="none">
-                            <f:param name="prodId"
-                                     value="#{_product.id}"/>
-                        </s:link>
+                        <h:outputText value="#{_product.name}"/>
                     </f:facet>
                     <rich:dataList value="#{_product.files}"
-                                   var="_file"
-                                   styleClass="imagelist">
-                        <s:link view="/product.xhtml"
-                                title="#{_product.name}"
-                                propagation="none">
-                            <f:param name="prodId"
-                                     value="#{_product.id}"/>
-                            <s:graphicImage value="#{_file.image}"
-                                            fileName="#{_file.id}"
-                                            alt="[image]">
-                                <s:transformImageSize width="60"
-                                                      maintainRatio="true"/>
-                            </s:graphicImage>
-                        </s:link>
+                                   var="_file">
+                        <s:graphicImage value="#{_file.image}"
+                                        fileName="#{_file.id}"
+                                        alt="[image]">
+                            <s:transformImageSize width="60"
+                                                  maintainRatio="true"/>
+                        </s:graphicImage>
                     </rich:dataList>
                     <h:outputText value="#{_product.description}"
                                   escape="false"/>

@@ -1,0 +1,81 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="layout/site-template.xhtml">
+
+    <ui:define name="head-title">
+        <title>GLXN - Home of Ken Gullaksen</title>
+    </ui:define>
+
+    <ui:define name="menu">
+        <ui:include src="view/includes/menu/richmenuform.xhtml"/>
+    </ui:define>
+
+    <ui:define name="page-title">
+        <h2>#{pageHome.instance.title}</h2>
+    </ui:define>
+
+    <ui:define name="left-content">
+        <a4j:repeat var="_cat"
+                    value="#{categoryList.resultList}">
+            <rich:panel bodyClass="#{empty _cat.children ? 'hide' : ''}">
+                <f:facet name="header">
+                    <s:link value="#{_cat.name}"
+                            view="/products.xhtml"
+                            title="#{_cat.name}"
+                            propagation="none">
+                        <f:param name="catId"
+                                 value="#{_cat.id}"/>
+                    </s:link>
+                </f:facet>
+                <ui:repeat var="_chcat"
+                           value="#{_cat.children}">
+                    <rich:panel bodyClass="hide">
+                        <f:facet name="header">
+                            <s:link value="#{_chcat.name}"
+                                    view="/page.xhtml"
+                                    title="#{_chcat.name}"
+                                    propagation="none">
+                                <f:param name="catId"
+                                         value="#{_chcat.id}"/>
+                            </s:link>
+                        </f:facet>
+                    </rich:panel>
+                </ui:repeat>
+            </rich:panel>
+        </a4j:repeat>
+    </ui:define>
+
+    <ui:define name="main-content-body">
+        <rich:panel bodyClass="pbody" styleClass="productpanel">
+            <f:facet name="header">
+                <h:outputText value="#{productHome.instance.name}"/>
+            </f:facet>
+            <rich:dataList value="#{productHome.instance.files}"
+                           var="_file"
+                           styleClass="imagelist">
+                <s:graphicImage value="#{_file.image}"
+                                fileName="#{_file.id}"
+                                alt="[image]">
+                    <s:transformImageSize width="200"
+                                          maintainRatio="true"/>
+                </s:graphicImage>
+            </rich:dataList>
+            <h:outputText value="#{productHome.instance.description}"
+                          escape="false"/>
+        </rich:panel>
+        <s:link value="edit product"
+                    view="/view/product/crud.xhtml"
+                    rendered="#{identity.hasRole('admin')}"/>
+    </ui:define>
+
+    <ui:define name="footer">
+        <h4>adm 'at' glxn.net </h4>
+    </ui:define>
+</ui:composition>

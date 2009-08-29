@@ -81,6 +81,10 @@
                                  action="#{categoryHome.remove}"
                                  immediate="true"
                                  rendered="#{categoryHome.managed}"/>
+                <s:button propagation="none"
+                          action="#{categoryHome.clearInstance}"
+                          id="new"
+                          value="New"/>
                 <s:button propagation="end"
                           id="cancel"
                           value="Cancel"

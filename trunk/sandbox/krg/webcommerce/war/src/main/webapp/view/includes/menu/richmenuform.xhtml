@@ -10,20 +10,20 @@
     <rich:toolBar height="25"
                   itemSeparator="grid">
         <rich:toolBarGroup id="products">
-            <s:link value="#{messages.products}"
-                    view="/products.xhtml">
-            </s:link>
+            <h:outputLink value="#{request.contextPath}/products.seam"
+                          title="#{messages.products}">
+                #{messages.products}
+            </h:outputLink>
         </rich:toolBarGroup>
         <rich:toolBarGroup id="pages">
             <ui:repeat var="_page"
                        value="#{pageList.parentPages}">
-                <s:link value="#{_page.title}"
-                        view="/page.xhtml"
-                        title="#{_page.title}"
-                        propagation="none">
+                <h:outputLink value="#{request.contextPath}/page.seam"
+                        title="#{_page.title}">
                     <f:param name="pageId"
                              value="#{_page.id}"/>
-                </s:link>
+                    #{_page.title}
+                </h:outputLink>
                 <h:outputText value=" "/>
             </ui:repeat>
         </rich:toolBarGroup>
@@ -41,20 +41,24 @@
         <rich:toolBarGroup id="adminfunctionality"
                            itemSeparator="line"
                            rendered="#{identity.hasRole('admin')}">
-            <s:link value="page"
-                    view="/view/page/crud.xhtml"
-                    propagation="none"/>
-            <s:link value="category"
-                    view="/view/category/crud.xhtml"
-                    propagation="none"/>
-            <s:link value="upload"
-                    view="/view/fileupload/upload.xhtml"
-                    propagation="none"/>
+            <h:outputLink value="#{request.contextPath}/view/page/crud.seam">
+                page
+            </h:outputLink>
+            <h:outputLink value="#{request.contextPath}/view/category/crud.seam">
+                category                
+            </h:outputLink>
+            <h:outputLink value="#{request.contextPath}/view/product/crud.seam">
+                product
+            </h:outputLink>
+            <h:outputLink value="#{request.contextPath}/view/fileupload/upload.seam">
+                upload
+            </h:outputLink>
         </rich:toolBarGroup>
         <rich:toolBarGroup location="right">
-            <h:inputText styleClass="search"/>
+            <h:inputText styleClass="search"
+                         value="#{searchString}"/>
             <h:commandButton styleClass="searchbutton"
-                             onclick="return false;"
+                             action="#{productList.search}"
                              value="Search"/>
         </rich:toolBarGroup>
     </rich:toolBar>
