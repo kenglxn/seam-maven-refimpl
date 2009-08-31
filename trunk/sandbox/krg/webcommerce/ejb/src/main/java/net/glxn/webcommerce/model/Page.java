@@ -1,5 +1,8 @@
 package net.glxn.webcommerce.model;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.List;
  * Time: 17:28:57
  * To change this template use File | Settings | File Templates.
  */
+@Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 public class Page implements Serializable {
 

@@ -11,16 +11,16 @@
             xmlns:transaction="http://jboss.com/products/seam/transaction"
             xmlns:framework="http://jboss.com/products/seam/framework"
             xsi:schemaLocation=
-                    "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
-     http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.1.xsd
-     http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.1.xsd
-     http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.1.xsd
-     http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.1.xsd
-     http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.1.xsd
-     http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.1.xsd
-     http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd
-     http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.1.xsd
-     http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.1.xsd">
+                    "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
+     http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
+     http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.2.xsd
+     http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.2.xsd
+     http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
+     http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
+     http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
+     http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd
+     http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd
+     http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.2.xsd">
 
 
     <!--
@@ -84,6 +84,14 @@
          <web:rewrite-filter view-mapping="/seam/*" />
       -->
     <web:rewrite-filter/>
+
+    <web:cache-control-filter name="imageCacheControlFilter"
+                          regex-url-pattern=".*(\.gif|\.png|\.jpg|\.jpeg)"
+                          value="max-age=86400"/>
+
+    <web:cache-control-filter name="textCacheControlFilter"
+                          regex-url-pattern=".*(\.css|\.js)"
+                          value="max-age=1400"/>
 
     <web:hot-deploy-filter url-pattern="*.seam"/>
 

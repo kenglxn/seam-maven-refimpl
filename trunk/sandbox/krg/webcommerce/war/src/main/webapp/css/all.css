@@ -1,0 +1,1453 @@
+/* -----------------------------------------------------------------------
+
+
+ Blueprint CSS Framework 0.8
+ http://blueprintcss.org
+
+   * Copyright (c) 2007-Present. See LICENSE for more info.
+   * See README for instructions on how to use Blueprint.
+   * For credits and origins, see AUTHORS.
+   * This is a compressed file. See the sources in the 'src' directory.
+
+----------------------------------------------------------------------- */
+
+/* reset.css */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
+body {line-height:1.5;}
+table {border-collapse:separate;border-spacing:0;}
+caption, th, td {text-align:left;font-weight:normal;}
+table, td, th {vertical-align:middle;}
+blockquote:before, blockquote:after, q:before, q:after {content:"";}
+blockquote, q {quotes:"" "";}
+a img {border:none;}
+
+/* typography.css */
+body {font-size:75%;color:#222;background:#fff;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
+h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
+h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
+h2 {font-size:2em;margin-bottom:0.75em;}
+h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}
+h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
+h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
+h6 {font-size:1em;font-weight:bold;}
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
+p {margin:0 0 1.5em;}
+p img.left {float:left;margin:1.5em 1.5em 1.5em 0;padding:0;}
+p img.right {float:right;margin:1.5em 0 1.5em 1.5em;}
+a:focus, a:hover {color:#000;}
+a {color:#009;text-decoration:underline;}
+blockquote {margin:1.5em;color:#666;font-style:italic;}
+strong {font-weight:bold;}
+em, dfn {font-style:italic;}
+dfn {font-weight:bold;}
+sup, sub {line-height:0;}
+abbr, acronym {border-bottom:1px dotted #666;}
+address {margin:0 0 1.5em;font-style:italic;}
+del {color:#666;}
+pre {margin:1.5em 0;white-space:pre;}
+pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
+li ul, li ol {margin:0 1.5em;}
+ul, ol {margin:0 1.5em 1.5em 1.5em;}
+ul {list-style-type:disc;}
+ol {list-style-type:decimal;}
+dl {margin:0 0 1.5em 0;}
+dl dt {font-weight:bold;}
+dd {margin-left:1.5em;}
+table {margin-bottom:1.4em;width:100%;}
+th {font-weight:bold;}
+thead th {background:#c3d9ff;}
+th, td, caption {padding:4px 10px 4px 5px;}
+tr.even td {background:#e5ecf9;}
+tfoot {font-style:italic;}
+caption {background:#eee;}
+.small {font-size:.8em;margin-bottom:1.875em;line-height:1.875em;}
+.large {font-size:1.2em;line-height:2.5em;margin-bottom:1.25em;}
+.hide {display:none;}
+.quiet {color:#666;}
+.loud {color:#000;}
+.highlight {background:#ff0;}
+.added {background:#060;color:#fff;}
+.removed {background:#900;color:#fff;}
+.first {margin-left:0;padding-left:0;}
+.last {margin-right:0;padding-right:0;}
+.top {margin-top:0;padding-top:0;}
+.bottom {margin-bottom:0;padding-bottom:0;}
+
+/* grid.css */
+.container {width:950px;margin:0 auto;}
+.showgrid {background:url(src/grid.png);}
+.column, div.span-1, div.span-2, div.span-3, div.span-4, div.span-5, div.span-6, div.span-7, div.span-8, div.span-9, div.span-10, div.span-11, div.span-12, div.span-13, div.span-14, div.span-15, div.span-16, div.span-17, div.span-18, div.span-19, div.span-20, div.span-21, div.span-22, div.span-23, div.span-24 {float:left;margin-right:10px;}
+.last, div.last {margin-right:0;}
+.span-1 {width:30px;}
+.span-2 {width:70px;}
+.span-3 {width:110px;}
+.span-4 {width:150px;}
+.span-5 {width:190px;}
+.span-6 {width:230px;}
+.span-7 {width:270px;}
+.span-8 {width:310px;}
+.span-9 {width:350px;}
+.span-10 {width:390px;}
+.span-11 {width:430px;}
+.span-12 {width:470px;}
+.span-13 {width:510px;}
+.span-14 {width:550px;}
+.span-15 {width:590px;}
+.span-16 {width:630px;}
+.span-17 {width:670px;}
+.span-18 {width:710px;}
+.span-19 {width:750px;}
+.span-20 {width:790px;}
+.span-21 {width:830px;}
+.span-22 {width:870px;}
+.span-23 {width:910px;}
+.span-24, div.span-24 {width:950px;margin:0;}
+input.span-1, textarea.span-1, select.span-1 {width:30px!important;}
+input.span-2, textarea.span-2, select.span-2 {width:50px!important;}
+input.span-3, textarea.span-3, select.span-3 {width:90px!important;}
+input.span-4, textarea.span-4, select.span-4 {width:130px!important;}
+input.span-5, textarea.span-5, select.span-5 {width:170px!important;}
+input.span-6, textarea.span-6, select.span-6 {width:210px!important;}
+input.span-7, textarea.span-7, select.span-7 {width:250px!important;}
+input.span-8, textarea.span-8, select.span-8 {width:290px!important;}
+input.span-9, textarea.span-9, select.span-9 {width:330px!important;}
+input.span-10, textarea.span-10, select.span-10 {width:370px!important;}
+input.span-11, textarea.span-11, select.span-11 {width:410px!important;}
+input.span-12, textarea.span-12, select.span-12 {width:450px!important;}
+input.span-13, textarea.span-13, select.span-13 {width:490px!important;}
+input.span-14, textarea.span-14, select.span-14 {width:530px!important;}
+input.span-15, textarea.span-15, select.span-15 {width:570px!important;}
+input.span-16, textarea.span-16, select.span-16 {width:610px!important;}
+input.span-17, textarea.span-17, select.span-17 {width:650px!important;}
+input.span-18, textarea.span-18, select.span-18 {width:690px!important;}
+input.span-19, textarea.span-19, select.span-19 {width:730px!important;}
+input.span-20, textarea.span-20, select.span-20 {width:770px!important;}
+input.span-21, textarea.span-21, select.span-21 {width:810px!important;}
+input.span-22, textarea.span-22, select.span-22 {width:850px!important;}
+input.span-23, textarea.span-23, select.span-23 {width:890px!important;}
+input.span-24, textarea.span-24, select.span-24 {width:940px!important;}
+.append-1 {padding-right:40px;}
+.append-2 {padding-right:80px;}
+.append-3 {padding-right:120px;}
+.append-4 {padding-right:160px;}
+.append-5 {padding-right:200px;}
+.append-6 {padding-right:240px;}
+.append-7 {padding-right:280px;}
+.append-8 {padding-right:320px;}
+.append-9 {padding-right:360px;}
+.append-10 {padding-right:400px;}
+.append-11 {padding-right:440px;}
+.append-12 {padding-right:480px;}
+.append-13 {padding-right:520px;}
+.append-14 {padding-right:560px;}
+.append-15 {padding-right:600px;}
+.append-16 {padding-right:640px;}
+.append-17 {padding-right:680px;}
+.append-18 {padding-right:720px;}
+.append-19 {padding-right:760px;}
+.append-20 {padding-right:800px;}
+.append-21 {padding-right:840px;}
+.append-22 {padding-right:880px;}
+.append-23 {padding-right:920px;}
+.prepend-1 {padding-left:40px;}
+.prepend-2 {padding-left:80px;}
+.prepend-3 {padding-left:120px;}
+.prepend-4 {padding-left:160px;}
+.prepend-5 {padding-left:200px;}
+.prepend-6 {padding-left:240px;}
+.prepend-7 {padding-left:280px;}
+.prepend-8 {padding-left:320px;}
+.prepend-9 {padding-left:360px;}
+.prepend-10 {padding-left:400px;}
+.prepend-11 {padding-left:440px;}
+.prepend-12 {padding-left:480px;}
+.prepend-13 {padding-left:520px;}
+.prepend-14 {padding-left:560px;}
+.prepend-15 {padding-left:600px;}
+.prepend-16 {padding-left:640px;}
+.prepend-17 {padding-left:680px;}
+.prepend-18 {padding-left:720px;}
+.prepend-19 {padding-left:760px;}
+.prepend-20 {padding-left:800px;}
+.prepend-21 {padding-left:840px;}
+.prepend-22 {padding-left:880px;}
+.prepend-23 {padding-left:920px;}
+div.border {padding-right:4px;margin-right:5px;border-right:1px solid #eee;}
+div.colborder {padding-right:24px;margin-right:25px;border-right:1px solid #eee;}
+.pull-1 {margin-left:-40px;}
+.pull-2 {margin-left:-80px;}
+.pull-3 {margin-left:-120px;}
+.pull-4 {margin-left:-160px;}
+.pull-5 {margin-left:-200px;}
+.pull-6 {margin-left:-240px;}
+.pull-7 {margin-left:-280px;}
+.pull-8 {margin-left:-320px;}
+.pull-9 {margin-left:-360px;}
+.pull-10 {margin-left:-400px;}
+.pull-11 {margin-left:-440px;}
+.pull-12 {margin-left:-480px;}
+.pull-13 {margin-left:-520px;}
+.pull-14 {margin-left:-560px;}
+.pull-15 {margin-left:-600px;}
+.pull-16 {margin-left:-640px;}
+.pull-17 {margin-left:-680px;}
+.pull-18 {margin-left:-720px;}
+.pull-19 {margin-left:-760px;}
+.pull-20 {margin-left:-800px;}
+.pull-21 {margin-left:-840px;}
+.pull-22 {margin-left:-880px;}
+.pull-23 {margin-left:-920px;}
+.pull-24 {margin-left:-960px;}
+.pull-1, .pull-2, .pull-3, .pull-4, .pull-5, .pull-6, .pull-7, .pull-8, .pull-9, .pull-10, .pull-11, .pull-12, .pull-13, .pull-14, .pull-15, .pull-16, .pull-17, .pull-18, .pull-19, .pull-20, .pull-21, .pull-22, .pull-23, .pull-24 {float:left;position:relative;}
+.push-1 {margin:0 -40px 1.5em 40px;}
+.push-2 {margin:0 -80px 1.5em 80px;}
+.push-3 {margin:0 -120px 1.5em 120px;}
+.push-4 {margin:0 -160px 1.5em 160px;}
+.push-5 {margin:0 -200px 1.5em 200px;}
+.push-6 {margin:0 -240px 1.5em 240px;}
+.push-7 {margin:0 -280px 1.5em 280px;}
+.push-8 {margin:0 -320px 1.5em 320px;}
+.push-9 {margin:0 -360px 1.5em 360px;}
+.push-10 {margin:0 -400px 1.5em 400px;}
+.push-11 {margin:0 -440px 1.5em 440px;}
+.push-12 {margin:0 -480px 1.5em 480px;}
+.push-13 {margin:0 -520px 1.5em 520px;}
+.push-14 {margin:0 -560px 1.5em 560px;}
+.push-15 {margin:0 -600px 1.5em 600px;}
+.push-16 {margin:0 -640px 1.5em 640px;}
+.push-17 {margin:0 -680px 1.5em 680px;}
+.push-18 {margin:0 -720px 1.5em 720px;}
+.push-19 {margin:0 -760px 1.5em 760px;}
+.push-20 {margin:0 -800px 1.5em 800px;}
+.push-21 {margin:0 -840px 1.5em 840px;}
+.push-22 {margin:0 -880px 1.5em 880px;}
+.push-23 {margin:0 -920px 1.5em 920px;}
+.push-24 {margin:0 -960px 1.5em 960px;}
+.push-1, .push-2, .push-3, .push-4, .push-5, .push-6, .push-7, .push-8, .push-9, .push-10, .push-11, .push-12, .push-13, .push-14, .push-15, .push-16, .push-17, .push-18, .push-19, .push-20, .push-21, .push-22, .push-23, .push-24 {float:right;position:relative;}
+.prepend-top {margin-top:1.5em;}
+.append-bottom {margin-bottom:1.5em;}
+.box {padding:1.5em;margin-bottom:1.5em;background:#E5ECF9;}
+hr {background:#ddd;color:#ddd;clear:both;float:none;width:100%;height:.1em;margin:0 0 1.45em;border:none;}
+hr.space {background:#fff;color:#fff;}
+.clearfix:after, .container:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
+.clearfix, .container {display:block;}
+.clear {clear:both;}
+
+/* forms.css */
+label {font-weight:bold;}
+fieldset {padding:1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}
+legend {font-weight:bold;font-size:1.2em;}
+input.text, input.title, textarea, select {margin:0.5em 0;border:1px solid #bbb;}
+input.text:focus, input.title:focus, textarea:focus, select:focus {border:1px solid #666;}
+input.text, input.title {width:300px;padding:5px;}
+input.title {font-size:1.5em;}
+textarea {width:390px;height:250px;padding:5px;}
+.error, .notice, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
+.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
+.success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
+.error a {color:#8a1f11;}
+.notice a {color:#514721;}
+.success a {color:#264409;}
+/*
+ * File        : inline-block.css
+ * Version     : 1.0
+ * Author      : leif.olsen@knowit.no
+ * Copyright   :
+ * Description : Cross-Browser Inline-Block
+ *               Inspirations:
+ *                 http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/
+ *                 http://blog.hedgerwow.com/2007/11/14/item-list-grid-real-world-practice-with-displayinline-block-across-browsers/
+ * Notes       :
+ *
+ * Limitations :
+ * Created     : 20090229
+ * Tested in   : IE5.5                                  : Not tested (NT), don't think it will work!
+ *               IE6 win Quirks mode                    : NA, this is XHTML!
+ *               IE6 win Standards mode                 : NA,
+ *               Firefox 1.5 win                        : NT,
+ *               Firefox 2.x win                        : NT,
+ *               Firefox 2.x linux                      : NT,
+ *               Firefox 3.x linux                      : NT,
+ *               Opera 9.x   linux                      : NT,
+ *               Opera 9.x   win                        : OK,
+ *               Firefox 3.x win                        : OK,
+ *               IE7                                    : OK,
+ *               Safari 3.1  win                        : OK,
+ *               Chrome 1.x win                         : OK,
+ * Dependencies: form.css
+ * History     : 20090221 - Got rid of ie6
+ */
+
+
+.inline-block {
+  width: auto;
+  min-height: .1em;
+  min-width: .1em;
+  vertical-align: top;         /* results in a great looking grid: */
+  display: -moz-inline-stack;  /* Firefox2 need this to simulate display:inline-block   */
+  display: inline-block;       /* ie does not apply this to Block Element, and Firefox2 */
+                               /* does not render this, too                             */
+  zoom:1;                      /* fix ie7, trigger hasLayout */
+  *display:inline;             /* fix ie6+ie7, once hasLayout is true, set display:inline to block  */
+                               /* element will make display:inline behave like display:inline-block */
+  _overflow:hidden;            /* fix ie6, to expanded content */
+  _height: .1em;               /* fix ie6, treats height as min-height */
+
+  /*margin-left: -3px;          /* fix w3c, if the inline-block element has float:none; then a */
+                               /* 3px gap will appear between inline-block elements. */
+  /* *margin-left: 0;             /* fix ie7, no 3px gap on ie7 */
+}
+
+/*
+ * File        : page-layout.css
+ * Created     : 20080503
+ * Version     : 1.0
+ * Author      : leif.olsen@communityr.com, loo@knowit.no
+ * Copyright   : (c)2008-2009,
+ *               Do not use (or abuse) this code without permission.
+ *
+ * Description : x-browser semi liquid layout with Sticky Footer.
+ *               The footer will stick to the bottom of the browser window until the
+ *               content get too long, then the content will push the footer down. The
+ *               footer must have a fixed height.
+ *               The page is centered in the browser window and is by default liquid
+ *               between 800px and 1024px.
+ *               Liquid and centering is easy to chage; refer to the CSS
+ * Notes       : Inspirations for this css:
+ *               The Man in Blue: http://www.themaninblue.com/writing/perspective/2005/08/29/
+ *               Stu Nichols    : http://www.cssplay.co.uk/layouts/layout.html
+ *               lwis.net       : http://www.lwis.net/journal/2008/02/08/pure-css-sticky-footer/
+ *               cssstickyfooter: http://www.cssstickyfooter.com/
+ *               ryanfait.com   : http://ryanfait.com/sticky-footer/
+ *
+ *               This css will no longer support ie6, hipp, hipp horray!
+ *
+ * Tested in   : IE7                                    : OK
+ *               Firefox 2   win                        : NT,
+ *               Firefox 2   linux                      : NT,
+ *               Firefox 3   win                        : OK,
+ *               Firefox 3   linux                      : NT,
+ *               Opera 9     win                        : OK,
+ *               Opera 9     linux                      : NT,
+ *               Safari 3.1 win                         : OK
+ *               Chrome 1.x win                         : OK
+ *
+ * Dependencies: blueprint.css (or reset.css and typography.css)
+ * History     : 20090303 - no more ie6 hacks
+ */
+html, body {
+  height: 100%;
+}
+body {
+  font-size: 62.5%;      /* This body font-size fixes an IE bug and maintains
+                          * x-browser uniformity. By setting body.font-size:62.5%;
+                          * we ensures that ems to pixel ratio = 10 */
+  text-align: center;    /* Centers the #sizer element in ie6+ie7   */
+}
+#sizer {                 /* defines the min and max width for the page */
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+  min-width: 77.4em;     /* 77.4em~800px browser width (gives room for vertical scrollbar) */
+  max-width: 100.6em;    /* 100.6em~1024px browser width, 127.8em~1280px */
+  margin: 0 auto;        /* margin:0 auto; centers #sizer in standard browsers,
+                          * margin:0; left aligns */
+  text-align: left;      /* resets the default text alignment for the page */
+}
+#expander {              /* for horisontal spacing */
+  height: 100%;
+  min-height: 100%;
+  margin: 0 .5em;        /* horizontal spacing for #header #page-wrapper and #footer */
+  background-color: #1a171b;
+}
+#page-wrapper {
+  height: auto;
+  min-height: 100%;
+}
+#page {                  /* page content goes here */
+  width: auto;           /* so we can use padding-left and padding-right values */
+  padding-top: 1em;      /* space between header and page */
+  padding-bottom: 1em;   /* must be less or equal the #footer height value */
+                         /* a smaller value makes the footer shadow blend into the page */
+  padding-left: .3em;    /* horisontal spacing for page content */
+  padding-right: .3em;   /* horisontal spacing for page content */
+  /*background-image: url(page-layout.page.top-shadow.png);*/
+  background-repeat: repeat-x;
+  background-color: transparent;
+}
+#header {
+  position: relative;
+  padding: .5em 0 0 0;   /* vertical top spacing */
+  background-color: transparent;
+  height: 4em;           /* does not need a fixed height */
+}
+#header>*:first-child {  /* this is where you put the header content */
+  display: block;
+  height: 100%;
+  background-color: #1a171b;
+}
+#footer {
+  position: relative;
+  clear: both;
+  height: 3em;          /* footer must have a fixed height */
+  padding-top: 4em;     /* space for bg image */
+  padding-bottom: .5em; /* vertical bottom spacing */
+  margin-top: -7.5em;   /* negative value of footer height+padding */
+  /*background: url(page-layout.page.bottom-shadow.png) repeat-x top;*/
+  background-color: transparent;
+}
+#footer>*:first-child { /* this is where you put the footer content */
+  display: block;
+  height: 100%;
+  overflow: hidden;     /* prevent content from exceedeing boundaries */
+  background-color: transparent;
+}
+
+/*
+ * File        : horisontal-tabbed.css
+ * Created     : 20090307
+ * Version     : 1.0
+ * Author      : loo@knowit.no
+ * Copyright   : (c)2009,
+ *               Do not use (or abuse) this code without permission.
+ *
+ * Description : horisontal tab menu
+ * Notes       : Inspirations for this css:
+ *               Stu Nichols    : http://www.cssplay.co.uk/menus/
+ *
+ *             : This css does not support ie6
+ *
+ * Tested in   : IE5.5                                  : Not Applicable (NA)
+ *               IE6 win Quirks mode                    : NA
+ *               IE6 win Standards mode                 : NA,
+ *               IE7                                    : OK
+ *               Firefox 1.5 win                        : NT,
+ *               Firefox 1.5 linux                      : NT,
+ *               Firefox 2   win                        : NT,
+ *               Firefox 2   linux                      : NT,
+ *               Firefox 3   win                        : OK,
+ *               Firefox 3   linux                      : NT,
+ *               Opera 9     win                        : OK,
+ *               Opera 9     linux                      : NT,
+ *               Safari 3.1 win                         : OK
+ *               Chrome 1.x win                         : OK
+ *
+ * Dependencies:
+ * Recommended :
+ * History     :
+ */
+#horisontal-menu {
+  position: relative;           /* can use e.g. position:absolute; bottom: 0; */
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+                                /* can use e.g. border-bottom: 1px solid #C9910F; */
+  width: 100%;
+  text-align: left;
+  /*background:transparent url(../img/menu.menu-bar-l.png) no-repeat top left;*/
+}
+
+#horisontal-menu>*:first-child {
+  display: block;
+  margin: 0 0 0 10px;
+  padding: 0;
+  border: 0;
+  width: auto;
+  /*background:transparent url(../img/menu.menu-bar-r.png) no-repeat top right;*/
+}
+#horisontal-menu>*:first-child>*:first-child {
+  display: block;
+  margin: 0 10px 0 0;
+  padding: .2em 0 0 0;
+  border: 0;
+  width: auto;
+  min-height: 2em;
+  height: 100%;
+  /*background:transparent url(../img/menu.menu-bar-c.png) repeat-x top;*/
+}
+
+#horisontal-menu ul.menu {
+  position: relative;
+  margin: 0 0 0 -6px;
+  *margin-left: -9px;           /* 3px more for ie */
+  padding: 0;
+  list-style-type: none;
+  white-space: nowrap;          /* keep text on one line */
+  cursor: default;              /* neede by ie */
+}
+
+#horisontal-menu .menu li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  position: relative;          /* reference point for positioning of ft elements */
+  max-height: 190px;           /* lte. height of background image */
+  max-width: 180px;            /* lte. width of background image */
+  padding-left: 7px;           /* Same value as the background image width */
+  margin-bottom: 0;            /* Make room for bottom background image */
+  background:transparent url(../img/menu.button-l.png) no-repeat left -84px;
+
+  /* begin: inline-block */
+  width: auto;
+  min-height: .1em;
+  min-width: .1em;
+  vertical-align: top;         /* results in a great looking grid: */
+  display: -moz-inline-stack;  /* Firefox need this to simulate display:inline-block */
+  display: inline-block;       /* ie does not apply this to Block Element, and Firefox */
+                               /* does not render this, too                            */
+  zoom:1;                      /* fix ie7, trigger hasLayout */
+  *display:inline;             /* fix ie6+ie7, once hasLayout is true, set display:inline to block  */
+                               /* element will make display:inline behave like display:inline-block */
+  *margin-left: 3px;           /* we3c already have 3px  */
+  /* end: inline-block */
+}
+#horisontal-menu .menu li:hover {
+  /*margin-top: 1px;             /* push the button ... */
+  /*margin-bottom: -1px;         /* ... down 1px        */
+  background: transparent url(../img/menu.button-l.png) no-repeat left -28px;
+}
+#horisontal-menu .menu li:focus,
+#horisontal-menu .menu li:active {
+  /*margin-top: 1px;             /* push the button ... */
+  /*margin-bottom: -1px;         /* ... down 1px        */
+  background: transparent url(../img/menu.button-l.png) no-repeat left -56px;
+}
+
+#horisontal-menu .menu li>*:first-child {
+  display: block;
+  height: 100%;                /* Needed by ie7 if contained element is floated */
+  background:transparent url(../img/menu.button-r.png) no-repeat right -84px;
+}
+#horisontal-menu .menu li:hover>*:first-child {
+  background: transparent url(../img/menu.button-r.png) no-repeat right -28px;
+}
+#horisontal-menu .menu li:focus>*:first-child,
+#horisontal-menu .menu li:active>*:first-child {
+  background:transparent url(../img/menu.button-r.png) no-repeat right -56px;
+}
+
+#horisontal-menu .menu li a,
+#horisontal-menu .menu li a:visited {
+  float: none;        /* be careful! clear-float class is needed if floated, see form.custom-buttons.css */
+  display: block;
+  margin: 0;
+  border: 0;
+  padding: .3em .6em;
+  text-indent: -7px;  /* same value as li.padding-left value */
+                      /* note: should have use margin-left:-3px, but ie7 looses clickable area */
+  font-size: 1.2em;
+  line-height:1.5;
+  color: #FAFAFA;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  -moz-outline: none;
+  outline: none;
+  background: transparent;  /* set background according to rest of design */
+}
+#horisontal-menu .menu li a:hover,
+#horisontal-menu .menu li a:focus,
+#horisontal-menu .menu li a:active {
+  color: #ffffff;
+}
+
+/* current tab */
+#horisontal-menu .menu li.current,
+#horisontal-menu .menu li.current:hover,
+#horisontal-menu .menu li.current:focus,
+#horisontal-menu .menu li.current:active {
+  /*margin-top: 1px;             *//* push the button ... */
+  /*margin-bottom: -1px;         *//* ... down 1px        */
+  background: transparent url(../img/menu.button-l.png) no-repeat left -56px;
+}
+#horisontal-menu .menu li.current>*:first-child,
+#horisontal-menu .menu li.current:hover>*:first-child,
+#horisontal-menu .menu li.current:focus>*:first-child,
+#horisontal-menu .menu li.current:active>*:first-child {
+  background:transparent url(../img/menu.button-r.png) no-repeat right -56px;
+}
+/*
+ * decorate some menu items with a sensible icon
+ * the class names and background images will vary from project to project
+ * remove and/or modify as needed
+ */
+
+#horisontal-menu .menu li.home a,
+#horisontal-menu .menu li.home a:visited {
+  /*padding-left: 24px; *//* make room for 16px wide bg.image */
+  /*background: transparent url(../img/menu.home.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.home a:hover,
+#horisontal-menu .menu li.home a:focus,
+#horisontal-menu .menu li.home a:active {
+  /*background-image: url(../img/menu.home.hover.png);*/
+}
+#horisontal-menu .menu li.login a,
+#horisontal-menu .menu li.login a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(../img/menu.login.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.login a:hover,
+#horisontal-menu .menu li.login a:focus,
+#horisontal-menu .menu li.login a:active {
+  /*background-image: url(../img/menu.login.hover.png);*/
+}
+
+#horisontal-menu .menu li.help a,
+#horisontal-menu .menu li.help a:visited {
+  padding-left: 24px;
+  background: transparent url(../img/menu.help.png) 2px center no-repeat;
+}
+#horisontal-menu .menu li.help a:hover,
+#horisontal-menu .menu li.help a:focus,
+#horisontal-menu .menu li.help a:active {
+  background-image: url(../img/menu.help.hover.png);
+}
+
+#horisontal-menu .menu li.about a,
+#horisontal-menu .menu li.about a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(../img/menu.about.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.about a:hover,
+#horisontal-menu .menu li.about a:focus,
+#horisontal-menu .menu li.about a:active {
+  /*background-image: url(../img/menu.about.hover.png);*/
+}
+
+
+
+
+
+
+
+#horisontal-menu .menu li.transport-requests a,
+#horisontal-menu .menu li.transport-requests a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(menu.transport-requests.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.transport-requests a:hover,
+#horisontal-menu .menu li.transport-requests a:focus,
+#horisontal-menu .menu li.transport-requests a:active {
+  /*background-image: url(menu.transport-requests.hover.png);*/
+}
+
+#horisontal-menu .menu li.execution-plans a,
+#horisontal-menu .menu li.execution-plans a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(menu.execution-plans.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.execution-plans a:hover,
+#horisontal-menu .menu li.execution-plans a:focus,
+#horisontal-menu .menu li.execution-plans a:active {
+  /*background-image: url(menu.execution-plans.hover.png);*/
+}
+
+#horisontal-menu .menu li.services a,
+#horisontal-menu .menu li.services a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(menu.services.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.services a:hover,
+#horisontal-menu .menu li.services a:focus,
+#horisontal-menu .menu li.services a:active {
+  /*background-image: url(menu.services.hover.png);*/
+}
+
+#horisontal-menu .menu li.planning a,
+#horisontal-menu .menu li.planning a:visited {
+  /*padding-left: 24px;*/
+  /*background: transparent url(menu.planning.png) 2px center no-repeat;*/
+}
+#horisontal-menu .menu li.planning a:hover,
+#horisontal-menu .menu li.planning a:focus,
+#horisontal-menu .menu li.planning a:active {
+  /*background-image: url(menu.planning.hover.png);*/
+}
+
+#horisontal-menu .menu li.administration a,
+#horisontal-menu .menu li.administration a:visited {
+  padding-left: 24px;
+  background: transparent url(menu.administration.png) 2px center no-repeat;
+}
+#horisontal-menu .menu li.administration a:hover,
+#horisontal-menu .menu li.administration a:focus,
+#horisontal-menu .menu li.administration a:active {
+  background-image: url(menu.administration.hover.png);
+}
+/*
+ * File        : form.css
+ * Created     : 20051017
+ * Version     : 1.0
+ * Author      : leif.olsen@start.no
+ * Copyright   : (c)2005-2009,
+ *               Do not use (or abuse) this code without permission.
+ *
+ * Description : x-browser Form styling.
+ * Notes       : Inspirations for this css:
+ *               The Man in Blue: http://www.themaninblue.com/writing/perspective/2004/03/24/
+ *               Stu Nichols    : http://www.cssplay.co.uk/menu/form.html
+ *               Quirksmode     : http://www.quirksmode.org/css/forms.html
+ *               A List Apart   : http://www.alistapart.com/
+ *               And            : ME
+ *               This css will no longer support ie6, hipp, hipp horray!
+ *
+ * Tested in   : IE5.5                                  : Not tested (NT), don't think it will work (and who cares)!
+ *               IE6 win Quirks mode                    : Not Applicable (NA)
+ *               IE6 win Standards mode                 : NA,
+ *               IE7                                    : OK
+ *               Firefox 1.5 win                        : NT,
+ *               Firefox 1.5 linux                      : NT,
+ *               Firefox 2   win                        : T, Tested(T). Borders around input fields
+ *                                                           not rendered as in ff3.
+ *               Firefox 2   linux                      : NT,
+ *               Firefox 3   win                        : OK,
+ *               Firefox 3   linux                      : NT,
+ *               Opera 9     win                        : OK,
+ *               Opera 9     linux                      : NT,
+ *               Netscape 8.1 win "Display Like IE"     : NA,
+ *               Netscape 8.1 win "Display Like Firefox": NA
+ *               Safari 3.1 win                         : OK
+ *               Chrome 1.x win                         : OK
+ *
+ * Dependencies: blueprint.css (or reset.css and typography.css),
+ *               clear-float.css, viewport.css, grid-layout.css
+ * Recommended :
+ * History     : 20090215 - Start removing of ie6 spesific css.
+ *               20090221 - Finally got rid of ie6 spesific css!
+ *                          Internet Exploder 6 is no longer maintained in this code
+ */
+
+/* -----------------------------------------------------------
+ * Tags contained inside the form tag that can not be classed
+ * ----------------------------------------------------------- */
+form br {
+  clear: left;
+}
+/* Easy clearing (see main.css) fix for firefox fieldset.
+ * <fieldset class="clear-float">: When the clear-float class is applied to the
+ * fieldset tag strange things happen to input fields in firefox 1.5 and 2.0,
+ * caret disappears, select boxes won't drop down, etc.
+ * We can not remove content:''; from the original class, but setting content:inherit;
+ * for fieldset tags seems to fix the problem.
+ */
+fieldset.clear-float:after {
+  content: inherit;
+}
+/* hack for Opera 7+ */
+@media all and (min-width: 0px) {
+  fieldset.clear-float:after {
+    content: "";  /* Opera8.5+ needs the original setting */
+  }
+}
+
+/* --------------------------------------------------------
+ * Generic Form styling
+ * -------------------------------------------------------- */
+.ki-form {
+  font-family: inherit;   /* FireFox: font-family does not cascade */
+  margin: 0;
+  padding: .3em;          /* Make space for fieldsets */
+  border: 0;
+
+  font-size: 10px;        /* To maintain ems to pixel ratio: 1em == 10px */
+}
+.ki-form p,
+.ki-form ul,
+.ki-form ol,
+.ki-form dl,
+.ki-form blockquote,
+
+.ki-form label,
+.ki-form input,
+.ki-form textarea,
+.ki-form select,
+.ki-form option,
+.ki-form legend {
+  font-size  : 1.2em;
+  line-height: 1.2;       /* Use same (unitless) value as font-size ()*/
+  font-family: inherit;   /* FireFox: font-family does not cascade    */
+}
+
+/* --------------------------------------------------------
+ * fieldset and legend styling
+ * -------------------------------------------------------- */
+.ki-form fieldset {
+  margin: .5em 0 0 0;        /* for ie6+7: bottom margin collapses when the element is floated left */
+                             /* so it is useless to set the bottom margin to anything else than 0   */
+  padding: 0 .3em .3em .3em;
+  position: relative;
+  display: block;
+  border: 0px solid #dddddd; /* Use the bordered-fieldset(s) class add borders to a fieldset */
+  font-size: 10px;           /* To maintain ems to pixel ratio: 1em == 10px */
+}
+.ki-form fieldset fieldset {
+  margin-top: .3em;
+  border: 0px solid #ffffff;
+}
+.ki-form fieldset legend {
+  padding: .2em .3em;
+  text-align: left;
+  font-weight: bold;
+  border: 1px solid #cccccc;
+  background: #eeeeee url(form.legend.gif) repeat-x center left;
+  margin-bottom: .5em;
+}
+.ki-form fieldset fieldset legend {
+  padding: 0;
+  text-align: left;
+  font-weight: bold;
+  border: 0px solid #cccccc;
+  background: transparent url(none);
+}
+
+/* legend fix for ie7+6:
+ * The problem occurs when you are building a form with a fieldset tag and a legend tag,
+ * and then style the fieldset with a background color different from the the forms
+ * bg-color. For complete explanation see:
+ * http://www.mattheerema.com/archive/getting-fieldset-backgrounds-and-legends-to-behave-in-ie
+ * NOTE: The bug still remians in ie7
+ */
+*:first-child+html .ki-form fieldset.legend-fix {
+  position: relative;
+  margin-top: 1.8em;
+  padding-top: 1.6em;
+}
+*:first-child+html .ki-form fieldset.legend-fix legend {
+  position: absolute;
+  top: -1em;
+  left: -0.2em; /*-0.6em;*/
+}
+
+*:first-child+html .ki-form fieldset.legend-fix fieldset.legend-fix {
+  margin-top: 1em;
+  padding-top: 1em;
+}
+
+/* Fieldsets with borders.
+ * Put this class on the form element to give all fieldsets a border.
+ * Put the class on a particular fieldset to give that fieldset a border.
+ */
+.ki-form.bordered-fieldsets fieldset,
+.ki-form fieldset.bordered-fieldset {
+  border: 1px solid #dddddd;
+}
+.ki-form.bordered-fieldsets fieldset>fieldset,
+.ki-form fieldset.bordered-fieldset>fieldset {
+  padding-bottom: 0;
+}
+.ki-form.bordered-fieldsets fieldset fieldset,
+.ki-form fieldset.bordered-fieldset fieldset {
+  border: 0px solid #FFFFFF; /* no borders on nested fieldsets */
+}
+
+/* --------------------------------------------------------
+ * label, input, textarea and select styling
+ * -------------------------------------------------------- */
+.ki-form label,
+.ki-form input,
+.ki-form textarea,
+.ki-form select {
+  margin: .3em 0 0 0;    /* for ie6+7: bottom margin collapses when the element is floated left */
+                         /* so it is useless to set the bottom margin to anything else than 0   */
+  padding: 0;
+  float: left;
+  display: block;
+  color: #333333;
+}
+
+.ki-form select,
+.ki-form textarea,
+.ki-form input[type='text'],
+.ki-form input[type='password'] {
+  border: .1em solid #7F9DB9;      /* standard windows (light blue) color */
+  padding: .1em .1em .1em .2em;
+}
+
+/* label */
+.ki-form label {
+  padding: .2em 0 0 0;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align:right;
+  word-wrap: break-word; /* Guard against ie uglyness */
+  margin-right: .5em;    /* spacing between label and input */
+  height: 1.4em;         /* this height aligns w. input elements height */
+  width: 8em;            /* no particular reason to pick this number, pick any number you like */
+}
+
+/* Standard label widths. */
+.ki-form fieldset.narrow-labels label {
+   width: 6em;
+}
+.ki-form fieldset.medium-labels label {
+   width: 12em;
+}
+.ki-form fieldset.wide-labels label {
+   width: 18em;
+}
+
+/* input */
+.ki-form input {
+  padding: 0;
+  height: 1.25em;   /* This height should align with the select element */
+  width: 11em;      /* no particular reason to pick this number, pick any number you like */
+}
+
+/* Standard input field widths. */
+.ki-form fieldset.narrow-fields input[type='text'],
+.ki-form fieldset.narrow-fields input[type='password'] {
+  width: 8em;
+}
+.ki-form fieldset.medium-fields input[type='text'],
+.ki-form fieldset.medium-fields input[type='password'] {
+  width: 14em;
+}
+.ki-form fieldset.wide-fields input[type='text'],
+.ki-form fieldset.wide-fields input[type='password'] {
+  width: 20em;
+}
+
+.ki-form input[type='hidden'] {
+  display: none;
+}
+
+/* input type='radio', input type='checkbox' */
+.ki-form input[type='radio'],
+.ki-form input[type='checkbox'] {
+  height: 1.6em;
+  width: 1.4em;
+  margin-right: .5em;
+}
+/* hack for Opera 7+, Safari 3+ and Google Chrome 1+ */
+@media all and (min-width: 0px) {
+  .ki-form input[type='radio'],
+  .ki-form input[type='checkbox'] {
+    height: 1.5em;
+  }
+}
+/* ie7 hack */
+*:first-child+html .ki-form input[type='radio'],
+*:first-child+html .ki-form input[type='checkbox'] {
+  height: 1.5em;
+}
+
+/*
+ * To control styling of radiobuttons we'll contain them in a fieldset with class=radio.
+ * To control styling of checkboxes we'll contain them in a fieldset with class=checkbox.
+ */
+.ki-form fieldset.radio,
+.ki-form fieldset.checkbox {
+  margin: .3em 0 0 0;
+  float: left;
+  border: 0;
+  padding: 0;
+  min-height: 1.4em;
+  min-width: 13.7em; /* Align with input fields */
+}
+
+/* Standard field widths. */
+.ki-form fieldset.narrow-fields fieldset.radio,
+.ki-form fieldset.narrow-fields fieldset.checkbox {
+  min-width: 10.2em;
+}
+.ki-form fieldset.medium-fields fieldset.radio,
+.ki-form fieldset.medium-fields fieldset.checkbox {
+  min-width: 17.35em;
+}
+.ki-form fieldset.wide-fields fieldset.radio,
+.ki-form fieldset.wide-fields fieldset.checkbox {
+  min-width: 24.55em;
+}
+
+/* Do not use the legend element with radiobuttons and checkboxes */
+.ki-form fieldset.radio legend,
+.ki-form fieldset.checkbox legend {
+  display: none;
+}
+
+.ki-form fieldset.radio label,
+.ki-form fieldset.checkbox label {
+  font-weight: normal;
+  width: auto !important;
+  text-align: left;
+  margin-top: 0;
+}
+
+.ki-form fieldset.radio input[type='radio'],
+.ki-form fieldset.radio input[type='checkbox'],
+.ki-form fieldset.checkbox input[type='radio'],
+.ki-form fieldset.checkbox input[type='checkbox'] {
+  margin-top: 0;
+}
+
+/*
+ * Vertical layout of radiobuttons and checkboxes
+ * @TODO: use first-child and last-child for this
+ */
+.ki-form fieldset.radio.vertical-buttons input[type='radio'],
+.ki-form fieldset.radio.vertical-buttons input[type='checkbox'],
+.ki-form fieldset.checkbox.vertical-buttons input[type='radio'] ,
+.ki-form fieldset.checkbox.vertical-buttons input[type='checkbox'] {
+  clear: left;
+}
+
+.ki-form fieldset.radio.vertical-buttons label,
+.ki-form fieldset.checkbox.vertical-buttons label {
+  clear: none;
+}
+/* ie7 hack */
+*:first-child+html .ki-form fieldset.radio.vertical-buttons label,
+*:first-child+html fieldset.checkbox.vertical-buttons label {
+  float: none;
+}
+
+/*
+ * JSF uses a table to render radiobuttons and checkboxes, so this is
+ * the only place inside a fieldset element where we can use a table.
+ */
+.ki-form fieldset table {
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  border-spacing: 0;
+  border-collapse: collapse;  /* Needed by ie7 bc. ie7 does not understand border-spacing */
+                              /* see: http://www.quirksmode.org/css/tables.html           */
+  min-width: 13.7em;          /* Align with input fields */
+                              /* NOTE: min-width does not work om ie7 */
+}
+/* Standard field widths for the table. */
+.ki-form fieldset.narrow-fields table {
+  min-width: 10.2em;
+}
+.ki-form fieldset.medium-fields table {
+  min-width: 17.35em;
+}
+.ki-form fieldset.wide-fields table {
+  min-width: 24.55em;
+}
+
+.ki-form fieldset tr {
+  margin: 0;
+  padding: 0;
+}
+.ki-form fieldset td {
+  margin: 0;
+  padding: 0;
+}
+
+.ki-form fieldset td label {
+  font-weight: normal;
+  width: auto !important;
+  text-align: left;
+}
+.ki-form fieldset td label,
+.ki-form fieldset td input[type='radio'],
+.ki-form fieldset td input[type='checkbox'] {
+  margin-top: 0;
+}
+.ki-form fieldset tr:first-child td label,
+.ki-form fieldset tr:first-child td input[type='radio'],
+.ki-form fieldset tr:first-child td input[type='checkbox'] {
+  margin-top: .3em; /* Only the first table row should have margin-top */
+}
+/* END JSF table mod. */
+
+/*
+ * input type='button', input type='submit', input type='reset'
+ */
+.ki-form input[type='button'],
+.ki-form input[type='submit'],
+.ki-form input[type='reset'] {
+  height: 1.6em;
+  width: auto;
+  cursor: pointer;
+  margin-left: .3em;
+  margin-right: 0;
+  padding: 0 .5em;
+  display: block;
+  background-image: url(../img/form.button.gif);
+  background-color: #fafafa;  /* do re mi fafafa :) */
+  background-repeat: repeat-x;
+  border: 1px solid #cccccc;
+  font-weight: bold;
+  color: #333333;
+}
+
+*:first-child+html .ki-form input[type='button'],
+*:first-child+html .ki-form input[type='submit'],
+*:first-child+html .ki-form input[type='reset'] {
+  padding: 0;
+}
+
+/* input type=file  */
+.ki-form input[type='file'] {
+  width: auto;
+  height: 1.83em; /* this height aligns w. the browse button */
+}
+*:first-child+html .ki-form input[type='file'] {
+  height:1.8em;
+}
+
+/* textarea */
+.ki-form textarea {
+  overflow: auto;
+  width: 98.5%;
+  height: 12em;          /* Default height, use whatever height you desire */
+  word-wrap: break-word; /* Or else text flow won't wrap in ie6+7*/
+}
+
+/* select, option, optgroup */
+.ki-form select {
+  width: 11.5em;  /* To align with input */
+  height: 1.6em;  /* Aligns with 1.2em on input element */
+  padding:0;
+}
+/* Standard field widths. */
+.ki-form fieldset.narrow-fields select {
+  width: 8.5em;
+}
+.ki-form fieldset.medium-fields select {
+  width: 14.5em;
+}
+.ki-form fieldset.wide-fields select {
+  width: 20.5em;
+}
+
+.ki-form select[multiple='multiple'],
+.ki-form select.multiple {
+  height: auto;  /* NOTE: ie7 does not understand select[multiple='multiple'] */
+                 /* You have to use the .multiple class in addition           */
+}
+*:first-child+html .ki-form select.multiple {
+  height: auto;  /* NOTE: ie7 does not understand select[multiple='multiple'] */
+                 /* You have to use the .multiple class in addition           */
+}
+.ki-form option {
+  background:#ffffff;
+  font-size: 99%;  /* Or else ff cuts off the bottom border */
+}
+html>body .ki-form option {
+  margin-right: .2em;     /* firefox need a small margin, */
+                          /* Does not work in Opera9, don't know how to fix. */
+}
+.ki-form optgroup {
+  background:#f9f9f9;
+  color: #222222;
+}
+.ki-form optgroup option {
+}
+html>body .ki-form optgroup option {
+  padding-left: .5em;    /* firefox only, no effect on Opera, but Opera is OK regardless of this value */
+}
+
+/*
+ * :hover and :focus
+ */
+.ki-form input[type='text']:hover,
+.ki-form input[type='password']:hover {
+  background-image: url(../img/form.button.gif);
+  background-color: #FFFFFF;
+  background-position: -30px;
+  background-repeat: repeat-x;
+}
+.ki-form input[type='button']:hover,
+.ki-form input[type='submit']:hover,
+.ki-form input[type='reset']:hover,
+.ki-form input.button:hover,
+.ki-form input.button.hover {
+  background-image: url(../img/form.button.gif);
+  background-color: #677ABC;
+  background-position: -30px;
+  background-repeat: repeat-x;
+  color: #000000;
+}
+
+/* Focus: ie7 does not support the :focus pseudo class
+ * Must use a .focus class and JavaScript to solve this. for ie7
+ */
+.ki-form select:focus                , .ki-form select.focus,
+.ki-form textarea:focus              , .ki-form textarea.focus,
+.ki-form input[type='text']:focus    , .ki-form input[type='text'].focus,
+.ki-form input[type='password']:focus, .ki-form input[type='password'].focus {
+  background-color: #F9F9F9;
+  color:#000000;
+  border-color: #3A88D6; /* darker blue color */
+}
+
+/* Columnar layout for .ki-form>fieldset elements */
+.ki-form fieldset.columnar label {
+  clear: left;
+}
+
+/* hack for Opera 7+, Safari 3+ and Google Chrome 1+ */
+@media all and (min-width: 0px) {
+  .ki-form fieldset.columnar table {
+    display: block  /* needed by opera or table collapses */
+  }
+}
+.ki-form fieldset.columnar table,
+.ki-form fieldset.columnar input,
+.ki-form fieldset.columnar textarea,
+.ki-form fieldset.columnar select,
+.ki-form fieldset.columnar fieldset.radio,
+.ki-form fieldset.columnar fieldset.checkbox {
+  clear: right;
+}
+/* ie7 hack */
+*:first-child+html .ki-form fieldset.columnar table,
+*:first-child+html .ki-form fieldset.columnar input,
+*:first-child+html .ki-form fieldset.columnar textarea,
+*:first-child+html .ki-form fieldset.columnar select,
+*:first-child+html .ki-form fieldset.columnar fieldset.radio,
+*:first-child+html .ki-form fieldset.columnar fieldset.checkbox {
+  float: none;
+}
+
+.ki-form fieldset.columnar fieldset.radio label,
+.ki-form fieldset.columnar fieldset.checkbox label {
+  clear: none;
+}
+.ki-form fieldset.columnar fieldset.radio input,
+.ki-form fieldset.columnar fieldset.checkbox input {
+  clear: none;
+  float: left;
+}
+
+.ki-form fieldset.columnar td input[type='radio'],
+.ki-form fieldset.columnar td input[type='checkbox'] {
+  float: left;
+  clear: left;
+}
+.ki-form fieldset.columnar td label {
+  clear: right;
+}
+
+
+/* Label on top of input */
+.ki-form fieldset.label-top label {
+  clear: left;
+  text-align: left;
+  padding-top: 0;
+  width: auto;
+  margin-top: 0.3em;
+}
+
+.ki-form fieldset.label-top table,
+.ki-form fieldset.label-top input,
+.ki-form fieldset.label-top textarea,
+.ki-form fieldset.label-top select,
+.ki-form fieldset.label-top fieldset.radio,
+.ki-form fieldset.label-top fieldset.checkbox {
+  clear: both;
+  margin-top: 0;
+}
+
+.ki-form fieldset.label-top fieldset.radio,
+.ki-form fieldset.label-top fieldset.checkbox {
+  /*width: 100%;   /* needed by ie6+7: 100% == 3 hours+ work - urgh!!!!!!! I hate m$ie */
+                 /* without this label text somtimes disappears.                     */
+}
+
+.ki-form fieldset.label-top fieldset.radio input,
+.ki-form fieldset.label-top fieldset.checkbox input {
+  clear: none;
+}
+.ki-form fieldset.label-top fieldset.radio label,
+.ki-form fieldset.label-top fieldset.checkbox label {
+  clear: none;
+}
+
+
+/*
+ * fieldset container for buttons
+ */
+.ki-form fieldset.buttons,
+.ki-form fieldset.left-buttons,
+.ki-form fieldset.right-buttons {
+  border: 0px solid #ffffff;
+  float: right;
+  clear: both;
+}
+.ki-form fieldset.left-buttons {
+  float: none;
+}
+
+/*
+.ki-form fieldset.buttons input[type='button'],
+.ki-form fieldset.buttons input[type='submit'],
+.ki-form fieldset.buttons input[type='reset'],
+.ki-form fieldset.left-buttons input[type='button'],
+.ki-form fieldset.left-buttons input[type='submit'],
+.ki-form fieldset.left-buttons input[type='reset'],
+.ki-form fieldset.right-buttons input[type='button'],
+.ki-form fieldset.right-buttons input[type='submit'],
+.ki-form fieldset.right-buttons input[type='reset'] {
+*/
+.ki-form fieldset.buttons input,
+.ki-form fieldset.left-buttons input,
+.ki-form fieldset.right-buttons input {
+  height: 2em;
+  line-height: 1.5;  /* looks good on ie, opera, safari and chrome, no effect on ff */
+}
+
+.ki-form fieldset.buttons input:first-child,
+.ki-form fieldset.left-buttons input:first-child,
+.ki-form fieldset.right-buttons input:first-child {
+  margin-left: 0;
+}
+
+/*
+.ki-form fieldset.columnar input[type='button'],
+.ki-form fieldset.columnar input[type='submit'],
+.ki-form fieldset.columnar input[type='reset'] {
+*/
+.ki-form fieldset.buttons.columnar input,
+.ki-form fieldset.left-buttons.columnar input,
+.ki-form fieldset.right-buttons.columnar input {
+  float: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Grid layout. Note: grid-layout.css is required to use this */
+.ki-form dl.cr_grid-layout {
+  line-height: 1;
+  font-size: 100%;  /* inherit does not work on IE, but 100% makes the  */
+                    /* font size the same as the container's font size. */
+                    /* The container's font size shuld be 1em == 10px . */
+}
+.ki-form fieldset dl.cr_grid-layout dt,
+.ki-form fieldset dl.cr_grid-layout dd {
+  min-height: 2.4em;
+}
+.ki-form fieldset.label-top dl.cr_grid-layout dt,
+.ki-form fieldset.label-top dl.cr_grid-layout dd {
+  min-height: 4.1em;
+}
+
+/* Button alignment
+ * We want to right align the input buttons to the width of the fieldset that contains the
+ * input fields. For this case we do not want to set a spesific width on the fieldset elements
+ * due to the fact that the width of the fieldset that contains the input elements can vary
+ * dependent on the contained input elemenets. This would have been really simple if we did
+ * not have to account for IE7 - but sadly enough we have to. Follow these steps to make this
+ * work cross browser.
+ * 1: Add class="ki-form clear-float"to the form element
+ * 2: Contain fieldsets in a div element with class="button-alignment clear-float"
+ */
+.ki-form .button-alignment {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 3.8em; /* Make room for button fieldset */
+}
+
+/* ie7 hack */
+*:first-child+html .ki-form .button-alignment {
+  display: inline;
+}
+.ki-form .button-alignment fieldset.buttons,
+.ki-form .button-alignment fieldset.right-buttons,
+.ki-form .button-alignment fieldset.left-buttons {
+  position: absolute;
+  right: 0;
+}
+
+/*
+ * File        : form.search-bar.css
+ * Created     : 20090307
+ * Version     : 1.0
+ * Author      : loo@knowit.no
+ * Copyright   : (c)2009,
+ *               Do not use (or abuse) this code without permission.
+ *
+ * Description : A search bar styled like the firefox search bar
+ * Notes       : This css does not support ie6
+ *
+ * Tested in   : IE5.5                                  : Not Applicable (NA)
+ *               IE6 win Quirks mode                    : NA
+ *               IE6 win Standards mode                 : NA,
+ *               IE7                                    : OK
+ *               Firefox 1.5 win                        : NT,
+ *               Firefox 1.5 linux                      : NT,
+ *               Firefox 2   win                        : NT,
+ *               Firefox 2   linux                      : NT,
+ *               Firefox 3   win                        : OK,
+ *               Firefox 3   linux                      : NT,
+ *               Opera 9     win                        : OK,
+ *               Opera 9     linux                      : NT,
+ *               Safari 3.1 win                         : OK
+ *               Chrome 1.x win                         : OK
+ *
+ * Dependencies: form.css
+ * Recommended :
+ * History     :
+ */
+
+#search-bar,
+#search-bar * {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#search-bar {
+  /* begin: inline-block */
+  width: auto;
+  min-height: .1em;
+  min-width: .1em;
+  vertical-align: top;         /* results in a great looking grid: */
+  display: -moz-inline-stack;  /* Firefox need this to simulate display:inline-block */
+  display: inline-block;       /* ie does not apply this to Block Element, and Firefox */
+                               /* does not render this, too                            */
+  zoom:1;                      /* fix ie7, trigger hasLayout */
+  *display:inline;             /* fix ie6+ie7, once hasLayout is true, set display:inline to block  */
+                               /* element will make display:inline behave like display:inline-block */
+  /* end: inline-block */
+}
+#search-bar fieldset {
+  border: 1px solid #7F9DB9;   /* light blue */
+  background-color: #ffffff;
+}
+#search-bar fieldset input[type='text'] {
+  height:1.4em;
+  background-color: transparent;
+}
+#search-bar fieldset a,
+#search-bar fieldset input[type='submit'],
+#search-bar fieldset input[type='button'] {
+  height:1.4em;
+  width:1.7em;
+  text-indent: -1000px;
+  background-image: url(../img/form.search.png);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#search-bar fieldset a {
+  height: 1.6em;
+  display: block;
+  float: left;
+  text-decoration: none;
+  -moz-outline: none;
+  outline: none;
+}
+
+#search-bar fieldset input[type='submit']:hover {
+    background-image: url(../img/form.search.hover.png);
+}
+#search-bar fieldset a,
+#search-bar fieldset input[type='button'] {
+  background-image: url(../img/form.help.png);
+}
+#search-bar fieldset a:hover,
+#search-bar fieldset input[type='button']:hover {
+    background-image: url(../img/form.help.hover.png);
+}
