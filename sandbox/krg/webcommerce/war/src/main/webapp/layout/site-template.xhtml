@@ -9,32 +9,23 @@
 <f:view>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-
-        <script src="#{request.contextPath}/js/prototype.js" type="text/javascript" charset="utf-8"></script>
+        <!--<script src="#{request.contextPath}/js/prototype.js" type="text/javascript" charset="utf-8"></script>-->
         <!--<script src="#{request.contextPath}/js/effects.js" type="text/javascript" charset="utf-8"></script>-->
         <!--<script src="#{request.contextPath}/js/glider.js" type="text/javascript" charset="utf-8"></script>-->
-
-
-        <link rel="stylesheet" href="#{request.contextPath}/css/blueprint/screen.css" type="text/css" media="screen, projection"/>
-        <link rel="stylesheet" href="#{request.contextPath}/css/blueprint/print.css" type="text/css" media="print"/>
+        <!--<link rel="stylesheet" href="#{request.contextPath}/css/blueprint/screen.css" type="text/css" media="screen, projection"/> in all.css-->
+        <!--<link rel="stylesheet" href="#{request.contextPath}/css/blueprint/print.css" type="text/css" media="print"/>-->
         <!--[if IE]>
         <link rel="stylesheet" href="../../styles/blueprint/ie.css" type="text/css" media="screen, projection" />
         <![endif]-->
-        <link rel="stylesheet" href="#{request.contextPath}/css/clear-float.css" type="text/css" media="screen, projection"/>
-        <link rel="stylesheet" href="#{request.contextPath}/css/inline-block.css" type="text/css" media="screen, projection"/>
-        <link rel="stylesheet" href="#{request.contextPath}/css/page-layout.css" type="text/css" media="screen, projection"/>
-        <link rel="stylesheet" href="#{request.contextPath}/css/horisontal-tabbed.css" type="text/css" media="screen, projection"/>
-        <link rel="stylesheet" href="#{request.contextPath}/css/form.css" type="text/css" media="screen, projection"/>
-        <link rel="stylesheet" href="#{request.contextPath}/css/form.search-bar.css" type="text/css" media="screen, projection"/>
+        <!--<link rel="stylesheet" href="#{request.contextPath}/css/clear-float.css" type="text/css" media="screen, projection"/> in all css-->
+        <!--<link rel="stylesheet" href="#{request.contextPath}/css/inline-block.css" type="text/css" media="screen, projection"/> in all css-->
+        <!--<link rel="stylesheet" href="#{request.contextPath}/css/page-layout.css" type="text/css" media="screen, projection"/> in all css-->
+        <!--<link rel="stylesheet" href="#{request.contextPath}/css/horisontal-tabbed.css" type="text/css" media="screen, projection"/> in all css-->
+        <!--<link rel="stylesheet" href="#{request.contextPath}/css/form.css" type="text/css" media="screen, projection"/> in all css-->
+        <!--<link rel="stylesheet" href="#{request.contextPath}/css/form.search-bar.css" type="text/css" media="screen, projection"/> in all css-->
+
+        <link rel="stylesheet" href="#{request.contextPath}/css/all.css" type="text/css" media="screen, projection"/>
         <link rel="stylesheet" href="#{request.contextPath}/css/site.css" type="text/css" media="screen, projection"/>
-
-
-
-
-        <link rel="stylesheet" href="#{request.contextPath}/css/cleanpage.css" type="text/css" media="screen, projection"/>
-
-        <!--<link rel="stylesheet" href="#{request.contextPath}/css/all.css" type="text/css" media="screen, projection"/>-->
-
         <link rel="shortcut icon" href="#{request.contextPath}/img/favicon.ico"/>
 
         <ui:insert name="head-title">
@@ -59,52 +50,7 @@
 
                                         <ul class="menu">
                                             <ui:insert name="menu">
-                                                <li class="home"><span><a href="index">Home</a></span></li>
-                                                <li class="howtos"><span><a href="howtos">How-Tos</a></span></li>
-                                                <li class="execution-plans hidetab"><span><a
-                                                        href="#">Execution</a></span>
-                                                </li>
-                                                <li class="services current hidetab"><span><a
-                                                        href="#">Services</a></span>
-                                                </li>
-                                                <li class="planning hidetab"><span><a href="#">Planning</a></span></li>
-                                                <li class="hidetab"><span><a href="#">Administration</a></span></li>
-                                                <li class="login hidetab"><span><a href="#">Log In</a></span></li>
-                                                <li class="about hidetab"><span><a href="#">About</a></span></li>
-                                                <li class="help hidetab"><span><a href="#">Help</a></span></li>
 
-                                                <li class="search">
-                                                    <form id="search-bar" class="ki-form" action="" method="post">
-                                                        <fieldset class="clear-float">
-                                                            <input id="search" name="search" type="text"
-                                                                   value="search..."
-                                                                   onfocus="javascript: SearchHelper.removeHint(this);"
-                                                                   onblur="javascript: SearchHelper.appendHint(this);"
-                                                                    />
-                                                            <input id="search-submit" name="search-submit" type="submit"
-                                                                   value=""
-                                                                   onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
-                                                                   onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
-                                                                    />
-
-                                                            <input id="search-help" name="search-help" type="button"
-                                                                   value=""
-                                                                   onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
-                                                                   onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
-                                                                    />
-
-                                                            <!--
-                                                            <a href="#" id="search-help"
-                                                              onfocus="javascript: SearchHelper.removeHint(this.parentNode.getElementsByTagName('input')[0]);"
-                                                              onblur="javascript: SearchHelper.appendHint(this.parentNode.getElementsByTagName('input')[0]);"
-                                                            >Help
-                                                            </a>
-                                                            -->
-
-
-                                                        </fieldset>
-                                                    </form>
-                                                </li>
                                             </ui:insert>
                                         </ul>
                                     </h:form>
@@ -139,30 +85,24 @@
                                                 warnClass="warnmsg"
                                                 rendered="#{showGlobalMessages != 'false'}"/>
                                     <ui:insert name="main-content-body">
-                                        <p>[pic] who am i?</p>
 
-                                        <p>career and ed</p>
-
-                                        <p>academic interests</p>
-
-                                        <p>personal interests</p>
                                     </ui:insert>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="inline-block banner">
-                        <script type="text/javascript"><!--
+                        <!--<script type="text/javascript">--><!--
                         google_ad_client = "pub-4879279033823175";
                         /* 120x240, opprettet 29.04.09 */
                         google_ad_slot = "2563915601";
                         google_ad_width = 120;
                         google_ad_height = 240;
-                        //-->
+                        //--><!--
                         </script>
                         <script type="text/javascript"
                                 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
+                        </script>-->
                     </div>
                 </div>
                 <!-- #page -->
@@ -172,7 +112,7 @@
             <div id="footer" style="">
                 <div>
                     <ui:insert name="footer">
-                        <h4>adm 'at' glxn.net </h4>
+                        
                     </ui:insert>
                 </div>
             </div>

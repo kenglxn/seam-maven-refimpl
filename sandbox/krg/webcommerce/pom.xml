@@ -61,7 +61,7 @@
 	</modules>
 
 	<properties>
-		<version.seam>2.1.2</version.seam> <!-- 2.1.1.GA, 2.1.2 --> 
+		<version.seam>2.2.1-SNAPSHOT</version.seam> <!-- 2.1.1.GA, 2.1.2 --> 
 		<version.jsf>1.2_12</version.jsf>
 		<version.richfaces>3.3.1.GA</version.richfaces>
 		<version.drools>4.0.4</version.drools>
