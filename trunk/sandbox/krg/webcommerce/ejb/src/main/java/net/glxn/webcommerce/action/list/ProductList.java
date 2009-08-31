@@ -17,14 +17,6 @@ public class ProductList extends EntityQuery<Product> {
     @Out(required = false)
     Long catId;
 
-    @In(required = false)
-    @Out(required = false)
-    String searchString;
-
-    @In(required = false)
-    @Out(required = false)
-    List<Product> searchResults;
-
     @DataModel
     List<Product> productForCategory;
 
@@ -39,14 +31,5 @@ public class ProductList extends EntityQuery<Product> {
         }
         setEjbql("select distinct(p) from Product p left join fetch p.files where p.category.id = #{catId} ");
         return getResultList();
-    }
-
-    public String search() {
-        setEjbql("select distinct(p) from Product p " +
-                "   left join fetch p.files" +
-                "       where lower(p.name) like concat('%', concat(lower(#{searchString}), '%')) " +
-                "           or lower(p.description) like concat('%', concat(lower(#{searchString}), '%'))");
-        searchResults = getResultList();
-        return "search";
     }
 }

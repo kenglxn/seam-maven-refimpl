@@ -2,6 +2,8 @@ package net.glxn.webcommerce.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +13,7 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-public class Order implements Serializable {
+public class ShoppingCart implements Serializable {
 
     private Long id;
     private User customer;

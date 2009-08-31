@@ -7,27 +7,19 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 template="layout/site-template.xhtml">
 
-
-    <ui:define name="head-title">
-        <title>GLXN - Home of Ken Gullaksen</title>
-    </ui:define>
-
     <ui:define name="menu">
-        <ui:include src="view/includes/menu/menuform.xhtml"/>
+        <ui:include src="view/includes/menu/richmenuform.xhtml"/>
     </ui:define>
 
     <ui:define name="page-title">
-
+        <h3 id="404">#{messages.fof_pagetitle}</h3>
     </ui:define>
 
-    <ui:define name="left-content">
-        <h3 id="404">Page not found</h3>
-    </ui:define>
-    
     <ui:define name="main-content-body">
-        <h2>Page not found</h2>
+        <h2>#{messages.fof_h2message}</h2>
+
         <p>
-            The page you requested was not found.
+            #{messages.fof_pmessage}
         </p>
     </ui:define>
 

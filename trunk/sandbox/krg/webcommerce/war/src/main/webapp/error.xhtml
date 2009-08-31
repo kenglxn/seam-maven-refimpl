@@ -7,32 +7,16 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 template="layout/site-template.xhtml">
 
-    <ui:param name="showGlobalMessages" value="false"/>
-
-    <ui:define name="head-title">
-        <title>GLXN - Home of Ken Gullaksen</title>
-    </ui:define>
 
     <ui:define name="menu">
-        <ui:include src="view/includes/menu/menuform.xhtml"/>
+        <ui:include src="view/includes/menu/richmenuform.xhtml"/>
     </ui:define>
 
     <ui:define name="page-title">
-
+        <h2>#{messages.error_pagetitle}</h2>
     </ui:define>
-    
 
-    <ui:define name="left-content">
-        <h3>Error</h3>
-    </ui:define>
-    
-    <ui:define name="main-content-body">
-
-        <h2>Error</h2>
-
-        <p>Something bad happened :-(</p>
-
-        <h:messages id="errorMessage" styleClass="message"/>
-
+    <ui:define name="main-content">
+        
     </ui:define>
 </ui:composition>

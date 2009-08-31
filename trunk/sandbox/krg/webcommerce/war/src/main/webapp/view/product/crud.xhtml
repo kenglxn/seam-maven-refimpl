@@ -9,10 +9,6 @@
                 xmlns:a4j="http://richfaces.org/a4j"
                 template="../../layout/site-template.xhtml">
 
-    <ui:define name="head-title">
-        <title>GLXN - Home of Ken Gullaksen</title>
-    </ui:define>
-
     <ui:define name="menu">
         <ui:include src="../includes/menu/richmenuform.xhtml"/>
     </ui:define>
@@ -44,7 +40,6 @@
         <h:form id="pageform"
                 styleClass="ki-form">
             <fieldset class="columnar label-top">
-
                 <h:outputLabel value="name:"
                                for="name"/>
                 <h:inputText id="name"
@@ -62,16 +57,43 @@
                 <legend>
                     Add Files
                 </legend>
-                <h:outputText value="Product must be saved before files can be added!" 
+                <h:outputText value="Product must be saved before files can be added!"
                               rendered="#{!productHome.managed}"/>
-                <a4j:outputPanel id="fileuploadpanel" rendered="#{productHome.managed}">
+                <a4j:outputPanel id="fileuploadpanel"
+                                 rendered="#{productHome.managed}">
                     <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
                                      maxFilesQuantity="5"
                                      listHeight="50">
                         <a4j:support event="onuploadcomplete">
-                            <s:conversationId />
+                            <s:conversationId/>
                         </a4j:support>
                     </rich:fileUpload>
+                </a4j:outputPanel>
+            </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Remove Files
+                </legend>
+                <h:outputText value="Product must be saved before files can be removed!"
+                              rendered="#{!productHome.managed}"/>
+                <a4j:outputPanel id="fileremovalpanel"
+                                 rendered="#{productHome.managed}">
+                    <rich:dataList value="#{productHome.instance.files}"
+                                   var="_file"
+                                   styleClass="imagelist">
+                        <s:graphicImage value="#{_file.image}"
+                                        fileName="#{_file.id}"
+                                        alt="[image]">
+                            <s:transformImageSize width="60"
+                                                  maintainRatio="true"/>
+                        </s:graphicImage>
+                        <s:link value="remove"
+                                action="#{fileAction.removeFileFromProductAndDeleteFile}"
+                                styleClass="removefilelink">
+                            <f:param name="fileId"
+                                     value="#{_file.id}"/>
+                        </s:link>
+                    </rich:dataList>
                 </a4j:outputPanel>
             </fieldset>
             <fieldset class="buttons">
