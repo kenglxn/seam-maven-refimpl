@@ -1,11 +1,11 @@
 package net.glxn.webcommerce.model;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.*;
-
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table
@@ -19,6 +19,7 @@ public class User implements Serializable {
     private String password;
     private String name;
     private RoleType roleType;
+    private List<ShoppingCart> shoppingCart;
 
     @Id
     @GeneratedValue
@@ -72,15 +73,13 @@ public class User implements Serializable {
         return "User(" + username + ")";
     }
 
-    private Collection<Order> orders;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    public Collection<Order> getOrders() {
-        return orders;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
+    public List<ShoppingCart> getShoppingCart() {
+        return shoppingCart;
     }
 
-    public void setOrders(Collection<Order> orders) {
-        this.orders = orders;
+    public void setShoppingCart(List<ShoppingCart> shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
     @Enumerated(EnumType.STRING)

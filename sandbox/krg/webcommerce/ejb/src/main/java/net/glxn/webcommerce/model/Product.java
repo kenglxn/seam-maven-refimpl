@@ -44,10 +44,10 @@ public class Product implements Serializable {
         return description;
     }
 
+
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Category getCategory() {
@@ -70,5 +70,12 @@ public class Product implements Serializable {
     @Transient
     public void addFile(File file) {
         this.files.add(file);
+        file.setProduct(this);
+    }
+
+    @Transient
+    public void removeFile(File file) {
+        this.files.remove(file);
+        file.setProduct(null);
     }
 }

@@ -9,10 +9,6 @@
                 xmlns:a4j="http://richfaces.org/a4j"
                 template="../../layout/site-template.xhtml">
 
-    <ui:define name="head-title">
-        <title>GLXN - Home of Ken Gullaksen</title>
-    </ui:define>
-
     <ui:define name="menu">
         <ui:include src="../includes/menu/richmenuform.xhtml"/>
     </ui:define>
@@ -44,12 +40,10 @@
         <h:form id="pageform"
                 styleClass="ki-form">
             <fieldset class="columnar label-top">
-
                 <h:outputLabel value="title:"
                                for="title"/>
                 <h:inputText id="title"
                              value="#{pageHome.instance.title}"/>
-
                 <h:outputLabel value="content:"
                                for="pageeditor"/>
                 <rich:editor id="pageeditor"
@@ -57,7 +51,6 @@
                              theme="advanced"
                              height="275">
                 </rich:editor>
-
                 <a4j:outputPanel rendered="#{!empty pageList.resultList}"
                                  id="parentSetter">
                     <h:outputLabel for="parentSetBool"
@@ -83,8 +76,6 @@
                         </h:selectOneMenu>
                     </f:subview>
                 </a4j:outputPanel>
-
-
             </fieldset>
             <fieldset class="buttons">
                 <h:commandButton id="save"
@@ -109,11 +100,6 @@
                           value="Cancel"
                           view="/home.xhtml"/>
             </fieldset>
-
         </h:form>
-    </ui:define>
-
-    <ui:define name="footer">
-        <h4>adm 'at' glxn.net </h4>
     </ui:define>
 </ui:composition>

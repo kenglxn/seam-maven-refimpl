@@ -58,7 +58,7 @@ public class File implements Serializable {
         this.imageContentType = imageContentType;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     public Product getProduct() {
         return product;
     }

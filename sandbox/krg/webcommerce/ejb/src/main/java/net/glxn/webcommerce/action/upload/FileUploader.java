@@ -37,7 +37,6 @@ public class FileUploader implements Serializable {
         file.setImageContentType(item.getContentType());
         if(productHome.isManaged()) {
             productHome.getInstance().addFile(file);
-            file.setProduct(productHome.getInstance());
         }
         fileHome.persist();
     }

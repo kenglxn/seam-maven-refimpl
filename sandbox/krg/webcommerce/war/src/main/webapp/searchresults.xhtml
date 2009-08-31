@@ -9,10 +9,6 @@
                 xmlns:a4j="http://richfaces.org/a4j"
                 template="layout/site-template.xhtml">
 
-    <ui:define name="head-title">
-        <title>GLXN - Home of Ken Gullaksen</title>
-    </ui:define>
-
     <ui:define name="menu">
         <ui:include src="view/includes/menu/richmenuform.xhtml">
             <ui:param name="isProductPage"
@@ -21,7 +17,7 @@
     </ui:define>
 
     <ui:define name="page-title">
-        <h2>Welcome to my website.</h2>
+        <h2>#{messages.searchresults_pagetitle}</h2>
     </ui:define>
 
     <ui:define name="left-content">
@@ -57,7 +53,11 @@
 
     <ui:define name="main-content-body">
         <h:form styleClass="maincontentform">
-            <rich:dataGrid value="#{searchResults}"
+            <h:outputFormat value="#{messages.searchresults_resultmessage}"
+                            styleClass="searchresultsmessage">
+                <f:param value="#{productSearch.resultList.size}"/>
+            </h:outputFormat> 
+            <rich:dataGrid value="#{productSearch.resultList}"
                            var="_product"
                            columns="3"
                            elements="6"
@@ -65,16 +65,29 @@
                            styleClass="resultsdatagrid">
                 <rich:panel bodyClass="pbody" styleClass="productitempanel">
                     <f:facet name="header">
-                        <h:outputText value="#{_product.name}"/>
+                        <s:link value="#{_product.name}"
+                                view="/product.xhtml"
+                                title="#{_product.name}"
+                                propagation="none">
+                            <f:param name="prodId"
+                                     value="#{_product.id}"/>
+                        </s:link>
                     </f:facet>
                     <rich:dataList value="#{_product.files}"
-                                   var="_file">
-                        <s:graphicImage value="#{_file.image}"
-                                        fileName="#{_file.id}"
-                                        alt="[image]">
-                            <s:transformImageSize width="60"
-                                                  maintainRatio="true"/>
-                        </s:graphicImage>
+                                   var="_file"
+                                   styleClass="imagelist">
+                        <s:link view="/product.xhtml"
+                                title="#{_product.name}"
+                                propagation="none">
+                            <f:param name="prodId"
+                                     value="#{_product.id}"/>
+                            <s:graphicImage value="#{_file.image}"
+                                            fileName="#{_file.id}"
+                                            alt="[image]">
+                                <s:transformImageSize width="60"
+                                                      maintainRatio="true"/>
+                            </s:graphicImage>
+                        </s:link>
                     </rich:dataList>
                     <h:outputText value="#{_product.description}"
                                   escape="false"/>
@@ -86,9 +99,5 @@
                 </f:facet>
             </rich:dataGrid>
         </h:form>
-    </ui:define>
-
-    <ui:define name="footer">
-        <h4>adm 'at' glxn.net </h4>
     </ui:define>
 </ui:composition>

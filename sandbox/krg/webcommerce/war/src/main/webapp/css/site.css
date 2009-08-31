@@ -33,11 +33,12 @@ body {
 }
 
 #footer {
-    height: 2em; /* footer must have a fixed height */
-    padding-top: 3em; /* space for bg image */
-    padding-bottom: 1em; /* vertical bottom spacing */
-    margin-top: -6em; /* negative value of footer height+padding */
-    text-align: center;
+    /*height: 2em; *//* footer must have a fixed height *//*
+    padding-top: 3em; *//* space for bg image *//*
+    padding-bottom: 1em; *//* vertical bottom spacing *//*
+    margin-top: -6em; *//* negative value of footer height+padding *//*
+    text-align: center;*/
+    display: none;
 }
 
 #horisontal-menu {
@@ -46,7 +47,7 @@ body {
 }
 
 #horisontal-menu .menu li.products,
-#horisontal-menu .menu li.login {
+    #horisontal-menu .menu li.login {
     margin-left: 6%;
 }
 
@@ -167,15 +168,16 @@ h1, h2, h3, h4, h5, h6 {
     visibility: hidden;
     display: none;
 }
+
 table {
-    margin-bottom:0 !important;
-    width:100%;
+    margin-bottom: 0 !important;
+    width: 100%;
 }
 
 .imagelist {
     list-style-type: none;
-    display:inline;
-    float:left;
+    display: inline;
+    float: left;
 }
 
 .productpanel {
@@ -186,9 +188,33 @@ table {
     height: 220px;
     overflow: hidden
 }
+
 .maincontentform {
     height: 500px;
 }
+
 .resultsdatagrid {
     height: 100%;
+}
+
+a, a:visited {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #999999;
+    text-decoration: none;
+}
+
+.searchresultsmessage {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #F39800;
+    position:relative;
+    top:-1em;
+}
+
+.removefilelink {
+    float: right;
 }

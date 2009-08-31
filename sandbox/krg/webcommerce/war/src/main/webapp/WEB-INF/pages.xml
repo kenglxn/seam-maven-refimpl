@@ -20,9 +20,7 @@
                 <redirect view-id="/products.xhtml"/>
             </rule>
             <rule if-outcome="search">
-                <redirect view-id="/searchresults.xhtml">
-                    <message severity="info">Search yielded #{searchResults.size} results</message>
-                </redirect>
+                <redirect view-id="/searchresults.xhtml"/>
             </rule>
         </navigation>
     </page>

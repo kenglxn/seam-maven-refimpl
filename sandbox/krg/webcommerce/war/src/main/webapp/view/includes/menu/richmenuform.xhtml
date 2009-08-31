@@ -11,15 +11,15 @@
                   itemSeparator="grid">
         <rich:toolBarGroup id="products">
             <h:outputLink value="#{request.contextPath}/products.seam"
-                          title="#{messages.products}">
-                #{messages.products}
+                          title="#{messages.richmenuform_productslinktext}">
+                #{messages.richmenuform_productslinktext}
             </h:outputLink>
         </rich:toolBarGroup>
         <rich:toolBarGroup id="pages">
             <ui:repeat var="_page"
                        value="#{pageList.parentPages}">
                 <h:outputLink value="#{request.contextPath}/page.seam"
-                        title="#{_page.title}">
+                              title="#{_page.title}">
                     <f:param name="pageId"
                              value="#{_page.id}"/>
                     #{_page.title}
@@ -45,7 +45,7 @@
                 page
             </h:outputLink>
             <h:outputLink value="#{request.contextPath}/view/category/crud.seam">
-                category                
+                category
             </h:outputLink>
             <h:outputLink value="#{request.contextPath}/view/product/crud.seam">
                 product
@@ -58,8 +58,10 @@
             <h:inputText styleClass="search"
                          value="#{searchString}"/>
             <h:commandButton styleClass="searchbutton"
-                             action="#{productList.search}"
-                             value="Search"/>
+                             action="#{productSearch.search}"
+                             value="Search">
+                <s:conversationId/>
+            </h:commandButton>
         </rich:toolBarGroup>
     </rich:toolBar>
 </ui:composition>

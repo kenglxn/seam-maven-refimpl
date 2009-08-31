@@ -92,7 +92,6 @@ public class DataPopulator {
             File file = fileHome.getInstance();
             file.setImage(byteFromFile);
             file.setImageContentType("image/jpeg");
-            file.setProduct(product);
             product.addFile(file);
             productHome.persist();
         }
