@@ -23,6 +23,7 @@ public class Product implements Serializable {
     private String description;
     private Category category;
     private Collection<File> files = new ArrayList<File>();
+    private Collection<ShoppingCart> shoppingcarts = new ArrayList<ShoppingCart>();
 
     private static final long serialVersionUID = -8737857722150690015L;
 
@@ -44,10 +45,10 @@ public class Product implements Serializable {
         this.name = name;
     }
 
+
     public String getDescription() {
         return description;
     }
-
 
     public void setDescription(String description) {
         this.description = description;
@@ -81,5 +82,19 @@ public class Product implements Serializable {
     public void removeFile(File file) {
         this.files.remove(file);
         file.setProduct(null);
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
+    public Collection<ShoppingCart> getShoppingcarts() {
+        return shoppingcarts;
+    }
+
+    public void setShoppingcarts(Collection<ShoppingCart> shoppingcarts) {
+        this.shoppingcarts = shoppingcarts;
+    }
+
+    @Transient
+    public void addShoppingcart(ShoppingCart shoppingCart) {
+        this.shoppingcarts.add(shoppingCart);
     }
 }

@@ -17,6 +17,8 @@ public class ShoppingCart implements Serializable {
 
     private Long id;
     private User customer;
+    private Collection<Product> products = new ArrayList<Product>();
+
     private static final long serialVersionUID = 1130567133942358409L;
 
     @Id
@@ -36,5 +38,29 @@ public class ShoppingCart implements Serializable {
 
     public void setCustomer(User customer) {
         this.customer = customer;
+    }
+
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}
+    )
+    @JoinTable(
+            name = "Shoppingcart_Products",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    public Collection<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Collection<Product> products) {
+        this.products = products;
+    }
+
+    @Transient
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.addShoppingcart(this);
     }
 }
