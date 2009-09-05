@@ -38,8 +38,9 @@
   <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-1.5 or jdk-1.6</a></li>
   <li><a href="http://www.eclipse.org/">Eclipse Ganymede 3.4 (with WTP installed)</a></li>
   <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
-    <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
-    <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.
+    <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug regarding the use of 
+		<code>profiles.xml</code>, see the <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an 
+		explanation.
   </li>
   <li><a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a> (0.9.8 or later)</li>
   <li><a href="http://subclipse.tigris.org/">
@@ -57,11 +58,22 @@
 	-->
 </ul>
 
-<h2>Configure the Workspace</h2>
+<h2 id="configure-the-workspace">Configure the Workspace</h2>
 <ol class="vspace">
   <li>
-		Create an empty workspace folder, e.g. C:/dev/ide/workspaces<br/>
-    <strong>Note:</strong> Do not use your project folder, ${SEAM_TUTORIAL}, as a workspace folder.
+		Create an empty workspace folder, e.g. 
+		<code style="white-space:nowrap">C:/dev/ide/workspaces/eclipse-3.4</code><br/>
+    <font color="red"><strong>Note:</strong> Do not add Maven projects under your workspace 
+		folder.</font> There are some issues regarding use of the m2eclipse plugin when projects are 
+		placed under the workspace folder, e.g. <code style="white-space:nowrap">
+		C:/dev/ide/workspaces/eclipse-3.4/myproject</code>: You will not be able to run Maven Eclipse 
+		goals from a (dos) shell if your project is placed under the workspace folder; the 
+		<code>mvn eclipse:eclipse, mvn eclipse:clean and mvn eclipse:m2eclipse</code> goals will fail to 
+		execute. The issues are reported here: <a href="http://jira.codehaus.org/browse/MECLIPSE-571">
+		http://jira.codehaus.org/browse/MECLIPSE-571</a>, and here:	
+		<a href="http://jira.codehaus.org/browse/MNG-2057">http://jira.codehaus.org/browse/MNG-2057</a>.
+		So, be kind to yourself and create a project folder that is not on the same file path as the 
+		workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
 	</li>
   <li>
 		Start Eclipse and select the newly created workspace folder.
@@ -74,17 +86,13 @@
 	-->
 </ol>
 
-<h3>Set editors to UTF-8</h3>
-<ol>
-	<li>Make shure that all files are saved with UTF-8 encoding
-		<img src="img/eclipse-utf8-01.png" style="width:700px; display:block;" />
-		<img src="img/eclipse-utf8-02.png" style="width:700px; display:block;" />
-		<img src="img/eclipse-utf8-03.png" style="width:700px; display:block;" />
-		<img src="img/eclipse-utf8-04.png" style="width:700px; display:block;" />
-		<img src="img/eclipse-utf8-05.png" style="width:700px; display:block;" />
-		<img src="img/eclipse-utf8-06.png" style="width:700px; display:block;" />
-		<img src="img/eclipse-utf8-07.png" style="width:700px; display:block;" />
-		<img src="img/eclipse-utf8-08.png" style="width:700px; display:block;" />
+<h3>Make sure that Eclipse is running on a JDK and not a JRE.</h3>
+<ol class="vspace">
+  <li>
+		Select <code><strong>Window>Preferences</strong></code> and browse to the 
+		<code><strong>Java>Installed JREs</strong></code> section. 
+		<img src="img/eclipse-installed-jres.png" style="width:640px; display:block;" />
+		<img src="img/eclipse-compiler.png" style="width:640px; display:block;" />
 	</li>
 </ol>
 
@@ -92,31 +100,42 @@
 <ol class="vspace">
 	<li>Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.</li>
   <li>
-		Make sure that Eclipse is running on a JDK and not a JRE.
-		<img src="img/eclipse-installed-jres.png" style="width:640px; display:block;" />
-		<img src="img/eclipse-compiler.png" style="width:640px; display:block;" />
-	</li>
-  <li>
-	  Configure the Maven Eclipse plugin</a>.
+	  Configure the Maven Eclipse plugin.
 		<img src="img/eclipse-maven-plugin.png" style="width:640px; display:block;" />
-		According to 
+	</li>
+	<li>
+		Configure Eclipse to use an <strong>external</strong> Maven installation.<br/>
+		According to this blogs:
 		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-		this blog</a> there is a problem when running embedded Maven from Eclipse, so we need to configure 
-		Eclipse to use an external Maven installation. Select <strong>Window>Preferences</strong>, 
-		navigate to <strong>Maven>Installations</strong> and edit details as outlined in the image below.
+		ECLIPSE: MAVEN INSTALL FROM RUN AS MENU FAILS</a> and 
+		<a href="http://www.innovationontherun.com/common-issues-and-workarounds-while-building-ear-files-in-eclipse/"
+			style="white-space:nowrap">
+		Common Issues and Workarounds While Building EAR files in Eclipse</a>, 
+		there are some issues when running embedded Maven from Eclipse, so we need to configure Eclipse to 
+		use an external Maven installation. In Preferences, navigate to 
+		<code><strong>Maven>Installations</strong></code> and edit details as outlined in the image below.
 		<img src="img/eclipse-maven-installations.png" style="width:640px; display:block;" />
 	</li>
 </ol>
 
-<h3>Create a WTP Server Reference</h3>
+<h3>Install the JBoss Application Server and JBoss Tools</h3>
 <ol class="vspace">	
 	<li>
-	  Install the <a href="http://www.jboss.org/jbossas/">Jboss Application Server</a>, 
-		install <a href="http://www.jboss.org/tools">JBoss Tools 3</a>. The 
-		<a href="http://docs.jboss.org/seam/2.1.2/reference/en-US/html/gettingstartedwithjbosstools.html">
-		JBoss Seam documentation</a> explains these steps in detail. The screenshots below outlines the 
-		steps needed to configure a WTP server reference for JBoss 4.2.3.
+	  Install the <a href="http://www.jboss.org/jbossas/">Jboss Application Server</a>
 	</li>
+	<li>
+		Install <a href="http://www.jboss.org/tools">JBoss Tools 3</a>
+	</li>
+	<li>
+		The <a href="http://seamframework.org/Documentation">
+		JBoss Seam documentation</a> explains these steps in detail.
+	</li>
+</ol>
+
+<h3>Create a WTP Server Reference</h3>
+<p>After the Server and the tools are installed you need to define a WTP server reference. The 
+screenshots below outlines the steps needed to configure a WTP server reference for JBoss 4.2.3.</p>
+<ol class="vspace">	
 	<li>
 		In Preferences, navigate to <strong>Server>Runtime Environments</strong>. Click 
 		<strong>Add...</strong>. Browse to the folder named <strong>JBoss Community</strong> 
@@ -147,7 +166,7 @@
 		<img src="img/eclipse-jboss-server-overview.png" style="width:750px; display:block;" />
 	</li>
 	<li>
-	  Start the server.
+	  Start the server to verify to verify that everyting is configured correctly.
     <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
 	</li>
 	<li>
@@ -165,7 +184,7 @@ with a a lot of tasks you otherwise would have used hours and days to complete.
 The Tools is not essential for developing a Mavenized Seam application, but it has a lot of 
 useful wizards and automated tasks. If you have an existing database then you can use the Tools to 
 generate a full CRUD application with entities, Seam framework classes (home- and list classes) and 
-a user interface with navigation an drilldown. For a database with ten tables this will take no more 
+a user interface with navigation and drilldown. For a database with ten tables this will take no more 
 than 30 seconds to complete. I don't think RoR that can do that! If you use the Tools to create an entity 
 then the Tools will automatically generate the corresponding Seam framework classes as well as a 
 xhtml page with CRUD functionality. 
@@ -175,7 +194,7 @@ setting up the tools. Play with the tools and study the code that the various to
 </p>
 <ol class="vspace">
   <li>
-	  Unpack <a href="http://www.seamframework.org/Download">JBoss Seam 2.1</a> to a folder of your 
+	  Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a folder of your 
 		choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.1.GA</code>. Follow the screenshots.
 		<img src="img/eclipse-jboss-tools-01.png" style="width:750px; display:block;" />
 		<img src="img/eclipse-jboss-tools-02.png" style="width:750px; display:block;" />
@@ -221,69 +240,114 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
 	</li>
 </ol>
-<p>This ends the steps needed to prepare the Eclipse workspace for Maven and JBoss Tools.</p>
 
-<h2>Import a Mavenized Seam Project to Eclipse</h2>
-<p>In this section we'll explain the steps needed to import a mavenized Seam project to Eclipse.</p>
+<h3>Set editors to UTF-8 (optional)</h3>
+<ol>
+	<li>Make shure that all files are saved with UTF-8 encoding. This is only essential if you are 
+	working	with i18n.<br/>
+		<img src="img/eclipse-utf8-01.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-02.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-03.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-04.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-05.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-06.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-07.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-utf8-08.png" style="width:700px; display:block;" />
+	</li>
+</ol>
+
+<p>This ends the steps needed to prepare the Eclipse workspace for Maven and JBoss Tools. You need to 
+go trough this configuration steps every time you switch workspace - why can't Eclipse copy an entire 
+workspace setting to a new ws? :-(</p>
+
+<h2 id="import-project-into-eclipse">Import a Mavenized Seam Project into Eclipse</h2>
+<p>m2eclipse provides three options for importing a Maven project into Eclipse including:</p>
+<ul>
+	<li>Import an existing Maven project from the local file sysytem</li>
+	<li>Check out a Maven project from SCM</li>
+	<li> Materialize a Maven project</li>
+</ul>
+<p>The options are described in detail in 
+<a href="http://www.sonatype.com/products/maven/documentation/book-defguide">
+Maven: The Definitive Guide</a>. This tutorial vil show how to use the first option.</p>
+
+<h3 id="import-an-existing-maven-project">
+	Import An Existing Maven Project From the Local File System Into Eclipse
+</h3>
+<p>m2eclipse can import a Maven project with an existing pom.xml. By pointing at the
+directory where a Maven project is located, m2eclipse detects all the Maven POMs
+in the project and provides a hierarchical list of them.</p>
 <ol class="vspace">
   <li>
-		<a href="01-gettingstarted.html#use-as-template">Export the <code>seam-refimpl</code> project</a> 
-		from svn to a folder of your choice, the <code>${SEAM_TUTORIAL}</code> folder.
+		<a href="01-gettingstarted.html#checkout-install">Checkout</a> or 
+		<a href="01-gettingstarted.html#use-as-template">Export</a> the <code>seam-refimpl</code> project 
+		from svn to a folder of your choice, the <code>${SEAM_TUTORIAL}</code> folder. <br/>
+		The section, <strong><a href="#checkout-trunk-from-eclipse">How To Checkout Trunk From 
+		Eclipse</a></strong>, outlines how to check out the SVN trunk from Eclipse.
 	</li>
   <li>
 		<a href="01-gettingstarted.html#modfy-the-poms">Modify the POMs</a> and
 		<a href="01-gettingstarted.html#switch-to-development-mode">switch to development mode</a>
 	</li>
+	<li>
+		Remenber to copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to the  
+		<code>${SEAM_TUTORIAL}</code> folder and modify <code>${SEAM_TUTORIAL}/profiles.xml</code> 
+		as needed (configure database connection and point the server to the correct deploy folder).
+	</li>
   <li>
-		Navigate to the <code>${SEAM_TUTORIAL}</code> folder using a command shell and execute maven commands:<br/>
-		<ul>
-    <li><code>mvn clean -Punexplode</code></li>
-    <li><code>mvn install -Pexplode (remember to point the server to the correct deploy folder in profiles.xml)</code></li>
-		<li><code>mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true</code></li>
-		<li><code>mvn eclipse:m2eclipse</code></li>
-		</ul>
-		<br/>
-    The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
-    files that now makes the project a valid Eclipse project.<br/>
-    <strong>Note:</strong> The <code>m2eclipse</code> plugin seems to be a bit unpredictable when
-		it comes to downloading sourcecode and javadocs for the projects dependencies. If you find that 
-		sourcecode and javadocs are missing for some dependencis, then try to run 
-		<code style="white-space:nowrap">mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true</code>
-  </li>
-  <li>
-    Import the project:
+    In Eclipse select <code><strong>File>Import</strong></code> to import the project:
     <img src="img/eclipse-import.png" style="width:250px; display:block;" />
-		Select <strong>Maven Projects</strong> and click <strong>Next</strong>.
+	</li>
+	<li>
+		Select <code><strong>General&gt;Maven Projects</strong></code> and click <strong>Next</strong>.
     <img src="img/eclipse-import-maven-01.png" style="width:340px; display:block;" />
-		Browse to the folder where the project is located, select it an click <strong>Finish</strong>.
+	</li>
+	<li>
+		Browse to the folder where the project is located, select it, verify that all modules are checked 
+		and click <strong>Finish</strong>.
     <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
-		You will notice a build error in the Maven console:<br/>
-    <img src="img/eclipse-import-maven-08.png" style="width:750px; display:block;" />
-		<a href="http://jira.codehaus.org/browse/MNGECLIPSE-1136"><code><font color="red">
-			Build errors for seam-tutorial-ear; org.apache.maven.lifecycle.LifecycleExecutionException: 
-			Invalid or missing parameters: [Mojo parameter [name: 'outputDirectory'; alias: 'null'], Mojo 
-			parameter [name: 'resources'; alias: 'null']] for mojo: 
-			org.apache.maven.plugins:maven-resources-plugin:2.3:copy-resources</font></code>
-		</a><br/><br/>
-		We fix :-)<br/><br/>
-    Modify Maven properties for parent project; seam-tutotrial.<br/>
+	</li>
+	<li>
+		You will notice a build error in the Maven console after the import:
+		<img src="img/eclipse-import-maven-08.png" style="width:750px; display:block;" />
+		<code><font color="red">
+		Build errors for seam-tutorial-ear; org.apache.maven.lifecycle.LifecycleExecutionException: 
+		Invalid or missing parameters: [Mojo parameter [name: 'outputDirectory'; alias: 'null'], Mojo 
+		parameter [name: 'resources'; alias: 'null']] for mojo: 
+		org.apache.maven.plugins:maven-resources-plugin:2.3:copy-resources</font></code><br/>
+		The issue is reported here: 
+		<a href="http://jira.codehaus.org/browse/MNGECLIPSE-1136">Execution goals bound to the process-resources phase cause error</a>
+		<br/><br/>We fix :-)
+	</li>
+	<li>
+    Modify Maven properties for the parent project, seam-tutotrial.<br/>
     <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
+    <img src="img/eclipse-project-properties-maven-01.png" style="width:580px; display:block;" />
 		<strong>NOTE: <font color="red">DO NOT CHECK THE INCLUDE MODULES CHECKBOX - EVER!</font></strong>  
-		This will effectly block the possibility to use WTP to deploy your project. The selection is
+		Doing so will effectly block the possibility to use WTP to deploy your project. The selection is
 		irreversible and you will have to remove the project from Eclipse, delete all Eclipse spesific
 		settings and set up the project from scratch. See the section 
-		<a href="#remove-eclipse-settings">Remove Eclipse Spesific Settings From a Project</a> for how
-		to completly remove Eclipse spesific settings from a project.
-    <img src="img/eclipse-project-properties-maven-01.png" style="width:580px; display:block;" />
-    Modify Maven properties for ear module; seam-tutotrial-ear:
+		<a href="#remove-eclipse-settings">How To Completly Remove Eclipse Spesific Settings From a 
+		Project</a> for how to completly remove Eclipse spesific settings from a project.
+	</li>
+	<li>
+    Modify Maven properties for ear module; seam-tutotrial-ear. Uncheck the  <code>Skip Maven
+		compiler plugin</code> checkbox:
     <img src="img/eclipse-project-properties-maven-02.png" style="width:580px; display:block;" />
+	</li>
+	<li>
     Modify Maven properties for ejb and war modules; seam-tutotrial-ejb and seam-tutotrial-war:
     <img src="img/eclipse-project-properties-maven-03.png" style="width:580px; display:block;" />
-		Now we have fixed and the build errors should be gone :-))
   </li>
+</ol>
+<p>Now we have fixed and the build errors should be gone :-))</p>
+
+<h3>Create Maven Run Configurations</h3>
+<p>We need to create run configurations for </p>
+<ol class="vspace">
   <li>
-    Create a Maven <code>install -Pexplode</code> and a Maven <code>clean -Punexplode</code> 
-		run configuration:<br/>
+    Create Maven <code>install -Pexplode</code> and a Maven <code>clean -Punexplode</code> 
+		run configurations:<br/>
 		The <code>install</code> goal with the <code>explode</code> profile is needed to do an initial 
 		deploy to	the server and also to fix some WTP issues (more on that later). It is also reported 
 		that the Maven install goal does not work properly from Eclipse. You should read 
@@ -453,8 +517,6 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
 <p>Here is a sample of JBoss Tools cleverness:</p>
 <img src="img/eclipse-clever-jboss-tools-01.png" style="width:750px; display:block;" />
 
-<h2 id="remove-eclipse-settings">Remove Eclipse Spesific Settings From a Project</h2>
-
 
 <h2>Play With the JBoss Tools</h2>
 <p>In this section we'll play with the tools.</p>
@@ -469,6 +531,125 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
   containing five tables, full CRUD functionality, UI and navigation.</p>
 </div>
 
+<h2>How To's</h2>
+<h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
+<ol>
+  <li>
+    In Eclipse select <code><strong>File>Import</strong></code> to import the trunk:
+    <img src="img/eclipse-import.png" style="width:250px; display:block;" />
+	</li>
+	<li>
+		Select <code><strong>Checkout Projects from SVN</strong></code> and click <strong>Next</strong>.
+    <img src="img/eclipse-checkout-projects-from-svn.png" style="width:450px; display:block;" />
+	</li>
+	<li>
+		Select Location and click <strong>Next</strong>.
+    <img src="img/eclipse-checkout-projects-from-svn-select-location.png" style="width:450px; display:block;" />
+	</li>
+	<li>
+		Select the folder to be checked out from SVN and click <strong>Next</strong>.
+    <img src="img/eclipse-checkout-projects-from-svn-select-folder.png" style="width:450px; display:block;" />
+	</li>
+	<li>
+		Select <code><strong>Check out as a project in the workspace</strong></code>  and click 
+		<strong>Next</strong>.
+    <img src="img/eclipse-checkout-projects-from-svn-check-out-as.png" style="width:450px; display:block;" />
+	</li>
+	<li>
+		Uncheck the <code><strong>Check out as a project in the workspace</strong></code> checkbox.<br/>
+		Browse to the folder where you want to check out the trunk. <strong>Note:</strong> 
+		<a href="#configure-the-workspace">Do not add Maven projects under your workspace folder!</a><br/>
+		Select <code><strong>Check out as a project in the workspace</strong></code>  and click 
+		<strong>Finish</strong>.
+    <img src="img/eclipse-checkout-projects-from-svn-checkout-as.png" style="width:450px; display:block;" />
+	</li>
+	<li>
+		You now have access to the complete trunk from Eclipse.
+    <img src="img/eclipse-checkout-projects-from-svn-completed.png		" style="width:250px; display:block;" />
+	</li>
+	
+</ol>
+
+<h3>How To Download Sources and Javadocs for Maven Dependencies</h3>
+<p>
+The <code>m2eclipse</code> plugin seems to be a bit unpredictable when it comes to downloading 
+sourcecode and javadocs for the projects dependencies. If you find that source code and javadocs are 
+missing for some dependencis, then try this: 
+</p>
+<ul>
+	<li>
+		Navigate to the project folder, e.g. <code>${SEAM_TUTORIAL}</code> using a command shell and 
+		execute:
+	</li>
+	<li>
+		<code style="white-space:nowrap">mvn eclipse:eclipse -DdownloadSources=true 
+		-DdownloadJavadocs=true</code>
+	</li>
+</ul>
+
+<h3 id="remove-eclipse-settings">How To Completly Remove Eclipse Spesific Settings From a Project</h3>
+<p>If you find yourself in a situation where your Eclipse project has reached a limbo, then you are 
+faced with two options: Delete the project from your local file system or try to clean up the mess 
+caused by Eclipse.
+</p>
+<p>Steps required to clean up Eclipse mess: TDB</p>
+<ol>
+	<li>
+		Delete the project from Eclipse. 
+		<img src="img/eclipse-delete-project.png" style="width:450px; display:block;" />
+	</li>
+	<li>
+		Exit Eclipse, navigate to the projct folder, e.g. the <code>${SEAM_TUTORIAL}</code> folder using 
+		a command shell and execute maven commands:
+		<ul>
+			<li><code>mvn clean -Punexplode</code></li>
+			<li><code>mvn eclipse:clean</code></li>
+		</ul>
+	</li>
+	<li>
+		The <code>mvn eclipse:clean</code> goal delets most of the Eclipse spesific project files, but 
+		not all of them. We need to clean up the remaining <strong>dot</strong> files ourselves: 
+		Browse all project folders refered in the <code>&lt;modules&gt;</code> section of the parent pom
+		and delete all <strong>dot</strong> files that belongs to Eclipse, e.g. 
+		<ul>
+			<li>.classpath</li>
+			<li>.project</li>
+			<li>.settings/</li>
+			<li>appClientModule/</li>
+			<li>.externalToolBuilders/</li>
+			<li>*.launch</li> 
+			<li>.metadata/</li>
+			<li>etc.</li>
+		</ul>
+	</li>
+	<li>
+		Execute maven commands:
+		<ul>
+			<li><code>mvn install -Pexplode</code></li>
+			<li><code>mvn eclipse:m2eclipse</code></li>
+		</ul>
+		The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
+		files that now makes the project a valid Eclipse project. 
+	</li>
+	<li>
+		<a href="#import-project-into-eclipse">Open Eclipse and import the project</a>.
+	</li>
+</ol>
+
+<h3>How To Solve: Access restriction: The type Xyz is not accessible due to restriction on required library rt.jar</h3>
+<p>See: 
+	<a href="http://forums.dzone.com/eclipse/384-access-restriction-problems.html">
+	access restriction problems 
+	</a>
+</p>
+
+<h3>How To Solve: Build path contains duplicate entry: 'org.eclipse.jst.j2ee.internal.module.container' for project</h3>
+<p>See: 
+	<a href="http://www.nabble.com/Build-path-contains-duplicate-entry:-%27org.eclipse.jst.j2ee.internal.module.container%27-td23028022.html">
+	Build path contains duplicate entry: 'org.eclipse.jst.j2ee.internal.module.container'
+	</a>
+</p>
+<p></p>
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
 <div id="footer">  
