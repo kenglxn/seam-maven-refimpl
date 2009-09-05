@@ -18,7 +18,7 @@ function toggle( target ) {
 
 <title>Seam Maven reference Implentation - Getting Started</title>
 </head>
-<body> <!-- onload="javascript: toggle('checkout-install'); toggle('export-template');" -->
+<body> <!-- onload="javascript: toggle('checkout-install-div'); toggle('export-template');" -->
 
 <div id="sizer">
 <div id="expander">
@@ -69,10 +69,10 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
 </ul>
 <p>Install the required software.</p>
 
-<h2><a href="javascript: toggle('checkout-install');">
+<h2 id="checkout-install"><a href="javascript: toggle('checkout-install-div');">
 	Check Out, Install and Run the Project</a>
 </h2>
-<div id="checkout-install">
+<div id="checkout-install-div">
 <p>The example uses Tortoise SVN to check out the project.<br/>
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
   of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
@@ -584,7 +584,7 @@ control. The following folders and files are added to <strong>svn ignore</strong
 		<li>
 			In ${SEAM_REFIMPL} folder
 			<ul>
-				<li>appClientModule//</li>
+				<li>appClientModule/</li>
 				<li>.classpath</li>
 				<li>.externalToolBuilders/</li>
 				<li>*.launch</li>
