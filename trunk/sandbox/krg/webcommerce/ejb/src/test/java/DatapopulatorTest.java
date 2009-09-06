@@ -1,7 +1,6 @@
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
-@Test
+//@Test
 public class DatapopulatorTest {
 
     public void testIteration() {
