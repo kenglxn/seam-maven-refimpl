@@ -1,8 +1,6 @@
 package net.glxn.webcommerce.action.home;
 
-import net.glxn.webcommerce.model.File;
 import net.glxn.webcommerce.model.Product;
-import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityHome;
 

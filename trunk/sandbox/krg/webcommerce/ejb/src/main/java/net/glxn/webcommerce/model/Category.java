@@ -3,19 +3,19 @@ package net.glxn.webcommerce.model;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.util.Collection;
-import java.util.ArrayList;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ken
- * Date: 04.aug.2009
- * Time: 20:02:07
- * To change this template use File | Settings | File Templates.
- */
-@Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 public class Category implements Serializable {
     private Long id;

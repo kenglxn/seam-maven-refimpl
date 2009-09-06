@@ -1,13 +1,6 @@
-import org.testng.annotations.Test;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ken
- * Date: 29.aug.2009
- * Time: 10:52:26
- * To change this template use File | Settings | File Templates.
- */
 @Test
 public class DatapopulatorTest {
 

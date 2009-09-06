@@ -1,6 +1,11 @@
 package net.glxn.webcommerce.action.upload;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+
 
 public class FileUtil implements Serializable {
     private static final long serialVersionUID = -4713978646791677279L;

@@ -1,23 +1,27 @@
 package net.glxn.webcommerce.util;
 
-import org.jboss.seam.annotations.*;
-import org.jboss.seam.framework.EntityHome;
-import org.jboss.seam.log.Log;
-
-import net.glxn.webcommerce.model.*;
-import net.glxn.webcommerce.action.home.*;
-import net.glxn.webcommerce.action.upload.FileUtil;
+import net.glxn.webcommerce.action.home.CategoryHome;
+import net.glxn.webcommerce.action.home.FileHome;
+import net.glxn.webcommerce.action.home.PageHome;
+import net.glxn.webcommerce.action.home.ProductHome;
+import net.glxn.webcommerce.action.home.UserHome;
 import net.glxn.webcommerce.action.list.UserList;
+import net.glxn.webcommerce.action.upload.FileUtil;
+import net.glxn.webcommerce.model.Category;
+import net.glxn.webcommerce.model.File;
+import net.glxn.webcommerce.model.Page;
+import net.glxn.webcommerce.model.Product;
+import net.glxn.webcommerce.model.RoleType;
+import net.glxn.webcommerce.model.User;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Install;
+import org.jboss.seam.annotations.Logger;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Observer;
+import org.jboss.seam.log.Log;
 
 import java.io.IOException;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ken
- * Date: 26.aug.2009
- * Time: 18:49:38
- * To change this template use File | Settings | File Templates.
- */
 @Install(debug = true)
 @Name("dataPopulator")
 public class DataPopulator {
