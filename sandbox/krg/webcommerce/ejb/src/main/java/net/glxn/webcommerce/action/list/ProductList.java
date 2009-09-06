@@ -25,7 +25,7 @@ public class ProductList extends EntityQuery<Product> {
     List<Product> productForCategory;
 
     public ProductList() {
-        setEjbql("select distinct(p) from Product p left join fetch p.files");
+        setEjbql("select p from Product p");
     }
 
     @Factory("productForCategory")
@@ -33,7 +33,7 @@ public class ProductList extends EntityQuery<Product> {
         if (catId == null) {
             return getResultList();
         }
-        setEjbql("select distinct(p) from Product p left join fetch p.files where p.category.id = #{catId} ");
+        setEjbql("select p from Product p where p.category.id = #{catId} ");
         return getResultList();
     }
 }
