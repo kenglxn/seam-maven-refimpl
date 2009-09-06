@@ -1,17 +1,20 @@
 package net.glxn.webcommerce.model;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ken
- * Date: 04.aug.2009
- * Time: 20:03:45
- * To change this template use File | Settings | File Templates.
- */
+@SuppressWarnings({"JpaDataSourceORMInspection"})
 @Entity
 public class ShoppingCart implements Serializable {
 

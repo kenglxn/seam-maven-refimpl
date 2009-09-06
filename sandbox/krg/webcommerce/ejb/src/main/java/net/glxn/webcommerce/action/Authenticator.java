@@ -1,13 +1,12 @@
 package net.glxn.webcommerce.action;
 
+import net.glxn.webcommerce.model.User;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
-import net.glxn.webcommerce.action.home.UserHome;
-import net.glxn.webcommerce.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
