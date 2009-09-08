@@ -12,7 +12,7 @@
 	</parent>
 	
 	<groupId>no.knowit.seam</groupId>
-	<artifactId>seam-refimpl</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
+	<artifactId>seam-refimpl</artifactId> <!-- m2eclipse does not like: ${app.context} -->
 	<version>1.0-SNAPSHOT</version>
 	<name>${project.artifactId} : ${project.version}</name>
 	<description>The Seam Maven reference implementation project</description>
@@ -22,11 +22,6 @@
 	<prerequisites>
 		<maven>2.0.10</maven>
 	</prerequisites>
-
-	<organization>
-		<name>Know IT Objectnet AS</name>
-		<url>http://www.knowit.no/</url>
-	</organization>
 
 	<modules>
 		<module>ear</module>
@@ -48,10 +43,12 @@
 		<app.context>seam-refimpl</app.context>  <!-- hint: same value as artifactId -->
 		<app.web.context>${app.context}</app.web.context>
 		<app.display.name>Seam Reference Implementation</app.display.name>
-		<app.description>The Seam Reference Implementation is a Maven project you can use as a template for your own JBoss Seam projects</app.description>
-		<app.database.name>refimpl_db</app.database.name>
-
-		<!--  -->
+		<app.description>
+			The Seam Reference Implementation is a Maven project you 
+			can use as a template for your own JBoss Seam projects
+		</app.description>
+		
+		<app.database.name>refimpl_db</app.database.name> <!-- @DEPRECATED, use ds.database.name property -->
 		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
 		<app.jndi.name>${app.context}Datasource</app.jndi.name>
 		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
@@ -63,30 +60,51 @@
 		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
 		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
 		<app.distributable>false</app.distributable> <!-- see: WEB-INF/components.xml and ejb/../resources/META-INF/jboss.xml -->
-
-		<!-- Developer environment properties. Can be modified by developer in "profiles.xml" -->
-		<env>prod</env>
-		<env.debug>false</env.debug>
-		<env.unpack.modules>false</env.unpack.modules>
-		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
-		<env.hibernate.show_sql>true</env.hibernate.show_sql>
-		<env.hibernate.format_sql>true</env.hibernate.format_sql>
-		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
-		<jdk.debug>${env.debug}</jdk.debug>
-		<jdk.optimize>true</jdk.optimize>
-		<jdk.source>1.5</jdk.source>
-		<jdk.target>1.5</jdk.target>
-		<as>jboss423</as>
-		<as.version>4.2</as.version>
-		<ds>hsqldb</ds>
-		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect> <!-- persistence.xml -->
-		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class> <!-- *-ds.xml -->
-		<ds.server.name></ds.server.name> <!-- *-ds.xml (if xa) -->
-		<ds.database.name>${app.database.name}</ds.database.name> <!-- *-ds.xml (if xa) -->
-		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url> <!-- *-ds.xml -->
-		<ds.user.name>sa</ds.user.name> <!-- *-ds.xml -->
-		<ds.password></ds.password> <!-- *-ds.xml -->
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>env-prod</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>prod</value>
+				</property>
+	      <file>
+	        <missing>profiles.xml</missing>
+	      </file>
+			</activation>
+			<properties>
+				<!-- Developer environment properties. Can be modified by developer in "profiles.xml" -->
+				<env>prod</env>
+				<env.debug>false</env.debug>
+				<env.unpack.modules>false</env.unpack.modules>
+				<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+				<env.hibernate.show_sql>true</env.hibernate.show_sql>
+				<env.hibernate.format_sql>true</env.hibernate.format_sql>
+				<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+				<jdk.debug>${env.debug}</jdk.debug>
+				<jdk.optimize>true</jdk.optimize>
+				<jdk.source>1.5</jdk.source>
+				<jdk.target>1.5</jdk.target>
+				
+				<as>jboss423</as>
+				<as.version>4.2</as.version>
+				<as.home>server/jboss-4.2.3.GA-jdk6</as.home>
+				<as.deploy>${as.home}/server/default/deploy</as.deploy>
+				
+				<ds>hsqldb</ds>
+				<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
+				<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
+				<ds.server.name></ds.server.name>
+				<ds.database.name>${app.database.name}</ds.database.name>
+				<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
+				<ds.user.name>sa</ds.user.name>
+				<ds.password></ds.password>
+				<!-- END: Developer environment properties. -->
+			</properties>
+		</profile>
+	</profiles>
 	
 	<repositories>
 		<repository>
@@ -1371,7 +1389,12 @@
 		</dependency>
 		
 	</dependencies>
-	
+
+	<organization>
+		<name>Know IT Objectnet AS</name>
+		<url>http://www.knowit.no/</url>
+	</organization>
+
 	<developers>
 		<developer>
 			<id>loo@knowit.no</id>
@@ -1399,24 +1422,12 @@
 
 	
 <!--	
-	<licenses>
-		<license>
-			<name></name>
-			<url></url>
-		</license>
-	</licenses>
-
 	<scm>
-		<connection></connection>
-		<developerConnection></developerConnection>
-		<url></url>
+		<connection>scm:svn:http://seam-maven-refimpl.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://seam-maven-refimpl.googlecode.com/svn/trunk</developerConnection>
+		<url>http://code.google.com/p/seam-maven-refimpl/source/browse/#svn/trunk</url>
 	</scm>
 
-	<issueManagement>
-		<system></system>
-		<url></url>
-	</issueManagement>
-  
 	<distributionManagement>
 		<repository>
 			<id></id>
@@ -1424,6 +1435,18 @@
 			<url></url>
 		</repository>
 	</distributionManagement>
+	
+	<licenses>
+		<license>
+			<name></name>
+			<url></url>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system></system>
+		<url></url>
+	</issueManagement>
 -->	
 	
 </project>
