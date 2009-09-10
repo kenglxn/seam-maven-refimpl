@@ -70,9 +70,11 @@
 					<name>env</name>
 					<value>prod</value>
 				</property>
+				<!-- Not good for inherited (child) poms: will allways evaluate to TRUE, don't know how to fix. 
 	      <file>
 	        <missing>profiles.xml</missing>
 	      </file>
+				-->
 			</activation>
 			<properties>
 				<!-- Developer environment properties. Can be modified by developer in "profiles.xml" -->
