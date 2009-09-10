@@ -47,15 +47,13 @@
 		SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE</a><br/>
 		<strong/>Note for Pulse users:</strong> Currently the SubClipse plugin provided by Pulse is not 
 		compatible with the latest Tortoise SVN. If you are using both Tortoise and SubClipse then you 
-		need to uninstall the Subclipse plugin provided by Pulse and add a update site in Pulse to 
+		need to uninstall the Subclipse plugin provided by Pulse and add a update site in Pulse for 
 		<a href="http://subclipse.tigris.org/update_1.6.x/">SubClipse-1.6.x</a>.
 	</li>
 	<li><a href="http://www.seamframework.org/Download">JBoss Seam 2.x</a></li>
   <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a></li>
   <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.</li>
-	<!--
   <li><a href="http://testng.org/doc/eclipse.html">TestNG</a></li>
-	-->
 </ul>
 
 <h2 id="configure-the-workspace">Configure the Workspace</h2>
@@ -67,7 +65,7 @@
 		folder.</font> There are some issues regarding use of the m2eclipse plugin when projects are 
 		placed under the workspace folder, e.g. <code style="white-space:nowrap">
 		C:/dev/ide/workspaces/eclipse-3.4/myproject</code>: You will not be able to run Maven Eclipse 
-		goals from a (dos) shell if your project is placed under the workspace folder; the 
+		goals from a command shell if your project is placed under the workspace folder; the 
 		<code>mvn eclipse:eclipse, mvn eclipse:clean and mvn eclipse:m2eclipse</code> goals will fail to 
 		execute. The issues are reported here: <a href="http://jira.codehaus.org/browse/MECLIPSE-571">
 		http://jira.codehaus.org/browse/MECLIPSE-571</a>, and here:	
@@ -158,11 +156,12 @@ screenshots below outlines the steps needed to configure a WTP server reference 
 		<img src="img/eclipse-jboss-perspective.png" style="width:300px; display:block;" />
 	</li>
 	<li>
-		Doubleclick on the JBoss 4.2.3-jdk6 Server to open the JBoss 4.2.3-jdk6 Server Overview tab.
+		Doubleclick on the newly created server, JBoss 4.2.3-jdk6 Server, to open the Server Overview 
+		editor.
 		<img src="img/eclipse-jboss-server-view.png" style="width:240px; display:block;" />
 	</li>
 	<li>
-		Verify that the <strong>Use the JBoss deploy folder</strong> radio button is checked.
+		Verify that the <code><strong>Use the JBoss deploy folder</strong></code> radio button is checked.
 		<img src="img/eclipse-jboss-server-overview.png" style="width:750px; display:block;" />
 	</li>
 	<li>
@@ -176,69 +175,6 @@ screenshots below outlines the steps needed to configure a WTP server reference 
 	<li>
 	  Stop the server.
   </li>
-</ol>
-
-<h3>Configure JBoss Tools (optional)</h3>
-<p>JBoss Tools is a perfect match for Seam devolpers using Maven and the Elipse IDE. It helps you 
-with a a lot of tasks you otherwise would have used hours and days to complete.
-The Tools is not essential for developing a Mavenized Seam application, but it has a lot of 
-useful wizards and automated tasks. If you have an existing database then you can use the Tools to 
-generate a full CRUD application with entities, Seam framework classes (home- and list classes) and 
-a user interface with navigation and drilldown. For a database with ten tables this will take no more 
-than 30 seconds to complete. I don't think RoR that can do that! If you use the Tools to create an entity 
-then the Tools will automatically generate the corresponding Seam framework classes as well as a 
-xhtml page with CRUD functionality. 
-</p>
-<p>If you really want to learn the mecanisms behind Seam, then it is definitively worth the effort 
-setting up the tools. Play with the tools and study the code that the various tools generates.
-</p>
-<ol class="vspace">
-  <li>
-	  Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a folder of your 
-		choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.1.GA</code>. Follow the screenshots.
-		<img src="img/eclipse-jboss-tools-01.png" style="width:750px; display:block;" />
-		<img src="img/eclipse-jboss-tools-02.png" style="width:750px; display:block;" />
-		<img src="img/eclipse-jboss-tools-03.png" style="width:750px; display:block;" />
-	</li>
-</ol>
-
-<h3> Define a Data Source (optional)</h3>
-<p>If you plan to use JBoss Tools to do reverse engeneering, then you need to define and connect to
-a datasource. The screenshots below outlines one possible way to accomplish this.</p>
-<ol class="vspace">
-  <li>Download and install necessary software: 
-  <ul>
-    <li><a href="http://dev.mysql.com/downloads/">MySql5+</a></li>
-    <li><a href="http://dev.mysql.com/downloads/connector/j/5.0.html">MySql connector</a></li>
-  </ul>
-  </li>
-  <li>Copy mysql-connector-java-*-bin.jar to <code>${JBOSS_CONFIG}/lib</code> (delete any other 
-      mysql-connector-java-*-bin.jar file if exist).
-  </li>
-  <li>
-    Start the database server and create schema <code>"refimpl_db"</code>, use e.g. the MySql Administrator GUI.<br/>
-    Or, if you are a MySql macho, you can type the following SQL DDL by hand:<br style="margin-bottom:.6em;" />
-    <code><strong>CREATE DATABASE refimpl_db CHARACTER SET utf8 COLLATE utf8_general_ci;</strong></code><br/>
-    <strong>Note:</strong> Allways use UTF8 for i18n.
-  </li>
-	
-	<li>
-		In Preferences, navigate to <strong>Data Management>Connectivity>Driver Definitions</strong>.
-		Click <strong>Add...</strong> to add a new driver.
-		<img src="img/eclipse-data-management-01.png" style="width:750px; display:block;" />
-		<img src="img/eclipse-data-management-02.png" style="width:490px; display:block;" />
-		<img src="img/eclipse-data-management-03.png" style="width:490px; display:block;" />
-		<img src="img/eclipse-data-management-04.png" style="width:490px; display:block;" />
-	</li>
-	<li>
-		Open the <strong>Database Development</strong> perspective. In <strong>Data Source Explorer</strong> 
-		right click the <strong>Databases</strong> folder and select <strong>New...</strong>
-		<img src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
-		<img src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
-		<img src="img/eclipse-connection-profile-02.png" style="width:420px; display:block;" />
-		<!-- <img src="img/eclipse-connection-profile-03.png" style="width:420px; display:block;" /> -->
-		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
-	</li>
 </ol>
 
 <h3>Set editors to UTF-8 (optional)</h3>
@@ -257,8 +193,7 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 </ol>
 
 <p>This ends the steps needed to prepare the Eclipse workspace for Maven and JBoss Tools. You need to 
-go trough this configuration steps every time you switch workspace - why can't Eclipse copy an entire 
-workspace setting to a new ws? :-(</p>
+go trough this steps every time you create a new workspace.</p>
 
 <h2 id="import-project-into-eclipse">Import a Mavenized Seam Project into Eclipse</h2>
 <p>m2eclipse provides three options for importing a Maven project into Eclipse including:</p>
@@ -269,7 +204,7 @@ workspace setting to a new ws? :-(</p>
 </ul>
 <p>The options are described in detail in 
 <a href="http://www.sonatype.com/products/maven/documentation/book-defguide">
-Maven: The Definitive Guide</a>. This tutorial vil show how to use the first option.</p>
+Maven: The Definitive Guide</a>. This tutorial shows how to use the first option.</p>
 
 <h3 id="import-an-existing-maven-project">
 	Import An Existing Maven Project From the Local File System Into Eclipse
@@ -277,7 +212,39 @@ Maven: The Definitive Guide</a>. This tutorial vil show how to use the first opt
 <p>m2eclipse can import a Maven project with an existing pom.xml. By pointing at the
 directory where a Maven project is located, m2eclipse detects all the Maven POMs
 in the project and provides a hierarchical list of them.</p>
+
 <ol class="vspace">
+	<li>
+		Before you start, make shure that the maven-eclipse plugin is configured so that no extra code 
+		is generated during the import. Open the pom that contains your <code>&lt;pluginManagement&gt;</code> 
+		section (your root pom or parent pom) and locate the <code>maven-eclipse-plugin</code>. 
+		The configuration should be like the listing below:
+		<pre>
+
+&lt;pluginManagement&gt;
+  &lt;plugins&gt;
+    .
+    .
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
+      &lt;version&gt;2.7&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;downloadSources&gt;true&lt;/downloadSources&gt;
+        &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;
+        &lt;addVersionToProjectName&gt;false&lt;/addVersionToProjectName&gt;
+        &lt;projectNameTemplate&gt;[artifactId]&lt;/projectNameTemplate&gt;
+        &lt;wtpmanifest&gt;false&lt;/wtpmanifest&gt;
+        &lt;wtpapplicationxml&gt;false&lt;/wtpapplicationxml&gt;
+        &lt;wtpversion&gt;2.0&lt;/wtpversion&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+    .
+    .
+  &lt;/plugins&gt;
+&lt;/pluginManagement&gt;
+		</pre>
+	</li>
   <li>
 		<a href="01-gettingstarted.html#checkout-install">Checkout</a> or 
 		<a href="01-gettingstarted.html#use-as-template">Export</a> the <code>seam-refimpl</code> project 
@@ -286,13 +253,15 @@ in the project and provides a hierarchical list of them.</p>
 		Eclipse</a></strong>, outlines how to check out the SVN trunk from Eclipse.
 	</li>
   <li>
-		<a href="01-gettingstarted.html#modfy-the-poms">Modify the POMs</a> and
-		<a href="01-gettingstarted.html#switch-to-development-mode">switch to development mode</a>
+		<a href="01-gettingstarted.html#modfy-the-poms">Modify the POMs</a> as needed.
 	</li>
 	<li>
-		Remenber to copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to the  
-		<code>${SEAM_TUTORIAL}</code> folder and modify <code>${SEAM_TUTORIAL}/profiles.xml</code> 
-		as needed (configure database connection and point the server to the correct deploy folder).
+		<a href="01-gettingstarted.html#switch-to-development-mode">Switch to development mode</a>.<br/>
+		<strong>Remember</strong> to copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to 
+		the  project folder, <code>${SEAM_TUTORIAL}</code>. Modify the copy as needed; configure database 
+		connection, point the server to the correct deploy folder (the <code>as.deploy</code> property
+		in <code>profiles.xml</code> should correspond with the <code>configuration</code> folder you
+		selected for the WTP server), etc.
 	</li>
   <li>
     In Eclipse select <code><strong>File>Import</strong></code> to import the project:
@@ -342,8 +311,21 @@ in the project and provides a hierarchical list of them.</p>
 </ol>
 <p>Now we have fixed and the build errors should be gone :-))</p>
 
+<h3>Project Facets for EAR, EJB and WAR Modules</h3>
+<p>It should not be necessary to make any changes to the Project Facets, just verify that the 
+facets are selected <strong>excactly</strong> as shown in the screenshots below. If they are not,
+then you should delete the project from Eclipse,  
+<a href="#remove-eclipse-settings">Completly Remove Eclipse Spesific Settings From the Project</a>
+and then import the project all over again.
+</p>
+<ol>
+	<li>EAR.<img src="img/eclipse-ear-facets.png" style="width:750px; display:block;" /></li>
+  <li>EJB.<img src="img/eclipse-ejb-facets.png" style="width:750px; display:block;" /></li>
+  <li>WAR.<img src="img/eclipse-war-facets.png" style="width:750px; display:block;" /></li>
+</ol>
+
+
 <h3>Create Maven Run Configurations</h3>
-<p>We need to create run configurations for </p>
 <ol class="vspace">
   <li>
     Create Maven <code>install -Pexplode</code> and a Maven <code>clean -Punexplode</code> 
@@ -387,25 +369,23 @@ in the project and provides a hierarchical list of them.</p>
 [INFO] ------------------------------------------------------------------------
 
 </pre>
-		
 		You can run the goal(s) as needed by selecting the 
 		<code><strong>Run As &gt; Maven build</strong> </code>
 		from the <strong>parent</strong> project menu.
     <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-	  Start the server:
+	</li>
+	<li>
+	  Start the server and verify that the deployment works:
     <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
 		A successful deploy should look like this in the Console log:
     <img src="img/eclipse-server-view-start-server-02.png" style="width:750px; display:block;" />
+	</li>
+	<li>
 		Open a browser and point the URL to <a href="http://localhost:8080/seam-tutorial">
 		http://localhost:8080/seam-tutorial</a>
 	</li>
 	<li>
-		Project Facets for EAR, EJB and WAR modules<br/>
-		It should not be necessary to make any changes to the Project Facets, just verify that the 
-		facets are selected <strong>excactly</strong> as shown in the screenshots below.
-    <img src="img/eclipse-ear-facets.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-facets.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-war-facets.png" style="width:750px; display:block;" />
+		Stop the server.
 	</li>
 </ol>
 
@@ -420,12 +400,14 @@ that utilizes this profile on the <code>process-classes</code> goal.
 <p>This section explains how to set up the project as a WTP project</p>
 
 <h3>Maven Builder</h3>
-<p>This section explains how to set up the maven builder for the <code>process-classes</code> goal.</p>
+<p>This section explains how to configure the maven builder for the <code>process-classes</code> 
+goal.</p>
 <ol>
 	<li>
-	  Set up Maven Builder:<br/>
-		You must set up a Maven builder to execute the <strong>explode</strong> profile during the edit- 
-		compile cycle.
+	  Configure the Maven Builder.<br/>
+		The Maven builder executes the <code>explode</code> profile on the <code>process-classes</code> 
+		goal. The child poms will "inherit" this builder, so you only need to define the builder on the
+		parent project.
     <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
     <img src="img/eclipse-maven-builder-01.png" style="width:450px; display:block;" />
     <img src="img/eclipse-maven-builder-02.png" style="width:450px; display:block;" />
@@ -433,6 +415,8 @@ that utilizes this profile on the <code>process-classes</code> goal.
 		<code>${project_loc}</code> then the builder will run only on the sub project that contains
 		the modified file - resulting in a faster build cycle.
     <img src="img/eclipse-maven-builder-03.png" style="width:450px; display:block;" />
+	</li>
+	<li>
 		Test the Builder:<br/>
 		Open a java class, e.g. <code>Authenticator.java</code>. Modify the source, save and check
 		the console output:
@@ -469,14 +453,117 @@ that utilizes this profile on the <code>process-classes</code> goal.
 ... Build type auto : process-classes</pre>
 		
 	</li>
+	<li>
+		<strong>Important:</strong> The child pom's <code>&lt;relativePath&gt;</code> tag must point to 
+		the parent pom. If it don't, the child pom will pick up the parent pom from your local .m2 repo 
+		and will be missing all profiles and properties from the parent pom in the project folder.
+		<pre>
+		
+&lt;parent&gt;
+  &lt;groupId&gt;no.knowit.seam&lt;/groupId&gt;
+  &lt;artifactId&gt;seam-refimpl&lt;/artifactId&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  <strong>&lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;</strong>
+&lt;/parent&gt;
+		</pre>
+	</li>
 </ol>
 
 <h3>Don't Kill One Bird With Two Stones</h3>
-<p>Choose either to add the project to the server or to define a Maven builder. (more text here....)</p>
+<p>Choose either to add the project to the WTP server or define a Maven builder.</p>
 
-<h2>Configure JBoss Tools for a Project (optional)</h2>
-<p>This section explains the steps needed to configure JBoss Toos for a project. 
+<h2>JBoss Tools</h2>
+<p>JBoss Tools is a perfect match for Seam devolpers using Maven and the Elipse IDE. It helps you 
+with a a lot of tasks you otherwise would have used hours and days to complete.
+The Tools is not essential for developing a Mavenized Seam application, but it has a lot of 
+useful wizards and automated tasks. If you have an existing database then you can use the Tools to 
+generate a full CRUD application with entities, Seam framework classes (home- and list classes) and 
+a user interface with navigation and drilldown. For a database with ten tables this will take no more 
+than 30 seconds to complete. I don't think RoR that can do that! If you use the Tools to create an 
+entity then the Tools will automatically generate the corresponding Seam framework classes as well 
+as a xhtml page with CRUD functionality. 
 </p>
+<p>JBoss tools is a Eclipse feature, that can be enabled on a project by adding some configuration 
+(JSF and Seam facets, the SeamBuilder and SeamNature) to the Eclipse project. JBoss Tools will 
+manage two projects: the WAR and the EJB project, but the WAR project will be the main source of 
+configuration. By adding the necessary items to the maven-eclipse-plugin configuration for this 
+project and also adding a special Seam configuration file to the .settings directory, JBoss tools 
+will recognize the project correctly. For some reason, JBoss tools also stores some configuration in 
+the workspace configuration. This can not be configured from the Maven Archetype and thus the JBoss 
+Tools configuration is not complete. Because of this, the link between the WAR and EJB project will 
+not be found by JBoss Tools from the EJB project. When a new Seam Artifact (Action, Entity, Form or 
+Conversation) is added from the EJB project context menu, the configurations made in the WAR project 
+are not picked up. When adding from the WAR project they are picked up and some sources will also be 
+written in the EJB projects, as required (source: 
+<a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
+	Configuring a Seam EJB project for development with Maven and JBoss Tools
+</a>).
+</p>
+<p>If you really want to learn the mecanisms behind Seam, then it is definitively worth the effort 
+setting up the tools. Play with the tools and study the code that the various tools generates.
+</p>
+
+<h3>Configure JBoss Tools for Workspace</h3>
+<p>Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a folder of your 
+choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.1.GA</code>. Open <code><strong>Prefereneces
+</strong></code> and follow the screenshots.</p>
+<ol class="vspace">
+  <li>
+		JSF:
+		<img src="img/eclipse-jboss-tools-01.png" style="width:750px; display:block;" />
+	</li>
+	<li>
+		Seam runtime:
+		<img src="img/eclipse-jboss-tools-02.png" style="width:750px; display:block;" />
+		<img src="img/eclipse-jboss-tools-03.png" style="width:750px; display:block;" />
+	</li>
+</ol>
+
+<h3> Define a Data Source</h3>
+<p>If you plan to use JBoss Tools to do reverse engeneering, then you need to define and connect to
+a datasource. The screenshots below outlines one possible way to accomplish this.</p>
+<ol class="vspace">
+  <li>Download and install necessary software: 
+  <ul>
+    <li><a href="http://dev.mysql.com/downloads/">MySql5+</a></li>
+    <li><a href="http://dev.mysql.com/downloads/connector/j/5.0.html">MySql connector</a></li>
+  </ul>
+  </li>
+  <li>Copy mysql-connector-java-*-bin.jar to <code>${JBOSS_CONFIG}/lib</code> (delete any other 
+      mysql-connector-java-*-bin.jar file if exist).
+  </li>
+  <li>
+    Start the database server and create schema <code>"refimpl_db"</code>, use e.g. the MySql Administrator GUI.<br/>
+    Or, if you are a MySql macho, you can type the following SQL DDL by hand:<br style="margin-bottom:.6em;" />
+    <code><strong>CREATE DATABASE refimpl_db CHARACTER SET utf8 COLLATE utf8_general_ci;</strong></code><br/>
+    <strong>Note:</strong> Allways use UTF8 for i18n.
+  </li>
+	
+	<li>
+		In Preferences, navigate to <code><strong>Data Management>Connectivity>Driver Definitions</strong></code>.
+		Click <strong>Add...</strong> to add a new driver.
+		<img src="img/eclipse-data-management-01.png" style="width:750px; display:block;" />
+		<img src="img/eclipse-data-management-02.png" style="width:490px; display:block;" />
+		<img src="img/eclipse-data-management-03.png" style="width:490px; display:block;" />
+		<img src="img/eclipse-data-management-04.png" style="width:490px; display:block;" />
+	</li>
+	<li>
+		Open the <code><strong>Database Development</strong></code> perspective. In 
+		<code><strong>Data Source Explorer</strong></code> 
+		right click the <code><strong>Databases</strong></code> folder and select 
+		<code><strong>New...</strong></code>
+		<img src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
+		<img src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
+		<img src="img/eclipse-connection-profile-02.png" style="width:420px; display:block;" />
+		<!-- <img src="img/eclipse-connection-profile-03.png" style="width:420px; display:block;" /> -->
+		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
+	</li>
+</ol>
+
+
+<h3>Configure JBoss Tools for a Project</h3>
+<p>This section explains the steps needed to configure JBoss Toos for a project.</p>
+
 <p>Before you start, 
 <strong>keep a copy</strong> of the <code>war/src/main/webapp</code> folder or check the entire 
 project into SVN. The JBoss Tools is a bit too clever and modifies and adds various files during 
@@ -531,6 +618,30 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
   containing five tables, full CRUD functionality, UI and navigation.</p>
 </div>
 
+<h2>Useful Links</h2>
+<ul>
+	<li>
+		<a href="http://www.next-presso.fr/2009/06/wtp-m2eclipse-seam-cest-bien-maven/lang/en/">
+			WTP + M2eclipse + Seam : Maven works !
+		</a>
+	</li>
+	<li>
+		<a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
+			Configuring a Seam EJB project for development with Maven and JBoss Tools
+		</a>
+	</li>
+	<li>
+		<a href="http://www.innovationontherun.com/common-issues-and-workarounds-while-building-ear-files-in-eclipse/">
+			Common Issues and Workarounds While Building EAR files in Eclipse
+		</a>
+	</li>
+	<li>
+		<a href="http://docs.codehaus.org/display/M2ECLIPSE/Integration+with+WTP">
+			Integration with WTP
+		</a>
+	</li>
+</ul>
+
 <h2>How To's</h2>
 <h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
 <ol>
@@ -574,11 +685,11 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
 <p>
 The <code>m2eclipse</code> plugin seems to be a bit unpredictable when it comes to downloading 
 sourcecode and javadocs for the projects dependencies. If you find that source code and javadocs are 
-missing for some dependencis, then try this: 
+missing for some dependencies, then try this: 
 </p>
 <ul>
 	<li>
-		Navigate to the project folder, e.g. <code>${SEAM_TUTORIAL}</code> using a command shell and 
+		Navigate to the project folder, e.g. <code>${SEAM_TUTORIAL}</code>, using a command shell and 
 		execute:
 	</li>
 	<li>
@@ -592,7 +703,7 @@ missing for some dependencis, then try this:
 faced with two options: Delete the project from your local file system or try to clean up the mess 
 caused by Eclipse.
 </p>
-<p>Steps required to clean up Eclipse mess: TDB</p>
+<p>Steps required to clean up Eclipse mess:</p>
 <ol>
 	<li>
 		Delete the project from Eclipse. 
@@ -619,7 +730,6 @@ caused by Eclipse.
 			<li>.externalToolBuilders/</li>
 			<li>*.launch</li> 
 			<li>.metadata/</li>
-			<li>etc.</li>
 		</ul>
 	</li>
 	<li>
@@ -628,26 +738,48 @@ caused by Eclipse.
 			<li><code>mvn install -Pexplode</code></li>
 			<li><code>mvn eclipse:m2eclipse</code></li>
 		</ul>
-		The last Maven command will generate the Eclipse <code>.project</code> and <code>.classpath</code> 
-		files that now makes the project a valid Eclipse project. 
+		The last Maven command will generate the Eclipse <code>.project</code>, <code>.classpath</code> 
+		and WTP files that now makes the project a valid Eclipse project. 
 	</li>
 	<li>
 		<a href="#import-project-into-eclipse">Open Eclipse and import the project</a>.
 	</li>
 </ol>
 
-<h3>How To Solve: Access restriction: The type Xyz is not accessible due to restriction on required library rt.jar</h3>
+<h3>
+	How To Solve: Access restriction: The type Xyz is not accessible due to restriction on required 
+	library rt.jar
+</h3>
 <p>See: 
 	<a href="http://forums.dzone.com/eclipse/384-access-restriction-problems.html">
 	access restriction problems 
 	</a>
 </p>
 
-<h3>How To Solve: Build path contains duplicate entry: 'org.eclipse.jst.j2ee.internal.module.container' for project</h3>
+<h3>
+	How To Solve: Build path contains duplicate entry: 'org.eclipse.jst.j2ee.internal.module.container' 
+	for project
+</h3>
 <p>See: 
 	<a href="http://www.nabble.com/Build-path-contains-duplicate-entry:-%27org.eclipse.jst.j2ee.internal.module.container%27-td23028022.html">
 	Build path contains duplicate entry: 'org.eclipse.jst.j2ee.internal.module.container'
 	</a>
+</p>
+<h3>
+	How To Solve: The Maven 2.0.2 XML parser fails to parse a UTF-8 POM that begins with the optional 
+	byte-order mark
+</h3>
+<p>
+Do not add Maven projects under your workspace folder. There are some issues regarding use of the 
+m2eclipse plugin when projects are placed under the workspace folder, e.g. 
+<code style="white-space:nowrap">C:/dev/ide/workspaces/eclipse-3.4/myproject</code>: You will not be 
+able to run Maven Eclipse goals from a command shell if your project is placed under the workspace 
+folder; the <code>mvn eclipse:eclipse, mvn eclipse:clean and mvn eclipse:m2eclipse</code> goals will 
+fail to execute. The issues are reported here: <a href="http://jira.codehaus.org/browse/MECLIPSE-571">
+http://jira.codehaus.org/browse/MECLIPSE-571</a>, and here:	
+<a href="http://jira.codehaus.org/browse/MNG-2057">http://jira.codehaus.org/browse/MNG-2057</a>.
+So, be kind to yourself and create a project folder that is not on the same file path as the 
+workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
 </p>
 <p></p>
 </div> <!-- #page -->
