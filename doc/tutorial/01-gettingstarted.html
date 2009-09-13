@@ -77,8 +77,9 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
   of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
 <ol class="vspace">
-  <li>In explorer right click on the folder where you want to check out the project and select 
-  <strong style="white-space:nowrap;">TortoiseSVN&nbsp;&gt;&nbsp;Repo-browser</strong> from the menu.
+  <li>In file explorer right click on the folder where you want to check out the project and select 
+		<code><strong style="white-space:nowrap;">TortoiseSVN &gt; Repo-browser</strong></code> 
+		from the menu.
     <img src="img/tortoise-menu.png" style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
@@ -555,15 +556,12 @@ The following profiles are active:
 	</li>
 </ol>
 
-
 <h2>Tips for Debugging</h2>
-<p>
-  When your application starts up it will print all components being created (Seam and your own) 
-  and the context they are placed in. Validate that your new component is displayed as well.</p>
-<p>
-  Seam has a debug page showing useful information. To use it, add the following dependency to your war 
-  <code>pom.xml</code>:
-</p>
+<p>When your application starts up it will print all components being created (Seam and your own) 
+and the context they are placed in. Validate that your new component is displayed as well.</p>
+
+<p>Seam has a debug page showing useful information. To use it, add the following dependency to your war 
+<code>pom.xml</code>:</p>
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;org.jboss.seam&lt;/groupId&gt;
   &lt;artifactId&gt;jboss-seam-debug&lt;/artifactId&gt;
@@ -576,7 +574,23 @@ The following profiles are active:
   <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
 </p>
 
-<h2>Files Added to Svn Ignore</h2>
+<h2>Maven Project Structure</h2>
+<p>The Seam Refimpl project is a standard Maven multimodule project for Seam using EJB and JSF 
+that is archived in an ear-archive. A parent project pom will manage our EAR, EJB and WAR 
+modules. <a href="http://blog.xebia.com/">Xebia Labs</a> has an excellent blog that explainins the 
+Maven project structure for an enterprise application project using Seam: 
+<a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
+Configuring a Seam EJB project for development with Maven and JBoss Tools</a>.</p>
+
+<h3>The Parent POM</h3>
+<p></p>
+
+<h3>The <code>profiles.xml</code> file</h3>
+<h3>The WAR pom</h3>
+<h3>The EJB pom</h3>
+<h3>The EAR pom</h3>
+
+<h2>Files To Add To Svn Ignore</h2>
 <p>Some files and folders, like user spesific settings and generated files shall not be under revision 
 control. The following folders and files are added to <strong>svn ignore</strong>.</p>
 <code>
@@ -635,8 +649,8 @@ control. The following folders and files are added to <strong>svn ignore</strong
 		</li>
 	</ul>
 </code>
-<p><strong>Note:</strong> This is the files found so far using Eclipse w. JBoss Tools. There will
-probably be more IDE spesific files to add as other IDEs are put to use. Please
+<p><strong>Note:</strong> This is the files found so far using Eclipse with the m2eclipse and JBoss 
+Tools plugin. There will be more IDE spesific files to add as other IDEs are put to use. Please
 take care when files are checked into svn, if you find an IDE spesific file then list it here 
 and add it to <strong>svn ignore</strong>!
 </p>

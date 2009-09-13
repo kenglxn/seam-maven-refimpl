@@ -36,19 +36,21 @@
 <h2>Download and install software:</h2>
 <ul class="vspace">
   <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-1.5 or jdk-1.6</a></li>
-  <li><a href="http://www.eclipse.org/">Eclipse Ganymede 3.4 (with WTP installed)</a></li>
-  <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
+  <li>
+		<a href="http://www.eclipse.org/ganymede/">
+		Eclipse Ganymede 3.4 (with WTP installed)</a>
+	</li>
+  <li>
+		<a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
     <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug regarding the use of 
 		<code>profiles.xml</code>, see the <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an 
 		explanation.
   </li>
-  <li><a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a> (0.9.8 or later)</li>
-  <li><a href="http://subclipse.tigris.org/">
-		SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE</a><br/>
-		<strong/>Note for Pulse users:</strong> Currently the SubClipse plugin provided by Pulse is not 
-		compatible with the latest Tortoise SVN. If you are using both Tortoise and SubClipse then you 
-		need to uninstall the Subclipse plugin provided by Pulse and add a update site in Pulse for 
-		<a href="http://subclipse.tigris.org/update_1.6.x/">SubClipse-1.6.x</a>.
+  <li><a href="http://m2eclipse.sonatype.org/">Maven Eclipse plugin</a> (0.9.8 or later)</li>
+  <li>
+		<a href="http://subclipse.tigris.org/">
+		SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE
+		</a>.
 	</li>
 	<li><a href="http://www.seamframework.org/Download">JBoss Seam 2.x</a></li>
   <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a></li>
@@ -165,7 +167,7 @@ screenshots below outlines the steps needed to configure a WTP server reference 
 		<img src="img/eclipse-jboss-server-overview.png" style="width:750px; display:block;" />
 	</li>
 	<li>
-	  Start the server to verify to verify that everyting is configured correctly.
+	  Start the server to check that everyting is configured correctly.
     <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
 	</li>
 	<li>
@@ -219,7 +221,7 @@ in the project and provides a hierarchical list of them.</p>
 		is generated during the import. Open the pom that contains your <code>&lt;pluginManagement&gt;</code> 
 		section (your root pom or parent pom) and locate the <code>maven-eclipse-plugin</code>. 
 		The configuration should be like the listing below:
-		<pre>
+		<pre style="font-size:9px;">
 
 &lt;pluginManagement&gt;
   &lt;plugins&gt;
@@ -295,7 +297,7 @@ in the project and provides a hierarchical list of them.</p>
 		<strong>NOTE: <font color="red">DO NOT CHECK THE INCLUDE MODULES CHECKBOX - EVER!</font></strong>  
 		Doing so will effectly block the possibility to use WTP to deploy your project. The selection is
 		irreversible and you will have to remove the project from Eclipse, delete all Eclipse spesific
-		settings and set up the project from scratch. See the section 
+		settings in the project folders and set up the project from scratch. See the section 
 		<a href="#remove-eclipse-settings">How To Completly Remove Eclipse Spesific Settings From a 
 		Project</a> for how to completly remove Eclipse spesific settings from a project.
 	</li>
@@ -457,7 +459,7 @@ goal.</p>
 		<strong>Important:</strong> The child pom's <code>&lt;relativePath&gt;</code> tag must point to 
 		the parent pom. If it don't, the child pom will pick up the parent pom from your local .m2 repo 
 		and will be missing all profiles and properties from the parent pom in the project folder.
-		<pre>
+		<pre style="font-size:9px;">
 		
 &lt;parent&gt;
   &lt;groupId&gt;no.knowit.seam&lt;/groupId&gt;
@@ -503,7 +505,7 @@ written in the EJB projects, as required (source:
 setting up the tools. Play with the tools and study the code that the various tools generates.
 </p>
 
-<h3>Configure JBoss Tools for Workspace</h3>
+<h3>Configure JBoss Tools For The Workspace</h3>
 <p>Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a folder of your 
 choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.1.GA</code>. Open <code><strong>Prefereneces
 </strong></code> and follow the screenshots.</p>
@@ -618,30 +620,6 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
   containing five tables, full CRUD functionality, UI and navigation.</p>
 </div>
 
-<h2>Useful Links</h2>
-<ul>
-	<li>
-		<a href="http://www.next-presso.fr/2009/06/wtp-m2eclipse-seam-cest-bien-maven/lang/en/">
-			WTP + M2eclipse + Seam : Maven works !
-		</a>
-	</li>
-	<li>
-		<a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
-			Configuring a Seam EJB project for development with Maven and JBoss Tools
-		</a>
-	</li>
-	<li>
-		<a href="http://www.innovationontherun.com/common-issues-and-workarounds-while-building-ear-files-in-eclipse/">
-			Common Issues and Workarounds While Building EAR files in Eclipse
-		</a>
-	</li>
-	<li>
-		<a href="http://docs.codehaus.org/display/M2ECLIPSE/Integration+with+WTP">
-			Integration with WTP
-		</a>
-	</li>
-</ul>
-
 <h2>How To's</h2>
 <h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
 <ol>
@@ -681,6 +659,39 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
 	
 </ol>
 
+<h3>How To Configure the <code>maven-eclipse</code> Plugin Correctly For An Existing Project</h3>
+<p>
+Configure the maven-eclipse plugin so that no extra code is generated during the import. 
+Open the pom that contains your <code>&lt;pluginManagement&gt;</code> section (your root pom or 
+parent pom) and locate the <code>maven-eclipse-plugin</code>. The configuration should be like the 
+listing below:
+<pre>
+
+  &lt;pluginManagement&gt;
+    &lt;plugins&gt;
+      .
+      .
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.7&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;downloadSources&gt;true&lt;/downloadSources&gt;
+          &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;
+          &lt;addVersionToProjectName&gt;false&lt;/addVersionToProjectName&gt;
+          &lt;projectNameTemplate&gt;[artifactId]&lt;/projectNameTemplate&gt;
+          &lt;wtpmanifest&gt;false&lt;/wtpmanifest&gt;
+          &lt;wtpapplicationxml&gt;false&lt;/wtpapplicationxml&gt;
+          &lt;wtpversion&gt;2.0&lt;/wtpversion&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      .
+      .
+    &lt;/plugins&gt;
+  &lt;/pluginManagement&gt;
+</pre>
+</p>
+
 <h3>How To Download Sources and Javadocs for Maven Dependencies</h3>
 <p>
 The <code>m2eclipse</code> plugin seems to be a bit unpredictable when it comes to downloading 
@@ -701,7 +712,7 @@ missing for some dependencies, then try this:
 <h3 id="remove-eclipse-settings">How To Completly Remove Eclipse Spesific Settings From a Project</h3>
 <p>If you find yourself in a situation where your Eclipse project has reached a limbo, then you are 
 faced with two options: Delete the project from your local file system or try to clean up the mess 
-caused by Eclipse.
+caused by Eclipse (and you?).
 </p>
 <p>Steps required to clean up Eclipse mess:</p>
 <ol>
@@ -781,6 +792,91 @@ http://jira.codehaus.org/browse/MECLIPSE-571</a>, and here:
 So, be kind to yourself and create a project folder that is not on the same file path as the 
 workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
 </p>
+
+<h3>How To Browse (ctrl+clik) Into Java Code From The Visual Editor</h3>
+<p>You must list all Java modules you want to browse into in the WAR pom as emphasized in text below:
+<pre>
+
+  &lt;dependencies&gt;
+
+    &lt;!-- project --&gt; 
+    &lt;!-- 
+      For Eclipse and JBoss Tools:
+      List all modules you are interested to browse (ctrl+click) into from xhtml pages 
+    --&gt;<font color="blue">
+    &lt;dependency&gt;
+      &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+      &lt;artifactId&gt;${app.context}-ejb&lt;/artifactId&gt;
+      &lt;type&gt;ejb&lt;/type&gt;
+      &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;</font>
+
+    &lt;!-- seam --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.jboss.seam&lt;/groupId&gt;
+      &lt;artifactId&gt;jboss-seam-ui&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    .
+	  .
+  &lt;/dependencies&gt;
+</pre>
+
+</p>
+
+<h3>How To Get JBoss Tools To Work In Window Vista 64 bit</h3>
+<p>It only works partially :-( It seems that everything except for the visual editors (VPE) works ok. 
+You will see the following error in the editor: "The VPE editor can't be run because your system 
+environment needs to be changed slightly. 
+<a href='http://www.jboss.org/community/wiki/JBosstoolsVisualEditorFAQ'>Find out more</a>". The link 
+points to a page with meaningless information regarding how to fix this for Vista64 with Jdk-6 64 bit 
+and Eclipse-3.4 64 bit. You will also find that you are not able to browse into java code from the 
+visual editor, which for me is the most essential feature of the VPE. The only workaround I have 
+found so far is to download and install 32 bit versions of Jdk-6 and Eclipse-3.4 and install the 
+required plugins in the Eclipse-3.4 32 bit environment. The visual editors works as expected with 
+the 32 bit configuration.</p>
+<p>After installation of Jdk-6 32 bit and Eclipse-3.4 32 bit, ensure that Eclipse uses the "correct" 
+jdk. Open the <code>eclipse.ini</code> file and add path to the 32 bit Jdk version as emphasized in 
+text below:
+<pre>
+<strong><font color="blue">-vm
+C:/Program Files (x86)/Java/jdk1.6.0_16/bin</font></strong>
+-showsplash
+org.eclipse.platform
+--launcher.XXMaxPermSize
+512M
+-framework
+plugins\org.eclipse.osgi_3.4.3.R34x_v20081215-1030.jar
+-vmargs
+-Dosgi.requiredJavaVersion=1.5
+-Xms128m
+-Xmx512m
+</pre>
+</p>
+
+<h2>Useful Links</h2>
+<ul>
+	<li>
+		<a href="http://www.next-presso.fr/2009/06/wtp-m2eclipse-seam-cest-bien-maven/lang/en/">
+			WTP + M2eclipse + Seam : Maven works !
+		</a>
+	</li>
+	<li>
+		<a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
+			Configuring a Seam EJB project for development with Maven and JBoss Tools
+		</a>
+	</li>
+	<li>
+		<a href="http://www.innovationontherun.com/common-issues-and-workarounds-while-building-ear-files-in-eclipse/">
+			Common Issues and Workarounds While Building EAR files in Eclipse
+		</a>
+	</li>
+	<li>
+		<a href="http://docs.codehaus.org/display/M2ECLIPSE/Integration+with+WTP">
+			Integration with WTP
+		</a>
+	</li>
+</ul>
+
 <p></p>
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
