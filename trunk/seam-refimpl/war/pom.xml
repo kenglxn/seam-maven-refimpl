@@ -150,6 +150,18 @@
 			<artifactId>urlrewritefilter</artifactId>
 		</dependency>
 		-->
+
+		
+		<!-- 
+			For Eclipse and JBoss Tools:
+		  List all modules you are interested to browse (ctrl+click) into from xhtml pages 
+		-->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>${app.context}-ejb</artifactId>
+			<type>ejb</type>
+			<scope>provided</scope>
+		</dependency>
 		
 	</dependencies>
 
