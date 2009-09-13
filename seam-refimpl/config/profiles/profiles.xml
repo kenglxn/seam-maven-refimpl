@@ -103,7 +103,7 @@
 				<ds>sqlserver</ds>
 				<ds.hibernate.dialect>org.hibernate.dialect.SQLServerDialect</ds.hibernate.dialect>
 				<ds.driver.class>net.sourceforge.jtds.jdbc.Driver</ds.driver.class>
-				<ds.server.name>192.168.106.9</ds.server.name>
+				<ds.server.name>localhost:1433</ds.server.name>
 				<ds.database.name>${app.database.name}</ds.database.name>
 				<ds.connection.url>jdbc:jtds:sqlserver://${ds.server.name}/${ds.database.name};tds=8.0;lastupdatecount=true</ds.connection.url>
 				<ds.user.name>username</ds.user.name>
