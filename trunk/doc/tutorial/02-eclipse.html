@@ -216,37 +216,6 @@ directory where a Maven project is located, m2eclipse detects all the Maven POMs
 in the project and provides a hierarchical list of them.</p>
 
 <ol class="vspace">
-	<li>
-		Before you start, make shure that the maven-eclipse plugin is configured so that no extra code 
-		is generated during the import. Open the pom that contains your <code>&lt;pluginManagement&gt;</code> 
-		section (your root pom or parent pom) and locate the <code>maven-eclipse-plugin</code>. 
-		The configuration should be like the listing below:
-		<pre style="font-size:9px;">
-
-&lt;pluginManagement&gt;
-  &lt;plugins&gt;
-    .
-    .
-    &lt;plugin&gt;
-      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-      &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
-      &lt;version&gt;2.7&lt;/version&gt;
-      &lt;configuration&gt;
-        &lt;downloadSources&gt;true&lt;/downloadSources&gt;
-        &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;
-        &lt;addVersionToProjectName&gt;false&lt;/addVersionToProjectName&gt;
-        &lt;projectNameTemplate&gt;[artifactId]&lt;/projectNameTemplate&gt;
-        &lt;wtpmanifest&gt;false&lt;/wtpmanifest&gt;
-        &lt;wtpapplicationxml&gt;false&lt;/wtpapplicationxml&gt;
-        &lt;wtpversion&gt;2.0&lt;/wtpversion&gt;
-      &lt;/configuration&gt;
-    &lt;/plugin&gt;
-    .
-    .
-  &lt;/plugins&gt;
-&lt;/pluginManagement&gt;
-		</pre>
-	</li>
   <li>
 		<a href="01-gettingstarted.html#checkout-install">Checkout</a> or 
 		<a href="01-gettingstarted.html#use-as-template">Export</a> the <code>seam-refimpl</code> project 
@@ -265,8 +234,12 @@ in the project and provides a hierarchical list of them.</p>
 		in <code>profiles.xml</code> should correspond with the <code>configuration</code> folder you
 		selected for the WTP server), etc.
 	</li>
+	<li>
+		<a href="#how-to-configure-maven-eclipse-plugin-correctly">Make shure that the maven-eclipse 
+		plugin is configured so that no extra code is generated during the import</a>.
+	</li>
   <li>
-    In Eclipse select <code><strong>File>Import</strong></code> to import the project:
+    Import the project: In Eclipse select <code><strong>File>Import</strong></code> to import the project:
     <img src="img/eclipse-import.png" style="width:250px; display:block;" />
 	</li>
 	<li>
@@ -659,7 +632,7 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
 	
 </ol>
 
-<h3>How To Configure the <code>maven-eclipse</code> Plugin Correctly For An Existing Project</h3>
+<h3 id="how-to-configure-maven-eclipse-plugin-correctly">How To Configure the <code>maven-eclipse</code> Plugin Correctly For An Existing Project</h3>
 <p>
 Configure the maven-eclipse plugin so that no extra code is generated during the import. 
 Open the pom that contains your <code>&lt;pluginManagement&gt;</code> section (your root pom or 
