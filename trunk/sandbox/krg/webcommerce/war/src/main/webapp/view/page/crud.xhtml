@@ -18,22 +18,7 @@
     </ui:define>
 
     <ui:define name="left-content">
-        existing pages:
-        <ul>
-            <ui:repeat var="_parent"
-                       value="#{pageList.parentPages}">
-                <li class="page">
-                    <span>
-                        <s:link value="#{_parent.title}"
-                                view="/page.xhtml"
-                                title="#{_parent.title}">
-                            <f:param name="pageId"
-                                     value="#{_parent.id}"/>
-                        </s:link>
-                    </span>
-                </li>
-            </ui:repeat>
-        </ul>
+
     </ui:define>
 
     <ui:define name="main-content-body">

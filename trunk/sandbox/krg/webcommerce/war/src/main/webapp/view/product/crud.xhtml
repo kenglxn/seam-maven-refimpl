@@ -18,22 +18,7 @@
     </ui:define>
 
     <ui:define name="left-content">
-        existing products:
-        <ul>
-            <ui:repeat var="_product"
-                       value="#{productList.resultList}">
-                <li class="product">
-                    <span>
-                        <s:link value="#{_product.name}"
-                                view="/product.xhtml"
-                                title="#{_product.name}">
-                            <f:param name="prodId"
-                                     value="#{_product.id}"/>
-                        </s:link>
-                    </span>
-                </li>
-            </ui:repeat>
-        </ul>
+
     </ui:define>
 
     <ui:define name="main-content-body">

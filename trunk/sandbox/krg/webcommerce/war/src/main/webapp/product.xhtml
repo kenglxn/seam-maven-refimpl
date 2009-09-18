@@ -15,34 +15,23 @@
     </ui:define>
 
     <ui:define name="left-content">
-        <a4j:repeat var="_cat"
-                    value="#{categoryList.resultList}">
-            <rich:panel bodyClass="#{empty _cat.children ? 'hide' : ''}">
-                <f:facet name="header">
-                    <s:link value="#{_cat.name}"
-                            view="/products.xhtml"
-                            title="#{_cat.name}"
-                            propagation="none">
-                        <f:param name="catId"
-                                 value="#{_cat.id}"/>
-                    </s:link>
-                </f:facet>
-                <ui:repeat var="_chcat"
-                           value="#{_cat.children}">
-                    <rich:panel bodyClass="hide">
-                        <f:facet name="header">
-                            <s:link value="#{_chcat.name}"
-                                    view="/page.xhtml"
-                                    title="#{_chcat.name}"
-                                    propagation="none">
-                                <f:param name="catId"
-                                         value="#{_chcat.id}"/>
-                            </s:link>
-                        </f:facet>
-                    </rich:panel>
-                </ui:repeat>
-            </rich:panel>
-        </a4j:repeat>
+
+        <h:form>
+            <rich:tree style="width:300px" switchType="ajax">
+                <rich:recursiveTreeNodesAdaptor roots="#{categoryList.parentCategories}" var="_cat"
+                                                nodes="#{_cat.children}">
+                    <rich:treeNode>
+                        <s:link value="#{_cat.name}"
+                                view="/products.xhtml"
+                                title="#{_cat.name}"
+                                propagation="none">
+                            <f:param name="catId"
+                                     value="#{_cat.id}"/>
+                        </s:link>
+                    </rich:treeNode>
+                </rich:recursiveTreeNodesAdaptor>
+            </rich:tree>
+        </h:form>
     </ui:define>
 
     <ui:define name="main-content-body">
@@ -55,17 +44,14 @@
                            styleClass="imagelist">
                 <s:graphicImage value="#{_file.image}"
                                 fileName="#{_file.id}_large"
-                                alt="[image]">
-                    <s:transformImageSize width="200"
-                                          maintainRatio="true"/>
-                </s:graphicImage>
+                                alt="[image]"/>
             </rich:dataList>
             <h:outputText value="#{productHome.instance.description}"
                           escape="false"/>
         </rich:panel>
         <s:link value="edit product"
-                    view="/view/product/crud.xhtml"
-                    rendered="#{identity.hasRole('admin')}"/>
+                view="/view/product/crud.xhtml"
+                rendered="#{identity.hasRole('admin')}"/>
     </ui:define>
 
     <ui:define name="footer">

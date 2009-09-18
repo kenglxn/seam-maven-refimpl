@@ -18,18 +18,7 @@
     </ui:define>
 
     <ui:define name="left-content">
-        existing categories:
-        <ul>
-            <ui:repeat var="_cat" value="#{categoryList.resultList}">
-                <li>
-                    <h:outputText value="#{_cat.name}"/>
-                    <ui:repeat var="_chcat" value="#{_cat.children}">
-                        <br />
-                        <h:outputText value="* #{_chcat.name}"/>
-                    </ui:repeat>
-                </li>
-            </ui:repeat>
-        </ul>
+
     </ui:define>
 
     <ui:define name="main-content-body">

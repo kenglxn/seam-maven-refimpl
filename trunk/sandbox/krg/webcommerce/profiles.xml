@@ -50,20 +50,6 @@
             </properties>
         </profile>
 
-        <profile>
-            <id>ds-gf</id>
-            <activation>
-                <property>
-                    <name>ds</name>
-                    <value>gf</value>
-                </property>
-            </activation>
-            <properties>
-                <ds>gf</ds>
-                <ds.hibernate.dialect>org.hibernate.dialect.GlassfishDerbyDialect</ds.hibernate.dialect>
-            </properties>
-        </profile>
-
         <!-- MySql5 -->
         <profile>
             <id>ds-mysql5</id>

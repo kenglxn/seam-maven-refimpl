@@ -21,6 +21,8 @@ import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.log.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Install(debug = true)
 @Name("dataPopulator")
@@ -63,21 +65,40 @@ public class DataPopulator {
 
     private void createCategoryAndProducts() {
         for (int c = 0; c < 5; c++) {
-            categoryHome.clearInstance();
-            Category category = categoryHome.getInstance();
-            category.setName("category " + (c + 1));
-            categoryHome.persist();
-            for (int i = 0; i < 15; i++) {
-                createProducts(c + 1, i, category);
+            Category category = createCategory(c);
+            List<Category> childCats = new ArrayList<Category>();
+            for (int child = 0; child < 5; child++) {
+                categoryHome.clearInstance();
+                Category childCat = categoryHome.getInstance();
+                childCat.setParent(category);
+                childCat.setName("childCategory " + (c + 1));
+                categoryHome.persist();
+                childCats.add(childCat);
             }
+            categoryHome.clearInstance();
+            categoryHome.setInstance(category);
+            category.setChildren(childCats);
+            categoryHome.update();
+            createProducts(c, category);
         }
+    }
+
+    private void createProducts(int c, Category category) {
+        for (int i = 0; i < 15; i++) {
+            createProducts(c + 1, i, category);
+        }
+    }
+
+    private Category createCategory(int c) {
+        categoryHome.clearInstance();
+        Category category = categoryHome.getInstance();
+        category.setName("category " + (c + 1));
+        categoryHome.persist();
+        return category;
     }
 
     private void createProducts(int c, int i, Category category) {
         int iter = i + 1;
-//        if (iter > 45) iter -= 45;
-//        if (iter <= 45 && iter > 30) iter -= 30;
-//        if (iter <= 30 && iter > 15) iter -= 15;
 
         java.io.File image = new java.io.File(imgBase + iter + ".jpg");
         byte[] byteFromFile = new byte[0];
@@ -94,7 +115,8 @@ public class DataPopulator {
             product.setCategory(category);
             fileHome.clearInstance();
             File file = fileHome.getInstance();
-            file.setImage(byteFromFile);
+            byte[] croppedImage = FileUtil.cropImage(byteFromFile);
+            file.setImage(croppedImage);
             file.setImageContentType("image/jpeg");
             product.addFile(file);
             productHome.persist();
