@@ -1,5 +1,7 @@
 package net.glxn.webcommerce.action.upload;
 
+import org.jboss.seam.ui.graphicImage.Image;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,5 +30,23 @@ public class FileUtil implements Serializable {
         }
         is.close();
         return bytes;
+    }
+
+    public static byte[] cropImage(byte[] byteFromFile) {
+        Image image = new Image();
+        try {
+            image.setInput(byteFromFile);
+            if (image.getHeight() > 200 || image.getWidth() > 200) {
+                if (image.getHeight() > image.getWidth()) {
+                    image.scaleToHeight(200);
+                } else {
+                    image.scaleToWidth(200);
+                }
+            }
+            return image.getImage();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

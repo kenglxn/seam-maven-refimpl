@@ -5,17 +5,15 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
-import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.framework.EntityQuery;
 
-@Scope(ScopeType.CONVERSATION)
 @Name("productSearch")
 public class ProductSearch extends EntityQuery<Product> {
 
     private static final long serialVersionUID = -2229449712146419611L;
 
     @In
-    @Out
+    @Out(scope = ScopeType.CONVERSATION)
     String searchString;
 
     public ProductSearch() {

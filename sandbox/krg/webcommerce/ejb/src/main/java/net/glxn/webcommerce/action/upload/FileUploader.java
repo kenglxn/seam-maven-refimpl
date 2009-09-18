@@ -33,9 +33,11 @@ public class FileUploader implements Serializable {
         log.debug("uploading file #0", item.getFile().getAbsolutePath());
         fileHome.clearInstance();
         File file = fileHome.getInstance();
-        file.setImage(item.isTempFile() ? FileUtil.getByteFromFile(item.getFile()) : item.getData());
+        byte[] byteFromFile = FileUtil.getByteFromFile(item.getFile());
+        byte[] croppedImage = FileUtil.cropImage(byteFromFile);
+        file.setImage(croppedImage);
         file.setImageContentType(item.getContentType());
-        if(productHome.isManaged()) {
+        if (productHome.isManaged()) {
             productHome.getInstance().addFile(file);
         }
         fileHome.persist();

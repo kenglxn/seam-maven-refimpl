@@ -1,5 +1,6 @@
 package net.glxn.webcommerce.model;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,6 +42,7 @@ public class File implements Serializable {
     }
 
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     public byte[] getImage() {
         return image;
     }
