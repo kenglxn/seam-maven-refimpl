@@ -15,7 +15,7 @@
 
     <ui:define name="left-content">
         <h:form>
-            <rich:tree style="width:300px" switchType="ajax">
+            <rich:tree style="width:300px" switchType="ajax" componentState="#{treeNodeUtil.componentState}">
                 <rich:recursiveTreeNodesAdaptor roots="#{categoryList.parentCategories}" var="_cat"
                                                 nodes="#{_cat.children}">
                     <rich:treeNode>

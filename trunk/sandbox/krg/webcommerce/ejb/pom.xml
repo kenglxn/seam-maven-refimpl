@@ -178,17 +178,22 @@
         <dependency>
             <groupId>org.richfaces.framework</groupId>
             <artifactId>richfaces-api</artifactId>
-            <version>3.3.1.GA</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.richfaces.ui</groupId>
+            <artifactId>richfaces-ui</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>5.9</version>
         </dependency>
+
         <dependency>
             <groupId>org.jboss.seam</groupId>
             <artifactId>jboss-seam-ui</artifactId>
-            <version>2.2.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
