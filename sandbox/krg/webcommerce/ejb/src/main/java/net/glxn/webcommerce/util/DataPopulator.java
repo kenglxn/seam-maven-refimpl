@@ -73,6 +73,7 @@ public class DataPopulator {
                 childCat.setParent(category);
                 childCat.setName("childCategory " + (c + 1));
                 categoryHome.persist();
+                createProducts(c, childCat);
                 childCats.add(childCat);
             }
             categoryHome.clearInstance();

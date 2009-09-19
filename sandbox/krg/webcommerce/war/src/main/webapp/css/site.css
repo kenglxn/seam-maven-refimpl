@@ -4,15 +4,12 @@ body {
     line-height: 1; /* See: http://meyerweb.com/eric/thoughts/2006/02/08/unitless-line-heights/ */
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333333;
-    background-color: #ffff99;
+    background-color: #F3c000;
 }
 
 #sizer {
     min-width: 100.4em;
     max-width: 127.8em;
-}
-
-#expander {
 }
 
 #page {
@@ -30,6 +27,11 @@ body {
 #header>*:first-child {
 /* this is where you put the header content */
 /*border-bottom: 1px solid #000000;*/
+    background-color: #9e6300
+}
+
+#expander {
+    background-color: #9e6300
 }
 
 #footer {
@@ -211,10 +213,14 @@ a:hover {
     font-size: 1.4em;
     font-weight: bold;
     color: #F39800;
-    position:relative;
-    top:-1em;
+    position: relative;
+    top: -1em;
 }
 
 .removefilelink {
     float: right;
+}
+
+.menulink {
+    padding: 0 5px;
 }

@@ -15,17 +15,18 @@
                 #{messages.richmenuform_productslinktext}
             </h:outputLink>
         </rich:toolBarGroup>
-        <rich:toolBarGroup id="pages">
-            <ui:repeat var="_page"
-                       value="#{pageList.parentPages}">
+        <rich:toolBarGroup id="pages" itemSeparator="none">
+            <a4j:repeat var="_page"
+                        value="#{pageList.parentPages}"
+                        rowKeyVar="_i">
                 <h:outputLink value="#{request.contextPath}/page.seam"
-                              title="#{_page.title}">
+                              title="#{_page.title}"
+                              styleClass="menulink">
                     <f:param name="pageId"
                              value="#{_page.id}"/>
                     #{_page.title}
                 </h:outputLink>
-                <h:outputText value=" "/>
-            </ui:repeat>
+            </a4j:repeat>
         </rich:toolBarGroup>
 
         <rich:toolBarGroup id="login"
@@ -39,7 +40,7 @@
                            action="#{identity.logout}"/>
         </rich:toolBarGroup>
         <rich:toolBarGroup id="adminfunctionality"
-                           itemSeparator="line"
+                           itemSeparator="none"
                            rendered="#{identity.hasRole('admin')}">
             <h:outputLink value="#{request.contextPath}/view/page/crud.seam">
                 page
