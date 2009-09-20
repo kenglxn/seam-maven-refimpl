@@ -70,7 +70,7 @@ body {
                          /* a smaller value makes the footer shadow blend into the page */
   padding-left: .3em;    /* horisontal spacing for page content */
   padding-right: .3em;   /* horisontal spacing for page content */
-	overflow-x: hidden;
+	                       /* overflow-x: hidden; */
   background-image: url(page-layout.page.top-shadow.png);
   background-repeat: repeat-x;
   background-color: #ffffff;
