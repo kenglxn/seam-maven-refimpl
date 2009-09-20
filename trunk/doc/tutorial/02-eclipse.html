@@ -319,6 +319,8 @@ and then import the project all over again.
 		external Maven Runtime you configured for the workspace.
     <img src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
 		Running the goal should give the following output:<br/><br/>
+		
+		<div style="width:100%; overflow:hidden;">
 		<pre style="font-size:9px">
 [INFO] Executing tasks
      [echo] Exploding to C:/ide/server/jboss-4.2.3.GA/server/default/deploy/seam-tutorial-ear.ear
@@ -344,7 +346,8 @@ and then import the project all over again.
 [INFO] BUILD SUCCESSFUL
 [INFO] ------------------------------------------------------------------------
 
-</pre>
+		</pre>
+		</div>
 		You can run the goal(s) as needed by selecting the 
 		<code><strong>Run As &gt; Maven build</strong> </code>
 		from the <strong>parent</strong> project menu.
@@ -385,8 +388,9 @@ define a Maven builder that utilizes this profile on the <code>process-classes</
 		<img src="img/eclipse-wtp-03.png" style="width:400px; display:block;" />
 	</li>
 	<li>
-		Start the server.
+		Start the server and check the console output. 
 		<img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+		<font color="red">You will notice that the application failed to deploy</font>:
 		<pre style="font-size:10px;">
 
 12:48:30,813 INFO  [EARDeployer] Init J2EE application: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
@@ -415,7 +419,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 	<li>
 		Stop the server and inspect the deploy folder. As you can see, the deploy folder contains a copy 
 		of the WEB-INF folder from the WAR module and a couple of jar files that shouldn't be there. 
-		Also the <code>*-ds.xml</code> file is gone. The problem is caused by this Eclipse bug:
+		Also the <code>*-ds.xml</code> file is missing. The problem is caused by this Eclipse bug:
 		<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=247090">
 		Bug 247090 -  User)libraries incorrectly deployed within EARs</a>
 		<img src="img/eclipse-wtp-04.png" style="width:400px; display:block;" />
@@ -426,7 +430,8 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 		<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
 	</li>
 	<li>
-		Inspect the deploy folder.
+		Inspect the deploy folder and verify the the unwanted files are gone and that the 
+		<code>*-ds.xml</code> file is present.
 		<img src="img/eclipse-wtp-06.png" style="width:400px; display:block;" />
 	</li>
 	<li>
@@ -441,10 +446,10 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 		</pre>
 	</li>
 	<li>
-		Now you can test that the WTP works by changing some xhtml and java files. The changes you made
-		should be reflected immediately on the server (after WTP has done a publish). But as you probably 
+		You can check that the WTP works by changing some xhtml and java files. The changes should be 
+		reflected immediately on the server (after WTP has done a publish). But as you probably 
 		know; not all changes to Java code are hot deployable even in debug mode. If hot code replacement 
-		is important to you (and it	should be) the get a copy of <strong>JRebel</strong> from 
+		is important to you (and it	should be) then get a copy of <strong>JRebel</strong> from 
 		<a href="http://www.zeroturnaround.com/jrebel/">ZERO TURNAROUND</a>.
 	</li>
 	<li>
@@ -455,7 +460,9 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 </ol>
 
 <h3>Maven Builder</h3>
-<p>This section explains how to use a Maven builder to deploy your project.</p>
+<p>If you don't want to live with all the WTP annoyance then you can create a Maven builder that 
+takes care of the incremental deployment. In combination with the <code>mvn install -Pexplode</code>
+goal you will have an deployment that is more stable than WTP.</p>
 <ol>
 	<li>
 	  Configure the Maven Builder.<br/>
@@ -471,7 +478,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
     <img src="img/eclipse-maven-builder-03.png" style="width:500px; display:block;" />
 	</li>
 	<li>
-		Run <code>mvn install -Pexplode</code> to do an initial deoploy.</br>
+		Run <code>mvn install -Pexplode</code> to do an initial deploy.</br>
 		<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
 		<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
 	</li>
@@ -479,6 +486,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 		Test the Builder:<br/>
 		Open a java class, e.g. <code>Authenticator.java</code>. Modify the source, save and check
 		the console output:
+		<div style="overflow:hidden;">
 		<pre style="font-size:9px">
 ...
 [INFO] [antrun:run {execution: ejb-process-classes}]
@@ -510,8 +518,13 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 ... Build type auto : process-classes
 ...  mvn -Pexplode -B -Dmaven.test.skip=true -s "C:\Documents and Settings\Leif\.m2\settings.xml" process-classes
 ... Build type auto : process-classes</pre>
-		
+		</div>
 	</li>
+	<li>
+		As you probably know; not all changes to Java code are hot deployable even in debug mode. If hot 
+		code replacement is important to you (and it	should be) then get a copy of <strong>JRebel</strong> 
+		from <a href="http://www.zeroturnaround.com/jrebel/">ZERO TURNAROUND</a>.
+	</li>	
 	<li>
 		<strong>Important:</strong> The child pom's <code>&lt;relativePath&gt;</code> tag must point to 
 		the parent pom. If it don't, the child pom will pick up the parent pom from your local .m2 repo 
@@ -538,7 +551,7 @@ The Tools is not essential for developing a Mavenized Seam application, but it h
 useful wizards and automated tasks. If you have an existing database then you can use the Tools to 
 generate a full CRUD application with entities, Seam framework classes (home- and list classes) and 
 a user interface with navigation and drilldown. For a database with ten tables this will take no more 
-than 30 seconds to complete. I don't think RoR that can do that! If you use the Tools to create an 
+than 30 seconds to complete (better than RoR?). If you use the Tools to create an 
 entity then the Tools will automatically generate the corresponding Seam framework classes as well 
 as a xhtml page with CRUD functionality. 
 </p>
@@ -614,55 +627,41 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 		<img src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
 		<img src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
 		<img src="img/eclipse-connection-profile-02.png" style="width:420px; display:block;" />
-		<!-- <img src="img/eclipse-connection-profile-03.png" style="width:420px; display:block;" /> -->
 		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
 	</li>
 </ol>
 
 
-<h3>Configure JBoss Tools for a Project</h3>
-<p>This section explains the steps needed to configure JBoss Toos for a project.</p>
-
-<p>Before you start, 
-<strong>keep a copy</strong> of the <code>war/src/main/webapp</code> folder or check the entire 
-project into SVN. The JBoss Tools is a bit too clever and modifies and adds various files during 
-configuration. After completion you can revert from SVN or restore the old <code>webapp</code> folder.
-</p>
+<h3 id="configure-jboss-tools-for-a-project">Configure JBoss Tools for a Project</h3>
+<p>JBoss Tools will manage two projects: the WAR and the EJB project. The WAR project will be 
+the main source of configuration, so we'll start with the WAR.</p>
 <ol class="vspace">
 	<li>
-	  The parent module:<br/>
-		Should not be necessary to do anything here in connection with the Tools. Use default values.
-    <img src="img/eclipse-parent-properties-02.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-parent-properties-05.png" style="width:750px; display:block;" />
+	  The WAR module:
+    <img src="img/eclipse-war-properties-07.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-war-properties-04.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-war-properties-05.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-war-properties-08.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-war-properties-09.png" style="width:700px; display:block;" />
+	</li>
+	<li>
+	  The EJB module:
+    <img src="img/eclipse-ejb-properties-01.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-03.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-05.png" style="width:700px; display:block;" />
 	</li>
 	<li>
 	  The EAR module:<br/>
 		Should not be necessary to do anything here in connection with the Tools. Use default values.
-    <img src="img/eclipse-ear-properties-01.png" style="width:750px; display:block;" />
 	</li>
 	<li>
-	  The EJB module:
-    <img src="img/eclipse-ejb-properties-04.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-properties-05.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-ejb-properties-03.png" style="width:750px; display:block;" />
+	  The parent module:<br/>
+		Should not be necessary to do anything here in connection with the Tools. Use default values.
 	</li>
 	<li>
-	  The WAR module:
-    <img src="img/eclipse-war-properties-07.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-war-properties-05.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-war-properties-04.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-war-properties-08.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-war-properties-09.png" style="width:750px; display:block;" />
+		That's it. You're now ready to play with the tools :-)
 	</li>
 </ol>
-<p>That's it. Shouldn't take you more than a couple of minutes to complete!</p>
-<p>Remember to remove any modifications made by the Tools and remove any possibe redundant files. 
-Run <code style="white-space:pre">mvn clean -Punexplode</code> and 
-<code style="white-space:pre">mvn install -Pexplode</code>.
-</p>
-<p>Here is a sample of JBoss Tools cleverness:</p>
-<img src="img/eclipse-clever-jboss-tools-01.png" style="width:750px; display:block;" />
-
 
 <h2>Play with the JBoss Tools</h2>
 <p>In this section we'll play with the tools.</p>
@@ -716,9 +715,10 @@ Run <code style="white-space:pre">mvn clean -Punexplode</code> and
 	
 </ol>
 
-<h3 id="how-to-configure-maven-eclipse-plugin-correctly">How To Configure the <code>maven-eclipse</code> Plugin Correctly For An Existing Project</h3>
-<p>
-Configure the maven-eclipse plugin so that no extra code is generated during the import. 
+<h3 id="how-to-configure-maven-eclipse-plugin-correctly">
+	How To Configure the <code>maven-eclipse</code> Plugin "Correctly" For An Existing Project
+</h3>
+<p>Configure the maven-eclipse plugin so that no extra code is generated during the import. 
 Open the pom that contains your <code>&lt;pluginManagement&gt;</code> section (your root pom or 
 parent pom) and locate the <code>maven-eclipse-plugin</code>. The configuration should be like the 
 listing below:
@@ -850,8 +850,8 @@ So, be kind to yourself and create a project folder that is not on the same file
 workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
 </p>
 
-<h3>How To Browse (ctrl+clik) Into Java Code From The Visual Editor</h3>
-<p>You must list all Java modules you want to browse into in the WAR pom as emphasized in text below:
+<h3>How To Browse (ctrl+clik) Into Java Code From a Visual Editor</h3>
+<p>The WAR pom must list all Java modules you want to browse into as emphasized in text below:
 <pre>
 
   &lt;dependencies&gt;
