@@ -258,10 +258,11 @@ in the project and provides a hierarchical list of them.</p>
 		Build errors for seam-tutorial-ear; org.apache.maven.lifecycle.LifecycleExecutionException: 
 		Invalid or missing parameters: [Mojo parameter [name: 'outputDirectory'; alias: 'null'], Mojo 
 		parameter [name: 'resources'; alias: 'null']] for mojo: 
-		org.apache.maven.plugins:maven-resources-plugin:2.3:copy-resources</font></code><br/>
-		The issue is reported here: 
-		<a href="http://jira.codehaus.org/browse/MNGECLIPSE-1136">Execution goals bound to the process-resources phase cause error</a>
-		<br/><br/>We fix :-)
+		org.apache.maven.plugins:maven-resources-plugin:2.3:copy-resources</font></code><br/><br/>
+		The build fail is caused by a conflict in Maven resolution and Workspace resolution as reported 
+		here: <a href="http://jira.codehaus.org/browse/MNGECLIPSE-1136">
+		Execution goals bound to the process-resources phase cause error</a><br/><br/>
+		We fix :-)
 	</li>
 	<li>
     Modify Maven properties for the parent project, seam-tutotrial.<br/>
@@ -366,26 +367,95 @@ and then import the project all over again.
 
 <h2>The Edit Compile Deploy Cycle</h2>
 <p>To have an effective development environment we need to automate the edit compile deploy cycle.
-You can either add the project to the server as a WTP project or define a Maven builder that 
+You can either use WTP to deploy your project or you can define a Maven builder that 
 hooks in to the <code>process-classes</code> goal. For the latter, the seam-refimpl POMs has alredy
-defined an explode profile for the Maven process-classes goal. You only need to define a Maven builder
-that utilizes this profile on the <code>process-classes</code> goal.
+defined an <code>explode</code> profile for the Maven process-classes goal. All you need to do is to
+define a Maven builder that utilizes this profile on the <code>process-classes</code> goal.
 </p>
 <h3>WTP</h3>
-<p>This section explains how to set up the project as a WTP project</p>
-<img src="img/eclipse-wtp-01.png" style="width:280px; display:block;" />
-<img src="img/eclipse-wtp-02.png" style="width:400px; display:block;" />
-<img src="img/eclipse-wtp-03.png" style="width:400px; display:block;" />
-<img src="img/eclipse-wtp-04.png" style="width:400px; display:block;" />
-<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
-<img src="img/eclipse-wtp-07.png" style="width:700px; display:block;" />
-<img src="img/eclipse-wtp-06.png" style="width:400px; display:block;" />
+<p>This section explains how to use WTP to deploy your project.</p>
+<ol>
+	<li>
+		Add project to server.<br/>
+		<img src="img/eclipse-wtp-01.png" style="width:280px; display:block;" />
+		<img src="img/eclipse-wtp-02.png" style="width:400px; display:block;" />
+	</li>
+	<li>
+		Publish.<br/>
+		<img src="img/eclipse-wtp-03.png" style="width:400px; display:block;" />
+	</li>
+	<li>
+		Start the server.
+		<img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+		<pre style="font-size:10px;">
 
+12:48:30,813 INFO  [EARDeployer] Init J2EE application: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
+12:48:30,814 ERROR [MainDeployer] Could not initialise deployment: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
+org.jboss.deployment.DeploymentException: No META-INF/application.xml found
+  at org.jboss.deployment.EARDeployer.init(EARDeployer.java:146)
+  at org.jboss.deployment.MainDeployer.init(MainDeployer.java:872)
+  at org.jboss.deployment.MainDeployer.deploy(MainDeployer.java:809)
+  ....
+  at org.jboss.Main$1.run(Main.java:508)
+  at java.lang.Thread.run(Thread.java:619)
+12:48:30,818 ERROR [URLDeploymentScanner] Incomplete Deployment listing:
+
+--- Incompletely deployed packages ---
+org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/ }
+  deployer: org.jboss.deployment.EARDeployer@1b7edd3
+  status: null
+  state: FAILED
+  watch: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
+  altDD: null
+  lastDeployed: 1253443710814
+  lastModified: 1253443587024
+  mbeans:
+		</pre>
+	</li>
+	<li>
+		Stop the server and inspect the deploy folder. As you can see, the deploy folder contains a copy 
+		of the WEB-INF folder from the WAR module and a couple of jar files that shouldn't be there. 
+		Also the <code>*-ds.xml</code> file is gone. The problem is caused by this Eclipse bug:
+		<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=247090">
+		Bug 247090 -  User)libraries incorrectly deployed within EARs</a>
+		<img src="img/eclipse-wtp-04.png" style="width:400px; display:block;" />
+	</li>
+	<li>
+		Run <code>mvn install -Pexplode</code> to fix the incorrect deploy.</br>
+		<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+		<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+	</li>
+	<li>
+		Inspect the deploy folder.
+		<img src="img/eclipse-wtp-06.png" style="width:400px; display:block;" />
+	</li>
+	<li>
+		Start the server (in debug mode) and check the console output.
+		<img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+		<pre style="font-size:10px;">
+....
+13:54:43,514 INFO  [EARDeployer] Started J2EE application: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
+13:54:43,562 INFO  [Http11Protocol] Starting Coyote HTTP/1.1 on http-localhost%2F127.0.0.1-8080
+13:54:43,571 INFO  [AjpProtocol] Starting Coyote AJP/1.3 on ajp-localhost%2F127.0.0.1-8009
+13:54:43,576 INFO  [Server] JBoss (MX MicroKernel) [4.2.3.GA (build: SVNTag=JBoss_4_2_3_GA date=200807181439)] Started in 14s:340ms
+		</pre>
+	</li>
+	<li>
+		Now you can test that the WTP works by changing some xhtml and java files. The changes you made
+		should be reflected immediately on the server (after WTP has done a publish). But as you probably 
+		know; not all changes to Java code are hot deployable even in debug mode. If hot code replacement 
+		is important to you (and it	should be) the get a copy of <strong>JRebel</strong> from 
+		<a href="http://www.zeroturnaround.com/jrebel/">ZERO TURNAROUND</a>.
+	</li>
+	<li>
+		You need to keep an eye on the deploy folder as WTP will do a full deploy from time to time, in
+		particular when you make modifications to the EAR module. The the fix is to run 
+		<code>mvn install -Pexplode</code> again.
+	</li>
+</ol>
 
 <h3>Maven Builder</h3>
-<p>This section explains how to configure the maven builder for the <code>process-classes</code> 
-goal.</p>
+<p>This section explains how to use a Maven builder to deploy your project.</p>
 <ol>
 	<li>
 	  Configure the Maven Builder.<br/>
@@ -399,6 +469,11 @@ goal.</p>
 		<code>${project_loc}</code> then the builder will run only on the sub project that contains
 		the modified file - resulting in a faster build cycle.
     <img src="img/eclipse-maven-builder-03.png" style="width:450px; display:block;" />
+	</li>
+	<li>
+		Run <code>mvn install -Pexplode</code> to do an initial deoploy.</br>
+		<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+		<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
 	</li>
 	<li>
 		Test the Builder:<br/>
