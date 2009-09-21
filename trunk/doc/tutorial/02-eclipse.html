@@ -430,7 +430,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 		<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
 	</li>
 	<li>
-		Inspect the deploy folder and verify the the unwanted files are gone and that the 
+		Inspect the deploy folder and verify the the incorrectly deployed files are gone and that the 
 		<code>*-ds.xml</code> file is present.
 		<img src="img/eclipse-wtp-06.png" style="width:400px; display:block;" />
 	</li>
@@ -460,9 +460,10 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 </ol>
 
 <h3>Maven Builder</h3>
-<p>If you don't want to live with all the WTP annoyance then you can create a Maven builder that 
-takes care of the incremental deployment. In combination with the <code>mvn install -Pexplode</code>
-goal you will have an deployment that is more stable than WTP.</p>
+<p>As an alternative to WTP you can create a Maven builder that hooks in to the 
+<code>process-classes</code> goal and takes care of the incremental deployment.  
+ In combination with the <code style="white-space:nowrap">mvn install -Pexplode</code>
+goal you will have a complete build/deploy environment that is more stable than WTP.</p>
 <ol>
 	<li>
 	  Configure the Maven Builder.<br/>
@@ -550,10 +551,9 @@ with a a lot of tasks you otherwise would have used hours and days to complete.
 The Tools is not essential for developing a Mavenized Seam application, but it has a lot of 
 useful wizards and automated tasks. If you have an existing database then you can use the Tools to 
 generate a full CRUD application with entities, Seam framework classes (home- and list classes) and 
-a user interface with navigation and drilldown. For a database with ten tables this will take no more 
-than 30 seconds to complete (better than RoR?). If you use the Tools to create an 
-entity then the Tools will automatically generate the corresponding Seam framework classes as well 
-as a xhtml page with CRUD functionality. 
+a user interface with navigation and drilldown. If you use the Tools to create an entity class, 
+then the Tools will automatically generate the corresponding Seam framework classes and corresonding 
+xhtml pages. 
 </p>
 <p>JBoss tools is a Eclipse feature, that can be enabled on a project by adding some configuration 
 (JSF and Seam facets, the SeamBuilder and SeamNature) to the Eclipse project. JBoss Tools will 
@@ -591,6 +591,7 @@ choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.1.GA</code>. Open <code><strong>Pr
 	</li>
 </ol>
 
+<!--
 <h3> Define a Data Source</h3>
 <p>If you plan to use JBoss Tools to do reverse engeneering, then you need to define and connect to
 a datasource. The screenshots below outlines one possible way to accomplish this.</p>
@@ -630,6 +631,7 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 		<img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
 	</li>
 </ol>
+-->
 
 
 <h3 id="configure-jboss-tools-for-a-project">Configure JBoss Tools for a Project</h3>
@@ -639,16 +641,24 @@ the main source of configuration, so we'll start with the WAR.</p>
 	<li>
 	  The WAR module:
     <img src="img/eclipse-war-properties-07.png" style="width:700px; display:block;" />
+		
+		<!--
     <img src="img/eclipse-war-properties-04.png" style="width:700px; display:block;" />
     <img src="img/eclipse-war-properties-05.png" style="width:700px; display:block;" />
+		-->
+		
     <img src="img/eclipse-war-properties-08.png" style="width:700px; display:block;" />
     <img src="img/eclipse-war-properties-09.png" style="width:700px; display:block;" />
 	</li>
 	<li>
 	  The EJB module:
     <img src="img/eclipse-ejb-properties-01.png" style="width:700px; display:block;" />
+		
+		<!--
     <img src="img/eclipse-ejb-properties-03.png" style="width:700px; display:block;" />
     <img src="img/eclipse-ejb-properties-05.png" style="width:700px; display:block;" />
+		-->
+		
 	</li>
 	<li>
 	  The EAR module:<br/>
