@@ -379,8 +379,9 @@ define a Maven builder that utilizes this profile on the <code>process-classes</
 <p>This section explains how to use WTP to deploy your project.</p>
 <ol>
 	<li>
-		Add project to server.<br/>
+		Open the <strong>JBoss Server View</strong> and add project to server.<br/>
 		<img src="img/eclipse-wtp-01.png" style="width:280px; display:block;" />
+		Ad the <code>seam-tutorial.ear</code> project and click <strong>Finish</strong>.
 		<img src="img/eclipse-wtp-02.png" style="width:400px; display:block;" />
 	</li>
 	<li>
@@ -425,7 +426,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 		<img src="img/eclipse-wtp-04.png" style="width:400px; display:block;" />
 	</li>
 	<li>
-		Run <code>mvn install -Pexplode</code> to fix the incorrect deploy.</br>
+		Select the parent project and run <code>mvn install -Pexplode</code> to fix the incorrect deploy.</br>
 		<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
 		<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
 	</li>
@@ -461,9 +462,9 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 
 <h3>Maven Builder</h3>
 <p>As an alternative to WTP you can create a Maven builder that hooks in to the 
-<code>process-classes</code> goal and takes care of the incremental deployment.  
- In combination with the <code style="white-space:nowrap">mvn install -Pexplode</code>
-goal you will have a complete build/deploy environment that is more stable than WTP.</p>
+<code>process-classes</code> goal. The Maven builder will then take care of the incremental 
+deployment. In combination with the <code style="white-space:nowrap">mvn install -Pexplode</code>
+goal you will have a complete build/deploy environment without WTP.</p>
 <ol>
 	<li>
 	  Configure the Maven Builder.<br/>
@@ -643,24 +644,20 @@ the main source of configuration, so we'll start with the WAR.</p>
 	<li>
 	  The WAR module:
     <img src="img/eclipse-war-properties-07.png" style="width:650px; display:block;" />
-		
 		<!--
     <img src="img/eclipse-war-properties-04.png" style="width:650px; display:block;" />
     <img src="img/eclipse-war-properties-05.png" style="width:650px; display:block;" />
 		-->
-		
     <img src="img/eclipse-war-properties-08.png" style="width:650px; display:block;" />
     <img src="img/eclipse-war-properties-09.png" style="width:650px; display:block;" />
 	</li>
 	<li>
 	  The EJB module:
     <img src="img/eclipse-ejb-properties-01.png" style="width:650px; display:block;" />
-		
 		<!--
     <img src="img/eclipse-ejb-properties-03.png" style="width:650px; display:block;" />
     <img src="img/eclipse-ejb-properties-05.png" style="width:650px; display:block;" />
 		-->
-		
 	</li>
 	<li>
 	  The EAR module:<br/>
@@ -677,12 +674,61 @@ the main source of configuration, so we'll start with the WAR.</p>
 
 <h2>Play with the JBoss Tools</h2>
 <p>In this section we'll play with the tools.</p>
-<p>tbd...</p>
 
-<div style="display:none;">
 <h3>Create an Entity Bean the Seam Way</h3>
 <p>Create an Entity Bean with full CRUD and UI in 20 seconds.</p>
+<ol class="vspace">
+<li>
+	Open Seam perspective.
+	<img src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
+</li>
+<li>
+	In Package Explorer, right click on war or ejb project and select 
+	<code><strong>New>Seam Entity</strong></code>
+	<img src="img/eclipse-seam-entity-01.png" style="width:500px; display:block;" />
+</li>
+<li>
+	Fill in the <strong>Seam entity class name</strong> e.g. MyEntity.<br/>
+	<img src="img/eclipse-seam-entity-02.png" style="width:400px;" class="inline-block" />
+	<img src="img/eclipse-seam-entity-03.png" style="width:400px;" class="inline-block" />
+</li>
+<li>
+	Generated code:
+	<img src="img/eclipse-seam-entity-04.png" style="width:350px; display:block;" />
+</li>
+<li>
+	All this code in ten seconds! :-))<br/>
 
+	<div class="code-frame">
+		<code><strong>MyEntity.java</strong></code>
+		<iframe frameborder="0" src="./code-listings/MyEntity.java.html"></iframe>
+	</div>
+	
+	<div class="code-frame">
+		<code><strong>MyEntityHome.java</strong></code>
+		<iframe frameborder="0" src="./code-listings/MyEntityHome.java.html"></iframe>
+	</div>
+	
+	<div class="code-frame">
+		<code><strong>MyEntityList.java</strong></code>
+		<iframe frameborder="0" style="height:220px;" src="./code-listings/MyEntityList.java.html"></iframe>
+	</div>
+	
+	<div class="code-frame">
+		<code><strong>myEntityList.xhtml</strong></code>
+		<iframe frameborder="0" src="./code-listings/myEntityList.xhtml.html"></iframe>
+	</div>
+	
+	<div class="code-frame">
+		<code><strong>myEntity.xhtml</strong></code>
+		<iframe frameborder="0" src="./code-listings/myEntity.xhtml.html"></iframe>
+	</div>
+	
+</li>
+</ol>
+
+
+<div style="display:none;">
 <h3>Reverse Engeneering - Done in 60 Seconds</h3>
 <p>Why use Rails when we can stitch with Seam? Demonstrate reverse engeneering from a database
   containing five tables, full CRUD functionality, UI and navigation.</p>

@@ -88,3 +88,14 @@ ul.links {
   padding: 0 .5em;
 }
 
+/*
+ * i-frame for code listing
+ */
+div.code-frame {
+	margin-top: 1em;
+}
+.code-frame>iframe {
+	height: 300px; 
+	width:98%; 
+	border:1px #99B4D1 solid;
+}
