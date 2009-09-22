@@ -55,7 +55,7 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
 
 <h2>Download and Install Software</h2>
 <ul>
-  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-1.5 or jdk-1.6</a></li>
+  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-5 or jdk-6</a></li>
   <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
     <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
     <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.<br/>
@@ -65,7 +65,10 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
     <strong>Note:</strong> The svn client must be compatible with 
     <a href="http://subclipse.tigris.org/">SubClipse-1.6.x</a> if you are using the Eclipse IDE.
   </li>
-  <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.</li>
+  <li>
+		<a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.<br/>
+		<strong>Note:</strong> Download the build that corresponds with your installed jdk.
+	</li>
 </ul>
 <p>Install the required software.</p>
 
@@ -86,8 +89,9 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
     Navigate to http(s)://seam-maven-refimpl.googlecode.com/svn/trunk.
     <img src="img/tortoise-repo-url.png" style="width:397px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
-  <li>Right click <strong>trunk</strong> and select <strong>checkout...</strong> from the menu.
+  <li>Checkout trunk.
     <ul>
+			<li>Right click <strong>trunk</strong> and select <strong>checkout...</strong> from the menu.</li>
       <li>Modify the checkout directory name if desired.</li>
       <li>Click the <strong>OK</strong> button to check out the project.</li>
     </ul>
@@ -101,7 +105,12 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
     <code>${JBOSS_DEPLOY}</code> folder.
   </li>
 	<li>Start JBossAS<br/>
-      Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>run</code> 
+		JBoss AS runs on port 8080, so first ensure this port isn't already in use (be aware that Apache 
+		Tomcat also runs on port 8080 by default). In your command shell, navigate to 
+		<code>${JBOSS_HOME}/bin</code>. If you're using a Unix platform, execute the command:<br/>
+		<code><strong>/run.sh</strong></code><br/>
+		On Windows, execute the command:<br/>
+		<code><strong>run</strong></code>	
   </li>
   <li>Open a browser and point the URL to 
     <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
@@ -113,13 +122,13 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
 </ol>
 
 <h2><a name="switch-to-development-mode">Switch to Development Mode</a></h2>
-<p>In development mode the application will be deployed as an exploded EAR archive.</p>
+<p>The application will be deployed as an exploded EAR archive when you switch to development mode.</p>
 <ol class="vspace">
   <li>
-    Activate <code>profiles.xml</code><br/>
-    Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code>.<br/>
-    Cd to to <code>${SEAM_REFIMPL}</code> and edit <code>profiles.xml</code>
+    Activate <code>profiles.xml</code>
     <ul>
+			<li>Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code>.</li>
+			<li>Cd to to <code>${SEAM_REFIMPL}</code> and edit <code>profiles.xml</code>.</li>
       <li>
       JBoss profile<br/>
       Locate the <code>as-jboss423</code> profile and point the <code>as.home </code> property to your
@@ -153,7 +162,7 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
       
       <li>
         Use a command shell and run: <code>mvn help:active-profiles</code> and verify that profiles 
-          are active.
+          are active in your parent pom.
         <pre>
 C:\ide\projects\ok\seam-refimpl>mvn help:active-profiles
 [INFO] Scanning for projects...
@@ -204,13 +213,13 @@ The following profiles are active:
   <li>
     Deploy the exploded EAR to the application server.
     <ul>
-      <li>Run: <code>mvn clean -Punexplode</code>
-      </li>
-      <li>Run: <code>mvn package -Pexplode</code></li>
-    </ul><br/>
-		It is <strong>important</strong> to <strong>clean</strong> the project after switching 
-		to development mode. <code>-Punexplode</code> ensures that the project is cleaned from the 
-		<code>${JBOSS_DEPLOY}</code> folder as well.<br/>
+      <li>Run: <code>mvn clean install -Pexplode</code></li>
+			<li>
+				It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
+				development mode.
+			</li>
+    </ul>
+		<br/>
     Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
     <img src="img/exploded-ear.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>
@@ -297,7 +306,12 @@ The following profiles are active:
 
 <h2>Clean and Unexplode the Project</h2>
 <p>To finish the basic steps of this tutorial we will clean the project and see to that the project 
-  is completly removed from the application server.</p>
+is completly removed from the application server.
+</p>
+<p>When  you  switch  profiles,  it's  a  good  idea  to  run <code><strong>mvn clean -Punexplode</strong></code> 
+prior to running <code><strong>mvn install -Pexplode</strong></code> to be sure that settings from 
+the previous profile do not linger.
+</p>	
 <ol class="vspace">
 	<li>Shutdown JBossAS before cleaning the project:<br/>
     Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>shutdown -S</code>
@@ -307,8 +321,9 @@ The following profiles are active:
     In the projects command shell run: <code>mvn clean -Punexplode</code>
   </li>
   <li>
-    verify that the <code>seam-refimpl-ear.ear</code> folder actually is deleted from the 
-    <code>${JBOSS_DEPLOY}</code> folder.
+		The <code><strong>unexplode</strong></code> profile takes care of removing the exploded project
+		from the server. Just verify that the <code>seam-refimpl-ear.ear</code> folder actually is 
+		deleted from the <code>${JBOSS_DEPLOY}</code> folder.
   </li>
   <li>
     This completes the basic steps of the tutorial!
@@ -402,7 +417,9 @@ The following profiles are active:
   </li>
   <li>
     Rename the datasource file <code>ear/src/main/resources/seam-refimpl-ds.xml</code> 
-    to <code>seam-tutorial-ds.xml</code>
+    to <code>seam-tutorial-ds.xml</code><br/>
+		Tip: Modify the	<code>&lt;app.ds.xml&gt;${app.context}-ds.xml&lt;/app.ds.xml&gt;</code> property
+		if you want to give the datasource file a different name.
   </li>
   <li>
     <a href="#install-and-run">Deploy the project "out of the box" to verify that everyting works</a>
@@ -541,13 +558,14 @@ The following profiles are active:
   <li>
     Open a command shell and navigate to the <code>${SEAM_TUTORIAL}</code> folder.
     <ul>
-      <li>Run: <code>mvn clean -Punexplode</code>
-      </li>
-      <li>Run: <code>mvn package -Pexplode</code></li>
+      <li>
+				Run: <code>mvn clean package -Pexplode</code> (or <code>mvn clean install -Pexplode</code>)
+			</li>
+			<li>
+				It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
+				development mode. 
+			</li>
     </ul><br/>
-		It is <strong>important</strong> to <strong>clean</strong> the project after switching 
-		to development mode. <code>-Punexplode</code> ensures that the project is cleaned from the 
-		<code>${JBOSS_DEPLOY}</code> folder as well.<br/>
     Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
     <img src="img/exploded-ear-tutorial.png" style="width:730px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>

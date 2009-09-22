@@ -548,12 +548,14 @@ goal you will have a complete build/deploy environment that is more stable than 
 <h2>JBoss Tools</h2>
 <p>JBoss Tools is a perfect match for Seam devolpers using Maven and the Elipse IDE. It helps you 
 with a a lot of tasks you otherwise would have used hours and days to complete.
-The Tools is not essential for developing a Mavenized Seam application, but it has a lot of 
-useful wizards and automated tasks. If you have an existing database then you can use the Tools to 
-generate a full CRUD application with entities, Seam framework classes (home- and list classes) and 
-a user interface with navigation and drilldown. If you use the Tools to create an entity class, 
-then the Tools will automatically generate the corresponding Seam framework classes and corresonding 
-xhtml pages. 
+The Tools is not essential for developing a Mavenized Seam application, but it provides a collection 
+of tools that help you generate code and develop in an incremental manner. The JBossTools project 
+hosts a variety of standalone Eclipse plug-ins that support Java EE development. You can use the 
+tools to do reverse engeneering: If you have an existing database then the Tools can generate a full 
+CRUD application with entities, Seam framework classes (home- and list classes) and a user interface 
+with navigation and drilldown. If you use the Tools to create an entity class then the Tools will 
+automatically generate the corresponding Seam framework classes and userinterface (list and a detail 
+page). 
 </p>
 <p>JBoss tools is a Eclipse feature, that can be enabled on a project by adding some configuration 
 (JSF and Seam facets, the SeamBuilder and SeamNature) to the Eclipse project. JBoss Tools will 
@@ -577,17 +579,17 @@ setting up the tools. Play with the tools and study the code that the various to
 
 <h3>Configure JBoss Tools For The Workspace</h3>
 <p>Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a folder of your 
-choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.1.GA</code>. Open <code><strong>Prefereneces
+choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.2</code>. Open <code><strong>Prefereneces
 </strong></code> and follow the screenshots.</p>
 <ol class="vspace">
   <li>
 		JSF:
-		<img src="img/eclipse-jboss-tools-01.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-jboss-tools-01.png" style="width:650px; display:block;" />
 	</li>
 	<li>
 		Seam runtime:
-		<img src="img/eclipse-jboss-tools-02.png" style="width:700px; display:block;" />
-		<img src="img/eclipse-jboss-tools-03.png" style="width:700px; display:block;" />
+		<img src="img/eclipse-jboss-tools-02.png" style="width:650px; display:block;" />
+		<img src="img/eclipse-jboss-tools-03.png" style="width:650px; display:block;" />
 	</li>
 </ol>
 
@@ -640,23 +642,23 @@ the main source of configuration, so we'll start with the WAR.</p>
 <ol class="vspace">
 	<li>
 	  The WAR module:
-    <img src="img/eclipse-war-properties-07.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-war-properties-07.png" style="width:650px; display:block;" />
 		
 		<!--
-    <img src="img/eclipse-war-properties-04.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-war-properties-05.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-war-properties-04.png" style="width:650px; display:block;" />
+    <img src="img/eclipse-war-properties-05.png" style="width:650px; display:block;" />
 		-->
 		
-    <img src="img/eclipse-war-properties-08.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-war-properties-09.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-war-properties-08.png" style="width:650px; display:block;" />
+    <img src="img/eclipse-war-properties-09.png" style="width:650px; display:block;" />
 	</li>
 	<li>
 	  The EJB module:
-    <img src="img/eclipse-ejb-properties-01.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-01.png" style="width:650px; display:block;" />
 		
 		<!--
-    <img src="img/eclipse-ejb-properties-03.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-ejb-properties-05.png" style="width:700px; display:block;" />
+    <img src="img/eclipse-ejb-properties-03.png" style="width:650px; display:block;" />
+    <img src="img/eclipse-ejb-properties-05.png" style="width:650px; display:block;" />
 		-->
 		
 	</li>
@@ -861,7 +863,7 @@ workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
 </p>
 
 <h3>How To Browse (ctrl+clik) Into Java Code From a Visual Editor</h3>
-<p>The WAR pom must list all Java modules you want to browse into as emphasized in text below:
+<p>The WAR pom must list all Java modules you want to browse into:
 <pre>
 
   &lt;dependencies&gt;
@@ -892,10 +894,10 @@ workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
 
 <h3>How To Get JBoss Tools To Work In Vista 64 bit</h3>
 <p>It only works partially :-( It seems that everything except for the visual editors (VPE) works ok. 
-You will see the following error in the editor: "The VPE editor can't be run because your system 
-environment needs to be changed slightly. 
-<a href='http://www.jboss.org/community/wiki/JBosstoolsVisualEditorFAQ'>Find out more</a>". The link 
-points to a page with meaningless information regarding how to fix this for Vista64 with Jdk-6 64 bit 
+You will see the following message in the visual editor: <strong>"The VPE editor can't be run because your 
+system environment needs to be changed slightly. 
+<a href='http://www.jboss.org/community/wiki/JBosstoolsVisualEditorFAQ'>Find out more</a>"</strong>.
+The link points to a page with no information regarding how to fix this for Vista64 with Jdk-6 64 bit 
 and Eclipse-3.4 64 bit. You will also find that you are not able to browse into java code from the 
 visual editor, which for me is the most essential feature of the VPE. The only workaround I have 
 found so far is to download and install 32 bit versions of Jdk-6 and Eclipse-3.4 and install the 
