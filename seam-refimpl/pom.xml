@@ -60,6 +60,38 @@
 		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
 		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
 		<app.distributable>false</app.distributable> <!-- see: WEB-INF/components.xml and ejb/../resources/META-INF/jboss.xml -->
+		
+		<!-- 
+			Developer environment properties. 
+			Property values listed here is overridden by values in "profiles.xml" or by activating 
+			a profile in pom, see e.g. env-dev profile.
+		-->
+		<env>prod</env>
+		<env.debug>false</env.debug>
+		<env.unpack.modules>false</env.unpack.modules>
+		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+		<env.hibernate.show_sql>true</env.hibernate.show_sql>
+		<env.hibernate.format_sql>true</env.hibernate.format_sql>
+		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+		<jdk.debug>${env.debug}</jdk.debug>
+		<jdk.optimize>true</jdk.optimize>
+		<jdk.source>1.5</jdk.source>
+		<jdk.target>1.5</jdk.target>
+		
+		<as>jboss423</as>
+		<as.version>4.2</as.version>
+		<as.home>/jboss-4.2.3.GA-jdk6</as.home>
+		<as.deploy>${as.home}/server/default/deploy</as.deploy>
+		
+		<ds>hsqldb</ds>
+		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
+		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
+		<ds.server.name></ds.server.name>
+		<ds.database.name>${app.database.name}</ds.database.name>
+		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
+		<ds.user.name>sa</ds.user.name>
+		<ds.password></ds.password>
+		<!-- END: Developer environment properties. -->
 	</properties>
 
 	<profiles>
@@ -70,40 +102,15 @@
 					<name>env</name>
 					<value>prod</value>
 				</property>
-				<!-- Not good for inherited (child) poms: will allways evaluate to TRUE, don't know how to fix. 
-	      <file>
-	        <missing>profiles.xml</missing>
-	      </file>
-				-->
 			</activation>
 			<properties>
-				<!-- Developer environment properties. Can be modified by developer in "profiles.xml" -->
+				<!-- 
+					Property values listed here overrides property values in "profiles.xml"
+					and property values in the pom's properties section.
+					Run e.g. mvn install -Penv-prod or mvn install -Denv=prod to activate this profile
+				-->
 				<env>prod</env>
 				<env.debug>false</env.debug>
-				<env.unpack.modules>false</env.unpack.modules>
-				<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
-				<env.hibernate.show_sql>true</env.hibernate.show_sql>
-				<env.hibernate.format_sql>true</env.hibernate.format_sql>
-				<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
-				<jdk.debug>${env.debug}</jdk.debug>
-				<jdk.optimize>true</jdk.optimize>
-				<jdk.source>1.5</jdk.source>
-				<jdk.target>1.5</jdk.target>
-				
-				<as>jboss423</as>
-				<as.version>4.2</as.version>
-				<as.home>server/jboss-4.2.3.GA-jdk6</as.home>
-				<as.deploy>${as.home}/server/default/deploy</as.deploy>
-				
-				<ds>hsqldb</ds>
-				<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
-				<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
-				<ds.server.name></ds.server.name>
-				<ds.database.name>${app.database.name}</ds.database.name>
-				<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
-				<ds.user.name>sa</ds.user.name>
-				<ds.password></ds.password>
-				<!-- END: Developer environment properties. -->
 			</properties>
 		</profile>
 	</profiles>
