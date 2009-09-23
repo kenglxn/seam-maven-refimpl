@@ -838,21 +838,29 @@ the main source of configuration, so we'll start with the WAR.</p>
       &lt;h:outputText value=&quot;#{projectName}:&quot;/&gt;
       &lt;s:link view=&quot;/home.xhtml&quot; value=&quot;Home&quot; propagation=&quot;none&quot;/&gt;
     &lt;/rich:toolBarGroup&gt;
+
     &lt;!-- @newMenuItem@ --&gt;
     &lt;s:link view=&quot;/view/example/userList.xhtml&quot;
-                 value=&quot;User List&quot;
+      value=&quot;User List&quot;
       includePageParams=&quot;false&quot;
-           propagation=&quot;none&quot;/&gt;
+      propagation=&quot;none&quot;/&gt;
     
     <font color="blue">&lt;s:link view=&quot;/view/myEntityList.xhtml&quot;
-                 value=&quot;myEntity List&quot;
+      value=&quot;myEntity List&quot;
       includePageParams=&quot;false&quot;
-           propagation=&quot;none&quot;/&gt;</font>
+      propagation=&quot;none&quot;/&gt;</font>
     
     &lt;rich:toolBarGroup location=&quot;right&quot;&gt;
       &lt;h:outputText value=&quot;signed in as: #{identity.username}&quot; rendered=&quot;#{identity.loggedIn}&quot;/&gt;
-      &lt;s:link view=&quot;/login.xhtml&quot; value=&quot;Login&quot; rendered=&quot;#{not identity.loggedIn}&quot; propagation=&quot;none&quot;/&gt;
-      &lt;s:link view=&quot;/home.xhtml&quot; action=&quot;#{identity.logout}&quot; value=&quot;Logout&quot; rendered=&quot;#{identity.loggedIn}&quot; propagation=&quot;none&quot;/&gt;
+      &lt;s:link view=&quot;/login.xhtml&quot; 
+        value=&quot;Login&quot; 
+        rendered=&quot;#{not identity.loggedIn}&quot; 
+        propagation=&quot;none&quot;/&gt;
+      &lt;s:link view=&quot;/home.xhtml&quot; 
+        action=&quot;#{identity.logout}&quot; 
+        value=&quot;Logout&quot; 
+        rendered=&quot;#{identity.loggedIn}&quot; 
+        propagation=&quot;none&quot;/&gt;
     &lt;/rich:toolBarGroup&gt;
 &lt;/rich:toolBar&gt;
 	</pre>
