@@ -722,7 +722,146 @@ the main source of configuration, so we'll start with the WAR.</p>
 		<code><strong>myEntity.xhtml</strong></code>
 		<iframe frameborder="0" src="./code-listings/myEntity.xhtml.html"></iframe>
 	</div>
-	
+</li>
+<li>
+  We're almost there - only need to make some small changes to the genereated xhtml code and add a 
+	link to <code>myEntityList.xhtml</code> in <code>menu.xhtml</code>.
+	<ul>
+	<li>
+	<code><strong>myEntityList.xhtml</strong></code>
+	<pre style="font-size:10px;">
+&lt;!DOCTYPE composition PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+    &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;ui:composition xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+    xmlns:s=&quot;http://jboss.com/products/seam/taglib&quot;
+    xmlns:ui=&quot;http://java.sun.com/jsf/facelets&quot;
+    xmlns:f=&quot;http://java.sun.com/jsf/core&quot;
+    xmlns:h=&quot;http://java.sun.com/jsf/html&quot;
+    xmlns:rich=&quot;http://richfaces.org/rich&quot;
+    <font color="blue">template=&quot;/layout/template.xhtml&quot;&gt;</font>
+
+&lt;ui:define name=&quot;body&quot;&gt;
+    &lt;rich:panel&gt;
+        &lt;f:facet name=&quot;header&quot;&gt;myEntityList&lt;/f:facet&gt;
+        &lt;div class=&quot;results&quot;&gt;
+            &lt;h:outputText value=&quot;No myEntity exists&quot;
+                       rendered=&quot;#{empty myEntityList.resultList}&quot;/&gt;
+            &lt;h:dataTable id=&quot;myEntityList&quot; var=&quot;myEntity&quot;
+                      value=&quot;#{myEntityList.resultList}&quot;
+                   rendered=&quot;#{not empty myEntityList.resultList}&quot;&gt;
+                &lt;h:column&gt;
+                    &lt;f:facet name=&quot;header&quot;&gt;Id&lt;/f:facet&gt;
+                    #{myEntity.id}
+                &lt;/h:column&gt;
+                &lt;h:column&gt;
+                    &lt;f:facet name=&quot;header&quot;&gt;Name&lt;/f:facet&gt;
+                    &lt;s:link id=&quot;myEntity&quot;
+                         value=&quot;#{myEntity.name}&quot;
+                   propagation=&quot;none&quot;
+                         <font color="blue">view=&quot;/view/myEntity.xhtml&quot;&gt;</font>
+                        &lt;f:param name=&quot;myEntityId&quot;
+                                value=&quot;#{myEntity.id}&quot;/&gt;
+                    &lt;/s:link&gt;
+                &lt;/h:column&gt;
+            &lt;/h:dataTable&gt;
+        &lt;/div&gt;
+    &lt;/rich:panel&gt;
+    &lt;div class=&quot;actionButtons&quot;&gt;
+        &lt;s:button id=&quot;done&quot;
+               value=&quot;Create myEntity&quot;
+                <font color="blue">view=&quot;/view/myEntity.xhtml&quot;/&gt;</font>
+    &lt;/div&gt;
+&lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+	</pre>
+	</li>
+	<li>
+	<code><strong>myEntity.xhtml</strong></code>
+	<pre style="font-size:10px;">
+&lt;!DOCTYPE composition PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+    &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;ui:composition xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+    xmlns:s=&quot;http://jboss.com/products/seam/taglib&quot;
+    xmlns:ui=&quot;http://java.sun.com/jsf/facelets&quot;
+    xmlns:f=&quot;http://java.sun.com/jsf/core&quot;
+    xmlns:h=&quot;http://java.sun.com/jsf/html&quot;
+    xmlns:rich=&quot;http://richfaces.org/rich&quot;
+    <font color="blue">template=&quot;/layout/template.xhtml&quot;&gt;</font>
+
+&lt;ui:define name=&quot;body&quot;&gt;
+    &lt;h:form id=&quot;myEntityForm&quot;&gt;
+        &lt;rich:panel&gt;
+            &lt;f:facet name=&quot;header&quot;&gt;myEntity&lt;/f:facet&gt;
+            <font color="blue">&lt;s:decorate id=&quot;nameField&quot; template=&quot;/layout/edit.xhtml&quot;&gt;</font>
+                &lt;ui:define name=&quot;label&quot;&gt;Name&lt;/ui:define&gt;
+                &lt;h:inputText id=&quot;name&quot; required=&quot;true&quot;
+                             value=&quot;#{myEntityHome.instance.name}&quot;/&gt;
+            &lt;/s:decorate&gt;
+            &lt;div style=&quot;clear:both&quot;/&gt;
+        &lt;/rich:panel&gt;
+        &lt;div class=&quot;actionButtons&quot;&gt;
+            &lt;h:commandButton id=&quot;save&quot;
+                          value=&quot;Save&quot;
+                         action=&quot;#{myEntityHome.persist}&quot;
+                       rendered=&quot;#{!myEntityHome.managed}&quot;/&gt;
+            &lt;h:commandButton id=&quot;update&quot;
+                          value=&quot;Save&quot;
+                         action=&quot;#{myEntityHome.update}&quot;
+                       rendered=&quot;#{myEntityHome.managed}&quot;/&gt;
+            &lt;h:commandButton id=&quot;delete&quot;
+                          value=&quot;Delete&quot;
+                         action=&quot;#{myEntityHome.remove}&quot;
+                      immediate=&quot;true&quot;
+                       rendered=&quot;#{myEntityHome.managed}&quot;/&gt;
+            &lt;s:button propagation=&quot;end&quot;
+                               id=&quot;cancel&quot;
+                            value=&quot;Cancel&quot;
+                             <font color="blue">view=&quot;/view/myEntityList.xhtml&quot;/&gt;</font>
+        &lt;/div&gt;
+    &lt;/h:form&gt;
+&lt;/ui:define&gt;
+&lt;/ui:composition&gt;
+	</pre>
+	</li>
+	<li>
+	<code><strong>menu.xhtml</strong></code>
+	<pre style="font-size:10px;">
+&lt;rich:toolBar
+    xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+    xmlns:ui=&quot;http://java.sun.com/jsf/facelets&quot;
+    xmlns:h=&quot;http://java.sun.com/jsf/html&quot;
+    xmlns:f=&quot;http://java.sun.com/jsf/core&quot;
+    xmlns:s=&quot;http://jboss.com/products/seam/taglib&quot;
+    xmlns:rich=&quot;http://richfaces.org/rich&quot;&gt;
+    &lt;rich:toolBarGroup&gt;
+      &lt;h:outputText value=&quot;#{projectName}:&quot;/&gt;
+      &lt;s:link view=&quot;/home.xhtml&quot; value=&quot;Home&quot; propagation=&quot;none&quot;/&gt;
+    &lt;/rich:toolBarGroup&gt;
+    &lt;!-- @newMenuItem@ --&gt;
+    &lt;s:link view=&quot;/view/example/userList.xhtml&quot;
+                 value=&quot;User List&quot;
+      includePageParams=&quot;false&quot;
+           propagation=&quot;none&quot;/&gt;
+    
+    <font color="blue">&lt;s:link view=&quot;/view/myEntityList.xhtml&quot;
+                 value=&quot;myEntity List&quot;
+      includePageParams=&quot;false&quot;
+           propagation=&quot;none&quot;/&gt;</font>
+    
+    &lt;rich:toolBarGroup location=&quot;right&quot;&gt;
+      &lt;h:outputText value=&quot;signed in as: #{identity.username}&quot; rendered=&quot;#{identity.loggedIn}&quot;/&gt;
+      &lt;s:link view=&quot;/login.xhtml&quot; value=&quot;Login&quot; rendered=&quot;#{not identity.loggedIn}&quot; propagation=&quot;none&quot;/&gt;
+      &lt;s:link view=&quot;/home.xhtml&quot; action=&quot;#{identity.logout}&quot; value=&quot;Logout&quot; rendered=&quot;#{identity.loggedIn}&quot; propagation=&quot;none&quot;/&gt;
+    &lt;/rich:toolBarGroup&gt;
+&lt;/rich:toolBar&gt;
+	</pre>
+	</li>
+	</ul>
+</li>
+<li>
+	That's it! Pulish, start server and point your browser to 
+	<a href="http://localhost:8080/seam-tutorial/">http://localhost:8080/seam-tutorial/</a>
+	<img src="img/eclipse-seam-entity-05.png" style="width:600px; display:block;" />
 </li>
 </ol>
 
