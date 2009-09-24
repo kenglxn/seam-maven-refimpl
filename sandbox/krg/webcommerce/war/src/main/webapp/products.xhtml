@@ -15,10 +15,12 @@
 
     <ui:define name="left-content">
         <h:form>
-            <rich:tree style="width:300px" switchType="ajax" componentState="#{treeNodeUtil.componentState}">
-                <rich:recursiveTreeNodesAdaptor roots="#{categoryList.parentCategories}" var="_cat"
-                                                nodes="#{_cat.children}">
-                    <rich:treeNode>
+            <rich:tree style="width:300px"
+                       switchType="ajax"
+                       componentState="#{treeNodeUtil.componentState}"
+                       adviseNodeOpened="#{treeNodeUtil.adviseNodeOpened}">
+                <rich:treeNodesAdaptor nodes="#{parentCategories}" var="_cat">
+                    <rich:treeNode data="#{_cat.id}">
                         <s:link value="#{_cat.name}"
                                 view="/products.xhtml"
                                 title="#{_cat.name}"
@@ -27,7 +29,20 @@
                                      value="#{_cat.id}"/>
                         </s:link>
                     </rich:treeNode>
-                </rich:recursiveTreeNodesAdaptor>
+                    <rich:treeNodesAdaptor nodes="#{_cat.children}" var="_childCat">
+                        <rich:treeNode data="#{_childCat.id}">
+                            <s:link value="#{_childCat.name}"
+                                    view="/products.xhtml"
+                                    title="#{_childCat.name}"
+                                    propagation="none">
+                                <f:param name="catId"
+                                         value="#{_childCat.id}"/>
+                                <f:param name="isChild"
+                                         value="true"/>
+                            </s:link>
+                        </rich:treeNode>
+                    </rich:treeNodesAdaptor>
+                </rich:treeNodesAdaptor>
             </rich:tree>
         </h:form>
     </ui:define>
@@ -44,8 +59,7 @@
                     <f:facet name="header">
                         <s:link value="#{_product.name}"
                                 view="/product.xhtml"
-                                title="#{_product.name}"
-                                propagation="none">
+                                title="#{_product.name}">
                             <f:param name="prodId"
                                      value="#{_product.id}"/>
                         </s:link>
@@ -54,8 +68,7 @@
                                    var="_file"
                                    styleClass="imagelist">
                         <s:link view="/product.xhtml"
-                                title="#{_product.name}"
-                                propagation="none">
+                                title="#{_product.name}">
                             <f:param name="prodId"
                                      value="#{_product.id}"/>
                             <s:graphicImage value="#{_file.image}"

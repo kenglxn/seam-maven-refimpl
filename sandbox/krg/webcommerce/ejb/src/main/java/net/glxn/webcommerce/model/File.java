@@ -8,10 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
 import java.io.Serializable;
 
 @Entity
+@Table
 public class File implements Serializable {
 
     private static final long serialVersionUID = 6807801858063905283L;
@@ -21,6 +23,7 @@ public class File implements Serializable {
     private byte[] image;
     private String imageContentType;
     private Product product;
+    private Page page;
 
     @Id
     @GeneratedValue
@@ -66,5 +69,14 @@ public class File implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 }

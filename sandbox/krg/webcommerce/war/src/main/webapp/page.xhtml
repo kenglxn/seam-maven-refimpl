@@ -20,7 +20,7 @@
     <ui:define name="left-content">
         
         <ui:repeat var="_page"
-                   value="#{pageList.childPages}">
+                   value="#{childPages}">
             <rich:panel bodyClass="hide">
                 <f:facet name="header">
                     <s:link value="#{_page.title}"
@@ -41,6 +41,13 @@
         <f:subview id="childIdNotPresentSubview"
                    rendered="#{empty childId}">
             <h1><h:outputText value="#{pageHome.instance.title}"/></h1>
+            <rich:dataList value="#{pageHome.instance.files}"
+                           var="_file"
+                           styleClass="imagelist">
+                <s:graphicImage value="#{_file.image}"
+                                fileName="#{_file.id}_large"
+                                alt="[image]"/>
+            </rich:dataList>
             <h:outputText value="#{pageHome.instance.content}"
                           escape="false"/>
             <s:link value="edit page"
@@ -50,6 +57,13 @@
         <f:subview id="childIdPresentSubview"
                    rendered="#{not empty childId}">
             <h1><h:outputText value="#{child.title}"/></h1>
+            <rich:dataList value="#{child.files}"
+                           var="_file"
+                           styleClass="imagelist">
+                <s:graphicImage value="#{_file.image}"
+                                fileName="#{_file.id}_large"
+                                alt="[image]"/>
+            </rich:dataList>
             <h:outputText value="#{child.content}"
                           escape="false"/>
 

@@ -1,32 +1,32 @@
 package net.glxn.webcommerce.model;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
+@Table
 public class Product implements Serializable {
     private Long id;
     private String name;
     private String description;
+    private int price;
     private Category category;
     private Collection<File> files = new ArrayList<File>();
-    private Collection<ShoppingCart> shoppingcarts = new ArrayList<ShoppingCart>();
 
     private static final long serialVersionUID = -8737857722150690015L;
+    private Integer version;
 
     @Id
     @GeneratedValue
@@ -38,6 +38,15 @@ public class Product implements Serializable {
         this.id = id;
     }
 
+    @Version
+    public Integer getVersion() {
+        return version;
+    }
+
+    private void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public String getName() {
         return name;
     }
@@ -46,9 +55,17 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-
+    @Lob
     public String getDescription() {
         return description;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public void setDescription(String description) {
@@ -64,7 +81,7 @@ public class Product implements Serializable {
         this.category = category;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
     public Collection<File> getFiles() {
         return files;
     }
@@ -83,19 +100,5 @@ public class Product implements Serializable {
     public void removeFile(File file) {
         this.files.remove(file);
         file.setProduct(null);
-    }
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
-    public Collection<ShoppingCart> getShoppingcarts() {
-        return shoppingcarts;
-    }
-
-    public void setShoppingcarts(Collection<ShoppingCart> shoppingcarts) {
-        this.shoppingcarts = shoppingcarts;
-    }
-
-    @Transient
-    public void addShoppingcart(ShoppingCart shoppingCart) {
-        this.shoppingcarts.add(shoppingCart);
     }
 }

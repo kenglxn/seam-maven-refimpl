@@ -13,17 +13,19 @@
             <h:outputLink value="#{request.contextPath}/products.seam"
                           title="#{messages.richmenuform_productslinktext}">
                 #{messages.richmenuform_productslinktext}
+                <s:conversationId/>
             </h:outputLink>
         </rich:toolBarGroup>
         <rich:toolBarGroup id="pages" itemSeparator="none">
             <a4j:repeat var="_page"
-                        value="#{pageList.parentPages}"
+                        value="#{parentPages}"
                         rowKeyVar="_i">
                 <h:outputLink value="#{request.contextPath}/page.seam"
                               title="#{_page.title}"
                               styleClass="menulink">
                     <f:param name="pageId"
                              value="#{_page.id}"/>
+                    <s:conversationId/>
                     #{_page.title}
                 </h:outputLink>
             </a4j:repeat>
@@ -54,6 +56,9 @@
             <h:outputLink value="#{request.contextPath}/view/fileupload/upload.seam">
                 upload
             </h:outputLink>
+        </rich:toolBarGroup>
+        <rich:toolBarGroup id="shoppingcart" itemSeparator="none">
+            Products in Cart: #{userShoppingCart.products.size()}
         </rich:toolBarGroup>
         <rich:toolBarGroup location="right">
             <h:inputText styleClass="search"

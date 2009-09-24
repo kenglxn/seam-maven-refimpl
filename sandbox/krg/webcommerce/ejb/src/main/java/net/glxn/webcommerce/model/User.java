@@ -1,5 +1,6 @@
 package net.glxn.webcommerce.model;
 
+import net.glxn.webcommerce.model.enums.RoleType;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 

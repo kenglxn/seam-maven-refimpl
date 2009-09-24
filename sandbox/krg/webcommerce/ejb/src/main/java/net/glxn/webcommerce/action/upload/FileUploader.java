@@ -1,6 +1,7 @@
 package net.glxn.webcommerce.action.upload;
 
 import net.glxn.webcommerce.action.home.FileHome;
+import net.glxn.webcommerce.action.home.PageHome;
 import net.glxn.webcommerce.action.home.ProductHome;
 import net.glxn.webcommerce.model.File;
 import org.jboss.seam.annotations.In;
@@ -26,19 +27,25 @@ public class FileUploader implements Serializable {
     @In(required = false)
     ProductHome productHome;
 
+    @In(required = false)
+    PageHome pageHome;
+
     private static final long serialVersionUID = -1L;
 
     public void listener(UploadEvent event) throws IOException {
         UploadItem item = event.getUploadItem();
-        log.debug("uploading file #0", item.getFile().getAbsolutePath());
+        log.info("uploading file #0", item.getFile().getName());
         fileHome.clearInstance();
         File file = fileHome.getInstance();
         byte[] byteFromFile = FileUtil.getByteFromFile(item.getFile());
         byte[] croppedImage = FileUtil.cropImage(byteFromFile);
         file.setImage(croppedImage);
         file.setImageContentType(item.getContentType());
-        if (productHome.isManaged()) {
+        if (productHome != null && productHome.isManaged()) {
             productHome.getInstance().addFile(file);
+        }
+        if (pageHome != null && pageHome.isManaged()) {
+            pageHome.getInstance().addFile(file);
         }
         fileHome.persist();
     }
