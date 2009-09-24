@@ -1,8 +1,5 @@
 package net.glxn.webcommerce.model;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,12 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
+@Table
 public class Category implements Serializable {
     private Long id;
     private String name;
@@ -24,6 +23,7 @@ public class Category implements Serializable {
     private Collection<Product> products = new ArrayList<Product>();
     private Collection<Category> children = new ArrayList<Category>();
     private static final long serialVersionUID = -2490998798996009141L;
+    private Integer version;
 
     @Id
     @GeneratedValue
@@ -33,6 +33,15 @@ public class Category implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Version
+    public Integer getVersion() {
+        return version;
+    }
+
+    private void setVersion(Integer version) {
+        this.version = version;
     }
 
     public String getName() {
@@ -53,7 +62,7 @@ public class Category implements Serializable {
         this.parent = parent;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "parent")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
     public Collection<Category> getChildren() {
         return children;
     }

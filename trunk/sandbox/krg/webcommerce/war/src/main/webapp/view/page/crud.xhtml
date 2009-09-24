@@ -62,6 +62,49 @@
                     </f:subview>
                 </a4j:outputPanel>
             </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Add Files
+                </legend>
+                <h:outputText value="Product must be saved before files can be added!"
+                              rendered="#{!pageHome.managed}"/>
+                <a4j:outputPanel id="fileuploadpanel"
+                                 rendered="#{pageHome.managed}">
+                    <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
+                                     maxFilesQuantity="5"
+                                     listHeight="50">
+                        <a4j:support event="onuploadcomplete">
+                            <s:conversationId/>
+                        </a4j:support>
+                    </rich:fileUpload>
+                </a4j:outputPanel>
+            </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Remove Files
+                </legend>
+                <h:outputText value="Page must be saved before files can be removed!"
+                              rendered="#{!pageHome.managed}"/>
+                <a4j:outputPanel id="fileremovalpanel"
+                                 rendered="#{pageHome.managed}">
+                    <rich:dataList value="#{pageHome.instance.files}"
+                                   var="_file"
+                                   styleClass="imagelist">
+                        <s:graphicImage value="#{_file.image}"
+                                        fileName="#{_file.id}"
+                                        alt="[image]">
+                            <s:transformImageSize width="60"
+                                                  maintainRatio="true"/>
+                        </s:graphicImage>
+                        <s:link value="remove"
+                                action="#{fileAction.removeFileFromProductAndDeleteFile}"
+                                styleClass="removefilelink">
+                            <f:param name="fileId"
+                                     value="#{_file.id}"/>
+                        </s:link>
+                    </rich:dataList>
+                </a4j:outputPanel>
+            </fieldset>
             <fieldset class="buttons">
                 <h:commandButton id="save"
                                  value="Save"
@@ -80,6 +123,12 @@
                           action="#{pageHome.clearInstance}"
                           id="new"
                           value="New"/>
+                <s:button propagation="none"
+                          id="view"
+                          value="View"
+                          view="/page.xhtml">
+                    <f:param name="pageId" value="#{pageHome.instance.id}"/>
+                </s:button>
                 <s:button propagation="end"
                           id="cancel"
                           value="Cancel"

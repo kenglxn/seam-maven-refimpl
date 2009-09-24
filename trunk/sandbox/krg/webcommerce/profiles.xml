@@ -200,8 +200,8 @@
     </profiles>
 
     <activeProfiles>
-        <!--<activeProfile>ds-mysql5</activeProfile>-->
-        <activeProfile>ds-hsqldb</activeProfile>
+        <activeProfile>ds-mysql5</activeProfile>
+        <!--<activeProfile>ds-hsqldb</activeProfile>-->
         <!--<activeProfile>ds-sqlserver</activeProfile>-->
         <!--<activeProfile>ds-postgresql</activeProfile>-->
 

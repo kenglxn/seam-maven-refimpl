@@ -6,7 +6,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:rich="http://richfaces.org/rich">
-    <ui:repeat var="_page" value="#{pageList.parentPages}">
+    <ui:repeat var="_page" value="#{parentPages}">
         <li class="page #{_page.id eq pageHome.id ? 'current' : ''}">
             <span>
                 <s:link value="#{_page.title}"
@@ -18,7 +18,7 @@
             </span>
         </li>
     </ui:repeat>
-    <li class="products #{isProductPage eq 'true' ? 'current' : ''}">
+    <li class="products">
             <span>
                 <s:link value="#{messages.products}"
                         view="/products.xhtml"

@@ -11,8 +11,8 @@ import net.glxn.webcommerce.model.Category;
 import net.glxn.webcommerce.model.File;
 import net.glxn.webcommerce.model.Page;
 import net.glxn.webcommerce.model.Product;
-import net.glxn.webcommerce.model.RoleType;
 import net.glxn.webcommerce.model.User;
+import net.glxn.webcommerce.model.enums.RoleType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Logger;
@@ -113,6 +113,7 @@ public class DataPopulator {
             Product product = productHome.getInstance();
             product.setName(c + "product" + iter);
             product.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at erat mi, at cursus orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam in tellus dolor. Nulla erat tortor, pulvinar tincidunt pulvinar eu, pulvinar id augue. Sed id arcu tellus. Vivamus fermentum fermentum hendrerit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.");
+            product.setPrice(iter + 200);
             product.setCategory(category);
             fileHome.clearInstance();
             File file = fileHome.getInstance();

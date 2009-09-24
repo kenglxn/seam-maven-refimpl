@@ -1,8 +1,5 @@
 package net.glxn.webcommerce.model;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,13 +9,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
+@Table
 public class Page implements Serializable {
 
 
@@ -28,6 +28,7 @@ public class Page implements Serializable {
     private String content;
     private Page parent;
     private List<Page> children = new ArrayList<Page>();
+    private Collection<File> files = new ArrayList<File>();
     private static final long serialVersionUID = 4044663932205769319L;
 
     @Id
@@ -76,6 +77,15 @@ public class Page implements Serializable {
         this.children = children;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "page")
+    public Collection<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Collection<File> files) {
+        this.files = files;
+    }
+
     @Lob
     public String getContent() {
         return content;
@@ -84,4 +94,11 @@ public class Page implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Transient
+    public void addFile(File file) {
+        this.files.add(file);
+        file.setPage(this);
+    }
+
 }

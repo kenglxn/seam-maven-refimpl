@@ -2,6 +2,8 @@ package net.glxn.webcommerce.action.list;
 
 import net.glxn.webcommerce.action.home.PageHome;
 import net.glxn.webcommerce.model.Page;
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
@@ -13,6 +15,8 @@ import java.util.List;
 @Name("pageList")
 public class PageList extends EntityQuery<Page> {
 
+    private static final long serialVersionUID = 4275971785526395702L;
+
     @In
     EntityManager entityManager;
 
@@ -22,32 +26,36 @@ public class PageList extends EntityQuery<Page> {
     @In(required = false)
     @Out(required = false)
     Page child;
-
     @In(required = false)
     @Out(required = false)
     Long childId;
-    private static final long serialVersionUID = 4275971785526395702L;
+
+    @Out(required = false, scope = ScopeType.CONVERSATION)
+    private List<Page> parentPages;
+
+    @Out(required = false, scope = ScopeType.PAGE)
+    private List<Page> childPages;
 
     public PageList() {
-        setEjbql("select page from Page page");
+        setEjbql("select distinct(page) from Page page left join fetch page.children ");
     }
 
-    public List getParentPages() {
-        return entityManager.createQuery("select page from Page page where page.parent is null")
-                .getResultList();
+    @Factory("parentPages")
+    public void initParentPages() {
+        setEjbql("select distinct(page) from Page page left join fetch page.children where page.parent is null");
+        parentPages = getResultList();
     }
 
-    public List getChildPages() {
-        return entityManager.createQuery("select page from Page page where page.parent.id = :pageId")
-                .setParameter("pageId", pageHome.getId())
-                .getResultList();
+    @Factory("childPages")
+    public void initChildPages() {
+        setEjbql("select distinct(page) from Page page left join fetch page.children where page.parent.id = #{pageHome.instance.id}");
+        childPages = getResultList();
     }
 
     public Page childById() {
         if (child == null || !childId.equals(child.getId())) {
-            child = (Page) entityManager.createQuery("select page from Page page where page.id = :pageId")
-                    .setParameter("pageId", childId)
-                    .getSingleResult();
+            setEjbql("select distinct(page) from Page page left join fetch page.children where page.id = #{childId}");
+            child = getSingleResult();
         }
         return child;
     }
