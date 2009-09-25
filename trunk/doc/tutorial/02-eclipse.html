@@ -458,13 +458,28 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 		particular when you make modifications to the EAR module. Then the fix is to run 
 		<code>mvn install -Pexplode</code> again.
 	</li>
+	<li>
+		<strong>Important:</strong> The child pom's <code>&lt;relativePath&gt;</code> tag must point to 
+		the parent pom. If it don't, the child pom will pick up the parent pom from your local .m2 repo 
+		and will be missing profiles and property values activated trough the parent pom's 
+		<code>profiles.xml</code>.
+		<pre style="font-size:9px;">
+		
+&lt;parent&gt;
+  &lt;groupId&gt;no.knowit.seam&lt;/groupId&gt;
+  &lt;artifactId&gt;seam-refimpl&lt;/artifactId&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  <strong>&lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;</strong>
+&lt;/parent&gt;
+		</pre>
+	</li>
 </ol>
 
 <h3>Maven Builder</h3>
 <p>As an alternative to WTP you can create a Maven builder that hooks in to the 
 <code>process-classes</code> goal. The Maven builder will then take care of the incremental 
 deployment. In combination with the <code style="white-space:nowrap">mvn install -Pexplode</code>
-goal you will have a complete build/deploy environment without WTP.</p>
+goal you will have a complete <strong>compile- build- deploy</strong> environment without WTP.</p>
 <ol>
 	<li>
 	  Configure the Maven Builder.<br/>
@@ -474,9 +489,9 @@ goal you will have a complete build/deploy environment without WTP.</p>
     <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
     <img src="img/eclipse-maven-builder-01.png" style="width:500px; display:block;" />
     <img src="img/eclipse-maven-builder-02.png" style="width:500px; display:block;" />
-		<strong>Note</strong>: Experiment with the <code>Base directory</code> variable. If you use 
-		<code>${project_loc}</code> then the builder will run only on the sub project that contains
-		the modified file - resulting in a faster build cycle.
+		<strong>Note</strong>: Experiment with the <code>Base directory</code> variable. If you use the 
+		<code>${project_loc}</code> variable then the builder will run only on the sub project that 
+		contains the modified file - resulting in a faster build cycle.
     <img src="img/eclipse-maven-builder-03.png" style="width:500px; display:block;" />
 	</li>
 	<li>
@@ -530,7 +545,8 @@ goal you will have a complete build/deploy environment without WTP.</p>
 	<li>
 		<strong>Important:</strong> The child pom's <code>&lt;relativePath&gt;</code> tag must point to 
 		the parent pom. If it don't, the child pom will pick up the parent pom from your local .m2 repo 
-		and will be missing all profiles and properties from the parent pom in the project folder.
+		and will be missing profiles and property values activated trough the parent pom's 
+		<code>profiles.xml</code>.
 		<pre style="font-size:9px;">
 		
 &lt;parent&gt;
@@ -672,11 +688,10 @@ the main source of configuration, so we'll start with the WAR.</p>
 	</li>
 </ol>
 
-<h2>Play with the JBoss Tools</h2>
+<h2 id="play-with-the-jboss-tools">Play with the JBoss Tools</h2>
 <p>In this section we'll play with the tools.</p>
 
-<h3>Create an Entity Bean the Seam Way</h3>
-<p>Create an Entity Bean with full CRUD and UI in 20 seconds.</p>
+<h3 id="entity-bean-the-seam-way">Create an Entity Bean the Seam Way</h3>
 <ol class="vspace">
 <li>
 	Open Seam perspective.
@@ -874,12 +889,8 @@ the main source of configuration, so we'll start with the WAR.</p>
 </li>
 </ol>
 
-
-<div style="display:none;">
-<h3>Reverse Engeneering - Done in 60 Seconds</h3>
-<p>Why use Rails when we can stitch with Seam? Demonstrate reverse engeneering from a database
-  containing five tables, full CRUD functionality, UI and navigation.</p>
-</div>
+<h3 id="done-in-60-seconds">Reverse Engeneering - Done in 60 Seconds!</h3>
+<p>tbd...</p>
 
 <h2>How To's</h2>
 <h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
