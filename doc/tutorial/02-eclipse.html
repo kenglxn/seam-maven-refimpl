@@ -348,9 +348,8 @@ and then import the project all over again.
 
 		</pre>
 		</div>
-		You can run the goal(s) as needed by selecting the 
-		<code><strong>Run As &gt; Maven build</strong> </code>
-		from the <strong>parent</strong> project menu.
+		You can run the goal(s) as needed by right clicking on the <strong>parent</strong> project and 
+		select <code><strong>Run As &gt; Maven build</strong> </code> from the menu.
     <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
 	</li>
 	<li>
@@ -376,7 +375,8 @@ defined an <code>explode</code> profile for the Maven process-classes goal. All 
 define a Maven builder that utilizes this profile on the <code>process-classes</code> goal.
 </p>
 <h3>WTP</h3>
-<p>This section explains how to use WTP to deploy your project.</p>
+<p>This section explains how to use WTP  <span style="display:none;">a.k.a. WTF</span> to 
+deploy your project.</p>
 <ol>
 	<li>
 		Open the <strong>JBoss Server View</strong> and add project to server.<br/>
@@ -653,27 +653,19 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 -->
 
 
-<h3 id="configure-jboss-tools-for-a-project">Configure JBoss Tools for a Project</h3>
+<h3 id="configure-jboss-tools-for-a-project">Configure JBoss Tools For a Project</h3>
 <p>JBoss Tools will manage two projects: the WAR and the EJB project. The WAR project will be 
 the main source of configuration, so we'll start with the WAR.</p>
 <ol class="vspace">
 	<li>
 	  The WAR module:
     <img src="img/eclipse-war-properties-07.png" style="width:650px; display:block;" />
-		<!--
-    <img src="img/eclipse-war-properties-04.png" style="width:650px; display:block;" />
-    <img src="img/eclipse-war-properties-05.png" style="width:650px; display:block;" />
-		-->
     <img src="img/eclipse-war-properties-08.png" style="width:650px; display:block;" />
     <img src="img/eclipse-war-properties-09.png" style="width:650px; display:block;" />
 	</li>
 	<li>
 	  The EJB module:
     <img src="img/eclipse-ejb-properties-01.png" style="width:650px; display:block;" />
-		<!--
-    <img src="img/eclipse-ejb-properties-03.png" style="width:650px; display:block;" />
-    <img src="img/eclipse-ejb-properties-05.png" style="width:650px; display:block;" />
-		-->
 	</li>
 	<li>
 	  The EAR module:<br/>
@@ -688,7 +680,7 @@ the main source of configuration, so we'll start with the WAR.</p>
 	</li>
 </ol>
 
-<h2 id="play-with-the-jboss-tools">Play with the JBoss Tools</h2>
+<h2 id="play-with-the-jboss-tools">Play With The JBoss Tools</h2>
 <p>In this section we'll play with the tools.</p>
 
 <h3 id="entity-bean-the-seam-way">Create an Entity Bean the Seam Way</h3>
@@ -703,7 +695,8 @@ the main source of configuration, so we'll start with the WAR.</p>
 	<img src="img/eclipse-seam-entity-01.png" style="width:500px; display:block;" />
 </li>
 <li>
-	Fill in the <strong>Seam entity class name</strong> e.g. MyEntity.<br/>
+	Fill in the <strong>Seam entity class name</strong>, e.g. <code>MyEntity</code>, and click 
+	<strong>Finish</strong><br/>.
 	<img src="img/eclipse-seam-entity-02.png" style="width:400px;" class="inline-block" />
 	<img src="img/eclipse-seam-entity-03.png" style="width:400px;" class="inline-block" />
 </li>
@@ -739,9 +732,12 @@ the main source of configuration, so we'll start with the WAR.</p>
 	</div>
 </li>
 <li>
-  We're almost there - only need to make some small changes to the genereated xhtml code and add a 
-	link to <code>myEntityList.xhtml</code> in <code>menu.xhtml</code> (<font color="blue">see the 
-	blue text</font>).
+  We're almost there. We configured <strong>Seam Settings</strong> to generate <code>xhtml</code> 
+	files to the <code>webapp/view</code> folder, but the code generator does not take this into 
+	account. The links in the generated <code>xhtml</code> code "assumes" that the code is generated
+	to the <code>webapp</code> folder. So, to finish up, we fix this flaw by making some small changes 
+	to the genereated <code>xhtml</code> code. Also add a link to <code>myEntityList.xhtml</code> in 
+	<code>menu.xhtml</code> (<font color="blue">see the blue text</font>).
 	<ul>
 	<li>
 	<code><strong>myEntityList.xhtml</strong></code>
@@ -881,16 +877,46 @@ the main source of configuration, so we'll start with the WAR.</p>
 	</pre>
 	</li>
 	</ul>
-</li>
-<li>
-	That's it! Publish, start server and point your browser to 
-	<a href="http://localhost:8080/seam-tutorial/">http://localhost:8080/seam-tutorial/</a>
-	<img src="img/eclipse-seam-entity-05.png" style="width:600px; display:block;" />
-</li>
+	</li>
+	<li>
+		That's it! Run <code>mvn install -Pexplode</code> to do an initial deploy, start server and 
+		point your browser to 
+		<a href="http://localhost:8080/seam-tutorial/">http://localhost:8080/seam-tutorial/</a>
+		<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+		<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+		<img src="img/eclipse-seam-entity-05.png" style="width:600px; display:block;" />
+	</li>
 </ol>
 
 <h3 id="done-in-60-seconds">Reverse Engeneering - Done in 60 Seconds!</h3>
-<p>tbd...</p>
+<p>Well, the tutorial is not done in 60 seconds, but the revrese engeneering is.</p>
+<p>Here is what we will do in this tutorial:</p>
+<ul>
+	<li>
+		Import a database schema to MySQL.
+	</li>
+	<li>
+		Import sample data into the schema.
+	</li>
+	<li>
+		Prepare the project. We'll reuse the project from the previous section.
+	</li>
+	<li>
+	  Configure Seam to generate <code>xhtml</code> files to the <code>webapp</code>folder.
+	</li>
+	<li>
+	  Connect data source (pointing to the imported schema).
+	</li>
+	<li>
+	  Define a Hibernate console.
+	</li>
+	<li>
+		Generate entities.
+	</li>
+	<li>
+		Deploy.
+	</li>
+</ul>
 
 <h2>How To's</h2>
 <h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
