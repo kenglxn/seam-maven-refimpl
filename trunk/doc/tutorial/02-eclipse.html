@@ -686,6 +686,48 @@ the main source of configuration, so we'll start with the WAR.</p>
 <h3 id="entity-bean-the-seam-way">Create an Entity Bean the Seam Way</h3>
 <ol class="vspace">
 <li>
+	Configure <code>profiles.xml</code>:
+	<pre>
+
+&lt;profilesXml&gt;
+  &lt;profiles&gt;
+  .
+  .
+  &lt;!-- MySql5 --&gt;
+  &lt;profile&gt;
+    &lt;id&gt;ds-mysql5&lt;/id&gt;
+    .
+      <font color="blue">&lt;ds.database.name&gt;refimpl_db&lt;/ds.database.name&gt;</font>
+    .
+  &lt;/profile&gt;
+  .
+  &lt;!-- jboss-4.2.3 --&gt;
+  &lt;profile&gt;
+    &lt;id&gt;as-jboss423&lt;/id&gt;
+    .
+      <font color="blue">&lt;as.home&gt;C:/dev/server/jboss-4.2.3.GA-jdk6&lt;/as.home&gt;</font>
+      <font color="blue">&lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;</font>
+    .
+  &lt;/profile&gt;
+  .
+  &lt;!-- development environment --&gt;
+  &lt;profile&gt;
+    &lt;id&gt;env-dev&lt;/id&gt;
+    .
+      <font color="blue">&lt;env.hibernate.hbm2ddl.auto&gt;update&lt;/env.hibernate.hbm2ddl.auto&gt;</font>
+    .
+  &lt;/profile&gt;
+  &lt;/profiles&gt;
+
+  <font color="blue">&lt;activeProfiles&gt;
+    &lt;activeProfile&gt;env-dev&lt;/activeProfile&gt;
+    &lt;activeProfile&gt;ds-mysql5&lt;/activeProfile&gt;  
+    &lt;activeProfile&gt;as-jboss423&lt;/activeProfile&gt;
+  &lt;/activeProfiles&gt;</font>
+&lt;/profilesXml&gt;
+	</pre>	
+</li>
+<li>
 	Open Seam perspective.
 	<img src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
 </li>
@@ -958,41 +1000,7 @@ the main source of configuration, so we'll start with the WAR.</p>
 &lt;/rich:toolBar&gt;
 	</pre>
 	
-	<p><code>profiles.xml</code></p>
-	<pre>
-.
-.
-&lt;!-- MySql5 --&gt;
-&lt;profile&gt;
-  &lt;id&gt;ds-mysql5&lt;/id&gt;
-  .
-    <font color="blue">&lt;ds.database.name&gt;refimpl_db&lt;/ds.database.name&gt;</font>
-  .
-&lt;/profile&gt;
-.
-&lt;!-- jboss-4.2.3 --&gt;
-&lt;profile&gt;
-  &lt;id&gt;as-jboss423&lt;/id&gt;
-  .
-    <font color="blue">&lt;as.home&gt;C:/dev/server/jboss-4.2.3.GA-jdk6&lt;/as.home&gt;</font>
-    <font color="blue">&lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;</font>
-  .
-&lt;/profile&gt;
-.
-&lt;!-- development environment --&gt;
-&lt;profile&gt;
-  &lt;id&gt;env-dev&lt;/id&gt;
-  .
-    <font color="blue">&lt;env.hibernate.hbm2ddl.auto&gt;update&lt;/env.hibernate.hbm2ddl.auto&gt;</font>
-  .
-&lt;/profile&gt;
-.
-<font color="blue">&lt;activeProfiles&gt;
-  &lt;activeProfile&gt;env-dev&lt;/activeProfile&gt;
-  &lt;activeProfile&gt;ds-mysql5&lt;/activeProfile&gt;  
-  &lt;activeProfile&gt;as-jboss423&lt;/activeProfile&gt;
-&lt;/activeProfiles&gt;</font>
-	</pre>
+
 
 	<img src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
 	<img src="img/eclipse-seam-db-entity-09.png" style="width:350px; display:block;" />
