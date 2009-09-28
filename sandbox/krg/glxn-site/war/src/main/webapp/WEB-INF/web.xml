@@ -5,7 +5,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   
 	<display-name>${app.display.name}</display-name>
-    <distributable></distributable>
 	
 	<!--
 		Uncomment if urlrewritefilter or web:rewrite-filter is not applied. Also add index.html to context root!
@@ -94,27 +93,6 @@
 		<servlet-name>Seam Resource Servlet</servlet-name>
 		<url-pattern>/seam/resource/*</url-pattern>
 	</servlet-mapping>
-
-	<!-- URL Rewrite Filter - declare after seam filter -->
-	<!--
-		There are two rewrite options in Seam, you can choose to either use the org.tuckey 
-		UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both. 
-		The native Seam rewriting does not use the org.tuckey rewrite engine at all. 
-		If you are going to use Seam's native rewriting, then remove the org.tuckey
-		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file. 
-		With Seam 2.1 it is recommend to use Seam's native rewrite engine.
-	 -->
-	<!--	
-	<filter>
-		<filter-name>UrlRewriteFilter</filter-name>
-		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>UrlRewriteFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	-->
 	
 	<!-- Faces Servlet --> 
 	<servlet>

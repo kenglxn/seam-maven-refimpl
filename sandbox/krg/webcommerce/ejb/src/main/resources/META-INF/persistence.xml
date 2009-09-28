@@ -7,6 +7,7 @@
     <persistence-unit name="${app.persistence.unit.name}" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <jta-data-source>${app.jta.data.source}</jta-data-source>
+        <class>net.glxn.webcommerce.model.ImageByte</class>
         <properties>
             <!--
                Binds the EntityManagerFactory to JNDI where Seam can look it up. This is only relevant when

@@ -44,17 +44,8 @@
         <rich:toolBarGroup id="adminfunctionality"
                            itemSeparator="none"
                            rendered="#{identity.hasRole('admin')}">
-            <h:outputLink value="#{request.contextPath}/view/page/crud.seam">
-                page
-            </h:outputLink>
-            <h:outputLink value="#{request.contextPath}/view/category/crud.seam">
-                category
-            </h:outputLink>
-            <h:outputLink value="#{request.contextPath}/view/product/crud.seam">
-                product
-            </h:outputLink>
-            <h:outputLink value="#{request.contextPath}/view/fileupload/upload.seam">
-                upload
+            <h:outputLink value="#{request.contextPath}/admin.seam">
+                admin
             </h:outputLink>
         </rich:toolBarGroup>
         <rich:toolBarGroup id="shoppingcart" itemSeparator="none">

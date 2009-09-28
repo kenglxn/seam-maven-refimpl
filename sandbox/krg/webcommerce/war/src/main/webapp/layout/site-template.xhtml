@@ -5,10 +5,14 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a="http://richfaces.org/a4j"
-      xmlns:s="http://jboss.com/products/seam/taglib">
+      xmlns:s="http://jboss.com/products/seam/taglib"
+      xmlns:rich="http://richfaces.org/rich">
 <f:view>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <ui:insert name="scripts">
+            
+        </ui:insert>
         <!--<script src="#{request.contextPath}/js/prototype.js" type="text/javascript" charset="utf-8"></script>-->
         <!--<script src="#{request.contextPath}/js/effects.js" type="text/javascript" charset="utf-8"></script>-->
         <!--<script src="#{request.contextPath}/js/glider.js" type="text/javascript" charset="utf-8"></script>-->
@@ -26,7 +30,8 @@
 
         <link rel="stylesheet" href="#{request.contextPath}/css/all.css" type="text/css" media="screen, projection"/>
         <link rel="stylesheet" href="#{request.contextPath}/css/site.css" type="text/css" media="screen, projection"/>
-        <link rel="stylesheet" href="#{request.contextPath}/css/colorscheme.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="#{request.contextPath}/css/colorscheme.css" type="text/css"
+              media="screen, projection"/>
         <link rel="shortcut icon" href="#{request.contextPath}/img/favicon.ico"/>
 
         <ui:insert name="head-title">
@@ -78,13 +83,13 @@
                         <div id="main-content-body">
                             <div>
                                 <div>
-                                    <h:messages id="messages"
-                                                globalOnly="true"
-                                                styleClass="message"
-                                                errorClass="errormsg"
-                                                infoClass="infomsg"
-                                                warnClass="warnmsg"
-                                                rendered="#{showGlobalMessages != 'false'}"/>
+                                    <rich:messages id="messages"
+                                                   globalOnly="true"
+                                                   styleClass="message"
+                                                   errorClass="errormsg"
+                                                   infoClass="infomsg"
+                                                   warnClass="warnmsg"
+                                                   showDetail="false"/>
                                     <ui:insert name="main-content-body">
 
                                     </ui:insert>

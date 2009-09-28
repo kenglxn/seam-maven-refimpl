@@ -9,6 +9,12 @@
                 xmlns:a4j="http://richfaces.org/a4j"
                 template="layout/site-template.xhtml">
 
+    <ui:define name="scripts">
+        <script src="#{request.contextPath}/js/dojo-release-1.3.2/dojo/dojo.js" type="text/javascript"
+                charset="utf-8"></script>
+        <script src="#{request.contextPath}/js/zoom.js" type="text/javascript" charset="utf-8"></script>
+    </ui:define>
+
     <ui:define name="menu">
         <ui:include src="view/includes/menu/richmenuform.xhtml"/>
     </ui:define>
@@ -18,7 +24,7 @@
     </ui:define>
 
     <ui:define name="left-content">
-        
+
         <ui:repeat var="_page"
                    value="#{childPages}">
             <rich:panel bodyClass="hide">
@@ -44,15 +50,43 @@
             <rich:dataList value="#{pageHome.instance.files}"
                            var="_file"
                            styleClass="imagelist">
-                <s:graphicImage value="#{_file.image}"
+                <s:graphicImage value="#{_file.croppedByte.image}"
                                 fileName="#{_file.id}_large"
-                                alt="[image]"/>
+                                alt="[image]">
+                    <rich:componentControl for="panel" operation="show" event="onclick"/>
+                </s:graphicImage>
+                <rich:modalPanel id="panel" width="800" height="600">
+                    <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="image"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <h:panelGroup>
+                            <h:outputLink value="#"
+                                          styleClass="hidelink">
+                                [x]
+                                <rich:componentControl for="panel" operation="hide" event="onclick"/>
+                            </h:outputLink>
+                        </h:panelGroup>
+                    </f:facet>
+                    <s:graphicImage value="#{_file.originalByte.image}"
+                                    fileName="#{_file.id}_original"
+                                    alt="[image]"
+                                    id="me"/>
+                </rich:modalPanel>
             </rich:dataList>
             <h:outputText value="#{pageHome.instance.content}"
                           escape="false"/>
             <s:link value="edit page"
-                    view="/view/page/crud.xhtml"
-                    rendered="#{identity.hasRole('admin')}"/>
+                    view="/admin.xhtml"
+                    styleClass="editlink"
+                    rendered="#{identity.hasRole('admin')}">
+                <f:param name="pageId"
+                         value="#{pageHome.instance.id}"/>
+                <f:param name="view"
+                         value="page"/>
+            </s:link>
         </f:subview>
         <f:subview id="childIdPresentSubview"
                    rendered="#{not empty childId}">
@@ -60,7 +94,7 @@
             <rich:dataList value="#{child.files}"
                            var="_file"
                            styleClass="imagelist">
-                <s:graphicImage value="#{_file.image}"
+                <s:graphicImage value="#{_file.originalByte.image}"
                                 fileName="#{_file.id}_large"
                                 alt="[image]"/>
             </rich:dataList>
@@ -68,11 +102,14 @@
                           escape="false"/>
 
             <s:link value="edit page"
-                    view="/view/page/crud.xhtml"
+                    view="/admin.xhtml"
                     rendered="#{identity.hasRole('admin')}"
-                    propagation="none">
+                    propagation="none"
+                    styleClass="editlink">
                 <f:param name="pageId"
                          value="#{child.id}"/>
+                <f:param name="view"
+                         value="page"/>
             </s:link>
         </f:subview>
 

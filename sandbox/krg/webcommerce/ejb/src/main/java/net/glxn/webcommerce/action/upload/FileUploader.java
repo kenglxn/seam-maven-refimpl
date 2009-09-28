@@ -4,6 +4,7 @@ import net.glxn.webcommerce.action.home.FileHome;
 import net.glxn.webcommerce.action.home.PageHome;
 import net.glxn.webcommerce.action.home.ProductHome;
 import net.glxn.webcommerce.model.File;
+import net.glxn.webcommerce.model.ImageByte;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
@@ -38,8 +39,9 @@ public class FileUploader implements Serializable {
         fileHome.clearInstance();
         File file = fileHome.getInstance();
         byte[] byteFromFile = FileUtil.getByteFromFile(item.getFile());
+        file.setOriginalByte(new ImageByte(byteFromFile));
         byte[] croppedImage = FileUtil.cropImage(byteFromFile);
-        file.setImage(croppedImage);
+        file.setCroppedByte(new ImageByte(croppedImage));
         file.setImageContentType(item.getContentType());
         if (productHome != null && productHome.isManaged()) {
             productHome.getInstance().addFile(file);
