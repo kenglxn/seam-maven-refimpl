@@ -9,6 +9,10 @@
                 xmlns:a4j="http://richfaces.org/a4j"
                 template="layout/site-template.xhtml">
 
+    <ui:define name="scripts">
+        <script src="#{request.contextPath}/js/dojo-release-1.3.2/dojo/dojo.js" type="text/javascript" charset="utf-8"></script>
+        <script src="#{request.contextPath}/js/zoom.js" type="text/javascript" charset="utf-8"></script>
+    </ui:define>
 
     <ui:define name="menu">
         <ui:include src="view/includes/menu/richmenuform.xhtml"/>
@@ -57,7 +61,7 @@
             <rich:dataList value="#{productHome.instance.files}"
                            var="_file"
                            styleClass="imagelist">
-                <s:graphicImage value="#{_file.image}"
+                <s:graphicImage value="#{_file.originalByte.image}"
                                 fileName="#{_file.id}_large"
                                 alt="[image]"/>
             </rich:dataList>
@@ -66,14 +70,18 @@
                           styleClass="product-description"/>
             <h:outputText value="#{productHome.instance.price}"
                           styleClass="product-price"/>
-            <s:link value="buy" 
+            <s:link value="buy"
                     action="#{shoppingCartAction.addProductToCart(productHome.instance)}"
                     styleClass="purchase-link"/>
 
         </rich:panel>
         <s:link value="edit product"
-                view="/view/product/crud.xhtml"
-                rendered="#{identity.hasRole('admin')}"/>
+                view="/admin.xhtml"
+                rendered="#{identity.hasRole('admin')}"
+                styleClass="editlink">
+            <f:param name="view"
+                     value="product"/>
+        </s:link>
     </ui:define>
 
     <ui:define name="footer">

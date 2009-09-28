@@ -1,15 +1,14 @@
 package net.glxn.webcommerce.model;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 @Entity
@@ -24,6 +23,7 @@ public class File implements Serializable {
     private String imageContentType;
     private Product product;
     private Page page;
+    private byte[] originalImage;
 
     @Id
     @GeneratedValue
@@ -42,16 +42,6 @@ public class File implements Serializable {
 
     private void setVersion(Integer version) {
         this.version = version;
-    }
-
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public String getImageContentType() {
@@ -78,5 +68,27 @@ public class File implements Serializable {
 
     public void setPage(Page page) {
         this.page = page;
+    }
+
+    private ImageByte originalByte;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    public ImageByte getOriginalByte() {
+        return originalByte;
+    }
+
+    public void setOriginalByte(ImageByte originalByte) {
+        this.originalByte = originalByte;
+    }
+
+    private ImageByte croppedByte;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    public ImageByte getCroppedByte() {
+        return croppedByte;
+    }
+
+    public void setCroppedByte(ImageByte croppedByte) {
+        this.croppedByte = croppedByte;
     }
 }

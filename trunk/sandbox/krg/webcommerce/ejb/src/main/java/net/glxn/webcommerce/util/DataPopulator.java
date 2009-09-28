@@ -12,6 +12,7 @@ import net.glxn.webcommerce.model.File;
 import net.glxn.webcommerce.model.Page;
 import net.glxn.webcommerce.model.Product;
 import net.glxn.webcommerce.model.User;
+import net.glxn.webcommerce.model.ImageByte;
 import net.glxn.webcommerce.model.enums.RoleType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
@@ -85,7 +86,7 @@ public class DataPopulator {
     }
 
     private void createProducts(int c, Category category) {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 5; i++) {
             createProducts(c + 1, i, category);
         }
     }
@@ -117,8 +118,9 @@ public class DataPopulator {
             product.setCategory(category);
             fileHome.clearInstance();
             File file = fileHome.getInstance();
+            file.setOriginalByte(new ImageByte(byteFromFile));
             byte[] croppedImage = FileUtil.cropImage(byteFromFile);
-            file.setImage(croppedImage);
+            file.setCroppedByte(new ImageByte(croppedImage));
             file.setImageContentType("image/jpeg");
             product.addFile(file);
             productHome.persist();

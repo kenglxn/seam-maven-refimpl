@@ -185,6 +185,7 @@
                 <env>dev</env>
                 <env.debug>true</env.debug>
                 <env.unpack.modules>true</env.unpack.modules>
+                <!--<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>-->
                 <env.hibernate.hbm2ddl.auto>update</env.hibernate.hbm2ddl.auto>
                 <env.hibernate.show_sql>true</env.hibernate.show_sql>
                 <env.hibernate.format_sql>true</env.hibernate.format_sql>
