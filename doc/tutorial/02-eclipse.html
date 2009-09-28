@@ -891,33 +891,159 @@ the main source of configuration, so we'll start with the WAR.</p>
 <h3 id="done-in-60-seconds">Reverse Engeneering - Done in 60 Seconds!</h3>
 <p>Well, the tutorial is not done in 60 seconds, but the revrese engeneering is.</p>
 <p>Here is what we will do in this tutorial:</p>
-<ul>
+<ul class="vspace">
 	<li>
-		Import a database schema to MySQL.
-	</li>
-	<li>
-		Import sample data into the schema.
+		Import table defnitions into the MySQL <code>refimpl_db</code> schema and import sample data 
+		into the schema.
 	</li>
 	<li>
 		Prepare the project. We'll reuse the project from the previous section.
 	</li>
 	<li>
-	  Configure Seam to generate <code>xhtml</code> files to the <code>webapp</code>folder.
-	</li>
-	<li>
-	  Connect data source (pointing to the imported schema).
+	  Configure Seam to generate <code>xhtml</code> files to the <code>webapp</code>folder and 
+	  connect a data source to the schema.
 	</li>
 	<li>
 	  Define a Hibernate console.
 	</li>
 	<li>
-		Generate entities.
+		Generate entities from existing database.
 	</li>
 	<li>
 		Deploy.
 	</li>
 </ul>
 
+	<img src="img/eclipse-seam-db-entity-01.png" style="width:700px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-02.png" style="width:700px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-05.png" style="width:500px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-03.png" style="width:700px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-04.png" style="width:700px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-06.png" style="width:300px; display:block;" />
+	
+	<p><code>menu.xhtml</code></p>
+	<pre>
+&lt;rich:toolBar
+  xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+  xmlns:ui=&quot;http://java.sun.com/jsf/facelets&quot;
+  xmlns:h=&quot;http://java.sun.com/jsf/html&quot;
+  xmlns:f=&quot;http://java.sun.com/jsf/core&quot;
+  xmlns:s=&quot;http://jboss.com/products/seam/taglib&quot;
+  xmlns:rich=&quot;http://richfaces.org/rich&quot;&gt;
+  &lt;rich:toolBarGroup&gt;
+    &lt;h:outputText value=&quot;#{projectName}:&quot;/&gt;
+    &lt;s:link id=&quot;menuHomeId&quot; 
+      view=&quot;/home.xhtml&quot; 
+      value=&quot;Home&quot; 
+      propagation=&quot;none&quot;/&gt;
+  &lt;/rich:toolBarGroup&gt;
+
+  &lt;!-- @newMenuItem@ --&gt;
+  &lt;rich:toolBarGroup location=&quot;right&quot;&gt;
+    &lt;h:outputText id=&quot;menuWelcomeId&quot;
+      value=&quot;signed in as: #{credentials.username}&quot;
+      rendered=&quot;#{identity.loggedIn}&quot; /&gt;
+    &lt;s:link id=&quot;menuLoginId&quot; 
+      view=&quot;/login.xhtml&quot; 
+      value=&quot;Login&quot;
+      rendered=&quot;#{not identity.loggedIn}&quot; 
+      propagation=&quot;none&quot; /&gt;
+    &lt;s:link id=&quot;menuLogoutId&quot; 
+      view=&quot;/home.xhtml&quot;
+      action=&quot;#{identity.logout}&quot; 
+      value=&quot;Logout&quot;
+      rendered=&quot;#{identity.loggedIn}&quot; 
+      propagation=&quot;none&quot; /&gt;
+  &lt;/rich:toolBarGroup&gt;
+&lt;/rich:toolBar&gt;
+	</pre>
+	
+	<p><code>profiles.xml</code></p>
+	<pre>
+.
+.
+&lt;!-- MySql5 --&gt;
+&lt;profile&gt;
+  &lt;id&gt;ds-mysql5&lt;/id&gt;
+  .
+    <font color="blue">&lt;ds.database.name&gt;refimpl_db&lt;/ds.database.name&gt;</font>
+  .
+&lt;/profile&gt;
+.
+&lt;!-- jboss-4.2.3 --&gt;
+&lt;profile&gt;
+  &lt;id&gt;as-jboss423&lt;/id&gt;
+  .
+    <font color="blue">&lt;as.home&gt;C:/dev/server/jboss-4.2.3.GA-jdk6&lt;/as.home&gt;</font>
+    <font color="blue">&lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;</font>
+  .
+&lt;/profile&gt;
+.
+&lt;!-- development environment --&gt;
+&lt;profile&gt;
+  &lt;id&gt;env-dev&lt;/id&gt;
+  .
+    <font color="blue">&lt;env.hibernate.hbm2ddl.auto&gt;update&lt;/env.hibernate.hbm2ddl.auto&gt;</font>
+  .
+&lt;/profile&gt;
+.
+<font color="blue">&lt;activeProfiles&gt;
+  &lt;activeProfile&gt;env-dev&lt;/activeProfile&gt;
+  &lt;activeProfile&gt;ds-mysql5&lt;/activeProfile&gt;  
+  &lt;activeProfile&gt;as-jboss423&lt;/activeProfile&gt;
+&lt;/activeProfiles&gt;</font>
+	</pre>
+
+	<img src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-09.png" style="width:350px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-10.png" style="width:405px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-11.png" style="width:450px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-12.png" style="width:450px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-13.png" style="width:450px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-14.png" style="width:450px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-15.png" style="width:450px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-17.png" style="width:450px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-18.png" style="width:650px; display:block;" />
+
+	<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+	<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-21.png" style="width:300px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-22.png" style="width:300px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-23.png" style="width:350px;" class="inline-block" />
+	<img src="img/eclipse-seam-db-entity-24.png" style="width:350px;" class="inline-block" />
+	<br/>
+	<img src="img/eclipse-seam-db-entity-25.png" style="width:300px; display:block;" />
+
+<ol class="vspace">
+<li>
+	Open Seam perspective.
+	<img src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
+</li>
+<li>
+	In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
+	select <code><strong>New>Seam Generate Entities</strong></code>
+	<img src="img/eclipse-seam-db-entity-31.png" style="width:650px; display:block;" />
+</li>
+<li>
+	<img src="img/eclipse-seam-db-entity-32.png" style="width:450px;" class="inline-block" />
+	<img src="img/eclipse-seam-db-entity-33.png" style="width:450px;" class="inline-block" />
+</li>
+<li>
+	Sit back and watch the magic happen.<br/>
+	<img src="img/eclipse-seam-db-entity-34.png" style="width:300px;" class="inline-block" />
+	<img src="img/eclipse-seam-db-entity-35.png" style="width:300px;" class="inline-block" />
+</li>
+<li>
+	Run <code>mvn install -Pexplode</code>, start server and point your browser to 
+	<a href="http://localhost:8080/seam-tutorial/">http://localhost:8080/seam-tutorial/</a>
+	<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+	<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-36.png" style="width:700px;" class="inline-block" />
+</li>
+</ol>
+
+	
+	
 <h2>How To's</h2>
 <h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
 <ol>
@@ -1123,9 +1249,9 @@ workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
 </p>
 
 <h3>How To Get JBoss Tools To Work In Vista 64 bit</h3>
-<p>It only works partially :-( It seems that everything except for the visual editors (VPE) works ok. 
-You will see the following message in the visual editor: <strong>"The VPE editor can't be run because your 
-system environment needs to be changed slightly. 
+<p>It only works partially! It seems that everything except for the visual editors (VPE) works fine. 
+You will see the following message in the visual editor: <strong>"The VPE editor can't be run because 
+your system environment needs to be changed slightly. 
 <a href='http://www.jboss.org/community/wiki/JBosstoolsVisualEditorFAQ'>Find out more</a>"</strong>.
 The link points to a page with no information regarding how to fix this for Vista64 with Jdk-6 64 bit 
 and Eclipse-3.4 64 bit. You will also find that you are not able to browse into java code from the 
