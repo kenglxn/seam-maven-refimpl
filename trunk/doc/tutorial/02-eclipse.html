@@ -313,7 +313,7 @@ and then import the project all over again.
     this blog</a> and follow the screenshots 
 		<a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
 		there</a> and here to fix the problem.
-    <img src="img/eclipse-run-configurations-01.png" style="width:540px; display:block;" />
+    <img src="img/eclipse-run-configurations-01.png" style="width:640px; display:block;" />
 		Below is the screenshot for the Maven <code>install -Pexplode</code> run configuration. Also 
 		create a run configuration for the Maven <code>clean -Punexplode</code> goal. Remenber to use the
 		external Maven Runtime you configured for the workspace.
@@ -488,7 +488,7 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
 		parent project.
     <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
     <img src="img/eclipse-maven-builder-01.png" style="width:500px; display:block;" />
-    <img src="img/eclipse-maven-builder-02.png" style="width:500px; display:block;" />
+    <img src="img/eclipse-maven-builder-02.png" style="width:400px; display:block;" />
 		<strong>Note</strong>: Experiment with the <code>Base directory</code> variable. If you use the 
 		<code>${project_loc}</code> variable then the builder will run only on the sub project that 
 		contains the modified file - resulting in a faster build cycle.
@@ -746,7 +746,7 @@ the main source of configuration, so we'll start with the WAR.</p>
 	Generated code:
 	<img src="img/eclipse-seam-entity-04.png" style="width:350px; display:block;" />
 
-	All this code in ten seconds! :-))<br/>
+	All this code in less than ten seconds! :-))<br/>
 
 	<div class="code-frame">
 		<code><strong>MyEntity.java</strong></code>
@@ -932,38 +932,97 @@ the main source of configuration, so we'll start with the WAR.</p>
 
 <h3 id="done-in-60-seconds">Reverse Engeneering - Done in 60 Seconds!</h3>
 <p>Well, the tutorial is not done in 60 seconds, but the revrese engeneering is.</p>
-<p>Here is what we will do in this tutorial:</p>
-<ul class="vspace">
-	<li>
-		Import table defnitions into the MySQL <code>refimpl_db</code> schema and import sample data 
-		into the schema.
-	</li>
-	<li>
-		Prepare the project. We'll reuse the project from the previous section.
-	</li>
-	<li>
-	  Configure Seam to generate <code>xhtml</code> files to the <code>webapp</code>folder and 
-	  connect a data source to the schema.
-	</li>
-	<li>
-	  Define a Hibernate console.
-	</li>
-	<li>
-		Generate entities from existing database.
-	</li>
-	<li>
-		Deploy.
-	</li>
-</ul>
-
+<p>We will re-use the project from the <a href="#entity-bean-the-seam-way">previous section</a>, so
+complete that tutorial first.</p>
+<h4>Configure Database</h4>
+<ol class="vspace">
+<li>
+	Checkout or export the sql scripts <code>open18-initial-schema-mysql.sql</code> and 
+	<code>open18-initial-seed-data-mysql.sql<code> from svn,  
+	<a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/etc/schema/">
+		http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/etc/schema/</a>.
+</li>
+<li>
+	Open e.g. MySQL Query Browser and create schema <code>refimpl_db</code>.
 	<img src="img/eclipse-seam-db-entity-01.png" style="width:700px; display:block;" />
+</li>
+<li>
+	Open script, <code>open18-initial-schema-mysql.sql</code> and click <strong>execute</strong>.
 	<img src="img/eclipse-seam-db-entity-02.png" style="width:700px; display:block;" />
 	<img src="img/eclipse-seam-db-entity-05.png" style="width:500px; display:block;" />
 	<img src="img/eclipse-seam-db-entity-03.png" style="width:700px; display:block;" />
+</li>
+<li>
+	Open script, <code>open18-initial-seed-data-mysql.sql</code> and click <strong>execute</strong>.
 	<img src="img/eclipse-seam-db-entity-04.png" style="width:700px; display:block;" />
+</li>
+</ol>
+
+<h4>Create and Configure Database Connection</h4>
+<ol class="vspace">
+<li>
+	Open the <strong>Database Development</strong> perspective.
+	<img src="img/eclipse-seam-db-entity-07.png" style="width:300px; display:block;" />
+</li>
+<li>
+	Create a new Database Connection.
+	<img src="img/eclipse-seam-db-entity-16.png" style="width:300px; display:block;" />
+	<img src="img/eclipse-seam-db-entity-09.png" style="width:400px;" class="inline-block" />
+	<img src="img/eclipse-seam-db-entity-10.png" style="width:460px;" class="inline-block" />
+	<br/>
+	<img src="img/eclipse-seam-db-entity-11.png" style="width:400px;" class="inline-block" />
+	<img src="img/eclipse-seam-db-entity-12.png" style="width:400px;" class="inline-block" />
+	<br/>
+	<img src="img/eclipse-seam-db-entity-13.png" style="width:400px;" class="inline-block" />
+	<img src="img/eclipse-seam-db-entity-14.png" style="width:400px;" class="inline-block" />
+	<br/>
+	<img src="img/eclipse-seam-db-entity-15.png" style="width:400px;"  class="inline-block" />
+	<img src="img/eclipse-seam-db-entity-17.png" style="width:400px; vertical-align:bottom"  class="inline-block" />
+	<br/>
+	<img src="img/eclipse-seam-db-entity-19.png" style="width:350px; display:block;" />
+</li>
+</ol>
+
+<h4>Add Hibernate Configuration</h4>
+<ol class="vspace">
+<li>
+	Open the <strong>Hibernate</strong> perspective.
+	<img src="img/eclipse-seam-db-entity-21.png" style="width:300px; display:block;" />
+</li>
+<li>
+	Right click inside explorer and select <code><strong>Add Configuration...</strong></code>
+	<img src="img/eclipse-seam-db-entity-22.png" style="width:300px; display:block;" />
+</li>
+<li>
+	Add the newly created connection and define a Database dialect.<br/>
+	<img src="img/eclipse-seam-db-entity-23.png" style="width:350px;" class="inline-block" />
+	<img src="img/eclipse-seam-db-entity-24.png" style="width:350px;" class="inline-block" />
+	<br/>
+	<img src="img/eclipse-seam-db-entity-25.png" style="width:300px; display:block;" />
+</li>
+</ol>
+
+<h4>Modify project</h4>
+<ol class="vspace">
+<li>
+	Open the <strong>Seam</strong> perspective.
+	<img src="img/eclipse-perspective-seam.png" style="width:300px; display:block;" />
+</li>
+<li>
+	Modify the <code>seam-tutorial</code> project.
+	<ul>
+	<li>
+		In <code>seam-tutorial-ejb</code>; delete all packages except for the 
+		<code><strong>org.jboss.seam.example.action</strong></code> package.
+	</li>
+	<li>
+		In <code>seam-tutorial-war</code>; delete the <code><strong>view</strong></code> folder. 
+	</li>
+	</ul>
 	<img src="img/eclipse-seam-db-entity-06.png" style="width:300px; display:block;" />
-	
-	<p><code>menu.xhtml</code></p>
+</li>
+<li>
+	Modify <code><strong>menu.xhtml</strong></code>.
 	<pre>
 &lt;rich:toolBar
   xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
@@ -998,46 +1057,40 @@ the main source of configuration, so we'll start with the WAR.</p>
       propagation=&quot;none&quot; /&gt;
   &lt;/rich:toolBarGroup&gt;
 &lt;/rich:toolBar&gt;
-	</pre>
-	
-
-
-	<img src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-09.png" style="width:350px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-10.png" style="width:405px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-11.png" style="width:450px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-12.png" style="width:450px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-13.png" style="width:450px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-14.png" style="width:450px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-15.png" style="width:450px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-17.png" style="width:450px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-18.png" style="width:650px; display:block;" />
-
-	<img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-	<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-21.png" style="width:300px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-22.png" style="width:300px; display:block;" />
-	<img src="img/eclipse-seam-db-entity-23.png" style="width:350px;" class="inline-block" />
-	<img src="img/eclipse-seam-db-entity-24.png" style="width:350px;" class="inline-block" />
-	<br/>
-	<img src="img/eclipse-seam-db-entity-25.png" style="width:300px; display:block;" />
-
-<ol class="vspace">
-<li>
-	Open Seam perspective.
-	<img src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
+	</pre>	
 </li>
 <li>
+	Modify Seam settings for WAR; Select the newly created connection and point the View folder to 
+	<strong>/seam-tutorial-war/src/main/webapp</strong> so that xhtml files are generated to the
+	webapp folder.
+	<img src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
+</li>
+<li>
+	Modify Seam settings for EJB.
+	<img src="img/eclipse-seam-db-entity-18.png" style="width:650px; display:block;" />
+</li>
+<li>
+  For some reason the reverse engeneering tool need a clean compiled project to do the reverse
+	engeneering, so run e.g. <code><strong>mvn clean package</strong></code> on the parent project.
+	<img src="img/eclipse-seam-db-entity-20.png" style="width:600px; display:block;" />
+</li>
+</ol>
+
+<h4>Generate Entities From Existing Database</h4>
+<ol class="vspace">
+<li>
+	Open the <strong>Seam</strong> perspective.
+	<img src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
+</li>
 	In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
 	select <code><strong>New>Seam Generate Entities</strong></code>
 	<img src="img/eclipse-seam-db-entity-31.png" style="width:650px; display:block;" />
-</li>
-<li>
+	<br/>
 	<img src="img/eclipse-seam-db-entity-32.png" style="width:450px;" class="inline-block" />
 	<img src="img/eclipse-seam-db-entity-33.png" style="width:450px;" class="inline-block" />
 </li>
 <li>
-	Sit back and watch the magic happen.<br/>
+	Now, sit back and watch the magic happen.<br/>
 	<img src="img/eclipse-seam-db-entity-34.png" style="width:300px;" class="inline-block" />
 	<img src="img/eclipse-seam-db-entity-35.png" style="width:300px;" class="inline-block" />
 </li>
@@ -1048,10 +1101,23 @@ the main source of configuration, so we'll start with the WAR.</p>
 	<img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
 	<img src="img/eclipse-seam-db-entity-36.png" style="width:700px;" class="inline-block" />
 </li>
+<li>
+	A full enterprise CRUD application with basic security generated, deployed and up an running in 
+	about 60 seconds.	That's impressing! 
+</li>
+<li>
+	As you browse trough the pages you will find that that the <code></strong>TeeList</strong><code>
+	page fails to load. The problem is desctibed here: 
+	<a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04/chapter-developments.txt">
+	http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04/chapter-developments.txt</a>.
+	A solution is found here: 
+	<a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch05/chapter-developments.txt">
+	http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch05/chapter-developments.txt</a>.
+	</p>
+</li>
 </ol>
 
-	
-	
+
 <h2>How To's</h2>
 <h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
 <ol>
@@ -1085,7 +1151,7 @@ the main source of configuration, so we'll start with the WAR.</p>
     <img src="img/eclipse-checkout-projects-from-svn-checkout-as.png" style="width:450px; display:block;" />
 	</li>
 	<li>
-		You now have access to the complete trunk from Eclipse.
+		You should now have access to the complete trunk from Eclipse.
     <img src="img/eclipse-checkout-projects-from-svn-completed.png		" style="width:250px; display:block;" />
 	</li>
 	
