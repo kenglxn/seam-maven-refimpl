@@ -57,19 +57,14 @@
                 </s:graphicImage>
                 <rich:modalPanel id="panel" width="800" height="600">
                     <f:facet name="header">
-                        <h:panelGroup>
-                            <h:outputText value="image"/>
-                        </h:panelGroup>
+                        <h:outputText value="#{_file.id}_large"/>
                     </f:facet>
-                    <f:facet name="controls">
-                        <h:panelGroup>
-                            <h:outputLink value="#"
-                                          styleClass="hidelink">
-                                [x]
-                                <rich:componentControl for="panel" operation="hide" event="onclick"/>
-                            </h:outputLink>
-                        </h:panelGroup>
-                    </f:facet>
+                    <h:outputLink value="#" styleClass="modalcloselink">
+                        close
+                        <rich:componentControl for="panel"
+                                               operation="hide"
+                                               event="onclick"/>
+                    </h:outputLink>
                     <s:graphicImage value="#{_file.originalByte.image}"
                                     fileName="#{_file.id}_original"
                                     alt="[image]"
@@ -94,7 +89,7 @@
             <rich:dataList value="#{child.files}"
                            var="_file"
                            styleClass="imagelist">
-                <s:graphicImage value="#{_file.originalByte.image}"
+                <s:graphicImage value="#{_file.croppedByte.image}"
                                 fileName="#{_file.id}_large"
                                 alt="[image]"/>
             </rich:dataList>

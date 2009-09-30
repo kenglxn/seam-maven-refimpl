@@ -224,3 +224,8 @@ a:hover {
 .menulink {
     padding: 0 5px;
 }
+
+.modalcloselink {
+    display:block;
+    margin:0 50% 10px;
+}
