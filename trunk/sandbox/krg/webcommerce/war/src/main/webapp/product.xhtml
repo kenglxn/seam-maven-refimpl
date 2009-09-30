@@ -10,7 +10,8 @@
                 template="layout/site-template.xhtml">
 
     <ui:define name="scripts">
-        <script src="#{request.contextPath}/js/dojo-release-1.3.2/dojo/dojo.js" type="text/javascript" charset="utf-8"></script>
+        <script src="#{request.contextPath}/js/dojo-release-1.3.2/dojo/dojo.js" type="text/javascript"
+                charset="utf-8"></script>
         <script src="#{request.contextPath}/js/zoom.js" type="text/javascript" charset="utf-8"></script>
     </ui:define>
 
@@ -61,9 +62,26 @@
             <rich:dataList value="#{productHome.instance.files}"
                            var="_file"
                            styleClass="imagelist">
-                <s:graphicImage value="#{_file.originalByte.image}"
+                <s:graphicImage value="#{_file.croppedByte.image}"
                                 fileName="#{_file.id}_large"
-                                alt="[image]"/>
+                                alt="[image]">
+                    <rich:componentControl for="panel" operation="show" event="onclick"/>
+                </s:graphicImage>
+                <rich:modalPanel id="panel" width="800" height="600">
+                    <f:facet name="header">
+                        <h:outputText value="#{_file.id}_large"/>
+                    </f:facet>                    
+                    <h:outputLink value="#" styleClass="modalcloselink">
+                        close
+                        <rich:componentControl for="panel"
+                                               operation="hide"
+                                               event="onclick"/>
+                    </h:outputLink>
+                    <s:graphicImage value="#{_file.originalByte.image}"
+                                    fileName="#{_file.id}_original"
+                                    alt="[image]"
+                                    id="me"/>
+                </rich:modalPanel>
             </rich:dataList>
             <h:outputText value="#{productHome.instance.description}"
                           escape="false"
