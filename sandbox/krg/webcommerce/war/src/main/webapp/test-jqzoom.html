@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+
+    <title>Dojo:Zoom</title>
+
+    <link rel="stylesheet" href="js/jqzoom_ev1.0.1/css/jqzoom.css">
+
+    <script type='text/javascript' src='js/jqzoom_ev1.0.1/js/jquery-1.3.2.min.js'></script>
+    <script type='text/javascript' src='js/jqzoom_ev1.0.1/js/jquery.jqzoom1.0.1.js'></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var options = {
+                zoomWidth: 300,
+                zoomHeight: 250,
+                xOffset: 10,
+                yOffset: 0,
+                position: "right" //and MORE OPTIONS
+            };
+            $('.MYCLASS').jqzoom(options);
+        });
+    </script>
+
+</head>
+<body>
+<a href="img/framorten/DSCF1215.JPG" class="MYCLASS" title="MYTITLE">
+    <img src="img/framorten/DSCF1215_sml.jpg" title="IMAGE TITLE">
+</a>
+</body>
+</html>
