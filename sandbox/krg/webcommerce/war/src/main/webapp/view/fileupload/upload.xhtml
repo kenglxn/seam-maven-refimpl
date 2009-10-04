@@ -19,9 +19,9 @@
     <ui:define name="left-content">
         <rich:panel id="fileinfo">
             <f:facet name="header">files:</f:facet>
-            <rich:dataList var="_page" value="#{fileList.resultList}">
-                <s:graphicImage value="#{_page.image}"
-                                fileName="#{_page.id}"
+            <rich:dataList var="_file" value="#{fileList.resultList}">
+                <s:graphicImage value="#{_file.croppedByte.image}"
+                                fileName="#{_file.id}_mini"
                                 alt="[image]">
                     <s:transformImageSize height="32"
                                           maintainRatio="true"/>

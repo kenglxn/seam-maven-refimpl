@@ -10,9 +10,25 @@
                 template="layout/site-template.xhtml">
 
     <ui:define name="scripts">
-        <script src="#{request.contextPath}/js/dojo-release-1.3.2/dojo/dojo.js" type="text/javascript"
-                charset="utf-8"></script>
-        <script src="#{request.contextPath}/js/zoom.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet"
+              href="js/jqzoom_ev1.0.1/css/jqzoom.css"/>
+        <!-- <script type='text/javascript'
+        src='js/jqzoom_ev1.0.1/js/jquery-1.3.2.min.js'></script>-->
+        <a4j:loadScript src="resource://jquery.js"/>
+        <script type='text/javascript'
+                src='js/jqzoom_ev1.0.1/js/jquery.jqzoom1.0.1.js'></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                var options = {
+                    zoomWidth: 300,
+                    zoomHeight: 250,
+                    xOffset: 10,
+                    yOffset: 0,
+                    position: "right" //and MORE OPTIONS
+                };
+                jQuery('.zoomable').jqzoom(options);
+            });
+        </script>
     </ui:define>
 
     <ui:define name="menu">
@@ -26,7 +42,8 @@
                        switchType="ajax"
                        componentState="#{treeNodeUtil.componentState}"
                        adviseNodeOpened="#{treeNodeUtil.adviseNodeOpened}">
-                <rich:treeNodesAdaptor nodes="#{parentCategories}" var="_cat">
+                <rich:treeNodesAdaptor nodes="#{parentCategories}"
+                                       var="_cat">
                     <rich:treeNode>
                         <s:link value="#{_cat.name}"
                                 view="/products.xhtml"
@@ -36,7 +53,8 @@
                                      value="#{_cat.id}"/>
                         </s:link>
                     </rich:treeNode>
-                    <rich:treeNodesAdaptor nodes="#{_cat.children}" var="_childCat">
+                    <rich:treeNodesAdaptor nodes="#{_cat.children}"
+                                           var="_childCat">
                         <rich:treeNode>
                             <s:link value="#{_childCat.name}"
                                     view="/products.xhtml"
@@ -55,33 +73,27 @@
     </ui:define>
 
     <ui:define name="main-content-body">
-        <rich:panel bodyClass="pbody" styleClass="productpanel">
+        <rich:panel bodyClass="pbody"
+                    styleClass="productpanel">
             <f:facet name="header">
                 <h:outputText value="#{productHome.instance.name}"/>
             </f:facet>
             <rich:dataList value="#{productHome.instance.files}"
                            var="_file"
                            styleClass="imagelist">
-                <s:graphicImage value="#{_file.croppedByte.image}"
-                                fileName="#{_file.id}_large"
-                                alt="[image]">
-                    <rich:componentControl for="panel" operation="show" event="onclick"/>
-                </s:graphicImage>
-                <rich:modalPanel id="panel" width="800" height="600">
-                    <f:facet name="header">
-                        <h:outputText value="#{_file.id}_large"/>
-                    </f:facet>                    
-                    <h:outputLink value="#" styleClass="modalcloselink">
-                        close
-                        <rich:componentControl for="panel"
-                                               operation="hide"
-                                               event="onclick"/>
-                    </h:outputLink>
+                <a href="#"
+                   class="zoomable"
+                   title="#{_file.product.name}">
+                    <s:graphicImage value="#{_file.croppedByte.image}"
+                                    fileName="#{_file.id}_large"
+                                    alt="[image]"
+                                    styleClass="small"/>
                     <s:graphicImage value="#{_file.originalByte.image}"
                                     fileName="#{_file.id}_original"
                                     alt="[image]"
-                                    id="me"/>
-                </rich:modalPanel>
+                                    styleClass="large"/>
+
+                </a>
             </rich:dataList>
             <h:outputText value="#{productHome.instance.description}"
                           escape="false"
