@@ -20,8 +20,8 @@
         <script type="text/javascript">
             jQuery(document).ready(function() {
                 var options = {
-                    zoomWidth: 300,
-                    zoomHeight: 250,
+                    zoomWidth: 350,
+                    zoomHeight: 225,
                     xOffset: 10,
                     yOffset: 0,
                     position: "right" //and MORE OPTIONS
@@ -81,17 +81,16 @@
             <rich:dataList value="#{productHome.instance.files}"
                            var="_file"
                            styleClass="imagelist">
-                <a href="#"
+                <a href="#{settingsList.singleResult.filePathClient}/#{_file.fileName}"
                    class="zoomable"
                    title="#{_file.product.name}">
-                    <s:graphicImage value="#{_file.croppedByte.image}"
+                    <s:graphicImage value="#{_file.originalByte.image}"
                                     fileName="#{_file.id}_large"
                                     alt="[image]"
-                                    styleClass="small"/>
-                    <s:graphicImage value="#{_file.originalByte.image}"
-                                    fileName="#{_file.id}_original"
-                                    alt="[image]"
-                                    styleClass="large"/>
+                                    styleClass="small">
+                        <s:transformImageSize width="300"
+                                              maintainRatio="true"/>
+                    </s:graphicImage>
 
                 </a>
             </rich:dataList>

@@ -1,16 +1,24 @@
 package net.glxn.webcommerce.action.upload;
 
+import org.jboss.seam.annotations.Logger;
+import org.jboss.seam.annotations.Name;
 import org.jboss.seam.ui.graphicImage.Image;
+import org.jboss.seam.log.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
-
+@Name("fileUtil")
 public class FileUtil implements Serializable {
     private static final long serialVersionUID = -4713978646791677279L;
+
+    @Logger
+    private static Log log;
 
     public FileUtil() {
     }
@@ -47,6 +55,21 @@ public class FileUtil implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static void writeToDisk(byte[] byteFromFile, String filename) {
+        try {
+            FileOutputStream fos = new FileOutputStream(filename);
+            fos.write(byteFromFile);
+            fos.close();
+        }
+        catch (FileNotFoundException ex) {
+            log.error("writeToDisk failed: {0}", ex);
+        }
+
+        catch (IOException ioe) {
+            log.error("writeToDisk failed: {0}", ioe);
         }
     }
 }

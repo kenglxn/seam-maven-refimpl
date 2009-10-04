@@ -11,7 +11,8 @@ import java.io.Serializable;
 @Table
 public class Settings implements Serializable {
     private Long id;
-    private String filePath;
+    private String filePathServer;
+    private String filePathClient;
     private static final long serialVersionUID = 1162616691505820101L;
     private Integer version;
 
@@ -34,11 +35,19 @@ public class Settings implements Serializable {
         this.version = version;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFilePathServer() {
+        return filePathServer;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFilePathServer(String filePathServer) {
+        this.filePathServer = filePathServer;
+    }
+
+    public String getFilePathClient() {
+        return filePathClient;
+    }
+
+    public void setFilePathClient(String filePathClient) {
+        this.filePathClient = filePathClient;
     }
 }

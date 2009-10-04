@@ -3,8 +3,10 @@ package net.glxn.webcommerce.action.upload;
 import net.glxn.webcommerce.action.home.FileHome;
 import net.glxn.webcommerce.action.home.PageHome;
 import net.glxn.webcommerce.action.home.ProductHome;
+import net.glxn.webcommerce.action.list.SettingsList;
 import net.glxn.webcommerce.model.File;
 import net.glxn.webcommerce.model.ImageByte;
+import net.glxn.webcommerce.model.Settings;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
@@ -28,10 +30,13 @@ public class FileUploader implements Serializable {
     @In(required = false)
     ProductHome productHome;
 
+    @In(create = true)
+    SettingsList settingsList;
+
     @In(required = false)
     PageHome pageHome;
+    private static final long serialVersionUID = -5955269352412127177L;
 
-    private static final long serialVersionUID = -1L;
 
     public void listener(UploadEvent event) throws IOException {
         UploadItem item = event.getUploadItem();
@@ -41,6 +46,10 @@ public class FileUploader implements Serializable {
         byte[] byteFromFile = FileUtil.getByteFromFile(item.getFile());
         file.setOriginalByte(new ImageByte(byteFromFile));
         byte[] croppedImage = FileUtil.cropImage(byteFromFile);
+        Settings settings = settingsList.getSingleResult();
+        String filepath = settings.getFilePathServer();
+        FileUtil.writeToDisk(byteFromFile, filepath.concat("\\"+item.getFile().getName()));
+        file.setFileName(item.getFile().getName());        
         file.setCroppedByte(new ImageByte(croppedImage));
         file.setImageContentType(item.getContentType());
         if (productHome != null && productHome.isManaged()) {

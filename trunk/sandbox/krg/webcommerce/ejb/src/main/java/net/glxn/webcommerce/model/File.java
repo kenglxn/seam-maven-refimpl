@@ -19,11 +19,11 @@ public class File implements Serializable {
 
     private Long id;
     private Integer version;
-    private byte[] image;
     private String imageContentType;
     private Product product;
     private Page page;
-    private byte[] originalImage;
+    private ImageByte originalByte;
+    private String fileName;
 
     @Id
     @GeneratedValue
@@ -70,8 +70,6 @@ public class File implements Serializable {
         this.page = page;
     }
 
-    private ImageByte originalByte;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     public ImageByte getOriginalByte() {
         return originalByte;
@@ -90,5 +88,13 @@ public class File implements Serializable {
 
     public void setCroppedByte(ImageByte croppedByte) {
         this.croppedByte = croppedByte;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
