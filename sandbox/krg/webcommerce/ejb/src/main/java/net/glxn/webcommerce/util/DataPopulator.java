@@ -5,7 +5,9 @@ import net.glxn.webcommerce.action.home.FileHome;
 import net.glxn.webcommerce.action.home.PageHome;
 import net.glxn.webcommerce.action.home.ProductHome;
 import net.glxn.webcommerce.action.home.UserHome;
+import net.glxn.webcommerce.action.home.SettingsHome;
 import net.glxn.webcommerce.action.list.UserList;
+import net.glxn.webcommerce.action.list.SettingsList;
 import net.glxn.webcommerce.action.upload.FileUtil;
 import net.glxn.webcommerce.model.Category;
 import net.glxn.webcommerce.model.File;
@@ -13,6 +15,7 @@ import net.glxn.webcommerce.model.Page;
 import net.glxn.webcommerce.model.Product;
 import net.glxn.webcommerce.model.User;
 import net.glxn.webcommerce.model.ImageByte;
+import net.glxn.webcommerce.model.Settings;
 import net.glxn.webcommerce.model.enums.RoleType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
@@ -50,6 +53,12 @@ public class DataPopulator {
     @In(create = true)
     FileHome fileHome;
 
+    @In(create = true)
+    SettingsHome settingsHome;
+
+    @In(create = true)
+    SettingsList settingsList;
+
     private final String imgBase = "C:\\Users\\ken\\Pictures\\devimg\\";
 
     @Observer("org.jboss.seam.postInitialization")
@@ -59,6 +68,10 @@ public class DataPopulator {
             log.info("data already initialized, skipping");
             return;
         }
+        Settings settings = settingsHome.getInstance();
+        settings.setFilePathServer("D:\\dev\\files");
+        settings.setFilePathClient("http://localhost/dev/files");
+        settingsHome.persist();
         createUsers();
         createPages();
         createCategoryAndProducts();
@@ -117,7 +130,11 @@ public class DataPopulator {
             product.setPrice(iter + 200);
             product.setCategory(category);
             fileHome.clearInstance();
+            Settings settings = settingsList.getSingleResult();
+            String filepath = settings.getFilePathServer();
+            FileUtil.writeToDisk(byteFromFile, filepath.concat("\\"+image.getName()));
             File file = fileHome.getInstance();
+            file.setFileName(image.getName());
             file.setOriginalByte(new ImageByte(byteFromFile));
             byte[] croppedImage = FileUtil.cropImage(byteFromFile);
             file.setCroppedByte(new ImageByte(croppedImage));
