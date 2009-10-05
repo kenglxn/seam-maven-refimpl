@@ -7,118 +7,130 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
-    <h:form id="pageform"
-            styleClass="ki-form">
-        <fieldset class="columnar label-top">
-            <h:outputLabel value="title:"
-                           for="title"/>
-            <h:inputText id="title"
-                         value="#{pageHome.instance.title}"/>
-            <h:outputLabel value="content:"
-                           for="pageeditor"/>
-            <rich:editor id="pageeditor"
-                         value="#{pageHome.instance.content}"
-                         theme="advanced"
-                         height="275">
-            </rich:editor>
-            <a4j:outputPanel rendered="#{!empty pageList.resultList}"
-                             id="parentSetter">
-                <h:outputLabel for="parentSetBool"
-                               value="set parent page:"/>
-                <h:selectBooleanCheckbox value="#{setParent}"
-                                         id="parentSetBool">
-                    <a4j:support event="onchange"
-                                 reRender="parentSetter"
-                                 ajaxSingle="true"/>
-                </h:selectBooleanCheckbox>
-                <f:subview id="parentSelector"
-                           rendered="#{setParent}">
-                    <h:outputLabel value="parent:"
-                                   for="parent"/>
-                    <h:selectOneMenu value="#{pageHome.instance.parent}"
-                                     id="parent"
-                                     required="#{setParent}">
-                        <s:selectItems value="#{pageList.resultList}"
-                                       var="_page"
-                                       label="#{_page.title}"
-                                       noSelectionLabel="pick parent"/>
-                        <s:convertEntity/>
-                    </h:selectOneMenu>
-                </f:subview>
-            </a4j:outputPanel>
-        </fieldset>
-        <fieldset class="columnar label-top">
-            <legend>
-                Add Files
-            </legend>
-            <h:outputText value="Page must be saved before files can be added!"
-                          rendered="#{!pageHome.managed}"/>
-            <a4j:outputPanel id="fileuploadpanel"
-                             rendered="#{pageHome.managed}">
-                <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
-                                 maxFilesQuantity="5"
-                                 listHeight="50">
-                    <a4j:support event="onuploadcomplete">
-                        <s:conversationId/>
-                    </a4j:support>
-                    <f:param name="view" value="page"/> 
-                </rich:fileUpload>
-            </a4j:outputPanel>
-        </fieldset>
-        <fieldset class="columnar label-top">
-            <legend>
-                Remove Files
-            </legend>
-            <h:outputText value="Page must be saved before files can be removed!"
-                          rendered="#{!pageHome.managed}"/>
-            <a4j:outputPanel id="fileremovalpanel"
-                             rendered="#{pageHome.managed}">
-                <rich:dataList value="#{pageHome.instance.files}"
-                               var="_file"
-                               styleClass="imagelist">
-                    <s:graphicImage value="#{_file.croppedByte.image}"
-                                    fileName="#{_file.id}_small"
-                                    alt="[image]">
-                        <s:transformImageSize width="60"
-                                              maintainRatio="true"/>
-                    </s:graphicImage>
-                    <s:link value="remove"
-                            action="#{fileAction.removeFileFromProductAndDeleteFile}"
-                            styleClass="removefilelink">
-                        <f:param name="fileId"
-                                 value="#{_file.id}"/>
-                    </s:link>
-                </rich:dataList>
-            </a4j:outputPanel>
-        </fieldset>
-        <fieldset class="buttons">
-            <h:commandButton id="save"
-                             value="Save"
-                             action="#{pageHome.persist}"
-                             rendered="#{!pageHome.managed}"/>
-            <h:commandButton id="update"
-                             value="Save"
-                             action="#{pageHome.update}"
-                             rendered="#{pageHome.managed}"/>
-            <h:commandButton id="delete"
-                             value="Delete"
-                             action="#{pageHome.remove}"
-                             immediate="true"
-                             rendered="#{pageHome.managed}"/>
-            <s:button propagation="none"
-                      action="#{pageHome.clearInstance}"
-                      id="new"
-                      value="New"/>
-            <s:button propagation="none"
-                      id="view"
-                      value="View"
-                      view="/page.xhtml">
-                <f:param name="pageId" value="#{pageHome.instance.id}"/>
-            </s:button>
-            <s:button propagation="end"
-                      id="cancel"
-                      value="Cancel"
-                      view="/home.xhtml"/>
-        </fieldset>
-    </h:form>
+    <a4j:outputPanel ajaxRendered="true">
+        <h:form id="pageform"
+                styleClass="ki-form">
+            <fieldset class="columnar label-top">
+                <h:outputLabel value="title:"
+                               for="title"/>
+                <h:inputText id="title"
+                             value="#{pageHome.instance.title}"/>
+                <h:outputLabel value="content:"
+                               for="pageeditor"/>
+                <rich:editor id="pageeditor"
+                             value="#{pageHome.instance.content}"
+                             theme="advanced"
+                             height="275">
+                </rich:editor>
+                <a4j:outputPanel rendered="#{!empty pageList.resultList}"
+                                 id="parentSetter">
+                    <h:outputLabel for="parentSetBool"
+                                   value="set parent page:"/>
+                    <h:selectBooleanCheckbox value="#{setParent}"
+                                             id="parentSetBool">
+                        <a4j:support event="onchange"
+                                     reRender="parentSetter"
+                                     ajaxSingle="true"/>
+                    </h:selectBooleanCheckbox>
+                    <f:subview id="parentSelector"
+                               rendered="#{setParent}">
+                        <h:outputLabel value="parent:"
+                                       for="parent"/>
+                        <h:selectOneMenu value="#{pageHome.instance.parent}"
+                                         id="parent"
+                                         required="#{setParent}">
+                            <s:selectItems value="#{pageList.resultList}"
+                                           var="_page"
+                                           label="#{_page.title}"
+                                           noSelectionLabel="pick parent"/>
+                            <s:convertEntity/>
+                        </h:selectOneMenu>
+                    </f:subview>
+                </a4j:outputPanel>
+            </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Add Files
+                </legend>
+                <h:outputText value="Page must be saved before files can be added!"
+                              rendered="#{!pageHome.managed}"/>
+                <a4j:outputPanel id="fileuploadpanel"
+                                 rendered="#{pageHome.managed}">
+                    <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
+                                     maxFilesQuantity="5"
+                                     listHeight="50">
+                        <a4j:support event="onuploadcomplete">
+                            <s:conversationId/>
+                        </a4j:support>
+                        <f:param name="view" value="page"/>
+                    </rich:fileUpload>
+                </a4j:outputPanel>
+            </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Remove Files
+                </legend>
+                <h:outputText value="Page must be saved before files can be removed!"
+                              rendered="#{!pageHome.managed}"/>
+                <a4j:outputPanel id="fileremovalpanel"
+                                 rendered="#{pageHome.managed}">
+                    <rich:dataList value="#{pageHome.instance.files}"
+                                   var="_file"
+                                   styleClass="imagelist">
+                        <s:graphicImage value="#{_file.croppedByte.image}"
+                                        fileName="#{_file.id}_small"
+                                        alt="[image]">
+                            <s:transformImageSize width="60"
+                                                  maintainRatio="true"/>
+                        </s:graphicImage>
+                        <s:link value="remove"
+                                action="#{fileAction.removeFileFromProductAndDeleteFile}"
+                                styleClass="removefilelink">
+                            <f:param name="fileId"
+                                     value="#{_file.id}"/>
+                        </s:link>
+                    </rich:dataList>
+                </a4j:outputPanel>
+            </fieldset>
+            <fieldset class="buttons">
+                <a4j:commandButton id="save"
+                                   value="Save"
+                                   action="#{pageHome.persist}"
+                                   rendered="#{!pageHome.managed}">
+                    <f:param name="view" value="#{param.view}"/>
+                    <s:conversationId/>
+                </a4j:commandButton>
+                <a4j:commandButton id="update"
+                                   value="Save"
+                                   action="#{pageHome.update}"
+                                   rendered="#{pageHome.managed}">
+                    <f:param name="view" value="#{param.view}"/>
+                    <s:conversationId/>
+                </a4j:commandButton>
+                <a4j:commandButton id="delete"
+                                   value="Delete"
+                                   action="#{pageHome.remove}"
+                                   immediate="true"
+                                   rendered="#{pageHome.managed}">
+                    <f:param name="view" value="#{param.view}"/>
+                    <s:conversationId/>
+                </a4j:commandButton>
+                <a4j:commandButton action="#{pageHome.clearInstance}"
+                                   id="new"
+                                   value="New">
+                    <f:param name="view" value="#{param.view}"/>
+                </a4j:commandButton>
+                <s:button propagation="none"
+                          id="view"
+                          value="View"
+                          view="/page.xhtml">
+                    <f:param name="pageId" value="#{pageHome.instance.id}"/>
+                </s:button>
+                <s:button propagation="end"
+                          id="cancel"
+                          value="Cancel"
+                          view="/home.xhtml"/>
+            </fieldset>
+        </h:form>
+    </a4j:outputPanel>
 </ui:composition>

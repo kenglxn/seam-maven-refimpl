@@ -7,99 +7,108 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
+    <a4j:outputPanel ajaxRendered="true">
+        <h:form id="pageform"
+                styleClass="ki-form">
+            <fieldset class="columnar label-top">
+                <h:outputLabel value="name:"
+                               for="name"/>
+                <h:inputText id="name"
+                             value="#{productHome.instance.name}"/>
+                <h:outputLabel value="price:"
+                               for="price"/>
+                <h:inputText id="price"
+                             value="#{productHome.instance.price}"/>
 
-
-    <h:form id="pageform"
-            styleClass="ki-form">
-        <fieldset class="columnar label-top">
-            <h:outputLabel value="name:"
-                           for="name"/>
-            <h:inputText id="name"
-                         value="#{productHome.instance.name}"/>
-            <h:outputLabel value="price:"
-                           for="price"/>
-            <h:inputText id="price"
-                         value="#{productHome.instance.price}"/>
-
-            <h:outputLabel value="description:"
-                           for="descriptioneditor"/>
-            <rich:editor id="descriptioneditor"
-                         value="#{productHome.instance.description}"
-                         theme="advanced"
-                         height="200">
-            </rich:editor>
-        </fieldset>
-        <fieldset class="columnar label-top">
-            <legend>
-                Add Files
-            </legend>
-            <h:outputText value="Product must be saved before files can be added!"
-                          rendered="#{!productHome.managed}"/>
-            <a4j:outputPanel id="fileuploadpanel"
-                             rendered="#{productHome.managed}">
-                <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
-                                 maxFilesQuantity="5"
-                                 listHeight="50">
-                    <a4j:support event="onuploadcomplete">
-                        <s:conversationId/>
-                    </a4j:support>
-                    <f:param name="view" value="product"/>
-                </rich:fileUpload>
-            </a4j:outputPanel>
-        </fieldset>
-        <fieldset class="columnar label-top">
-            <legend>
-                Remove Files
-            </legend>
-            <h:outputText value="Product must be saved before files can be removed!"
-                          rendered="#{!productHome.managed}"/>
-            <a4j:outputPanel id="fileremovalpanel"
-                             rendered="#{productHome.managed}">
-                <rich:dataList value="#{productHome.instance.files}"
-                               var="_file"
-                               styleClass="imagelist">
-                    <s:graphicImage value="#{_file.croppedByte.image}"
-                                    fileName="#{_file.id}"
-                                    alt="[image]">
-                        <s:transformImageSize width="60"
-                                              maintainRatio="true"/>
-                    </s:graphicImage>
-                    <s:link value="remove"
-                            action="#{fileAction.removeFileFromProductAndDeleteFile}"
-                            styleClass="removefilelink">
-                        <f:param name="fileId"
-                                 value="#{_file.id}"/>
-                    </s:link>
-                </rich:dataList>
-            </a4j:outputPanel>
-        </fieldset>
-        <fieldset class="buttons">
-            <h:commandButton id="save"
-                             value="Save"
-                             action="#{productHome.persist}"
-                             rendered="#{!productHome.managed}"/>
-            <h:commandButton id="update"
-                             value="Save"
-                             action="#{productHome.update}"
-                             rendered="#{productHome.managed}"/>
-            <h:commandButton id="delete"
-                             value="Delete"
-                             action="#{productHome.remove}"
-                             immediate="true"
-                             rendered="#{productHome.managed}"/>
-            <s:button propagation="none"
-                      action="#{productHome.clearInstance}"
-                      id="new"
-                      value="New"/>
-            <s:button propagation="none"
-                      id="view"
-                      value="View"
-                      view="/product.xhtml"/>
-            <s:button propagation="end"
-                      id="cancel"
-                      value="Cancel"
-                      view="/home.xhtml"/>
-        </fieldset>
-
-    </h:form>
+                <h:outputLabel value="description:"
+                               for="descriptioneditor"/>
+                <rich:editor id="descriptioneditor"
+                             value="#{productHome.instance.description}"
+                             theme="advanced"
+                             height="200">
+                </rich:editor>
+            </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Add Files
+                </legend>
+                <h:outputText value="Product must be saved before files can be added!"
+                              rendered="#{!productHome.managed}"/>
+                <a4j:outputPanel id="fileuploadpanel"
+                                 rendered="#{productHome.managed}">
+                    <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
+                                     maxFilesQuantity="5"
+                                     listHeight="50">
+                        <a4j:support event="onuploadcomplete">
+                            <s:conversationId/>
+                        </a4j:support>
+                        <f:param name="view" value="product"/>
+                    </rich:fileUpload>
+                </a4j:outputPanel>
+            </fieldset>
+            <fieldset class="columnar label-top">
+                <legend>
+                    Remove Files
+                </legend>
+                <h:outputText value="Product must be saved before files can be removed!"
+                              rendered="#{!productHome.managed}"/>
+                <a4j:outputPanel id="fileremovalpanel"
+                                 rendered="#{productHome.managed}">
+                    <rich:dataList value="#{productHome.instance.files}"
+                                   var="_file"
+                                   styleClass="imagelist">
+                        <s:graphicImage value="#{_file.croppedByte.image}"
+                                        fileName="#{_file.id}"
+                                        alt="[image]">
+                            <s:transformImageSize width="60"
+                                                  maintainRatio="true"/>
+                        </s:graphicImage>
+                        <s:link value="remove"
+                                action="#{fileAction.removeFileFromProductAndDeleteFile}"
+                                styleClass="removefilelink">
+                            <f:param name="fileId"
+                                     value="#{_file.id}"/>
+                        </s:link>
+                    </rich:dataList>
+                </a4j:outputPanel>
+            </fieldset>
+            <fieldset class="buttons">
+                <a4j:commandButton id="save"
+                                   value="Save"
+                                   action="#{productHome.persist}"
+                                   rendered="#{!productHome.managed}">
+                    <f:param name="view" value="#{param.view}"/>
+                    <s:conversationId/>
+                </a4j:commandButton>
+                <a4j:commandButton id="update"
+                                   value="Save"
+                                   action="#{productHome.update}"
+                                   rendered="#{productHome.managed}">
+                    <f:param name="view" value="#{param.view}"/>
+                    <s:conversationId/>
+                </a4j:commandButton>
+                <a4j:commandButton id="delete"
+                                   value="Delete"
+                                   action="#{productHome.remove}"
+                                   immediate="true"
+                                   rendered="#{productHome.managed}">
+                    <f:param name="view" value="#{param.view}"/>
+                    <s:conversationId/>
+                </a4j:commandButton>
+                <a4j:commandButton action="#{productHome.clearInstance}"
+                                   id="new"
+                                   value="New">
+                    <f:param name="view" value="#{param.view}"/>
+                </a4j:commandButton>
+                <s:button propagation="none"
+                          id="view"
+                          value="View"
+                          view="/product.xhtml"/>
+                <s:button propagation="end"
+                          id="cancel"
+                          value="Cancel"
+                          view="/home.xhtml"/>
+            </fieldset>
+        </h:form>
+    </a4j:outputPanel>
 </ui:composition>
