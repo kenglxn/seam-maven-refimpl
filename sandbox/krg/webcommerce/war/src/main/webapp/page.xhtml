@@ -9,10 +9,24 @@
                 xmlns:a4j="http://richfaces.org/a4j"
                 template="layout/site-template.xhtml">
 
-    <ui:define name="scripts">
-        <script src="#{request.contextPath}/js/dojo-release-1.3.2/dojo/dojo.js" type="text/javascript"
-                charset="utf-8"></script>
-        <script src="#{request.contextPath}/js/zoom.js" type="text/javascript" charset="utf-8"></script>
+     <ui:define name="scripts">
+        <link rel="stylesheet"
+              href="js/jqzoom_ev1.0.1/css/jqzoom.css"/>
+        <a4j:loadScript src="resource://jquery.js"/>
+        <script type='text/javascript'
+                src='js/jqzoom_ev1.0.1/js/jquery.jqzoom1.0.1.js'></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                var options = {
+                    zoomWidth: 350,
+                    zoomHeight: 225,
+                    xOffset: 10,
+                    yOffset: 0,
+                    position: "right" //and MORE OPTIONS
+                };
+                jQuery('.zoomable').jqzoom(options);
+            });
+        </script>
     </ui:define>
 
     <ui:define name="menu">
@@ -50,26 +64,18 @@
             <rich:dataList value="#{pageHome.instance.files}"
                            var="_file"
                            styleClass="imagelist">
-                <s:graphicImage value="#{_file.croppedByte.image}"
-                                fileName="#{_file.id}_large"
-                                alt="[image]">
-                    <rich:componentControl for="panel" operation="show" event="onclick"/>
-                </s:graphicImage>
-                <rich:modalPanel id="panel" width="800" height="600">
-                    <f:facet name="header">
-                        <h:outputText value="#{_file.id}_large"/>
-                    </f:facet>
-                    <h:outputLink value="#" styleClass="modalcloselink">
-                        close
-                        <rich:componentControl for="panel"
-                                               operation="hide"
-                                               event="onclick"/>
-                    </h:outputLink>
+                <a href="#{settingsList.singleResult.filePathClient}/#{_file.fileName}"
+                   class="zoomable"
+                   title="#{_file.product.name}">
                     <s:graphicImage value="#{_file.originalByte.image}"
-                                    fileName="#{_file.id}_original"
+                                    fileName="#{_file.id}_large"
                                     alt="[image]"
-                                    id="me"/>
-                </rich:modalPanel>
+                                    styleClass="small">
+                        <s:transformImageSize width="300"
+                                              maintainRatio="true"/>
+                    </s:graphicImage>
+
+                </a>
             </rich:dataList>
             <h:outputText value="#{pageHome.instance.content}"
                           escape="false"/>
