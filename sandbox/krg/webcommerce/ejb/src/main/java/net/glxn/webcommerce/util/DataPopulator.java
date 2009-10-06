@@ -69,8 +69,8 @@ public class DataPopulator {
             return;
         }
         Settings settings = settingsHome.getInstance();
-        settings.setFilePathServer("D:\\dev\\files");
-        settings.setFilePathClient("http://localhost/dev/files");
+        settings.setFilePathServer("D:\\dev\\files\\");
+        settings.setFilePathClient("http://localhost/dev/files/");
         settingsHome.persist();
         createUsers();
         createPages();
@@ -132,7 +132,7 @@ public class DataPopulator {
             fileHome.clearInstance();
             Settings settings = settingsList.getSingleResult();
             String filepath = settings.getFilePathServer();
-            FileUtil.writeToDisk(byteFromFile, filepath.concat("\\"+image.getName()));
+            FileUtil.writeToDisk(byteFromFile, filepath.concat(image.getName()));
             File file = fileHome.getInstance();
             file.setFileName(image.getName());
             file.setOriginalByte(new ImageByte(byteFromFile));

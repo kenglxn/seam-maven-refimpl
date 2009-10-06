@@ -2,8 +2,10 @@ package net.glxn.webcommerce.action;
 
 import net.glxn.webcommerce.action.home.FileHome;
 import net.glxn.webcommerce.action.home.ProductHome;
+import net.glxn.webcommerce.action.home.PageHome;
 import net.glxn.webcommerce.model.File;
 import net.glxn.webcommerce.model.Product;
+import net.glxn.webcommerce.model.Page;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
@@ -15,8 +17,11 @@ import java.io.Serializable;
 @Name("fileAction")
 public class FileAction implements Serializable {
 
-    @In
+    @In(required = false)
     ProductHome productHome;
+
+    @In(required = false)
+    PageHome pageHome;
 
     @In
     FileHome fileHome;
@@ -27,6 +32,13 @@ public class FileAction implements Serializable {
         Product product = productHome.getInstance();
         File file = fileHome.getInstance();
         product.getFiles().remove(file);
+        fileHome.remove();
+    }
+
+    public void removeFileFromPageAndDeleteFile() {
+        Page page = pageHome.getInstance();
+        File file = fileHome.getInstance();
+        page.getFiles().remove(file);
         fileHome.remove();
     }
 }

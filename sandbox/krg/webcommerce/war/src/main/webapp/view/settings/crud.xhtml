@@ -8,7 +8,18 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
     <a4j:outputPanel ajaxRendered="true">
-        <h:form id="pageform"
+
+        <rich:dataList var="_settings"
+                       value="#{settingsList.resultList}">
+            <s:link value="settings_#{_settings.id}">
+                <f:param name="settingsId"
+                         value="#{_settings.id}"/>
+                <f:param name="view"
+                             value="#{param.view}"/>
+            </s:link>
+        </rich:dataList>
+
+        <h:form id="settingsform"
                 styleClass="ki-form">
             <fieldset class="columnar label-top">
                 <h:outputLabel value="filePathClient:"
@@ -24,15 +35,17 @@
                 <a4j:commandButton id="save"
                                    value="Save"
                                    action="#{settingsHome.persist}"
-                                   rendered="#{!settingsHome.managed}">
-                    <f:param name="view" value="#{param.view}"/>
+                                   rendered="#{!settingsHome.managed and settingsList.resultList.isEmpty()}">
+                    <f:param name="view"
+                             value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
                 <a4j:commandButton id="update"
                                    value="Update"
                                    action="#{settingsHome.update}"
                                    rendered="#{settingsHome.managed}">
-                    <f:param name="view" value="#{param.view}"/>
+                    <f:param name="view"
+                             value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
             </fieldset>

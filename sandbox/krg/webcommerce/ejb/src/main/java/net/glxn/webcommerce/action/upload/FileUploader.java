@@ -49,7 +49,7 @@ public class FileUploader implements Serializable {
         byte[] croppedImage = FileUtil.cropImage(byteFromFile);
         Settings settings = settingsList.getSingleResult();
         String filepath = settings.getFilePathServer();
-        FileUtil.writeToDisk(byteFromFile, filepath.concat("\\"+fileName));
+        FileUtil.writeToDisk(byteFromFile, filepath.concat(fileName));
         file.setFileName(fileName);        
         file.setCroppedByte(new ImageByte(croppedImage));
         file.setImageContentType(item.getContentType());
