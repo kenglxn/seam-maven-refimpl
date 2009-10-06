@@ -19,7 +19,9 @@
            value="#{fileHome.id}"
            converterId="javax.faces.Long"
            required="false" />
-    <action execute="#{settingsList.initSettingsHome}"
-            if="#{param.view eq 'settings'}"/>
+    <param name="settingsId"
+           value="#{settingsHome.id}"
+           converterId="javax.faces.Long"
+           required="false" />
     <restrict>#{s:hasRole('admin')}</restrict>
 </page>
