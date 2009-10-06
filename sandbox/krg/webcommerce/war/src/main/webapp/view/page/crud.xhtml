@@ -30,7 +30,10 @@
                                              id="parentSetBool">
                         <a4j:support event="onchange"
                                      reRender="parentSetter"
-                                     ajaxSingle="true"/>
+                                     ajaxSingle="true">
+                            <s:conversationId/>
+                            <f:param name="view" value="#{param.view}"/>
+                        </a4j:support>
                     </h:selectBooleanCheckbox>
                     <f:subview id="parentSelector"
                                rendered="#{setParent}">
