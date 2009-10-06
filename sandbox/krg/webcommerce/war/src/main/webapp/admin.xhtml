@@ -58,18 +58,26 @@
     </ui:define>
 
     <ui:define name="main-content-body">
-        <a4j:include layout="none"
+        <a4j:include id="pageinclude"
+                     layout="block"
                      viewId="/view/page/crud.xhtml"
-                     rendered="#{param.view eq 'page'}"/>
-        <a4j:include layout="none"
+                     rendered="#{param.view eq 'page'}"
+                     ajaxRendered="true"/>
+        <a4j:include id="categoryinclude"
+                     layout="block"
                      viewId="/view/category/crud.xhtml"
-                     rendered="#{param.view eq 'category'}"/>
-        <a4j:include layout="none"
+                     rendered="#{param.view eq 'category'}"
+                     ajaxRendered="true"/>
+        <a4j:include id="productinclude"
+                     layout="block"
                      viewId="/view/product/crud.xhtml"
-                     rendered="#{param.view eq 'product'}"/>
-        <a4j:include layout="none"
+                     rendered="#{param.view eq 'product'}"
+                     ajaxRendered="true"/>
+        <a4j:include id="settingsinclude"
+                     layout="block"
                      viewId="/view/settings/crud.xhtml"
-                     rendered="#{param.view eq 'settings'}"/>
+                     rendered="#{param.view eq 'settings'}"
+                     ajaxRendered="true"/>
     </ui:define>
 
     <ui:define name="footer">
