@@ -41,9 +41,11 @@
                                      listHeight="50">
                         <a4j:support event="onuploadcomplete">
                             <s:conversationId/>
-                            <f:param name="view" value="#{param.view}"/>
+                            <f:param name="view"
+                                     value="#{param.view}"/>
                         </a4j:support>
-                        <f:param name="view" value="#{param.view}"/>
+                        <f:param name="view"
+                                 value="#{param.view}"/>
                     </rich:fileUpload>
                 </a4j:outputPanel>
             </fieldset>
@@ -69,7 +71,8 @@
                                 styleClass="removefilelink">
                             <f:param name="fileId"
                                      value="#{_file.id}"/>
-                            <f:param name="view" value="#{param.view}"/>
+                            <f:param name="view"
+                                     value="#{param.view}"/>
                         </s:link>
                     </rich:dataList>
                 </a4j:outputPanel>

@@ -45,6 +45,16 @@
                 </s:link>
             </f:facet>
         </rich:panel>
+        <rich:panel bodyClass="hide">
+            <f:facet name="header">
+                <s:link value="settings"
+                        title="settings"
+                        propagation="none">
+                    <f:param name="view"
+                             value="settings"/>
+                </s:link>
+            </f:facet>
+        </rich:panel>
     </ui:define>
 
     <ui:define name="main-content-body">
@@ -57,6 +67,9 @@
         <a4j:include layout="none"
                      viewId="/view/product/crud.xhtml"
                      rendered="#{param.view eq 'product'}"/>
+        <a4j:include layout="none"
+                     viewId="/view/settings/crud.xhtml"
+                     rendered="#{param.view eq 'settings'}"/>
     </ui:define>
 
     <ui:define name="footer">

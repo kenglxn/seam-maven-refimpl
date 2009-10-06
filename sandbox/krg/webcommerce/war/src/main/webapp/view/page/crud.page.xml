@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <page xmlns="http://jboss.com/products/seam/pages"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xmlns:s="http://jboss.com/products/seam/taglib"
       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd">
-    <param name="catId"
-           value="#{categoryHome.id}"
-           converterId="javax.faces.Long"
-           required="false" />
     <param name="pageId"
            value="#{pageHome.id}"
-           converterId="javax.faces.Long"
-           required="false" />
-    <param name="prodId"
-           value="#{productHome.id}"
            converterId="javax.faces.Long"
            required="false" />
     <param name="fileId"
            value="#{fileHome.id}"
            converterId="javax.faces.Long"
            required="false" />
-    <action execute="#{settingsList.initSettingsHome}"
-            if="#{param.view eq 'settings'}"/>
-    <restrict>#{s:hasRole('admin')}</restrict>
 </page>
