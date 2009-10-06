@@ -64,7 +64,7 @@
             <rich:dataList value="#{pageHome.instance.files}"
                            var="_file"
                            styleClass="imagelist">
-                <a href="#{settingsList.singleResult.filePathClient}/#{_file.fileName}"
+                <a href="#{settingsList.singleResult.filePathClient}#{_file.fileName}"
                    class="zoomable"
                    title="#{_file.product.name}">
                     <s:graphicImage value="#{_file.originalByte.image}"

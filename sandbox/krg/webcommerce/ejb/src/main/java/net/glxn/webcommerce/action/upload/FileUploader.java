@@ -10,6 +10,7 @@ import net.glxn.webcommerce.model.Settings;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.log.Log;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
@@ -35,6 +36,10 @@ public class FileUploader implements Serializable {
 
     @In(required = false)
     PageHome pageHome;
+
+    @RequestParameter
+    String view;
+
     private static final long serialVersionUID = -5955269352412127177L;
 
 
@@ -53,10 +58,12 @@ public class FileUploader implements Serializable {
         file.setFileName(fileName);        
         file.setCroppedByte(new ImageByte(croppedImage));
         file.setImageContentType(item.getContentType());
-        if (productHome != null && productHome.isManaged()) {
+        if (productHome != null && productHome.isManaged() && "product".equals(view)) {
+            log.info("added file to product");
             productHome.getInstance().addFile(file);
         }
-        if (pageHome != null && pageHome.isManaged()) {
+        if (pageHome != null && pageHome.isManaged() && "page".equals(view)) {
+            log.info("added file to page");
             pageHome.getInstance().addFile(file);
         }
         fileHome.persist();
