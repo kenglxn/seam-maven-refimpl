@@ -32,7 +32,8 @@
                                      reRender="parentSetter"
                                      ajaxSingle="true">
                             <s:conversationId/>
-                            <f:param name="view" value="#{param.view}"/>
+                            <f:param name="view"
+                                     value="#{param.view}"/>
                         </a4j:support>
                     </h:selectBooleanCheckbox>
                     <f:subview id="parentSelector"
@@ -120,11 +121,11 @@
                     <f:param name="view" value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
-                <a4j:commandButton action="#{pageHome.clearInstance}"
+                <s:button action="#{pageHome.clearInstance}"
                                    id="new"
                                    value="New">
                     <f:param name="view" value="#{param.view}"/>
-                </a4j:commandButton>
+                </s:button>
                 <s:button propagation="none"
                           id="view"
                           value="View"
