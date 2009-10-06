@@ -40,7 +40,8 @@ public class FileUploader implements Serializable {
 
     public void listener(UploadEvent event) throws IOException {
         UploadItem item = event.getUploadItem();
-        log.info("uploading file #0", item.getFile().getName());
+        String fileName = item.getFileName();
+        log.info("uploading file #0", fileName);
         fileHome.clearInstance();
         File file = fileHome.getInstance();
         byte[] byteFromFile = FileUtil.getByteFromFile(item.getFile());
@@ -48,8 +49,8 @@ public class FileUploader implements Serializable {
         byte[] croppedImage = FileUtil.cropImage(byteFromFile);
         Settings settings = settingsList.getSingleResult();
         String filepath = settings.getFilePathServer();
-        FileUtil.writeToDisk(byteFromFile, filepath.concat("\\"+item.getFile().getName()));
-        file.setFileName(item.getFile().getName());        
+        FileUtil.writeToDisk(byteFromFile, filepath.concat("\\"+fileName));
+        file.setFileName(fileName);        
         file.setCroppedByte(new ImageByte(croppedImage));
         file.setImageContentType(item.getContentType());
         if (productHome != null && productHome.isManaged()) {

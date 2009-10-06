@@ -26,6 +26,7 @@ public class PageList extends EntityQuery<Page> {
     @In(required = false)
     @Out(required = false)
     Page child;
+    
     @In(required = false)
     @Out(required = false)
     Long childId;
