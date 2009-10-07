@@ -64,6 +64,12 @@
 		<param-value>.xhtml</param-value>
 	</context-param>
 
+    <context-param>
+		<param-name>facelets.REFRESH_PERIOD</param-name>
+		<param-value>-1</param-value>
+	</context-param>
+
+
 	<!--
 		Strip html comments from the page before it is rendred - meaning that you will
 		no longer be bugged down by EL evaluating expressions inside a comment tag
