@@ -7,8 +7,9 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
-    <a4j:outputPanel ajaxRendered="true">
-        <h:form id="pageform"
+    <a4j:outputPanel id="_productpanel"
+                     ajaxRendered="true">
+        <h:form id="productform"
                 styleClass="ki-form">
             <fieldset class="columnar label-top">
                 <h:outputLabel value="name:"
@@ -39,7 +40,10 @@
                     <rich:fileUpload fileUploadListener="#{fileUpload.listener}"
                                      maxFilesQuantity="1"
                                      listHeight="50">
-                        <a4j:support event="onuploadcomplete">
+                        <a4j:support event="onuploadcomplete"
+                                     ajaxSingle="true"
+                                     eventsQueue="productfileuploadqueue"
+                                     ignoreDupResponses="true">
                             <s:conversationId/>
                             <f:param name="view"
                                      value="#{param.view}"/>

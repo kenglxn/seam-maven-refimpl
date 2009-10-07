@@ -34,7 +34,7 @@
             jndi-pattern="${as.jndi.pattern}"/>
 
     <core:manager
-            concurrent-request-timeout="500"
+            concurrent-request-timeout="5000"
             conversation-timeout="120000"
             conversation-id-parameter="cid"
             parent-conversation-id-parameter="pid"/>
