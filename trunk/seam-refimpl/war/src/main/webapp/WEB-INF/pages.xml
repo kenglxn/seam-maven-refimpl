@@ -10,6 +10,9 @@
 	<page view-id="/home.xhtml">
 		<rewrite pattern="/" />
 		<rewrite pattern="/index{.*}" />
+		<rewrite pattern="/home{.*}" />
+		<rewrite pattern="/default{.*}" />
+		<rewrite pattern="/welcome{.*}" />
 	</page>
 	
 	<page view-id="/login.seam">
@@ -73,7 +76,7 @@
 	
 	<exception class="javax.faces.application.ViewExpiredException">
 	  <redirect view-id="/error.xhtml">
-	    <message severity="warn">Your session has timed out, please try again</message>
+	    <message severity="warn">Your session expired. Please try again.</message>
 	  </redirect>
 	</exception>
 	

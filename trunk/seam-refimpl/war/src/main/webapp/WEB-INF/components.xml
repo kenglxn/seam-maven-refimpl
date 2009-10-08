@@ -94,9 +94,14 @@
 		UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both. 
 		The native Seam rewriting does not use the org.tuckey rewrite engine at all. 
 		If you are going to use Seam's native rewriting, then remove the org.tuckey
-		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file. 
-		With Seam 2.1 it is recommend to use Seam's native rewrite engine.
-		see: http://docs.jboss.org/seam/latest/reference/en-US/html/configuration.html
+		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file.
+		
+		This filter allows Seam to apply URL rewriting for views based on configuration in the 
+		pages.xml file. The view-mapping parameter must match the servlet mapping defined for the 
+		Faces Servlet in the web.xml file. If ommitted, the rewrite filter assumes the pattern *.seam.
+ 
+		With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine, see:
+			http://docs.jboss.org/seam/latest/reference/en-US/html/configuration.html
 		
 		<web:rewrite-filter view-mapping="/seam/*" />
 	 -->
@@ -113,13 +118,6 @@
   <security:identity 
 	  authenticate-method="#{authenticator.authenticate}" 
 	  remember-me="true"/>
-
-  <event type="org.jboss.seam.security.notLoggedIn">
-    <action execute="#{redirect.captureCurrentView}"/>
-  </event>
-  <event type="org.jboss.seam.security.loginSuccessful">
-    <action execute="#{redirect.returnToCapturedView}"/>
-  </event>
 
 	<!-- 
   <mail:mail-session 
@@ -147,5 +145,13 @@
     <bpm:pageflow-definitions></bpm:pageflow-definitions>
   </bpm:jbpm>
   -->
+
+  <event type="org.jboss.seam.security.notLoggedIn">
+    <action execute="#{redirect.captureCurrentView}"/>
+  </event>
+
+  <event type="org.jboss.seam.security.loginSuccessful">
+    <action execute="#{redirect.returnToCapturedView}"/>
+  </event>
 
 </components>
