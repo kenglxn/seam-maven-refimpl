@@ -110,7 +110,7 @@
 			<artifactId>jboss-seam-debug</artifactId>
 		</dependency>
 
-		<!-- add more seam modules as needed 
+		<!-- add more Seam modules as needed 
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam-remoting</artifactId>
@@ -124,6 +124,11 @@
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam-pdf</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jboss.seam</groupId>
+			<artifactId>jboss-seam-excel</artifactId>
 		</dependency>
 		-->
 		

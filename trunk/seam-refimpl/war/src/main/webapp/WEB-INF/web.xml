@@ -54,6 +54,29 @@
 		<param-value>${env.debug}</param-value>
 	</context-param>
 
+	<!-- JSF -->
+	
+	<!-- Not shure if this is needed
+	<context-param>
+		<description>
+			JSF 1.2 detects the ViewHandler/StateManager version from the
+			faces-config.xml DTD/XML schema name. The faces-config.xml files in
+			the RichFaces JARs use the JSF 1.1 DTDs, causing JSF to use 1.1
+			behavior. Setting this flag to false ignores the version of the DTD
+			used in these files, thus ensuring that JSF uses 1.2 behavior.
+			
+			One of the critical improvements in JSF 1.2 is that it throws a
+			ViewExpiredException on a session timeout.
+			
+			See http://jira.jboss.com/jira/browse/RF-2294 and
+			http://lists.jboss.org/pipermail/seam-dev/2008-February/000024.html.
+		</description>
+		
+		<param-name>com.sun.faces.disableVersionTracking</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	-->
+	
 	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
@@ -112,7 +135,7 @@
 		The native Seam rewriting does not use the org.tuckey rewrite engine at all. 
 		If you are going to use Seam's native rewriting, then remove the org.tuckey
 		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file. 
-		With Seam 2.1 it is recommend to use Seam's native rewrite engine.
+		With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine.
 	 -->
 	<!--	
 	<filter>

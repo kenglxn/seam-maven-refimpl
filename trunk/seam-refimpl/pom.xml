@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.jboss.seam</groupId>
 		<artifactId>root</artifactId>
-		<version>2.1.2</version>
+		<version>2.2.0.GA</version>
 	</parent>
 	
 	<groupId>no.knowit.seam</groupId>
@@ -31,9 +31,9 @@
 
 	<properties>
 		<!-- jar versions, for dependency management -->
-		<version.seam>2.1.2</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
+		<version.seam>2.2.0.GA</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
 		<version.richfaces>3.3.1.GA</version.richfaces>
-		<version.drools>4.0.4</version.drools>
+		<version.drools>5.0.1</version.drools>
 		<version.resteasy>1.1-RC2</version.resteasy>
 		<version.jboss.embedded>beta3.SP9</version.jboss.embedded>
 		<version.junit>4.7</version.junit>
@@ -204,7 +204,6 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-jar</artifactId>
 				<version>${project.version}</version> 
-				<scope>provided</scope>
 				<type>jar</type> 
 			</dependency>
 			-->
@@ -274,6 +273,14 @@
 					<exclusion>
 						<groupId>com.sun.facelets</groupId>
 						<artifactId>jsf-facelets</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xstream</groupId>
+						<artifactId>xstream</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xpp3</groupId>
+						<artifactId>xpp3_min</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -548,10 +555,6 @@
 						<artifactId>richfaces-api</artifactId>
 					</exclusion>
 					<exclusion>
-						<groupId>commons-digester</groupId>
-						<artifactId>commons-digester</artifactId>
-					</exclusion>
-					<exclusion>
 						<groupId>javax.faces</groupId>
 						<artifactId>jsf-api</artifactId>
 					</exclusion>
@@ -562,6 +565,14 @@
 					<exclusion>
 						<groupId>javax.servlet</groupId>
 						<artifactId>servlet-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-digester</groupId>
+						<artifactId>commons-digester</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-beanutils</groupId>
+						<artifactId>commons-beanutils</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -865,6 +876,10 @@
 						<groupId>xstream</groupId>
 						<artifactId>xstream</artifactId>
 					</exclusion>
+					<exclusion>
+						<groupId>joda-time</groupId>
+						<artifactId>joda-time</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 
@@ -974,6 +989,13 @@
 				we have removed them while solving transitive dependencies in Seam root pom.
 			-->
 			
+			<!-- drools Why is not this in seam-root? -->
+			<dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-api</artifactId>
+				<version>${version.drools}</version>
+			</dependency>
+			
 			<!-- hibernate -->
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -981,6 +1003,12 @@
 				<version>3.3.0.ga</version>
 			</dependency> 
 
+			<!--  mvel2 -->
+			<dependency>
+				<groupId>org.mvel</groupId>
+				<artifactId>mvel2</artifactId>
+				<version>2.0.13</version>
+			</dependency> 
 			
 			<!-- antlr-runtime -->
 			<dependency>
@@ -1127,18 +1155,34 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-ejb-plugin</artifactId>
 					<version>2.1</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1-beta-1</version>
+					<configuration>
+						<ejbVersion>3.0</ejbVersion>
+						<generateClient>false</generateClient>
+						<archive>
+							<manifest>
+								<addClasspath>true</addClasspath>
+							</manifest>
+						</archive>
+					</configuration>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>2.2</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addClasspath>true</addClasspath>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.1-beta-1</version>
 				</plugin>
 
 				<plugin>
@@ -1286,8 +1330,6 @@
 	</build>
 
 	<dependencies>
-		
-		<!-- All provided dependencies goes into parent pom -->
 		
 		<!-- seam -->
 		<dependency>
