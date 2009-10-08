@@ -44,7 +44,7 @@
 		<a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
     <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug regarding the use of 
 		<code>profiles.xml</code>, see the <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an 
-		explanation.
+		explanation
   </li>
   <li><a href="http://m2eclipse.sonatype.org/">Maven Eclipse plugin</a> (0.9.8 or later)</li>
   <li>
@@ -52,9 +52,9 @@
 		SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE
 		</a>.
 	</li>
-	<li><a href="http://www.seamframework.org/Download">JBoss Seam 2.x</a></li>
+	<li><a href="http://www.seamframework.org/Download">JBoss Seam 2.2.0.GA</a> source code (for JBoss Tools)</li>
   <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a></li>
-  <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.</li>
+  <li><a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later</li>
   <li><a href="http://testng.org/doc/eclipse.html">TestNG</a></li>
 </ul>
 
@@ -217,11 +217,8 @@ in the project and provides a hierarchical list of them.</p>
 
 <ol class="vspace">
   <li>
-		<a href="01-gettingstarted.html#checkout-install">Checkout</a> or 
 		<a href="01-gettingstarted.html#use-as-template">Export</a> the <code>seam-refimpl</code> project 
 		from svn to a folder of your choice, the <code>${SEAM_TUTORIAL}</code> folder. <br/>
-		The section, <strong><a href="#checkout-trunk-from-eclipse">How To Checkout Trunk From 
-		Eclipse</a></strong>, outlines how to check out the SVN trunk from Eclipse.
 	</li>
   <li>
 		<a href="01-gettingstarted.html#modfy-the-poms">Modify the POMs</a> as needed.
@@ -455,8 +452,8 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 	</li>
 	<li>
 		You need to keep an eye on the deploy folder as WTP will do a full deploy from time to time, in
-		particular when you make modifications to the EAR module. Then the fix is to run 
-		<code>mvn install -Pexplode</code> again.
+		particular when you make modifications to the EAR module. Then the fix is to stop the server and
+		run <code>mvn install -Pexplode</code> again.
 	</li>
 	<li>
 		<strong>Important:</strong> The child pom's <code>&lt;relativePath&gt;</code> tag must point to 
@@ -469,7 +466,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
   &lt;groupId&gt;no.knowit.seam&lt;/groupId&gt;
   &lt;artifactId&gt;seam-refimpl&lt;/artifactId&gt;
   &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-  <strong>&lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;</strong>
+  <strong><font color="blue">&lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;</font></strong>
 &lt;/parent&gt;
 		</pre>
 	</li>
@@ -596,7 +593,7 @@ setting up the tools. Play with the tools and study the code that the various to
 
 <h3>Configure JBoss Tools For The Workspace</h3>
 <p>Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a folder of your 
-choice, e.g. <code>C:/ide/libs/jboss-seam-2.1.2</code>. Open <code><strong>Prefereneces
+choice, e.g. <code>C:/ide/libs/jboss-seam-2.2.0.GA</code>. Open <code><strong>Prefereneces
 </strong></code> and follow the screenshots.</p>
 <ol class="vspace">
   <li>
@@ -938,7 +935,7 @@ complete that tutorial first.</p>
 <ol class="vspace">
 <li>
 	Checkout or export the sql scripts <code>open18-initial-schema-mysql.sql</code> and 
-	<code>open18-initial-seed-data-mysql.sql<code> from svn,  
+	<code>open18-initial-seed-data-mysql.sql</code> from svn,  
 	<a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/etc/schema/">
 		http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/etc/schema/</a>.
 </li>
@@ -1060,7 +1057,7 @@ complete that tutorial first.</p>
 	</pre>	
 </li>
 <li>
-	Modify Seam settings for WAR; Select the newly created connection and point the View folder to 
+	Modify Seam settings for WAR: Select the newly created connection and point the View folder to 
 	<strong>/seam-tutorial-war/src/main/webapp</strong> so that xhtml files are generated to the
 	webapp folder.
 	<img src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
@@ -1106,7 +1103,7 @@ complete that tutorial first.</p>
 	about 60 seconds.	That's impressing! 
 </li>
 <li>
-	As you browse trough the pages you will find that that the <code></strong>TeeList</strong><code>
+	As you browse trough the pages you will find that that the <code></strong>TeeList</strong></code>
 	page fails to load. The problem is desctibed here: 
 	<a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04/chapter-developments.txt">
 	http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04/chapter-developments.txt</a>.
@@ -1116,7 +1113,6 @@ complete that tutorial first.</p>
 	</p>
 </li>
 </ol>
-
 
 <h2>How To's</h2>
 <h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
@@ -1130,7 +1126,7 @@ complete that tutorial first.</p>
     <img src="img/eclipse-checkout-projects-from-svn.png" style="width:450px; display:block;" />
 	</li>
 	<li>
-		Select Location and click <strong>Next</strong>.
+		Select an existing repository location and click <strong>Next</strong>.
     <img src="img/eclipse-checkout-projects-from-svn-select-location.png" style="width:450px; display:block;" />
 	</li>
 	<li>
@@ -1143,11 +1139,10 @@ complete that tutorial first.</p>
     <img src="img/eclipse-checkout-projects-from-svn-check-out-as.png" style="width:450px; display:block;" />
 	</li>
 	<li>
-		Uncheck the <code><strong>Check out as a project in the workspace</strong></code> checkbox.<br/>
-		Browse to the folder where you want to check out the trunk. <strong>Note:</strong> 
-		<a href="#configure-the-workspace">Do not add Maven projects under your workspace folder!</a><br/>
-		Select <code><strong>Check out as a project in the workspace</strong></code>  and click 
-		<strong>Finish</strong>.
+		Uncheck the <code><strong>Use default workspace location</strong></code> checkbox and
+		browse to the folder where you want to check out the trunk. <br/><strong>Note:</strong> 
+		<a href="#configure-the-workspace">Do not add Maven projects under your workspace folder</a>.<br/><br/>
+		Click <strong>Finish</strong>.<br/>
     <img src="img/eclipse-checkout-projects-from-svn-checkout-as.png" style="width:450px; display:block;" />
 	</li>
 	<li>
