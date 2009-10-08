@@ -179,8 +179,9 @@
 								application from those that exist within the JBoss application
 								server's shared artifacts or JARs (for example, those that
 								reside in the default server's lib directory or in JBoss's
-								general lib directory). The classloader i referenced in
-								jboss-app.xml and jboss-web.xml
+								general lib directory). 
+								The classloader i referenced in jboss-app.xml for EAR deployment and and in 
+								jboss-web.xml for WAR deployment (SiA-2.5.3-p63).
 							-->
 							seam.jboss.org:loader=${app.context}-ear.ear
 						</loader-repository>
@@ -224,8 +225,8 @@
 						<jarModule> 
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${app.context}-jar</artifactId>
-							<bundleDir>lib</bundleDir> 
 							<unpack>${env.unpack.modules}</unpack>
+							<includeInApplicationXml>true</includeInApplicationXml>
 						</jarModule>
 						-->
 					</modules>
@@ -235,7 +236,6 @@
 	</build>
 
 	<dependencies>
-
 		<!-- project modules -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -253,7 +253,6 @@
 		<dependency> 
 			<groupId>${project.groupId}</groupId>
 			<artifactId>${app.context}-jar</artifactId> 
-			<type>jar</type>
 		</dependency>
 		-->
 
@@ -277,7 +276,7 @@
 			<type>jar</type>
 		</dependency>
 
-		<!-- -->
+		<!-- commons -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -289,6 +288,57 @@
 			<artifactId>commons-digester</artifactId>
 			<type>jar</type>
 		</dependency>
+
+		<!-- JBoss Rules -->
+		<!-- Not needed by refimpl
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-decisiontables</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-templates</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mvel</groupId>
+			<artifactId>mvel2</artifactId>
+		</dependency> 
+
+		<dependency>
+			<groupId>xstream</groupId>
+			<artifactId>xstream</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_min</artifactId>
+		</dependency>
+		-->
+
+		<!-- JBoss jBPM -->
+		<!-- Not needed by refimpl
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-jpdl</artifactId>
+		</dependency>
+		-->
 
 	</dependencies>
 
