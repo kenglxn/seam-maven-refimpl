@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>no.knowit.seam</groupId>
+        <artifactId>seam-refimpl</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>seam-refimpl-ejb</artifactId>
+    <!-- m2eclipse does not like: ${app.context}-ear -->
+    <name>${project.artifactId} : ${project.version}</name>
+    <description>The Seam Maven reference implementation EJB module</description>
+    <packaging>ejb</packaging>
+
+    <profiles>
+        <profile>
+            <id>explode</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>ejb-process-classes</id>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <property
+                                                name="deploy-path"
+                                                value="${as.deploy}/${app.context}-ear.ear" />
+                                        <copy
+                                                todir="${deploy-path}/${project.build.finalName}.jar"
+                                                verbose="true">
+                                            <fileset dir="${project.build.outputDirectory}">
+                                                <include name="**/*.class" />
+                                            </fileset>
+                                        </copy>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <!-- filtering persistence.xml -->
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>openejb-core</artifactId>
+            <version>3.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.openjpa</groupId>
+                    <artifactId>openjpa</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+            <!--<scope>test</scope>            -->
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.9</version>
+            <!--<scope>test</scope>-->
+        </dependency>
+    </dependencies>
+
+
+</project>
