@@ -1,4 +1,4 @@
-package openejb2;
+package openejb;
 
 import org.jboss.seam.mock.AbstractSeamTest;
 import org.testng.annotations.BeforeSuite;

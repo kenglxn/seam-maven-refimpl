@@ -12,7 +12,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>seam-refimpl-ejb</artifactId>
+    <artifactId>seam-refimpl-openejb-ejb</artifactId>
     <!-- m2eclipse does not like: ${app.context}-ear -->
     <name>${project.artifactId} : ${project.version}</name>
     <description>The Seam Maven reference implementation EJB module</description>
