@@ -1325,6 +1325,7 @@
 		</pluginManagement>
 	</build>
 
+	<!-- All provided/shared dependencies goes into parent pom -->
 	<dependencies>
 		
 		<!-- seam -->
