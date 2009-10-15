@@ -276,6 +276,15 @@
 			<type>jar</type>
 		</dependency>
 
+		<!-- hibernate -->
+		<!--
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		-->
+		
 		<!-- commons -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
