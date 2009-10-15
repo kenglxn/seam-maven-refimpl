@@ -1,4 +1,4 @@
-package openejb2;
+package openejb;
 
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.transaction.NoTransaction;

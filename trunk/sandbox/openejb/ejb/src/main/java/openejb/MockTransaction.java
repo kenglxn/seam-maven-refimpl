@@ -1,4 +1,4 @@
-package openejb2;
+package openejb;
 
 import org.jboss.seam.transaction.UserTransaction;
 import org.jboss.seam.transaction.Transaction;

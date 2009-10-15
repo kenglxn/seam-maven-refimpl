@@ -1,4 +1,4 @@
-package openejb2;
+package openejb;
 
 import org.apache.openejb.OpenEJB;
 import org.apache.log4j.Logger;
