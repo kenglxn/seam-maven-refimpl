@@ -182,6 +182,7 @@
 								general lib directory). 
 								The classloader i referenced in jboss-app.xml for EAR deployment and and in 
 								jboss-web.xml for WAR deployment (SiA-2.5.3-p63).
+								Also see: http://www.jboss.org/community/wiki/classloadingconfiguration
 							-->
 							seam.jboss.org:loader=${app.context}-ear.ear
 						</loader-repository>
