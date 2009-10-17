@@ -180,9 +180,10 @@
 								server's shared artifacts or JARs (for example, those that
 								reside in the default server's lib directory or in JBoss's
 								general lib directory). 
-								The classloader i referenced in jboss-app.xml for EAR deployment and and in 
+								The classloader is referenced in jboss-app.xml for EAR deployment and and in 
 								jboss-web.xml for WAR deployment (SiA-2.5.3-p63).
-								Also see: http://www.jboss.org/community/wiki/classloadingconfiguration
+								see: http://www.jboss.org/community/wiki/classloadingconfiguration
+								see: http://www.mastertheboss.com/en/jboss-application-server/141-jboss-classloader.html
 							-->
 							seam.jboss.org:loader=${app.context}-ear.ear
 						</loader-repository>
