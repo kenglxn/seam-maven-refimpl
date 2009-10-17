@@ -19,10 +19,6 @@
 	<url>http://code.google.com/p/seam-maven-refimpl/</url>
 	<packaging>pom</packaging>
 
-	<prerequisites>
-		<maven>2.0.10</maven>
-	</prerequisites>
-
 	<modules>
 		<module>ear</module>
 		<module>model</module>
