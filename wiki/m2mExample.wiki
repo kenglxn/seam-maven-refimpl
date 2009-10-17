@@ -31,4 +31,5 @@ The steps required to get the project up and running:
   * Execute *mvn install -Pexplode*.
   * Start the server and browse to [http://localhost:8080/m2m]
 
-The example utilizes the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate manifest data for the EAR, EJB and WAR mainfest files. Open e.g. the m2m.ear/META-INF/MANIFEST.MF to see the result.
+The example utilizes the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate a unique build number for the projects EAR, EJB and WAR modules. Open e.g. the m2m/ear/target/m2m-ear-*/m2m-war-*/META-INF/MANIFEST.MF to see the result. 
+Note that Maven will not generate a manifest file for the target/m2m-ear-*/META-INF folder, so the only way to inspect the manifest file for the EAR is to open the packaged ear.
