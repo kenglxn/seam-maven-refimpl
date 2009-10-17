@@ -125,7 +125,7 @@
 			<properties>
 				<as>jboss423</as>
 				<as.version>4.2</as.version>
-				<as.home>/jboss-4.2.3.GA</as.home>
+				<as.home>/jboss-4.2.3.GA-jdk6</as.home>
 				<as.deploy>${as.home}/server/default/deploy</as.deploy>
 			</properties>
 		</profile>
@@ -142,7 +142,7 @@
 			<properties>
 				<as>jboss5</as>
 				<as.version>5</as.version>
-				<as.home>/jboss-5.1.0.GA</as.home>
+				<as.home>/jboss-5.1.0.GA-jdk6</as.home>
 				<as.deploy>${as.home}/server/default/deploy</as.deploy>
 			</properties>
 		</profile>
