@@ -12,15 +12,16 @@ Differences from the original app:
   * `*`.groovy files moved to ejb/src/main/groovy folder
   * Removed components.properties, uses filtering to set values in components.xml
   * Uses gmaven-plugin to compile Groovy files
-  * "groovy-all" must be upgraded to version 1.6.3. Version 1.5.4 provided by the Seam-2.1.2 root POM, does not work.
+  * "groovy-all" must be upgraded to version 1.6.3. Version 1.5.4 provided by the seam-2.1.2 and seam-2.2.0 root POM, does not work.
 
 == How to install and run the application: ==
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial explains the basic steps]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn].
-  * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.
-  * Execute *mvn install* to install the pom. This is the "root" POM for all example applications and you need to install it to your local m2 repo.
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the examples "root" POM from the samples folder and install it to your local .m2 repo]. 
+    * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.	
+    * Execute *mvn install* to install the pom.
+    * This is the "root" POM for all the example applications, so you need to install it to your local m2 repo.
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/jboss-seam/examples/groovybooking-jee Export project from svn].
-  * CD to ./samples/jboss-seam/examples/groovybooking-jee
-  * Copy config/profiles.xml to the project root folder, groovybooking-jee. Modify profiles.xml as needed.
-  * Execute *mvn install -Pexplode*
-  * Access the application at http://localhost:8080/seam-groovybooking-jee
+    * Copy config/profiles.xml to the project root folder, groovybooking-jee. Modify profiles.xml as needed.
+    * Open a command shell and cd to project folder, groovybooking-jee 
+    * Execute *mvn install -Pexplode*
+  * Start the server and access the application at [http://localhost:8080/seam-groovybooking-jee]
