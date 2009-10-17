@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>no.knowit.seam.examples</groupId>
 		<artifactId>jboss-seam-groovybooking-jee</artifactId>
-		<version>2.1.2-SNAPSHOT</version>
+		<version>2.2.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -262,7 +262,6 @@
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam</artifactId>
 			<type>ejb</type>
-			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -278,31 +277,19 @@
 			<type>jar</type>
 		</dependency>
 
+		<!-- commons -->
 		<dependency>
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 			<type>jar</type>
 		</dependency>
 
-		<!-- -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<type>jar</type>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<scope>provided</scope>
-		</dependency>
-			
 	</dependencies>
 
 </project>
