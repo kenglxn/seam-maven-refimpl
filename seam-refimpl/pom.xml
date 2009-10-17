@@ -77,7 +77,7 @@
 		
 		<as>jboss423</as>
 		<as.version>4.2</as.version>
-		<as.home>./jboss-4.2.3.GA</as.home>
+		<as.home>./jboss-4.2.3.GA-jdk6</as.home>
 		<as.deploy>${as.home}/server/default/deploy</as.deploy>
 		
 		<ds>hsqldb</ds>
@@ -1418,7 +1418,7 @@
 			<scope>provided</scope>
 		</dependency>		
 		
-		<!-- -->
+		<!-- commons -->
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
@@ -1431,6 +1431,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
