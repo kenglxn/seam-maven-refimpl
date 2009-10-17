@@ -50,31 +50,7 @@
 			</properties>
 		</profile>
 		
-		<!-- production environment @TODO: move away from profiles.xml -->
-		<profile>
-			<id>env-prod</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>prod</value>
-				</property>
-			</activation>
-			<properties>
-				<env>prod</env>
-				<env.debug>false</env.debug>
-				<env.unpack.modules>false</env.unpack.modules>
-				<env.hibernate.hbm2ddl.auto>validate</env.hibernate.hbm2ddl.auto>
-				<env.hibernate.show_sql>false</env.hibernate.show_sql>
-				<env.hibernate.format_sql>false</env.hibernate.format_sql>
-				<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
-				<jdk.debug>${env.debug}</jdk.debug>
-				<jdk.optimize>true</jdk.optimize>
-				<jdk.source>1.5</jdk.source>
-				<jdk.target>1.5</jdk.target>
-			</properties>
-		</profile>
-		
-		
+
 		<!-- databases -->
 		<!-- HSQL -->
 		<profile>
@@ -174,7 +150,7 @@
 			<properties>
 				<as>jboss423</as>
 				<as.version>4.2</as.version>
-				<as.home>C:/dev/server/jboss-4.2.3.GA-jdk6</as.home>
+				<as.home>/jboss-4.2.3.GA-jdk6</as.home>
 				<as.deploy>${as.home}/server/default/deploy</as.deploy>
 			</properties>
 		</profile>
@@ -191,7 +167,7 @@
 			<properties>
 				<as>jboss5</as>
 				<as.version>5</as.version>
-				<as.home>C:/dev/server/jboss-5.1.0.GA-jdk6</as.home>
+				<as.home>/jboss-5.1.0.GA-jdk6</as.home>
 				<as.deploy>${as.home}/server/default/deploy</as.deploy>
 			</properties>
 		</profile>
@@ -200,10 +176,6 @@
 
 	<activeProfiles>
 		<activeProfile>env-dev</activeProfile>
-		<!--
-		<activeProfile>env-dev</activeProfile>
-		<activeProfile>env-prod</activeProfile>
-		-->
 		
 		<activeProfile>ds-mysql5</activeProfile>  
 		<!-- 
