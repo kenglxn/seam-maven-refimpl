@@ -195,7 +195,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- -->
+		<!-- commons -->
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
@@ -208,6 +208,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
