@@ -1,7 +1,3 @@
-see:
-http://code.google.com/p/seam-maven-refimpl/wiki/m2mExample
-
-
 #summary Many to Many UI Example.
 
 = Introduction =
@@ -29,10 +25,12 @@ Person `*<->*` Company is a "bi-directional" association where Person holds the 
 == Howto ==
 The steps required to get the project up and running:
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps.]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn and install it] (mvn install). This is the "root" POM for all example applications and you need to install in your local m2 repo.
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the examples "root" POM from the samples folder and install it to your local .m2 repo] (mvn install). This is the "root" POM for all the example applications, so you need to install it to your local m2 repo in advance.
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/knowit/examples/m2m Export project from svn.]
   * Copy m2m/config/profiles.xml to m2m/. Modify profiles.xml as needed.
   * Execute *mvn install -Pexplode*.
-  * Start the server and point your browser to [http://localhost:8080/m2m]
+  * Start the server and browse to [http://localhost:8080/m2m]
 
-The example utilizes the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate manifest data for the EAR mainfest. Open the m2m.ear/META-INF/MANIFEST.MF to see the result.
+The example utilizes the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate a unique build number for the projects EAR, EJB and WAR modules. Open e.g. the m2m/ear/target/m2m-ear-`*`/m2m-war-`*`/META-INF/MANIFEST.MF to see the result. 
+
+Note that Maven will not generate a manifest file for the target/m2m-ear-`*`/META-INF folder, so the only way to inspect the manifest file for the EAR is to open the packaged ear.
