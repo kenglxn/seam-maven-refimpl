@@ -8,9 +8,10 @@ You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 == Howto ==
 Here are the steps required to get the project up and running.
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps].
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn and install it]. This is the "root" POM for all example applications and you need to install to your local m2 repo.	
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the examples "root" POM from the samples folder and install it to your local .m2 repo]. 
     * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.	
     * Execute *mvn install* to install the pom.
+    * This is the "root" POM for all the example applications, so you need to install it to your local m2 repo.
   * In MYSQL.
     * Create database "*open18initial_db*"
     * Execute ./samples/seaminaction/etc/schema/open18-initial-schema-mysql.sql
