@@ -11,15 +11,15 @@
   xmlns:jms="http://jboss.com/products/seam/jms"
   xmlns:transaction="http://jboss.com/products/seam/transaction"
   xsi:schemaLocation=
-    "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
-     http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.1.xsd
-     http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.1.xsd
-     http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.1.xsd
-     http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.1.xsd
-     http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.1.xsd
-     http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.1.xsd
-     http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd
-     http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.1.xsd">
+    "http://jboss.com/products/seam/core http://jboss.com/products/seam/coretran.xsd
+     http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
+     http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.2.xsd
+     http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.2.xsd
+     http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
+     http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
+     http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
+     http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd
+     http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd">
 
      
   <!-- 
@@ -69,15 +69,6 @@
 		entity-manager-factory="#{entityManagerFactory}"
 		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
 
-  
-  <drools:rule-base name="securityRules">
-    <drools:rule-files>
-       <value>/security.drl</value>
-    </drools:rule-files>
-  </drools:rule-base>
-
-  <security:rule-based-permission-resolver security-rules="#{securityRules}"/>
-
   <security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
 
   <event type="org.jboss.seam.security.notLoggedIn">
@@ -86,17 +77,5 @@
   <event type="org.jboss.seam.security.loginSuccessful">
     <action execute="#{redirect.returnToCapturedView}"/>
   </event>
-
-	<!--
-  <mail:mail-session host="localhost" port="2525" username="test" password="test" />
-	-->
-	
-  <!-- For use with jBPM pageflow or process management -->
-  <!--
-  <bpm:jbpm>
-    <bpm:process-definitions></bpm:process-definitions>
-    <bpm:pageflow-definitions></bpm:pageflow-definitions>
-  </bpm:jbpm>
-  -->
 
 </components>
