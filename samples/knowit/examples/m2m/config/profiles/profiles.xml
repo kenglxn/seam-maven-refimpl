@@ -205,7 +205,7 @@
 		<activeProfile>env-prod</activeProfile>
 		-->
 		
-		<activeProfile>ds-mysql5</activeProfile>  
+		<activeProfile>ds-hsqldb</activeProfile>
 		<!-- 
 		<activeProfile>ds-hsqldb</activeProfile>
 		<activeProfile>ds-mysql5</activeProfile>  

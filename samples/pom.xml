@@ -8,39 +8,35 @@
 	<parent>
 		<groupId>org.jboss.seam</groupId>
 		<artifactId>root</artifactId>
-		<version>2.1.2</version>
+		<version>2.2.0.GA</version>
 	</parent>
 	
 	<groupId>no.knowit.seam</groupId>
 	<artifactId>root</artifactId>
-	<version>2.1.2-SNAPSHOT</version> <!-- reflects seam version -->
+	<version>2.2.0-SNAPSHOT</version> <!-- reflects Seam version -->
 	<name>${project.groupId} : ${project.artifactId} : ${project.version}</name>
 	<description>
 		The Examples root pom is a copy of the seam-refimpl parent POM. The 
-		only difference is that project spesific properties and the modules 
-		tag are removed. Use this POM as a template for your own root pom.
+		only difference is that project spesific properties and the modules tag 
+		are removed. You can use this POM as a template for your own root pom.
 	</description>
 	<url>http://code.google.com/p/seam-maven-refimpl/</url>
 	<packaging>pom</packaging>
 
-	<prerequisites>
-		<maven>2.0.10</maven>
-	</prerequisites>
-
-	<organization>
-		<name>Know IT Objectnet AS</name>
-		<url>http://www.knowit.no/</url>
-	</organization>
-
 	<properties>
 		<!-- jar versions, for dependency management -->
-		<version.seam>2.1.2</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
-		<version.richfaces>3.3.1.GA</version.richfaces>
-		<version.drools>4.0.4</version.drools>
+		<version.seam>2.2.0.GA</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
+    <version.richfaces>3.3.1.GA</version.richfaces>
+    <version.drools>5.0.1</version.drools>
 		<version.resteasy>1.1-RC2</version.resteasy>
 		<version.jboss.embedded>beta3.SP9</version.jboss.embedded>
 		<version.junit>4.7</version.junit>
 		<version.testng>5.9</version.testng>
+
+		<jdk.debug>false</jdk.debug>
+		<jdk.optimize>true</jdk.optimize>
+		<jdk.source>1.5</jdk.source>
+		<jdk.target>1.5</jdk.target>
 	</properties>
 	
 	<repositories>
@@ -169,6 +165,14 @@
 					<exclusion>
 						<groupId>com.sun.facelets</groupId>
 						<artifactId>jsf-facelets</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xstream</groupId>
+						<artifactId>xstream</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xpp3</groupId>
+						<artifactId>xpp3_min</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -443,10 +447,6 @@
 						<artifactId>richfaces-api</artifactId>
 					</exclusion>
 					<exclusion>
-						<groupId>commons-digester</groupId>
-						<artifactId>commons-digester</artifactId>
-					</exclusion>
-					<exclusion>
 						<groupId>javax.faces</groupId>
 						<artifactId>jsf-api</artifactId>
 					</exclusion>
@@ -457,6 +457,14 @@
 					<exclusion>
 						<groupId>javax.servlet</groupId>
 						<artifactId>servlet-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-digester</groupId>
+						<artifactId>commons-digester</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-beanutils</groupId>
+						<artifactId>commons-beanutils</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -648,11 +656,10 @@
 				</exclusions>
 			</dependency>
 
-			
 			<dependency>
 				<groupId>javax.transaction</groupId>
 				<artifactId>jta</artifactId>
-				<version>1.1</version> <!-- seam root version: 1.0.1B -->
+				<version>1.1</version> <!-- seam 2.1.2-root version is 1.0.1B -->
 			</dependency>
 
 			<!-- 
@@ -760,6 +767,10 @@
 					<exclusion>
 						<groupId>xstream</groupId>
 						<artifactId>xstream</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>joda-time</groupId>
+						<artifactId>joda-time</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -870,6 +881,13 @@
 				we have removed them while solving transitive dependencies in Seam root pom.
 			-->
 			
+			<!-- drools Why is not this in seam-root? -->
+			<dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-api</artifactId>
+				<version>${version.drools}</version>
+			</dependency>
+			
 			<!-- hibernate -->
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -877,6 +895,12 @@
 				<version>3.3.0.ga</version>
 			</dependency> 
 
+			<!--  mvel2 -->
+			<dependency>
+				<groupId>org.mvel</groupId>
+				<artifactId>mvel2</artifactId>
+				<version>2.0.13</version>
+			</dependency> 
 			
 			<!-- antlr-runtime -->
 			<dependency>
@@ -912,6 +936,21 @@
 			
 			<!-- test -->
 			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.junit}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.testng</groupId>
+				<artifactId>testng</artifactId>
+				<version>${version.testng}</version>
+				<scope>test</scope>
+				<classifier>jdk15</classifier>
+			</dependency>
+			
+			<dependency>
 				<groupId>org.jboss.seam.embedded</groupId>
 				<artifactId>jboss-embedded-api</artifactId>
 				<version>${version.jboss.embedded}</version>
@@ -937,22 +976,7 @@
 				<artifactId>thirdparty-all</artifactId>
 				<version>${version.jboss.embedded}</version>
 				<scope>test</scope>
-			</dependency>
-			
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${version.junit}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>${version.testng}</version>
-				<scope>test</scope>
-				<classifier>jdk15</classifier>
-			</dependency>
+			</dependency>		
 		</dependencies>
 	</dependencyManagement>
 
@@ -1022,18 +1046,34 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-ejb-plugin</artifactId>
 					<version>2.1</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1-beta-1</version>
+					<configuration>
+						<ejbVersion>3.0</ejbVersion>
+						<generateClient>false</generateClient>
+						<archive>
+							<manifest>
+								<addClasspath>true</addClasspath>
+							</manifest>
+						</archive>
+					</configuration>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>2.2</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addClasspath>true</addClasspath>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.1-beta-1</version>
 				</plugin>
 
 				<plugin>
@@ -1180,6 +1220,11 @@
 		</pluginManagement>
 	</build>
 
+	<organization>
+		<name>Know IT Objectnet AS</name>
+		<url>http://www.knowit.no/</url>
+	</organization>
+
 	<developers>
 		<developer>
 			<id>loo@knowit.no</id>
@@ -1207,24 +1252,12 @@
 
 	
 <!--	
-	<licenses>
-		<license>
-			<name></name>
-			<url></url>
-		</license>
-	</licenses>
-
 	<scm>
-		<connection></connection>
-		<developerConnection></developerConnection>
-		<url></url>
+		<connection>scm:svn:http://seam-maven-refimpl.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://seam-maven-refimpl.googlecode.com/svn/trunk</developerConnection>
+		<url>http://code.google.com/p/seam-maven-refimpl/source/browse/#svn/trunk</url>
 	</scm>
 
-	<issueManagement>
-		<system></system>
-		<url></url>
-	</issueManagement>
-  
 	<distributionManagement>
 		<repository>
 			<id></id>
@@ -1232,6 +1265,18 @@
 			<url></url>
 		</repository>
 	</distributionManagement>
+	
+	<licenses>
+		<license>
+			<name></name>
+			<url></url>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system></system>
+		<url></url>
+	</issueManagement>
 -->	
 	
 </project>
