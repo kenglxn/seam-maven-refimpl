@@ -1,13 +1,10 @@
-see: http://code.google.com/p/seam-maven-refimpl/wiki/SeamExamplesGroovyBookingWeb
-
-
 #summary A Mavenized version of the JBoss Seam 2.1.2 groovybooking WEB example
 
 = A Mavenized Version of jboss-seam-2.1.2/examples/groovybooking WEB example =
 
 This is a Mavenized Version of the jboss-seam-2.1.2/examples/groovybooking WEB example project. The example application is tested on JBoss Application Server 4.2.3 GA jdk6.
 
-Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of experimenting to get Groovy to play nice in a Seam Maven environment. The groovy-all jar dependency, version 1.5.4, provided by the Seam-2.1.2 root POM did not work; I had to upgrade the dependency to version 1.6.3 which in turn affected the gmaven plugin:
+Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of experimenting to get Groovy to play nice in a Seam Maven environment. The groovy-all jar dependency, version 1.5.4, provided by the seam-2.1.2 and seam-2.2.0 root POM did not work; I had to upgrade the dependency to version 1.6.3 which in turn affected the gmaven plugin:
 {{{
 <plugin>
   <groupId>org.codehaus.groovy.maven</groupId>
@@ -46,7 +43,7 @@ Note that `<targetBytecode>1.6</targetBytecode>` relates to groovy-all version 1
       persistence-unit-name="groovy" 
       installed="true"/>
 }}}
-  * "groovy-all" must be upgraded to version 1.6.3. Version 1.5.4 provided by the Seam-2.1.2 root POM, does not work.
+  * "groovy-all" must be upgraded to version 1.6.3. Version 1.5.4 provided by the seam-2.1.2 and seam-2.2.0 root POM, does not work.
   * Uses gmaven-plugin to compile Groovy files
   * No hot code replacement, all compiled code deployed to `WEB-INF/classes`. It should be realtivly easy to make a Maven hot code replacement version but this was not the goal for this excercise :-)
   * Fixed transient dependencies

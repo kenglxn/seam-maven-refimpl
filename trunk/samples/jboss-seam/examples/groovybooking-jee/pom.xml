@@ -18,10 +18,6 @@
 	<description>The JBoss Seam Groovy Booking JEE Example parent pom</description>
 	<packaging>pom</packaging>
 
-	<prerequisites>
-		<maven>2.0.10</maven>
-	</prerequisites>
-
 	<modules>
 		<module>ear</module>
 		<module>ejb</module>

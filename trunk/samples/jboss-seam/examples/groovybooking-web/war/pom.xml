@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>no.knowit.seam.examples</groupId>
 		<artifactId>jboss-seam-groovybooking-web</artifactId>
-		<version>2.1.2-SNAPSHOT</version>
+		<version>2.2.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -93,7 +93,7 @@
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
+			<artifactId>hibernate-core</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
