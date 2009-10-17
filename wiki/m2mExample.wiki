@@ -25,7 +25,7 @@ Person `*<->*` Company is a "bi-directional" association where Person holds the 
 == Howto ==
 The steps required to get the project up and running:
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps.]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the samples POM from svn and install it] (mvn install). This is the "root" POM for all example applications and you need to install in your local m2 repo.
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the examples "root" POM from the samples folder and install it to your local .m2 repo] (mvn install). This is the "root" POM for all the example applications, so you need to install it to your local m2 repo in advance.
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/knowit/examples/m2m Export project from svn.]
   * Copy m2m/config/profiles.xml to m2m/. Modify profiles.xml as needed.
   * Execute *mvn install -Pexplode*.
