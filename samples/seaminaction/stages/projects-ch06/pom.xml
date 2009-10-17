@@ -8,22 +8,17 @@
 	<parent>
 		<groupId>no.knowit.seam</groupId>
 		<artifactId>root</artifactId>
-		<version>2.1.2-SNAPSHOT</version>
+		<version>2.2.0-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>no.knowit.seam.examples</groupId> 
 	<artifactId>open18-stages-ch06</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${project.artifactId} : ${project.version}</name>
-	<version>2.1.2-SNAPSHOT</version>
+	<version>2.2.0-SNAPSHOT</version>
 	<description>Open18 stages ch04 parent pom</description>
 	<url>http://code.google.com/p/seam-maven-refimpl/</url>
 	<packaging>pom</packaging>
 	
-	
-	<prerequisites>
-		<maven>2.0.10</maven>
-	</prerequisites>
-
 	<modules>
 		<module>model</module>
 		<module>action</module>
@@ -55,7 +50,11 @@
 		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
 		<app.distributable>false</app.distributable> <!-- see: WEB-INF/components.xml and ejb/../resources/META-INF/jboss.xml -->
 
-		<!-- Developer environment properties. Can be modified by developer in "profiles.xml" -->
+		<!-- 
+			Developer environment properties. 
+			Property values listed here is overridden by values in "profiles.xml" or by activating 
+			a profile in pom, see e.g. env-prod profile.
+		-->
 		<env>prod</env>
 		<env.debug>false</env.debug>
 		<env.unpack.modules>false</env.unpack.modules>
@@ -69,6 +68,8 @@
 		<jdk.target>1.5</jdk.target>
 		<as>jboss423</as>
 		<as.version>4.2</as.version>
+		<as.home>./jboss-4.2.3.GA-jdk6</as.home>
+		<as.deploy>${as.home}/server/default/deploy</as.deploy>
 		<ds>hsqldb</ds>
 		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
 		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
@@ -109,4 +110,117 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<!-- All provided/shared dependencies goes into parent pom -->
+	<dependencies>
+		
+		<!-- seam -->
+		<dependency>
+			<groupId>org.jboss.seam</groupId>
+			<artifactId>jboss-seam</artifactId>
+			<scope>provided</scope>
+			<type>ejb</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.el</groupId>
+			<artifactId>jboss-el</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- richfaces -->
+		<dependency>
+			<groupId>org.richfaces.framework</groupId>
+			<artifactId>richfaces-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- jee -->
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>ejb-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>jms</artifactId>
+			<scope>provided</scope>
+		</dependency>		
+		
+		<!-- commons -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+	</dependencies>
 </project>
