@@ -3,7 +3,7 @@
 = A Mavenized Version of the jboss-seam-2.2.0.GA/examples/seamspace project =
 
 This is a Mavenized version of the jboss-seam-2.2.0.GA/examples/seamspace project,
-demonstrates Seam Security.
+demonstrating Seam Security.
 
 == Howto ==
 The steps required to get the project up and running:
