@@ -877,82 +877,13 @@
 						<groupId>xstream</groupId>
 						<artifactId>xstream</artifactId>
 					</exclusion>
+					<!-- ** -->
 					<exclusion>
 						<groupId>joda-time</groupId>
 						<artifactId>joda-time</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
-
-			<!-- added in Seam 2.2.0 root pom -->
-			<dependency>
-				<groupId>org.drools</groupId>
-				<artifactId>drools-decisiontables</artifactId>
-				<version>${version.drools}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>jexcelapi</groupId>
-					<artifactId>jxl</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			
-			<!-- added in Seam 2.2.0 root pom -->
-			<dependency>
-				<groupId>org.drools</groupId>
-				<artifactId>drools-templates</artifactId>
-				<version>${version.drools}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>org.drools</groupId>
-				<artifactId>drools-compiler</artifactId>
-				<version>${version.drools}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>junit</groupId>
-						<artifactId>junit</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>xpp3</groupId>
-						<artifactId>xpp3</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>xstream</groupId>
-						<artifactId>xstream</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>xerces</groupId>
-						<artifactId>xercesImpl</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>xml-apis</groupId>
-						<artifactId>xml-apis</artifactId>
-					</exclusion>
-					<!-- ** -->
-					<exclusion>
-						<groupId>janino</groupId>
-						<artifactId>janino</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			
-			<!-- added in Seam 2.2.0 root pom -->
-			<dependency>
-				<groupId>xstream</groupId>
-				<artifactId>xstream</artifactId>
-				<version>1.1.3</version>      	
-			</dependency>
-
-			
-			<!-- added in Seam 2.2.0 root pom -->
-			<dependency>
-				<groupId>xpp3</groupId>
-				<artifactId>xpp3_min</artifactId>
-				<version>1.1.3.4.O</version>      	
-			</dependency>
-
 
 			<dependency>
 				<groupId>org.jboss.el</groupId>
@@ -1004,15 +935,6 @@
 				<version>3.3.0.ga</version>
 			</dependency> 
 
-			<!--  mvel2-->
-			<!-- JBoss Rules does not work with 2.0.13, let JBoss Rules manage dependendy for now 
-			<dependency>
-				<groupId>org.mvel</groupId>
-				<artifactId>mvel2</artifactId>
-				<version>2.0.10</version>
-			</dependency> 
-			-->
-			
 			<!-- antlr -->
 			<dependency>
 				<groupId>org.antlr</groupId>
