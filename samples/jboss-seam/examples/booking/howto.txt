@@ -13,7 +13,7 @@ The steps required to get the project up and running:
     * This is the "root" POM for all the example applications, so you need to install it to your local m2 repo.
   * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/jboss-seam/examples/booking Export project from svn]
     * Copy booking/config/profiles.xml to the project root folder, booking. Modify profiles.xml as needed.
-    * Open a command shell and cd to project folder, seam-booking 
+    * Open a command shell and cd to project folder, booking 
     * Execute *mvn install -Pexplode*
   * Start the server and access the application at [http://localhost:8080/seam-booking]
   * Also read the *readme.txt* from the original example
