@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<profilesXml>
+	<profiles>
+		<!-- application servers -->
+		<!-- jboss-4.2.3 -->
+		<profile>
+			<id>as-jboss423</id>
+			<activation>
+				<property>
+					<name>as</name>
+					<value>jboss423</value>
+				</property>
+			</activation>
+			<properties>
+				<as>jboss423</as>
+				<as.version>4.2</as.version>
+				<as.home>/jboss-4.2.3.GA-jdk6</as.home>
+				<as.deploy>${as.home}/server/default/deploy</as.deploy>
+			</properties>
+		</profile>
+		
+		<!-- jboss-5 -->
+		<profile>
+			<id>as-jboss5</id>
+			<activation>
+				<property>
+					<name>as</name>
+					<value>jboss5</value>
+				</property>
+			</activation>
+			<properties>
+				<as>jboss5</as>
+				<as.version>5</as.version>
+				<as.home>/jboss-5.1.0.GA-jdk6</as.home>
+				<as.deploy>${as.home}/server/default/deploy</as.deploy>
+			</properties>
+		</profile>
+		
+		<!-- development environment -->
+		<profile>
+			<id>env-dev</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<properties>
+				<env>dev</env>
+				<env.debug>true</env.debug>
+				<env.unpack.modules>true</env.unpack.modules>
+				<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+				<env.hibernate.show_sql>true</env.hibernate.show_sql>
+				<env.hibernate.format_sql>true</env.hibernate.format_sql>
+				<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+				<jdk.debug>${env.debug}</jdk.debug>
+				<jdk.optimize>false</jdk.optimize>
+				<jdk.source>1.5</jdk.source>
+				<jdk.target>1.5</jdk.target>
+			</properties>
+		</profile>
+	</profiles>
+
+	<activeProfiles>
+		<activeProfile>env-dev</activeProfile>
+		
+		<activeProfile>as-jboss423</activeProfile>
+		<!--
+		<activeProfile>as-jboss423</activeProfile>
+		<activeProfile>as-jboss5</activeProfile>
+		-->
+	</activeProfiles>
+</profilesXml>
