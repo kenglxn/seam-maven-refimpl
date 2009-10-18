@@ -1011,11 +1011,24 @@
 				<version>2.0.13</version>
 			</dependency> 
 			
-			<!-- antlr-runtime -->
+			<!-- antlr -->
+			<dependency>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr</artifactId>
+				<version>3.2</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr-runtime</artifactId>
 				<version>3.2</version>
+				<exclusions>
+					<!-- To get rid of antlr which is provided in appserver -->
+					<exclusion>
+						<groupId>org.antlr</groupId>
+						<artifactId>stringtemplate</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			
 			<!-- commons -->
