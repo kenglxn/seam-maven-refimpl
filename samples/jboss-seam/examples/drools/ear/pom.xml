@@ -14,7 +14,7 @@
 
 	<artifactId>jboss-seam-drools-ear</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${project.artifactId} : ${project.version}</name>
-	<description>The Seam Maven reference implementation EAR module</description>
+	<description>The Mavenized JBoss Seam Drools Example EAR module</description>
 	<packaging>ear</packaging>
 
 	<profiles>
@@ -156,15 +156,7 @@
 							<groupId>org.jboss.seam</groupId>
 							<artifactId>jboss-seam</artifactId>
 						</ejbModule>
-
-						<!--
-						<jarModule> 
-							<groupId>${project.groupId}</groupId>
-							<artifactId>${app.context}-jar</artifactId>
-							<unpack>${env.unpack.modules}</unpack>
-							<includeInApplicationXml>true</includeInApplicationXml>
-						</jarModule>
-						-->
+						
 					</modules>
 				</configuration>
 			</plugin>
@@ -252,6 +244,11 @@
 			<artifactId>xpp3_min</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+		</dependency>
+		
 		<!-- JBoss jBPM -->
 		<dependency>
 			<groupId>org.jbpm</groupId>

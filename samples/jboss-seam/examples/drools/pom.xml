@@ -15,7 +15,7 @@
 	<artifactId>jboss-seam-drools</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${project.artifactId} : ${project.version}</name>
 	<version>2.2.0-SNAPSHOT</version>
-	<description>Seam Many to Many UI Example parent pom</description>
+	<description>The Mavenized JBoss Seam Drools Example parent pom</description>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -76,9 +76,7 @@
 	</properties>
 
 	<dependencyManagement>
-	
 		<dependencies>
-
 			<!-- project modules -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
@@ -98,9 +96,7 @@
 				<version>${project.version}</version>
 				<type>war</type>
 			</dependency>
-
 		</dependencies>
-		
 	</dependencyManagement>
 
 	<!-- All provided/shared dependencies goes into parent pom -->
