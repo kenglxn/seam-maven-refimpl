@@ -69,6 +69,14 @@
 	</build>
 
 	<dependencies>
+		<!-- JBoss Rules -->
+		<!-- Not needed by refimpl
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		-->
 	</dependencies>
 
 </project>

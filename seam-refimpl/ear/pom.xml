@@ -341,6 +341,11 @@
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3_min</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+		</dependency>
 		-->
 
 		<!-- JBoss jBPM -->
