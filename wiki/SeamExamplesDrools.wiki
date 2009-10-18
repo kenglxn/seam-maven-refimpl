@@ -1,4 +1,4 @@
-#summary A Mavenized Version of the jboss-seam-2.1.2/examples/booking project
+#summary A Mavenized Version of the jboss-seam-2.1.2/examples/drools project
 
 = A Mavenized Version of the jboss-seam-2.2.0.GA/examples/drools project =
 
