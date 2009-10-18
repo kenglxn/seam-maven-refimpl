@@ -1005,7 +1005,7 @@
 			</dependency> 
 
 			<!--  mvel2-->
-			<!-- -JBoss Rules does not work with 2.0.13, let JBoss Rules manage dependendy for now 
+			<!-- JBoss Rules does not work with 2.0.13, let JBoss Rules manage dependendy for now 
 			<dependency>
 				<groupId>org.mvel</groupId>
 				<artifactId>mvel2</artifactId>
