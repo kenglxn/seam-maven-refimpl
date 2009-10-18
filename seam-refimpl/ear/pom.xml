@@ -328,11 +328,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.mvel</groupId>
-			<artifactId>mvel2</artifactId>
-		</dependency> 
-
-		<dependency>
 			<groupId>xstream</groupId>
 			<artifactId>xstream</artifactId>
 		</dependency>
@@ -345,6 +340,23 @@
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr-runtime</artifactId>
+		</dependency>
+		-->
+		
+		<!-- Added transient by JBoss Rules 
+		<dependency>
+			<groupId>org.mvel</groupId>
+			<artifactId>mvel2</artifactId>
+		</dependency> 
+
+		<dependency>
+			<groupId>janino</groupId>
+			<artifactId>janino</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>core</artifactId>
 		</dependency>
 		-->
 
