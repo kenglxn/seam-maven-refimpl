@@ -1,8 +1,9 @@
-#summary A Mavenized Version of the jboss-seam-2.2.0.GA/examples/drools project
+#summary A Mavenized Version of the jboss-seam-2.1.2/examples/drools project
 
 = A Mavenized Version of the jboss-seam-2.2.0.GA/examples/drools project =
 
-This is a Mavenized version of the jboss-seam-2.2.0.GA/examples/drools project.
+This is a Mavenized version of the jboss-seam-2.2.0.GA/examples/drools project,
+demonstrating the use of jBPM with Drools.
 
 == Howto ==
 The steps required to get the project up and running:
