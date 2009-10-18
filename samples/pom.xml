@@ -918,7 +918,7 @@
 				<artifactId>antlr-runtime</artifactId>
 				<version>3.2</version>
 				<exclusions>
-					<!-- To get rid of antlr which is provided in appserver -->
+					<!-- To get rid of antlr which is provided in JBoss App Server -->
 					<exclusion>
 						<groupId>org.antlr</groupId>
 						<artifactId>stringtemplate</artifactId>
