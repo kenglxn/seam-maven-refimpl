@@ -899,12 +899,14 @@
 				<version>3.3.0.ga</version>
 			</dependency> 
 
-			<!--  mvel2 -->
+			<!--  mvel2-->
+			<!-- -JBoss Rules does not work with 2.0.13, let JBoss Rules manage dependendy for now 
 			<dependency>
 				<groupId>org.mvel</groupId>
 				<artifactId>mvel2</artifactId>
-				<version>2.0.13</version>
+				<version>2.0.10</version>
 			</dependency> 
+			-->
 			
 			<!-- antlr -->
 			<dependency>
@@ -918,14 +920,13 @@
 				<artifactId>antlr-runtime</artifactId>
 				<version>3.2</version>
 				<exclusions>
-					<!-- To get rid of antlr which is provided in JBoss App Server -->
 					<exclusion>
 						<groupId>org.antlr</groupId>
 						<artifactId>stringtemplate</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
-
+			
 			<!-- commons -->
 			<dependency>
 				<groupId>commons-digester</groupId>
