@@ -14,7 +14,7 @@
 
 	<artifactId>jboss-seam-drools-war</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${project.artifactId} : ${project.version}</name>
-	<description>The Seam Maven reference implementation WAR module</description>
+	<description>The Mavenized JBoss Seam Drools Example WAR module</description>
 	<packaging>war</packaging>
 
 	<profiles>
