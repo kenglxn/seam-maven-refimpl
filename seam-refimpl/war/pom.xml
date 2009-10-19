@@ -150,12 +150,12 @@
 		</dependency>
 		
 		<!-- url rewrite filter, 
-		There are two rewrite options in Seam, you can choose to either use the org.tuckey 
-		UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both. 
-		The native Seam rewriting does not use the org.tuckey rewrite engine at all. 
-		If you are going to use Seam's native rewriting, then remove the org.tuckey
-		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file. 
-		With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine.
+			There are two rewrite options in Seam, you can choose to either use the org.tuckey 
+			UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both. 
+			The native Seam rewriting does not use the org.tuckey rewrite engine at all. 
+			If you are going to use Seam's native rewriting, then remove the org.tuckey
+			UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file. 
+			With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine.
 		
 		<dependency>
 			<groupId>org.tuckey</groupId>
