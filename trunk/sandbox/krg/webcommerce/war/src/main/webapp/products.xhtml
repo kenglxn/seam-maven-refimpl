@@ -13,6 +13,13 @@
         <ui:include src="view/includes/menu/richmenuform.xhtml"/>
     </ui:define>
 
+    <ui:define name="page-title">
+        <h:outputText value="#{categoryHome.instance.name}"
+                      rendered="#{!empty param.catId}"/>
+        <h:outputText value="#{defaultCategory.name}"
+                      rendered="#{empty param.catId}"/>
+    </ui:define>
+
     <ui:define name="left-content">
         <h:form>
             <rich:tree style="width:300px"

@@ -1,8 +1,11 @@
 package net.glxn.webcommerce.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.io.Serializable;
@@ -49,5 +52,16 @@ public class Settings implements Serializable {
 
     public void setFilePathClient(String filePathClient) {
         this.filePathClient = filePathClient;
+    }
+
+    private Category defaultCategory;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Category getDefaultCategory() {
+        return defaultCategory;
+    }
+
+    public void setDefaultCategory(Category defaultCategory) {
+        this.defaultCategory = defaultCategory;
     }
 }

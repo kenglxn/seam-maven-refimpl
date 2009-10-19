@@ -30,6 +30,16 @@
                                for="filePathServer"/>
                 <h:inputText id="filePathServer"
                              value="#{settingsHome.instance.filePathServer}"/>
+                <h:outputLabel value="default category:"
+                               for="defaultcategory"/>
+                <h:selectOneMenu value="#{settingsHome.instance.defaultCategory}"
+                                 id="defaultcategory">
+                    <s:selectItems value="#{parentCategories}"
+                                   var="_category"
+                                   label="#{_category.name}"
+                                   noSelectionLabel="pick category"/>
+                    <s:convertEntity/>
+                </h:selectOneMenu>
             </fieldset>
             <fieldset class="buttons">
                 <a4j:commandButton id="save"
