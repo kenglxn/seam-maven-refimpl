@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>no.knowit.seam.examples</groupId> 
 		<artifactId>open18-stages-ch11</artifactId>
-		<version>2.1.2-SNAPSHOT</version>
+		<version>2.2.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -99,63 +99,19 @@
 
 	<dependencies>
 
-		<!-- project modules -->
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-ejb</artifactId>
-			<type>ejb</type>
-			<scope>provided</scope>
-		</dependency>
-		
-		<!-- seam core -->
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam</artifactId>
-			<scope>provided</scope>
-			<type>ejb</type>
-		</dependency>
-
+		<!-- seam -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam-ui</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.jboss.el</groupId>
-			<artifactId>jboss-el</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
 		<!-- optional, but a reasonable requirement for a newly created project -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam-debug</artifactId>
 		</dependency>
 
-		<!-- add more seam modules as needed 
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam-remoting</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam-mail</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam-pdf</artifactId>
-		</dependency>
-		-->
-		
 		<!-- richfaces -->
-		<dependency>
-			<groupId>org.richfaces.framework</groupId>
-			<artifactId>richfaces-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
 			<artifactId>richfaces-impl</artifactId>
@@ -172,37 +128,30 @@
 			<artifactId>jsf-facelets</artifactId>
 		</dependency>
 		
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-impl</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- url rewrite filter -->
+		<!-- url rewrite filter, 
+			There are two rewrite options in Seam, you can choose to either use the org.tuckey 
+			UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both. 
+			The native Seam rewriting does not use the org.tuckey rewrite engine at all. 
+			If you are going to use Seam's native rewriting, then remove the org.tuckey
+			UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file. 
+			With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine.
+		-->
 		<dependency>
 			<groupId>org.tuckey</groupId>
 			<artifactId>urlrewritefilter</artifactId>
 		</dependency>
 
+		<!-- 
+			For Eclipse and JBoss Tools:
+		  List all project modules you are interested to browse (ctrl+click) into from xhtml pages 
+		-->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>${app.context}-ejb</artifactId>
+			<type>ejb</type>
+			<scope>provided</scope>
+		</dependency>
+		
 	</dependencies>
 
 </project>

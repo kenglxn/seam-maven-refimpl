@@ -13,29 +13,39 @@
 	xmlns:auth="http://open18.org/components/auth"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="
-		http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd
-		http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
-		http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.1.xsd
-		http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.1.xsd
-		http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.1.xsd
-		http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.1.xsd
-		http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.1.xsd
-		http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.1.xsd
-		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.1.xsd
-		http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.1.xsd
-		http://jboss.com/products/seam/navigation http://jboss.com/products/seam/navigation-2.1.xsd
+		http://jboss.com/products/seam/components http://jboss.com/products/seam/componentssecu.xsd
+		http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
+		http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
+		http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.2.xsd
+		http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.2.xsd
+		http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
+		http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
+		http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
+		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd
+		http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.2.xsd
+		http://jboss.com/products/seam/navigation http://jboss.com/products/seam/navigation-2.2.xsd
 		http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
 ">
 
   <!-- 
-  	Note: debug="true" requires "jboss-seam-debug" in pom
-  	Note: Seam managed transactions are enabled by default, but as a reminder: 
-  				transaction-management-enabled="true"
+	 	debug="true" requires "jboss-seam-debug" dependency in pom, SiA-4.5.2-p154
+	 	
+	 	Seam managed transactions are enabled by default, but as a reminder: 
+	 	transaction-management-enabled="true", SiA-9.4.1-p370
+	 	
+	 	The ManagedEntityInterceptor (MEI) is an optional interceptor in Seam that gets  applied
+		to conversation-scoped components when enabled. Enabling it is simple. You just set the
+		distributable property on the org.jboss.seam.init.core component to true. More simply put,
+		you add (or  update) the following component declaration in the component descriptor  (i.e.,
+		components.xml), seam_reference-35.2.
+
+		For cluster: distributable="true". Also uncomment the distributable tag in web.xml
   -->
 	<core:init
-		debug="true"
+		debug="${env.debug}"
 		transaction-management-enabled="true"
-		jndi-pattern="${app.jndi.pattern}" />
+		jndi-pattern="${app.jndi.pattern}" 
+		distributable="${app.distributable}"/>
 
 	<core:manager
 		concurrent-request-timeout="500"
@@ -71,6 +81,25 @@
 		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
 
   <transaction:ejb-transaction />
+	
+	<!--
+		There are two rewrite options in Seam, you can choose to either use the org.tuckey 
+		UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both. 
+		The native Seam rewriting does not use the org.tuckey rewrite engine at all. 
+		If you are going to use Seam's native rewriting, then remove the org.tuckey
+		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file.
+		
+		This filter allows Seam to apply URL rewriting for views based on configuration in the 
+		pages.xml file. The view-mapping parameter must match the servlet mapping defined for the 
+		Faces Servlet in the web.xml file. If ommitted, the rewrite filter assumes the pattern *.seam.
+ 
+		With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine, see:
+			http://docs.jboss.org/seam/latest/reference/en-US/html/configuration.html
+		
+		<web:rewrite-filter view-mapping="/seam/*" />
+		<web:rewrite-filter />
+	 -->
+
   
   <web:hot-deploy-filter url-pattern="*.seam"/>
 
@@ -88,7 +117,7 @@
 	
   <drools:rule-base name="securityRules">
     <drools:rule-files>
-       <value>/security.drl</value>
+       <value>/META-INF/security.drl</value>
     </drools:rule-files>
   </drools:rule-base>
 

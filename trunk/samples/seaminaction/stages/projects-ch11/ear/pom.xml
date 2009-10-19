@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>no.knowit.seam.examples</groupId> 
 		<artifactId>open18-stages-ch11</artifactId>
-		<version>2.1.2-SNAPSHOT</version>
+		<version>2.2.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -266,11 +266,11 @@
 		</dependency>
 		-->
 
+		<!-- seam -->
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-seam</artifactId>
 			<type>ejb</type>
-			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -279,9 +279,17 @@
 			<type>jar</type>
 		</dependency>
 
+		<!-- richfaces -->
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
 			<artifactId>richfaces-api</artifactId>
+			<type>jar</type>
+		</dependency>
+
+		<!-- commons -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
 			<type>jar</type>
 		</dependency>
 
@@ -291,24 +299,71 @@
 			<type>jar</type>
 		</dependency>
 
+		<!-- JBoss Rules -->
 		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<type>jar</type>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<scope>provided</scope>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<scope>provided</scope>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-api</artifactId>
 		</dependency>
-			
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-decisiontables</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-templates</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>xstream</groupId>
+			<artifactId>xstream</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_min</artifactId>
+		</dependency>
+
+		<!-- also needed by groovy -->
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+		</dependency>
+
+		<!-- Added transient by JBoss Rules 
+		<dependency>
+			<groupId>org.mvel</groupId>
+			<artifactId>mvel2</artifactId>
+		</dependency> 
+
+		<dependency>
+			<groupId>janino</groupId>
+			<artifactId>janino</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
+		-->
+		
+		<!-- JBoss jBPM -->
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-jpdl</artifactId>
+		</dependency>
+
 	</dependencies>
 
 </project>
