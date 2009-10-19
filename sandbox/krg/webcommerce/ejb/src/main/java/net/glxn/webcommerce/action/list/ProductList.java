@@ -1,5 +1,6 @@
 package net.glxn.webcommerce.action.list;
 
+import net.glxn.webcommerce.model.Category;
 import net.glxn.webcommerce.model.Product;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Factory;
@@ -18,6 +19,10 @@ public class ProductList extends EntityQuery<Product> {
     @Out(required = false)
     Long catId;
 
+    @In(required = false)
+    @Out(required = false)
+    Category defaultCategory;
+
     @Out(required = false, scope = ScopeType.CONVERSATION)
     List<Product> productForCategory;
 
@@ -29,6 +34,8 @@ public class ProductList extends EntityQuery<Product> {
     public void getProductForCategory() {
         if (catId != null) {
             setEjbql("select distinct(p) from Product p left join fetch p.files where p.category.id = #{catId} ");
+        } else if(defaultCategory != null) {
+            setEjbql("select distinct(p) from Product p left join fetch p.files where p.category.id = #{defaultCategory.id} ");
         }
         productForCategory = getResultList();
     }

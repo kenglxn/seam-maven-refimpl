@@ -9,6 +9,7 @@ import org.jboss.seam.annotations.Out;
 import org.jboss.seam.framework.EntityQuery;
 import org.jboss.seam.log.Log;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Name("categoryList")
@@ -21,6 +22,9 @@ public class CategoryList extends EntityQuery<Category> {
     @Out(required = false, scope = ScopeType.CONVERSATION)
     List<Category> parentCategories;
 
+    @Out(required = false, scope = ScopeType.CONVERSATION)
+    Category defaultCategory;
+
     public CategoryList() {
         setEjbql("select distinct(c) from Category c left join fetch c.children ");
     }
@@ -31,5 +35,16 @@ public class CategoryList extends EntityQuery<Category> {
         setEjbql("select distinct(c) from Category c left join fetch c.children where c.parent is null");
         parentCategories = getResultList();
     }
+
+    @Factory("defaultCategory")
+    public void getDefaultCategory() {
+        setEjbql("select settings.defaultCategory from Settings settings");
+        try {
+            defaultCategory = getSingleResult();
+        } catch (NoResultException e) {
+            log.info("no default category set");
+        }
+    }
+
 
 }

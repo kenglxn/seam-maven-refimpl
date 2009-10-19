@@ -1,12 +1,9 @@
 package net.glxn.webcommerce.action.list;
 
-import net.glxn.webcommerce.action.home.SettingsHome;
 import net.glxn.webcommerce.model.Settings;
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.framework.EntityQuery;
 import org.jboss.seam.log.Log;
@@ -18,9 +15,8 @@ public class SettingsList extends EntityQuery<Settings> {
 
     @Logger
     private Log log;
-
+    
     public SettingsList() {
         setEjbql("select settings from Settings settings");
     }
-
 }
