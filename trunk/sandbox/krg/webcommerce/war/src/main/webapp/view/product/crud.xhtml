@@ -28,6 +28,34 @@
                              theme="advanced"
                              height="200">
                 </rich:editor>
+                <a4j:outputPanel rendered="#{!empty categoryList.resultList}"
+                                 id="categorySetter">
+                    <h:outputLabel for="categorySetBool"
+                                   value="set category:"/>
+                    <h:selectBooleanCheckbox value="#{setCategory}"
+                                             id="categorySetBool">
+                        <a4j:support event="onchange"
+                                     reRender="categorySetter">
+                            <s:conversationId/>
+                            <f:param name="view"
+                                     value="#{param.view}"/>
+                        </a4j:support>
+                    </h:selectBooleanCheckbox>
+                    <f:subview id="categorySelector"
+                               rendered="#{setCategory}">
+                        <h:outputLabel value="category:"
+                                       for="category"/>
+                        <h:selectOneMenu value="#{productHome.instance.category}"
+                                         id="category"
+                                         required="#{setCategory}">
+                            <s:selectItems value="#{categoryList.resultList}"
+                                           var="_category"
+                                           label="#{_category.name}"
+                                           noSelectionLabel="pick category"/>
+                            <s:convertEntity/>
+                        </h:selectOneMenu>
+                    </f:subview>
+                </a4j:outputPanel>
             </fieldset>
             <fieldset class="columnar label-top">
                 <legend>

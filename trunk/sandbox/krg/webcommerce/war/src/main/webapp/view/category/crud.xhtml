@@ -19,11 +19,11 @@
                 <a4j:outputPanel rendered="#{!empty categoryList.resultList}"
                                  id="parentSetter">
                     <h:outputLabel for="parentSetBool" value="set parent category:"/>
-                    <h:selectBooleanCheckbox value="#{setParent}" id="parentSetBool">
-                        <a4j:support event="onchange" reRender="parentSetter" ajaxSingle="true"/>
+                    <h:selectBooleanCheckbox value="#{setParentCategory}" id="parentSetBool">
+                        <a4j:support event="onchange" reRender="parentSetter"/>
                     </h:selectBooleanCheckbox>
                     <f:subview id="parentSelector"
-                               rendered="#{setParent}">
+                               rendered="#{setParentCategory}">
                         <h:outputLabel value="parent:"
                                        for="parent"/>
                         <h:selectOneMenu value="#{categoryHome.instance.parent}"
