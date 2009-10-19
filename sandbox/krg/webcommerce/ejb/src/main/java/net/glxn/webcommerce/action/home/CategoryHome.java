@@ -10,7 +10,7 @@ import org.jboss.seam.framework.EntityHome;
 public class CategoryHome extends EntityHome<Category> {
     @In(required = false)
     @Out(required = false)
-    Boolean setParent;
+    Boolean setParentCategory;
 
     private static final long serialVersionUID = 6855700424374076766L;
 }
