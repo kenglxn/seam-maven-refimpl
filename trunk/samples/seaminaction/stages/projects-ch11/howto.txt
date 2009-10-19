@@ -1,6 +1,3 @@
-see: http://code.google.com/p/seam-maven-refimpl/wiki/SeamInActionCh11
-
-
 #summary A Mavenized Version of Seam In Action, Chapter Eleven.
 
 = A Mavenized Version of Seam In Action, Chapter Eleven. =
