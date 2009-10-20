@@ -226,6 +226,14 @@ a:hover {
 }
 
 .modalcloselink {
-    display:block;
-    margin:0 50% 10px;
+    display: block;
+    margin: 0 50% 10px;
+}
+
+fieldset.catselectortree {
+    float: left;
+}
+
+fieldset.halfwidth {
+    width: 49%;
 }

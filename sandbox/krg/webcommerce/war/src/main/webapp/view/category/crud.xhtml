@@ -8,49 +8,82 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
     <a4j:outputPanel ajaxRendered="true">
-        <h:form id="pageform" styleClass="ki-form">
-            <fieldset class="columnar label-top">
+        <h:form id="pageform"
+                styleClass="ki-form">
+            <fieldset class="halfwidth catselectortree">
+                <rich:tree style="width:300px"
+                           switchType="ajax"
+                           componentState="#{treeNodeUtil.componentState}"
+                           adviseNodeOpened="#{treeNodeUtil.adviseNodeOpened}">
+                    <rich:treeNodesAdaptor nodes="#{parentCategories}"
+                                           var="_cat">
+                        <rich:treeNode data="#{_cat.id}">
+                            <s:link value="#{_cat.name}"
+                                    title="#{_cat.name}"
+                                    propagation="none">
+                                <f:param name="catId"
+                                         value="#{_cat.id}"/>
+                                <f:param name="view"
+                                         value="#{param.view}"/>
+                            </s:link>
+                            <f:param name="view"
+                                     value="#{param.view}"/>
+                        </rich:treeNode>
+                        <rich:treeNodesAdaptor nodes="#{_cat.children}"
+                                               var="_childCat">
+                            <rich:treeNode data="#{_childCat.id}">
+                                <s:link value="#{_childCat.name}"
+                                        title="#{_childCat.name}"
+                                        propagation="none">
+                                    <f:param name="catId"
+                                             value="#{_childCat.id}"/>
+                                    <f:param name="isChild"
+                                             value="true"/>
+                                    <f:param name="view"
+                                             value="#{param.view}"/>
+                                </s:link>
+                                <f:param name="view"
+                                         value="#{param.view}"/>
+                            </rich:treeNode>
+                        </rich:treeNodesAdaptor>
+                    </rich:treeNodesAdaptor>
+                </rich:tree>
+            </fieldset>
+            <fieldset class="columnar label-top halfwidth">
 
                 <h:outputLabel value="name:"
                                for="name"/>
                 <h:inputText id="name"
                              value="#{categoryHome.instance.name}"/>
-
                 <a4j:outputPanel rendered="#{!empty categoryList.resultList}"
                                  id="parentSetter">
-                    <h:outputLabel for="parentSetBool" value="set parent category:"/>
-                    <h:selectBooleanCheckbox value="#{setParentCategory}" id="parentSetBool">
-                        <a4j:support event="onchange" reRender="parentSetter"/>
-                    </h:selectBooleanCheckbox>
-                    <f:subview id="parentSelector"
-                               rendered="#{setParentCategory}">
-                        <h:outputLabel value="parent:"
-                                       for="parent"/>
-                        <h:selectOneMenu value="#{categoryHome.instance.parent}"
-                                         id="parent"
-                                         required="#{setParent}">
-                            <s:selectItems value="#{categoryList.resultList}" var="_cat" label="#{_cat.name}"
-                                           noSelectionLabel="pick parent"/>
-                            <s:convertEntity/>
-                        </h:selectOneMenu>
-                    </f:subview>
+                    <h:outputLabel value="parent:"
+                                   for="parent"/>
+                    <h:selectOneMenu value="#{categoryHome.instance.parent}"
+                                     id="parent">
+                        <s:selectItems value="#{categoryList.resultList}"
+                                       var="_cat"
+                                       label="#{_cat.name}"
+                                       noSelectionLabel="no parent"/>
+                        <s:convertEntity/>
+                    </h:selectOneMenu>
                 </a4j:outputPanel>
-
-
             </fieldset>
             <fieldset class="buttons">
                 <a4j:commandButton id="save"
                                    value="Save"
                                    action="#{categoryHome.persist}"
                                    rendered="#{!categoryHome.managed}">
-                    <f:param name="view" value="#{param.view}"/>
+                    <f:param name="view"
+                             value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
                 <a4j:commandButton id="update"
                                    value="Save"
                                    action="#{categoryHome.update}"
                                    rendered="#{categoryHome.managed}">
-                    <f:param name="view" value="#{param.view}"/>
+                    <f:param name="view"
+                             value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
                 <a4j:commandButton id="delete"
@@ -58,13 +91,15 @@
                                    action="#{categoryHome.remove}"
                                    immediate="true"
                                    rendered="#{categoryHome.managed}">
-                    <f:param name="view" value="#{param.view}"/>
+                    <f:param name="view"
+                             value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
                 <a4j:commandButton action="#{categoryHome.clearInstance}"
                                    id="new"
                                    value="New">
-                    <f:param name="view" value="#{param.view}"/>
+                    <f:param name="view"
+                             value="#{param.view}"/>
                 </a4j:commandButton>
                 <s:button propagation="end"
                           id="cancel"

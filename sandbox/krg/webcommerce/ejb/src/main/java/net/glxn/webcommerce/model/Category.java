@@ -52,7 +52,7 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)
     public Category getParent() {
         return parent;
@@ -71,7 +71,7 @@ public class Category implements Serializable {
         this.children = children;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     public Collection<Product> getProducts() {
         return products;
     }
