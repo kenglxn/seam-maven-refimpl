@@ -25,31 +25,16 @@
                 </rich:editor>
                 <a4j:outputPanel rendered="#{!empty pageList.resultList}"
                                  id="parentSetter">
-                    <h:outputLabel for="parentSetBool"
-                                   value="set parent page:"/>
-                    <h:selectBooleanCheckbox value="#{setParent}"
-                                             id="parentSetBool">
-                        <a4j:support event="onchange"
-                                     reRender="parentSetter">
-                            <s:conversationId/>
-                            <f:param name="view"
-                                     value="#{param.view}"/>
-                        </a4j:support>
-                    </h:selectBooleanCheckbox>
-                    <f:subview id="parentSelector"
-                               rendered="#{setParent}">
-                        <h:outputLabel value="parent:"
-                                       for="parent"/>
-                        <h:selectOneMenu value="#{pageHome.instance.parent}"
-                                         id="parent"
-                                         required="#{setParent}">
-                            <s:selectItems value="#{pageList.resultList}"
-                                           var="_page"
-                                           label="#{_page.title}"
-                                           noSelectionLabel="pick parent"/>
-                            <s:convertEntity/>
-                        </h:selectOneMenu>
-                    </f:subview>
+                    <h:outputLabel value="parent:"
+                                   for="parent"/>
+                    <h:selectOneMenu value="#{pageHome.instance.parent}"
+                                     id="parent">
+                        <s:selectItems value="#{pageList.resultList}"
+                                       var="_page"
+                                       label="#{_page.title}"
+                                       noSelectionLabel="no parent"/>
+                        <s:convertEntity/>
+                    </h:selectOneMenu>
                 </a4j:outputPanel>
             </fieldset>
             <fieldset class="columnar label-top">
@@ -65,12 +50,14 @@
                                      listHeight="50">
                         <a4j:support event="onuploadcomplete"
                                      ajaxSingle="true"
-                                     eventsQueue="pagefileuploadqueue" 
+                                     eventsQueue="pagefileuploadqueue"
                                      ignoreDupResponses="true">
                             <s:conversationId/>
-                            <f:param name="view" value="#{param.view}"/>
+                            <f:param name="view"
+                                     value="#{param.view}"/>
                         </a4j:support>
-                        <f:param name="view" value="#{param.view}"/>
+                        <f:param name="view"
+                                 value="#{param.view}"/>
                     </rich:fileUpload>
                 </a4j:outputPanel>
             </fieldset>
@@ -96,7 +83,8 @@
                                 styleClass="removefilelink">
                             <f:param name="fileId"
                                      value="#{_file.id}"/>
-                            <f:param name="view" value="#{param.view}"/>
+                            <f:param name="view"
+                                     value="#{param.view}"/>
                         </s:link>
                     </rich:dataList>
                 </a4j:outputPanel>
@@ -106,14 +94,16 @@
                                    value="Save"
                                    action="#{pageHome.persist}"
                                    rendered="#{!pageHome.managed}">
-                    <f:param name="view" value="#{param.view}"/>
+                    <f:param name="view"
+                             value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
                 <a4j:commandButton id="update"
                                    value="Save"
                                    action="#{pageHome.update}"
                                    rendered="#{pageHome.managed}">
-                    <f:param name="view" value="#{param.view}"/>
+                    <f:param name="view"
+                             value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
                 <a4j:commandButton id="delete"
@@ -121,19 +111,22 @@
                                    action="#{pageHome.remove}"
                                    immediate="true"
                                    rendered="#{pageHome.managed}">
-                    <f:param name="view" value="#{param.view}"/>
+                    <f:param name="view"
+                             value="#{param.view}"/>
                     <s:conversationId/>
                 </a4j:commandButton>
                 <s:button action="#{pageHome.clearInstance}"
-                                   id="new"
-                                   value="New">
-                    <f:param name="view" value="#{param.view}"/>
+                          id="new"
+                          value="New">
+                    <f:param name="view"
+                             value="#{param.view}"/>
                 </s:button>
                 <s:button propagation="none"
                           id="view"
                           value="View"
                           view="/page.xhtml">
-                    <f:param name="pageId" value="#{pageHome.instance.id}"/>
+                    <f:param name="pageId"
+                             value="#{pageHome.instance.id}"/>
                 </s:button>
                 <s:button propagation="end"
                           id="cancel"
