@@ -42,7 +42,7 @@
                        adviseNodeOpened="#{treeNodeUtil.adviseNodeOpened}">
                 <rich:treeNodesAdaptor nodes="#{parentCategories}"
                                        var="_cat">
-                    <rich:treeNode>
+                    <rich:treeNode data="#{_cat.id}">
                         <s:link value="#{_cat.name}"
                                 view="/products.xhtml"
                                 title="#{_cat.name}"
@@ -53,7 +53,7 @@
                     </rich:treeNode>
                     <rich:treeNodesAdaptor nodes="#{_cat.children}"
                                            var="_childCat">
-                        <rich:treeNode>
+                        <rich:treeNode data="#{_childCat.id}">
                             <s:link value="#{_childCat.name}"
                                     view="/products.xhtml"
                                     title="#{_childCat.name}"
