@@ -223,23 +223,24 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>
+				
+				<!-- Add e.g. this if you don't want implementation build number fom scm 
 				<configuration>
-					<format>{0,date,yyyy-MM-dd HH:mm}</format>
+					<format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
 					<items>
 						<item>timestamp</item>
 					</items>
-					<doCheck>false</doCheck>
-					<doUpdate>false</doUpdate>
 				</configuration>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>create</goal>
-						</goals>
-					</execution>
-				</executions>
+				-->
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- The buildnumber-maven-plugin get tghe implementation build number from scm -->
+	<scm>
+		<connection>scm:svn:http://seam-maven-refimpl.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://seam-maven-refimpl.googlecode.com/svn/trunk</developerConnection>
+		<url>http://code.google.com/p/seam-maven-refimpl/source/browse/#svn/trunk</url>
+	</scm>
+
 </project>

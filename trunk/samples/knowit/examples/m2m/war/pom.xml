@@ -68,39 +68,6 @@
 		</profile>
 	</profiles>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<webResources>
-						<webResource>
-							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
-							<targetPath>WEB-INF</targetPath>
-							<filtering>true</filtering>
-							<includes>
-								<include>components.xml</include>
-								<include>jboss-web.xml</include>
-								<include>web.xml</include>
-							</includes>
-						</webResource>
-					</webResources>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<Implementation-Build>${buildNumber}</Implementation-Build>
-							<Build-Machine>${env.COMPUTERNAME}</Build-Machine>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 	<dependencies>
 
 		<!-- seam -->
@@ -144,5 +111,35 @@
 		</dependency>
 		
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<webResource>
+							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+							<targetPath>WEB-INF</targetPath>
+							<filtering>true</filtering>
+							<includes>
+								<include>components.xml</include>
+								<include>jboss-web.xml</include>
+								<include>web.xml</include>
+							</includes>
+						</webResource>
+					</webResources>
+					<archive>
+						<manifestEntries>
+						  <mode>${env}</mode>
+							<Build-Date>${timestamp}</Build-Date>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
