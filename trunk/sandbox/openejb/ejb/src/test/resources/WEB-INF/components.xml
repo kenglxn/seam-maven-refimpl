@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+            xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:transaction="http://jboss.com/products/seam/transaction"
+            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:framework="http://jboss.com/products/seam/framework">
+
+    <!-- #### -->
+    <!-- CORE -->
+    <!-- #### -->
+
+    <core:init
+            jndi-pattern="\#{ejbName}/local"
+            debug="false" transaction-management-enabled="false"/>
+
+    <component
+            class="openejb.ReallyNoTransaction"
+            name="org.jboss.seam.transaction.transaction" scope="event" precedence="30"/>
+
+
+    <!-- ############# -->
+    <!-- ENTITYMANAGER -->
+    <!-- ############# -->
+
+    <!-- JPA -->
+    <transaction:no-transaction/>
+
+    <persistence:entity-manager-factory
+            name="containerPU"/>
+
+    <persistence:managed-persistence-context
+            name="em" auto-create="true" entity-manager-factory="#{containerPU}"/>
+
+    <!-- ######## -->
+    <!-- SECURITY -->
+    <!-- ######## -->
+
+    <!--<security:jpa-identity-store
+            user-class="com.TODO.entity.UserEntity"
+            role-class="com.TODO.entity.UserRoleEntity"/>
+
+    <security:jpa-permission-store
+            user-permission-class="com.TODO.entity.UserPermissionEntity"/>
+
+    <security:identity
+            authenticate-method="#{TODO}"
+            remember-me="false"/>-->
+
+</components>

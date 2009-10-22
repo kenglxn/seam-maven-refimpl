@@ -15,7 +15,7 @@ public class ExampleTest
 
             @Override
             protected void testDBComponents () throws Exception {
-                Assert.fail();
+                Assert.assertTrue(false, "SEAM TEST RUN, WILL FAIL DUE TO ASSERT TRUE ON FALSE");
             }
         }.run ();
     }
