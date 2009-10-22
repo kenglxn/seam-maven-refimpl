@@ -59,6 +59,9 @@
 		</profile>
 	</profiles>
 
+	<dependencies>
+	</dependencies>
+
 	<build>
 		<resources>
 			<resource>
@@ -72,24 +75,16 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-ejb-plugin</artifactId>
 				<configuration>
-					<ejbVersion>3.0</ejbVersion>
-					<generateClient>false</generateClient>
 					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
 						<manifestEntries>
+						  <mode>${env}</mode>
+							<Build-Date>${timestamp}</Build-Date>
 							<Implementation-Build>${buildNumber}</Implementation-Build>
-							<Build-Machine>${env.COMPUTERNAME}</Build-Machine>
 						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-	<dependencies>
-	</dependencies>
 
 </project>
