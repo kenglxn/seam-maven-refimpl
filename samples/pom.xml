@@ -961,7 +961,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.3</version>
+					<version>2.4</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
 					</configuration>
@@ -998,7 +998,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-ejb-plugin</artifactId>
-					<version>2.1</version>
+					<version>2.2</version>
 					<configuration>
 						<ejbVersion>3.0</ejbVersion>
 						<generateClient>false</generateClient>
@@ -1051,31 +1051,19 @@
 					</configuration>
 				</plugin>
 
+				<!-- reporting -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.1</version>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.3</version>
 				</plugin>
 				
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.6</version>
 				</plugin>
 
-				<!-- reporting -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.2</version>
-				</plugin>
-				
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.1</version>
-				</plugin>
-				
 				<!-- tools -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -1085,10 +1073,22 @@
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.1</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-scm-plugin</artifactId>
 					<version>1.2</version>
 				</plugin>
 					
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1.1</version>
+				</plugin>
+				
 				<!--
 					see:   http://mojo.codehaus.org/maven-hibernate3/hibernate3-maven-plugin/
 					see:   http://unmaintainable.wordpress.com/2008/04/12/hibernate3-schema-creation/
