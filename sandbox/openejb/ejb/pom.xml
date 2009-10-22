@@ -68,13 +68,19 @@
                 <!-- filtering persistence.xml -->
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.openejb</groupId>
             <artifactId>openejb-core</artifactId>
-            <version>3.0</version>
+            <version>3.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.openjpa</groupId>
@@ -95,7 +101,43 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>5.9</version>
-            <!--<scope>test</scope>-->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.9</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.seam.embedded</groupId>
+            <artifactId>hibernate-all</artifactId>
+            <version>beta3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.8.0.GA</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>2.4.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-seam-thirdparty-all</artifactId>
+            <version>2.0.0.BETA1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.1.111</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

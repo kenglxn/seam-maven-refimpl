@@ -7,6 +7,7 @@ import org.jboss.seam.core.Expressions;
 import javax.persistence.EntityTransaction;
 import javax.persistence.EntityManager;
 
+
 public class ContainerWhiteBoxTest
         extends BootstrapEnvironment {
 
