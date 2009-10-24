@@ -39,6 +39,5 @@ The example utilizes the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Bui
 Maven will not generate a manifest file for the target/m2m-ear-`*`/META-INF folder, so the only way to inspect the manifest file for the EAR is to open the packaged ear.
 
 JBoss uses its own version of log4j.xml and log4j.jar, making it combersome to configure logging for your 
-application. This example also shows how to to configure application spesific logging. You can find more information 
-about this topic here: 
+application. This example also shows how to to configure application spesific logging as desctibed in this blog: 
 [http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html How do i use my own log4j properties or xml file in JBoss]
