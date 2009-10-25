@@ -77,9 +77,9 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-						  <mode>${env}</mode>
 							<Build-Date>${timestamp}</Build-Date>
-							<Implementation-Build>${buildNumber}</Implementation-Build>
+							<Build-Revision>${buildNumber}</Build-Revision>
+						  <Mode>${env}</Mode>
 						</manifestEntries>
 					</archive>
 				</configuration>
