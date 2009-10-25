@@ -224,7 +224,8 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>
 				
-				<!-- Add e.g. this if you don't want implementation build number fom scm 
+				<!-- Add e.g. this if you don't want implementation build number fom scm --> 
+				<!--
 				<configuration>
 					<format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
 					<items>

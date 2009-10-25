@@ -988,8 +988,8 @@
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							</manifest>
 							<manifestEntries>
-								<url>${pom.url}</url>
 								<Build-Machine>${env.COMPUTERNAME}</Build-Machine>
+								<Url>${pom.url}</Url>
 							</manifestEntries>
 						</archive>
 					</configuration>
@@ -1008,8 +1008,8 @@
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							</manifest>
 							<manifestEntries>
-								<url>${pom.url}</url>
 								<Build-Machine>${env.COMPUTERNAME}</Build-Machine>
+								<Url>${pom.url}</Url>
 							</manifestEntries>
 						</archive>
 					</configuration>
@@ -1026,8 +1026,8 @@
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							</manifest>
 							<manifestEntries>
-								<url>${pom.url}</url>
 								<Build-Machine>${env.COMPUTERNAME}</Build-Machine>
+								<Url>${pom.url}</Url>
 							</manifestEntries>
 						</archive>
 					</configuration>
@@ -1044,8 +1044,8 @@
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							</manifest>
 							<manifestEntries>
-								<url>${pom.url}</url>
 								<Build-Machine>${env.COMPUTERNAME}</Build-Machine>
+								<Url>${pom.url}</Url>
 							</manifestEntries>
 						</archive>
 					</configuration>
