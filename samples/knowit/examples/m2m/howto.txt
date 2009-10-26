@@ -35,9 +35,7 @@ The steps required to get the project up and running:
     * Execute *mvn install -Pexplode*
   * Start the server and access the application at [http://localhost:8080/m2m]
 
-The example utilizes the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate a unique build number for the projects EAR, EJB and WAR modules. Open e.g. the m2m/ear/target/m2m-ear-`*`/m2m-war-`*`/META-INF/MANIFEST.MF to see the result. 
-Maven will not generate a manifest file for the target/m2m-ear-`*`/META-INF folder, so the only way to inspect the manifest file for the EAR is to open the packaged ear.
-
-JBoss uses its own version of log4j.xml and log4j.jar, making it combersome to configure logging for your 
-application. This example also shows how to to configure application spesific logging as desctibed in this blog: 
-[http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html How do i use my own log4j properties or xml file in JBoss]
+In addition, this example shows:
+  * How to use the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ].<br/> The example uses the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate a unique build number for the projects EAR, EJB and WAR modules. Open e.g. the m2m/ear/target/m2m-ear-`*`/m2m-war-`*`/META-INF/MANIFEST.MF to see the result.<br/>Maven will not generate a manifest file for the target/m2m-ear-`*`/META-INF folder, so the only way to inspect the manifest file for the EAR is to open the packaged ear.
+  * How to read properties from the war/META-INF/MANIFEST.MF file.<br/>Shows the code needed to read properties from manifest file.
+  * How to use logging.<br/> JBoss uses its own version of log4j.xml and log4j.jar, making it combersome to configure logging for your application. This example also shows how to to configure application spesific logging as desctibed in this blog: [http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html How do i use my own log4j properties or xml file in JBoss]
