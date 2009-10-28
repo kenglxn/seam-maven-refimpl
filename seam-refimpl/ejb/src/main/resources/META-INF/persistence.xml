@@ -15,7 +15,7 @@
     		the container automatically loads the persistence unit,	as is the case in JBoss AS 5.	
     	--> 
       <property name="jboss.entity.manager.factory.jndi.name" value="${app.persistence.unit.jndi.name}"/>
-      
+
       <property name="hibernate.dialect" value="${ds.hibernate.dialect}"/>
       <property name="hibernate.hbm2ddl.auto" value="${env.hibernate.hbm2ddl.auto}"/>
       <property name="hibernate.show_sql" value="${env.hibernate.show_sql}"/>
