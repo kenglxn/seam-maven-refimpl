@@ -7,6 +7,7 @@
 <datasources>
   <local-tx-datasource>
     <jndi-name>${app.jndi.name}</jndi-name>
+    <use-java-context>true</use-java-context>
     <connection-url>${ds.connection.url}</connection-url>
     <driver-class>${ds.driver.class}</driver-class>
     <user-name>${ds.user.name}</user-name>
