@@ -61,6 +61,13 @@ options, along with a description of each option, can be found in the  docs/dtd/
                         "java:" prefix is automatically added to this name, so datasources are not 
                         available outside the virtual machine.
                         
+  use-java-context    : When the value of this element is false, you don't use the java:/ prefix on 
+                        the JNDI name.
+                        <use-java-context>true</use-java-context> => JNDI name is java:/dataSourceName
+                        <use-java-context>false</use-java-context> => JNDI name is dataSourceName
+                        Note that when this element is excluded, the default value is true 
+                        (in which case you use the java:/ prefix). 
+
   connection-url      : The database-specific URL to the server.
                         
   driver-class        : The driver you are using for your database.
