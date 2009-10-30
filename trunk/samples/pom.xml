@@ -1105,6 +1105,8 @@
 					see:   http://mojo.codehaus.org/maven-hibernate3/hibernate3-maven-plugin/
 					see:   http://unmaintainable.wordpress.com/2008/04/12/hibernate3-schema-creation/
 					usage: 
+					* cd  to parent project
+					* mvn install
 					* cd  to project containing the entities, e.g. ejb
 					* mvn install
 					* mvn hibernate3:hbm2ddl
