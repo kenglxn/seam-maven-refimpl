@@ -5,17 +5,17 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+	xmlns:rich="http://richfaces.org/rich" 
+	template="layout/template.xhtml">
 
 	<ui:define name="body">
-
 		<h1>Welcome to Seam!</h1>
 		<rich:panel>
 			<h:panelGrid columns="2">
 				<h:graphicImage value="/img/seamlogo.png" alt="Seam logo" />
 				<s:div styleClass="info">
 					<p><strong>Your seam-gen project is deployed!</strong> Here are
-					some of the features this project provides:</p>
+						some of the features this project provides:</p>
 					<ul class="bullets">
 						<li>Ant build script</li>
 						<li>Deployment to JBoss AS (EAR or WAR)</li>
@@ -32,6 +32,5 @@
 				</s:div>
 			</h:panelGrid>
 		</rich:panel>
-
 	</ui:define>
 </ui:composition>
