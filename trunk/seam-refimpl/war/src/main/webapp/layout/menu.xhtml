@@ -17,12 +17,13 @@
 		
 		<ui:remove>
 			<!-- temporarily disabled for all -->
-	    <s:link 
-				view="/useradmin/home.xhtml" 
-				id="identityManagement" 
-				value="Identity Management" 
-				propagation="none" 
-				rendered="#{identity.hasRole('admin')}"/>
+		
+    <s:link 
+			view="/useradmin/home.xhtml" 
+			id="identityManagement" 
+			value="Identity Management" 
+			propagation="none" 
+			rendered="#{identity.hasRole('admin')}"/>
 		</ui:remove>
 		
     <!-- @newMenuItem@ -->

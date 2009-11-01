@@ -140,19 +140,16 @@
   </bpm:jbpm>
   -->
 
-
-	<!-- 
-		Seam Identity Management.
-		see: seam_reference-15.0 and http://blog.hibernate.org/10904.lace 
-	-->  
   <security:identity 
 	  authenticate-method="#{authenticator.authenticate}" 
 	  remember-me="true" />
-
-	<!-- 	  
-  <security:rule-based-permission-resolver 
-  	security-rules="#{securityRules}" />
-
+	
+	<!-- 
+		Seam Identity Management.
+		see: seam_reference-15.0 
+		see: http://blog.hibernate.org/10904.lace
+	-->
+	<!--   
 	<security:identity />
 
 	<security:remember-me 
@@ -170,8 +167,11 @@
        <value>/META-INF/security.drl</value>
     </drools:rule-files>
   </drools:rule-base>
-  -->
 
+  <security:rule-based-permission-resolver 
+  	security-rules="#{securityRules}" />
+	-->
+	  
   <event type="org.jboss.seam.security.notLoggedIn">
     <action execute="#{redirect.captureCurrentView}" />
   </event>
