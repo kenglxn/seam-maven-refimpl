@@ -58,7 +58,7 @@
 	
 	<exception class="javax.persistence.PersistenceException">
 		<redirect view-id="/error.xhtml">
-			<message>The operation failed. Please try again.</message>
+			<message>The operation failed, please try again</message>
 		</redirect>
 	</exception>
 	
@@ -77,7 +77,7 @@
 	
 	<exception class="javax.faces.application.ViewExpiredException">
 	  <redirect view-id="/error.xhtml">
-	    <message severity="warn">Your session expired. Please try again.</message>
+	    <message severity="warn">Your session has timed out, please try again</message>
 	  </redirect>
 	</exception>
 	

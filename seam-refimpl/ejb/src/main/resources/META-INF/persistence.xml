@@ -10,18 +10,14 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>${app.jta.data.source}</jta-data-source>
     <properties>
-    	<!--	
-    		Binds the EntityManagerFactory to JNDI where Seam can look it up. This is only relevant when 
-    		the container automatically loads the persistence unit,	as is the case in JBoss AS 5.	
-    	--> 
       <property name="jboss.entity.manager.factory.jndi.name" value="${app.persistence.unit.jndi.name}"/>
 
       <property name="hibernate.dialect" value="${ds.hibernate.dialect}"/>
       <property name="hibernate.hbm2ddl.auto" value="${env.hibernate.hbm2ddl.auto}"/>
       <property name="hibernate.show_sql" value="${env.hibernate.show_sql}"/>
       <property name="hibernate.format_sql" value="${env.hibernate.format_sql}"/>
+      <!-- <property name="hibernate.default_catalog" value="${ds.database.name}"/> -->
       
-      <!-- Tune the persistence manager to anticipate lazy fetches and batch fetch the data. (SiA-p417) -->
       <property name="hibernate.default_batch_fetch_size" value="${env.hibernate.default_batch_size}"/>
 
 			<!-- Encoding -->      
@@ -37,9 +33,10 @@
 </persistence>
 
 <!--
-The persistence.xml file configures the back-end database source for the EntityManager and is the 
-standard deployment descriptor used to configure a JPA persistence context.
-see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configuration.html
+  The persistence.xml file configures the back-end database source for the EntityManager and is the 
+  standard deployment descriptor used to configure a JPA persistence context.
+  see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configuration.html
+  see: http://docs.jboss.org/hibernate/core/3.3/reference/en/html/session-configuration.html
 
   persistence-unit    :
     name              : Every entity manager must have a name.
@@ -132,6 +129,10 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
                               
     Hibernate JDBC and Connection Properties:
     =========================================
+    hibernate.
+    default_batch_fetch_size: Sets a default size for Hibernate batch fetching of associations. 
+                              e.g. recommended values 4, 8, 16 (SiA-p417).
+		
     hibernate.jdbc.charSet  : e.g. utf-8
     
     hibernate.jdbc.
@@ -140,6 +141,8 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
     hibernate.jdbc.
     batch_size              : A non-zero value enables use of JDBC2 batch updates by Hibernate. 
                               eg. recommended values between 5 and 30 
+															
+
     hibernate.jdbc.
     batch_versioned_data   	: Set this property to true if your JDBC driver returns correct row 
                               counts from executeBatch() (it is usually safe to turn this option on). 
@@ -229,9 +232,12 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
   JBoss Configuration Properties:
   ===============================
     jboss.entity.manager.
-    factory.jndi.name       : Put the EntityManagerFactory into JNDI so we can use it manually in 
+    factory.jndi.name       : Binds the EntityManagerFactory to JNDI where Seam can look it up. 
+                              This is only relevant when the container automatically loads the 
+                              persistence unit,	as is the case in JBoss AS 5.	
+
+                              Put the EntityManagerFactory into JNDI so we can use it manually in 
                               tests, eg. java:/jpaBookingEntityManagerFactory.
-                              
                               
                               (This is an alternative to using the property 
                               hibernate.transaction.manager_lookup_class )

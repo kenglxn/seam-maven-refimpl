@@ -1,5 +1,6 @@
-package org.jboss.seam.example.action;
+package no.knowit.example.security.action;
 
+import javax.ejb.Stateless;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
@@ -7,11 +8,11 @@ import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
 
+@Stateless
 @Name("authenticator")
-public class Authenticator
+public class AuthenticatorBean implements Authenticator
 {
     @Logger private Log log;
-
     @In Identity identity;
     @In Credentials credentials;
 
@@ -20,11 +21,10 @@ public class Authenticator
         log.info("authenticating {0}", credentials.getUsername());
         //write your authentication logic here,
         //return true if the authentication was
-        //successful, false otherwise. mmm
+        //successful, false otherwise
         if ("admin".equals(credentials.getUsername()))
         {
             identity.addRole("admin");
-            //System.out.println("LOGGED IN!");
             return true;
         }
         return false;

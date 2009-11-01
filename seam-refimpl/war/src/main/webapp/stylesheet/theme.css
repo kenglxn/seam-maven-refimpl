@@ -17,14 +17,18 @@ h1 {
 }
 
 input[type=submit], input[type=button] {
-	font-size: 10px;
+	font-size: 11px;
 	margin: 5px 5px 5px 0;
 	cursor: pointer;
 }
 
 input[type=text], input[type=password], textarea {
-	font-size: 11px;
+	font-size: 12px;
 	padding-left: 1px;
+}
+
+select {
+	font-size: 13px;
 }
 
 .tableControl, .actionButtons {
@@ -52,11 +56,6 @@ input[type=text], input[type=password], textarea {
 .body {
 	padding: 30px;
 }
-
-.columnHeader:hover {
-	color: #FF6600;
-}
-
 .message {
 	padding: 5px;
 	list-style: none;
@@ -108,7 +107,7 @@ input[type=text], input[type=password], textarea {
 }
 
 .errors {
-	color: red;
+	color: #FF0000;
 	vertical-align: middle;
 }
 
@@ -116,12 +115,12 @@ img.errors {
 	padding-right: 5px;
 }
 
-.errors input, .errors textarea {
+.errors input, .errors textarea, .errors select {
 	border: 1px solid red !important;
 }
 
 .required {
-	color: red;
+	color: #FF0000;
 	padding-left: 2px;
 }
 
@@ -130,15 +129,11 @@ img.errors {
 } 
 
 /* the specificity here is necessary to override the defaults */
+/*
 .rich-panel .rich-panel-header,
 .rich-stglpanel .rich-stglpanel-header {
 	padding: 2px 3px;
-}
-
-
-select {
-	font-size: 12px;
-}
+}*/
 
 .rich-panel input[type=submit], .rich-panel input[type=button],
 .rich-tabpanel input[type=submit], .rich-tabpanel input[type=button] {
@@ -163,6 +158,18 @@ select {
 .actionButtons select {
 	margin: 5px 5px 5px 0;
 	vertical-align: bottom;
+}
+
+.rich-toolbar-item a {
+	text-decoration: none;
+}
+
+.rich-toolbar-item a:hover, .rich-ddmenu-label-select {
+	text-decoration: underline;
+}
+
+.rich-toolbar-item .rich-menu-item a:hover {
+	text-decoration: none;
 }
 
 .rich-datalist {
@@ -196,4 +203,16 @@ td.action {
 td.action a {
 	padding-left: 1px;
 	padding-right: 1px;
+}
+
+table.radio {
+   border: 0;
+}
+
+table.radio td {
+   padding: 0 2px;
+}
+
+table.radio input[type=radio] {
+   vertical-align: bottom;
 }

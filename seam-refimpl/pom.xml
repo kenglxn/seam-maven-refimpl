@@ -84,7 +84,7 @@
 		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
 		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
 		<ds.server.name></ds.server.name>
-		<ds.database.name>${app.database.name}</ds.database.name>
+		<ds.database.name>refimpl_db</ds.database.name>
 		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
 		<ds.user.name>sa</ds.user.name>
 		<ds.password></ds.password>
@@ -597,6 +597,18 @@
 						<artifactId>jstl</artifactId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+
+			<dependency>
+			  <groupId>org.richfaces.samples</groupId>
+			  <artifactId>glassX</artifactId>
+			  <version>${version.richfaces}</version>
+			</dependency>
+
+			<dependency>
+			  <groupId>org.richfaces.samples</groupId>
+			  <artifactId>darkX</artifactId>
+			  <version>${version.richfaces}</version>
 			</dependency>
 
 
@@ -1131,7 +1143,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- -->
+		<!-- log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -1183,7 +1195,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.4</version>
+					<version>2.4.1</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
 					</configuration>
@@ -1314,7 +1326,13 @@
 				<!--
 					see:   http://mojo.codehaus.org/maven-hibernate3/hibernate3-maven-plugin/
 					see:   http://unmaintainable.wordpress.com/2008/04/12/hibernate3-schema-creation/
-					usage: mvn hibernate3:hbm2ddl	 (note: the project must be installed, mvn install)
+					usage: 
+					* cd  to parent project
+					* mvn install
+					* cd  to project containing the entities, e.g. ejb
+					* mvn install
+					* mvn hibernate3:hbm2ddl
+					* see target/hibernate3/sql/schema.ddl
 				-->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>

@@ -163,8 +163,25 @@
 			<type>jar</type>
 		</dependency>
 
+		<!-- 
+			logging, see: 
+			http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html 
+			http://www.jboss.org/feeds/post/how_do_i_use_my_own_log4j_properties_or_xml_file_in_jboss
+		-->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<type>jar</type>
+		</dependency>
+		
 		<!-- JBoss Rules -->
-		<!-- Not needed by refimpl
+		<!-- Not needed by refimpl -->
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-core</artifactId>
@@ -200,11 +217,13 @@
 			<artifactId>xpp3_min</artifactId>
 		</dependency>
 
+		<!-- rules + groovy -->
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr-runtime</artifactId>
 		</dependency>
-		-->
+		<!-- -->
+		
 		
 		<!-- Added transient by JBoss Rules 
 		<dependency>

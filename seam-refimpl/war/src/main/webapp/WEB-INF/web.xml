@@ -10,19 +10,6 @@
 	
 	<display-name>${app.display.name}</display-name>
 	
-	<!--
-		Uncomment if urlrewritefilter or web:rewrite-filter is not applied. Also add index.html to context root!
-		  
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-	</welcome-file-list>
-	-->
-	
 	<error-page>
 		<error-code>404</error-code>
 		<location>/404.xhtml</location>
@@ -31,66 +18,31 @@
   <!-- RichFaces  -->
 	<context-param>
 		<param-name>org.richfaces.SKIN</param-name>
-		<param-value>blueSky</param-value>
+		<param-value>glassX</param-value>
 	</context-param>
 
-	<!-- SiA source code, ch11 -->
-	<!--
+	<!-- Suppress spurious stylesheets -->
 	<context-param>
-		<description>
-			If the view cannot be found in the session on a JSF postback, rebuild
-			the view again before executing the Restore View phase. This step
-			prevents "stale" public form pages. Enable this feature if you need it.
-		</description>
-
-		<param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
-		<param-value>false</param-value>
+		<param-name>org.richfaces.CONTROL_SKINNING</param-name>
+		<param-value>disable</param-value>
 	</context-param>
-	-->
-	
-	<!-- Facelets development mode (disable in production) --> 
-	<context-param>
-		<param-name>facelets.DEVELOPMENT</param-name>
-		<param-value>${env.debug}</param-value>
-	</context-param>
-
-	<!-- JSF -->
-	
-	<!-- Not shure if this is needed
-	<context-param>
-		<description>
-			JSF 1.2 detects the ViewHandler/StateManager version from the
-			faces-config.xml DTD/XML schema name. The faces-config.xml files in
-			the RichFaces JARs use the JSF 1.1 DTDs, causing JSF to use 1.1
-			behavior. Setting this flag to false ignores the version of the DTD
-			used in these files, thus ensuring that JSF uses 1.2 behavior.
-			
-			One of the critical improvements in JSF 1.2 is that it throws a
-			ViewExpiredException on a session timeout.
-			
-			See http://jira.jboss.com/jira/browse/RF-2294 and
-			http://lists.jboss.org/pipermail/seam-dev/2008-February/000024.html.
-		</description>
-		
-		<param-name>com.sun.faces.disableVersionTracking</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	-->
 	
 	<context-param>
-		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-		<param-value>.xhtml</param-value>
+		<param-name>org.richfaces.CONTROL_SKINNING_CLASSES</param-name>
+		<param-value>disable</param-value>
 	</context-param>
 
-	<!-- 
-		Strip html comments from the page before it is rendred - meaning that you will 
-		no longer be bugged down by EL evaluating expressions inside a comment tag  
-	-->
+	<!-- Change load strategy to DEFAULT to disable sending scripts/styles as packs -->
 	<context-param>
-		<param-name>facelets.SKIP_COMMENTS</param-name>
-		<param-value>true</param-value>
+		<param-name>org.richfaces.LoadStyleStrategy</param-name>
+		<param-value>ALL</param-value>
 	</context-param>
-	 
+	
+	<context-param>
+		<param-name>org.richfaces.LoadScriptStrategy</param-name>
+		<param-value>ALL</param-value>
+	</context-param>
+
   <!-- Seam -->
 	<listener>
 		<listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
@@ -116,7 +68,42 @@
 		<url-pattern>/seam/resource/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- Faces Servlet --> 
+	<!-- Facelets -->
+	
+	<!-- Facelets development mode (disable in production) --> 
+	<context-param>
+		<param-name>facelets.DEVELOPMENT</param-name>
+		<param-value>${env.debug}</param-value>
+	</context-param>
+
+	<context-param>
+		<description>
+			Strip html comments from the page before it is rendred - meaning that you will 
+			no longer be bugged down by EL evaluating expressions inside a comment tag  
+		</description>
+		<param-name>facelets.SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	 
+	<!-- SiA source code, ch11 -->
+	<!--
+	<context-param>
+		<description>
+			If the view cannot be found in the session on a JSF postback, rebuild
+			the view again before executing the Restore View phase. This step
+			prevents "stale" public form pages. Enable this feature if you need it.
+		</description>
+		<param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	-->
+	
+	<!-- JSF --> 
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -128,6 +115,26 @@
 		<url-pattern>*.seam</url-pattern>
 	</servlet-mapping>
 
+	<!-- Not shure if this is needed
+	<context-param>
+		<description>
+			JSF 1.2 detects the ViewHandler/StateManager version from the
+			faces-config.xml DTD/XML schema name. The faces-config.xml files in
+			the RichFaces JARs use the JSF 1.1 DTDs, causing JSF to use 1.1
+			behavior. Setting this flag to false ignores the version of the DTD
+			used in these files, thus ensuring that JSF uses 1.2 behavior.
+			
+			One of the critical improvements in JSF 1.2 is that it throws a
+			ViewExpiredException on a session timeout.
+			
+			See http://jira.jboss.com/jira/browse/RF-2294 and
+			http://lists.jboss.org/pipermail/seam-dev/2008-February/000024.html.
+		</description>
+		<param-name>com.sun.faces.disableVersionTracking</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	-->
+	
 	<!-- URL Rewrite Filter - declare after seam filter -->
 	<!--
 		There are two rewrite options in Seam, you can choose to either use the org.tuckey 
@@ -162,5 +169,5 @@
 		</web-resource-collection>
 		<auth-constraint/>
 	</security-constraint>
-	
+
 </web-app>
