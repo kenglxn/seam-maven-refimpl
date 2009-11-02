@@ -108,6 +108,31 @@
 				-->
 				<env>prod</env>
 				<env.debug>false</env.debug>
+				
+				<env.unpack.modules>false</env.unpack.modules>
+				<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+				<env.hibernate.show_sql>false</env.hibernate.show_sql>
+				<env.hibernate.format_sql>true</env.hibernate.format_sql>
+				<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+				
+				<jdk.debug>${env.debug}</jdk.debug>
+				<jdk.optimize>true</jdk.optimize>
+				<jdk.source>1.5</jdk.source>
+				<jdk.target>1.5</jdk.target>
+				
+				<as>jboss423</as>
+				<as.version>4.2</as.version>
+				<as.home>C:/dev/server/jboss-4.2.3.GA-jdk6</as.home>
+				<as.deploy>${as.home}/server/default/deploy</as.deploy>
+
+				<ds>mysql5</ds>
+				<ds.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</ds.hibernate.dialect>
+				<ds.driver.class>com.mysql.jdbc.Driver</ds.driver.class>
+				<ds.server.name>localhost:3306</ds.server.name>
+				<ds.database.name>refimpl_db</ds.database.name>
+				<ds.connection.url>jdbc:mysql://${ds.server.name}/${ds.database.name}?characterEncoding=UTF-8</ds.connection.url>
+				<ds.user.name>root</ds.user.name>
+				<ds.password></ds.password>
 			</properties>
 		</profile>
 	</profiles>
@@ -149,7 +174,7 @@
 			<url>http://repository.codehaus.org</url>
 		</pluginRepository>
 		
-		<!-- Add more repos as needed -->
+		<!-- Add more repos when needed -->
 		<!--
 		<pluginRepository>
 			<id>apache.snapshots</id>
@@ -1467,7 +1492,10 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>
 				<configuration>
-					<!-- Add e.g. this if you don't want implementation build number fom scm -->
+					<!-- 
+						Comment out the format and items tags if you want the implementation 
+						build number fom scm, see e.g. the m2m example project.
+					-->
 					<format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
 					<items>
 						<item>timestamp</item>
