@@ -98,6 +98,38 @@
 			</build>
 		</profile>
 
+    <profile>
+      <id>env-prod</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>prod</value>
+        </property>
+      </activation>
+      <build>
+      	<!-- Exclude logging in production (and leave it to JBoss AS) -->
+		    <plugins>    
+		      <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-ear-plugin</artifactId>
+		        <configuration>
+		          <modules>
+		            <jarModule>
+		              <groupId>commons-logging</groupId>
+		              <artifactId>commons-logging</artifactId>
+		              <excluded>true</excluded>
+		            </jarModule>
+		            <jarModule>
+		              <groupId>log4j</groupId>
+		              <artifactId>log4j</artifactId>
+		              <excluded>true</excluded>
+		            </jarModule>
+		          </modules>
+		        </configuration>
+		      </plugin>
+		    </plugins>
+      </build>
+    </profile>
 	</profiles>
 
 	<dependencies>
@@ -163,25 +195,7 @@
 			<type>jar</type>
 		</dependency>
 
-		<!-- 
-			logging, see: 
-			http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html 
-			http://www.jboss.org/feeds/post/how_do_i_use_my_own_log4j_properties_or_xml_file_in_jboss
-		-->
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<type>jar</type>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<type>jar</type>
-		</dependency>
-		
-		<!-- JBoss Rules -->
-		<!-- Not needed by refimpl -->
+		<!-- JBoss Rules. Needed if you implement Seam Idendity -->
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-core</artifactId>
@@ -273,7 +287,7 @@
 				<executions>
 					<execution>
 						<id>copy-app-ds-xml</id>
-						<phase>process-resources</phase>
+						<phase>validate</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -295,6 +309,21 @@
 									<includes>
 										<include>${app.ds.xml}</include>
 									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+ 
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/application-${env}</directory>
 								</resource>
 							</resources>
 						</configuration>
@@ -366,11 +395,6 @@
 							<unpack>${env.unpack.modules}</unpack>
 						</ejbModule>
 
-						<ejbModule>
-							<groupId>org.jboss.seam</groupId>
-							<artifactId>jboss-seam</artifactId>
-						</ejbModule>
-
 						<!--
 						<jarModule> 
 							<groupId>${project.groupId}</groupId>
@@ -379,10 +403,36 @@
 							<includeInApplicationXml>true</includeInApplicationXml>
 						</jarModule>
 						-->
+						
+						<ejbModule>
+							<groupId>org.jboss.seam</groupId>
+							<artifactId>jboss-seam</artifactId>
+						</ejbModule>
+
+				    <!-- 
+				      logging, see: 
+				      http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html 
+				      http://www.jboss.org/feeds/post/how_do_i_use_my_own_log4j_properties_or_xml_file_in_jboss
+				      
+				      NOTE: excluded in production, see the env-prod profile
+				    -->
+            <jarModule>
+				      <groupId>commons-logging</groupId>
+				      <artifactId>commons-logging</artifactId>
+              <excluded>false</excluded>
+				    </jarModule>
+				
+            <jarModule>
+				      <groupId>log4j</groupId>
+				      <artifactId>log4j</artifactId>
+              <excluded>false</excluded>
+				    </jarModule>
+
 					</modules>
 				</configuration>
 			</plugin>
 		</plugins>
+		
 	</build>
 
 </project>
