@@ -496,19 +496,6 @@
 			</dependency>
 
 			<dependency>
-			  <groupId>org.richfaces.samples</groupId>
-			  <artifactId>glassX</artifactId>
-			  <version>${version.richfaces}</version>
-			</dependency>
-
-			<dependency>
-			  <groupId>org.richfaces.samples</groupId>
-			  <artifactId>darkX</artifactId>
-			  <version>${version.richfaces}</version>
-			</dependency>
-
-
-			<dependency>
 				<groupId>org.jbpm</groupId>
 				<artifactId>jbpm-jpdl</artifactId>
 				<version>3.2.2</version>
@@ -826,7 +813,20 @@
 				Dependecies not listed in Seam root pom. Some dependencies are required bc. 
 				we have removed them while solving transitive dependencies in Seam root pom.
 			-->
-			
+
+			<!-- richfaces -->
+			<dependency>
+			  <groupId>org.richfaces.samples</groupId>
+			  <artifactId>glassX</artifactId>
+			  <version>${version.richfaces}</version>
+			</dependency>
+
+			<dependency>
+			  <groupId>org.richfaces.samples</groupId>
+			  <artifactId>darkX</artifactId>
+			  <version>${version.richfaces}</version>
+			</dependency>
+
 			<!-- drools Why is not this in seam-root? -->
 			<dependency>
 				<groupId>org.drools</groupId>
