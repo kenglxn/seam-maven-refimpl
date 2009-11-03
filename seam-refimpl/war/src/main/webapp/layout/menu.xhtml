@@ -15,22 +15,21 @@
 				propagation="none"/>
     </rich:toolBarGroup>
 		
-		<ui:remove>
-			<!-- temporarily disabled for all -->
-		
-    <s:link 
-			view="/useradmin/home.xhtml" 
-			id="identityManagement" 
-			value="Identity Management" 
-			propagation="none" 
-			rendered="#{identity.hasRole('admin')}"/>
-		</ui:remove>
-		
     <!-- @newMenuItem@ -->
     <s:link view="/view/example/userList.xhtml"
 			value="User List"
 			includePageParams="false"
 			propagation="none"/>
+		
+		<ui:remove>
+			<!-- temporarily disabled for all -->
+	    <s:link 
+				view="/useradmin/home.xhtml" 
+				id="identityManagement" 
+				value="Identity Management" 
+				propagation="none" 
+				rendered="#{identity.hasRole('admin')}"/>
+		</ui:remove>
 		
     <rich:toolBarGroup location="right">
 			<h:outputText 

@@ -1355,7 +1355,6 @@
 					* cd  to parent project
 					* mvn install
 					* cd  to project containing the entities, e.g. ejb
-					* mvn install
 					* mvn hibernate3:hbm2ddl
 					* see target/hibernate3/sql/schema.ddl
 				-->

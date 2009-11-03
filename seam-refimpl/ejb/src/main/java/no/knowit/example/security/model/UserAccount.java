@@ -22,78 +22,92 @@ import org.jboss.seam.annotations.security.management.UserRoles;
 public class UserAccount implements Serializable {
 	private static final long serialVersionUID = 6368734442192368866L;
 
+	private Long id;
+	private Long version;
+	private String username;
+	private String passwordHash;
+	//private String passwordSalt;
+	private boolean enabled;
+	private Set<UserRole> roles; 
+
+	public UserAccount() {
+	}
+
 	@Id 
 	@GeneratedValue
-	private Long id;
+	@Column
+  public Long getId() {
+    return id;
+  }
 	
-  @Version 
-	private Long version;
+	// setter needed by JPA, but protected because it makes no sense for the application to assign an id.
+	protected void setId(Long id) {
+		this.id = id;
+	}
   
+  @Version
+  @Column
+  public Long getVersion() {
+    return version;
+  }
+  
+  protected void setVersion(Long version) {
+		this.version = version;
+	}
+
 	@NotNull
 	@UserPrincipal
-  @Column(unique=true, nullable=false)
-	private String username;
+  @Column(unique = true, nullable = false)
+	public String getUsername() {
+		return username;
+	}
 	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	@UserPassword(hash = "SHA")
-	private String passwordHash;
+  @Column
+	public String getPasswordHash() {
+		return passwordHash;
+	}
 	
-  //@PasswordSalt
-	//private String passwordSalt;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+	/*
+  @PasswordSalt
+  @Column
+	public String getPasswordSalt() {
+		return passwordSalt;
+	}
+	
+	public void setPasswordSalt(String passwordSalt) {
+		this.passwordSalt = passwordSalt;
+	}
+  */
 	
 	@UserEnabled
-	private boolean enabled;
+  @Column
+	public boolean isEnabled() {
+		return enabled;
+	}
 	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	@UserRoles
   @ManyToMany
 	@JoinTable(name = "UserAccountRole", 
 			joinColumns = @JoinColumn(name = "userAccountId"), 
 			inverseJoinColumns = @JoinColumn(name = "userRoleId")
 	)
-	private Set<UserRole> roles;
-
-
-  public Long getId() {
-    return id;
-  }
-  
-  public Long getVersion() {
-    return version;
-  }
-
-	
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-
-	/*
-	public String getPasswordSalt() {
-		return passwordSalt;
-	}
-	public void setPasswordSalt(String passwordSalt) {
-		this.passwordSalt = passwordSalt;
-	}
-  */
-	
-	public boolean isEnabled() {
-		return enabled;
-	}
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
 	public Set<UserRole> getRoles() {
 		return roles;
 	}
+	
 	public void setRoles(Set<UserRole> roles) {
 		this.roles = roles;
 	}

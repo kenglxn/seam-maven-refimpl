@@ -21,44 +21,50 @@ import org.jboss.seam.annotations.security.management.RoleName;
 public class UserRole implements Serializable {
 	private static final long serialVersionUID = 9177366120789064801L;
 
-	@Id
-	@GeneratedValue
 	private Long id;
-
-	@Version 
   private Long version;
-	
-	@RoleName
-	@NotNull
-  @Column(unique=true, nullable=false)
 	private String name;
-	
-	@RoleConditional
 	private boolean conditional;
-	
-	@RoleGroups
-	@ManyToMany
-	@JoinTable(name = "UserRoleGroup", 
-			joinColumns = @JoinColumn(name = "roleId"), 
-			inverseJoinColumns = @JoinColumn(name = "memberOfRoleId")
-	)
 	private Set<UserRole> groups;
 
+	public UserRole() {
+	}
+	
+	@Id 
+	@GeneratedValue
+	@Column
 	public Long getId() {
 		return id;
 	}
 
+	// setter needed by JPA, but protected because it makes no sense for the application to assign an id.
+	protected void setId(Long id) {
+		this.id = id;
+	}
+	
+  @Version
+  @Column
   public Long getVersion() {
     return version;
   }
   
+  protected void setVersion(Long version) {
+		this.version = version;
+	}
+  
+	@RoleName
+	@NotNull
+  @Column(unique=true, nullable=false)
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	
+	@RoleConditional
 	public boolean isConditional() {
 		return conditional;
 	}
@@ -66,9 +72,16 @@ public class UserRole implements Serializable {
 		this.conditional = conditional;
 	}
 	
+	@RoleGroups
+	@ManyToMany
+	@JoinTable(name = "UserRoleGroup", 
+			joinColumns = @JoinColumn(name = "roleId"), 
+			inverseJoinColumns = @JoinColumn(name = "memberOfRoleId")
+	)
 	public Set<UserRole> getGroups() {
 		return groups;
 	}
+	
 	public void setGroups(Set<UserRole> groups) {
 		this.groups = groups;
 	}

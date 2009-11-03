@@ -140,6 +140,7 @@
   </bpm:jbpm>
   -->
 
+
   <security:identity 
 	  authenticate-method="#{authenticator.authenticate}" 
 	  remember-me="true" />
@@ -149,7 +150,8 @@
 		see: seam_reference-15.0 
 		see: http://blog.hibernate.org/10904.lace
 	-->
-	<!--   
+ 
+	<!-- 
 	<security:identity />
 
 	<security:remember-me 
@@ -170,8 +172,8 @@
 
   <security:rule-based-permission-resolver 
   	security-rules="#{securityRules}" />
-	-->
-	  
+	--> 
+
   <event type="org.jboss.seam.security.notLoggedIn">
     <action execute="#{redirect.captureCurrentView}" />
   </event>
