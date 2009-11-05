@@ -1323,6 +1323,11 @@
 					<version>2.6</version>
 				</plugin>
 
+				<!-- 
+					The jdepend plugin consumes a lot of memory.
+					If you get an outOfMemoryError try this: 
+					set MAVEN_OPTS=-Xmx512m -XX:MaxPermSize=128m
+				-->
 				<plugin>
 					<groupId>org.codehaus.mojo<groupId>
 					<artifactId>jdepend-maven-plugin<artifactId>
