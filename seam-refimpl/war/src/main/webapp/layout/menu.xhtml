@@ -21,17 +21,18 @@
 			includePageParams="false"
 			propagation="none"/>
 		
-		<ui:remove>
-			<!-- temporarily disabled for all -->
-	    <s:link 
-				view="/useradmin/home.xhtml" 
-				id="identityManagement" 
-				value="Identity Management" 
-				propagation="none" 
-				rendered="#{identity.hasRole('admin')}"/>
-		</ui:remove>
 		
     <rich:toolBarGroup location="right">
+			<ui:remove>
+				<!-- temporarily disabled for all -->
+		    <s:link 
+					id="identityManagement" 
+					view="/useradmin" 
+					value="Identity Management" 
+					propagation="none" 
+					rendered="#{identity.hasRole('admin')}"/>
+			</ui:remove>
+			
 			<h:outputText 
 				id="menuWelcomeId" 
 				value="signed in as: #{credentials.username}" 
