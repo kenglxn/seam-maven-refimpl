@@ -314,6 +314,7 @@
 						</configuration>
 					</execution>
  
+          <!-- env dependent resources -->					
 					<execution>
 						<phase>validate</phase>
 						<goals>
