@@ -143,7 +143,7 @@
             <properties>
                 <as>jboss5</as>
                 <as.version>5</as.version>
-                <as.home>D:/dev/servers/jboss-5.1.0.GA</as.home>
+                <as.home>F:/dev/servers/jboss-5.1.0.GA</as.home>
                 <as.deploy>${as.home}/server/default/deploy</as.deploy>
                 <as.jndi.pattern>${app.context}-ear/#{ejbName}/local</as.jndi.pattern>
             </properties>
@@ -201,8 +201,9 @@
     </profiles>
 
     <activeProfiles>
-        <activeProfile>ds-mysql5</activeProfile>
-        <!--<activeProfile>ds-hsqldb</activeProfile>-->
+        <!--<activeProfile>ds-mysql5</activeProfile>-->
+        <activeProfile>ds-hsqldb</activeProfile>
+        <!--<activeProfile>ds-sqlserver</activeProfile>-->
         <!--<activeProfile>ds-sqlserver</activeProfile>-->
         <!--<activeProfile>ds-postgresql</activeProfile>-->
 

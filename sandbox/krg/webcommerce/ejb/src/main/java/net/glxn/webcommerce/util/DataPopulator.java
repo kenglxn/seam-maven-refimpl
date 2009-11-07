@@ -69,8 +69,8 @@ public class DataPopulator {
             return;
         }
         Settings settings = settingsHome.getInstance();
-        settings.setFilePathServer("D:\\dev\\files\\");
-        settings.setFilePathClient("http://localhost/dev/files/");
+        settings.setFilePathServer("F:\\dev\\files\\");
+        settings.setFilePathClient("F:\\dev\\files\\");
         settingsHome.persist();
         createUsers();
         createPages();
