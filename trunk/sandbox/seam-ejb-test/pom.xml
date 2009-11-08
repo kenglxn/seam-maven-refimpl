@@ -156,7 +156,7 @@
 			<name>Codehaus Repository</name>
 			<url>http://repository.codehaus.org</url>
 		</repository>
-		
+
 		<!-- Add more repos as needed -->
 		<!--
 		<repository>
