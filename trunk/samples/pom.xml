@@ -1082,9 +1082,9 @@
 					set MAVEN_OPTS=-Xmx512m -XX:MaxPermSize=128m
 				-->
 				<plugin>
-					<groupId>org.codehaus.mojo<groupId>
-					<artifactId>jdepend-maven-plugin<artifactId>
-					<version>2.0-beta-2<version>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>jdepend-maven-plugin</artifactId>
+					<version>2.0-beta-2</version>
 				</plugin>
 
 				<!-- tools -->
