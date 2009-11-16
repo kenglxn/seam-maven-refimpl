@@ -16,6 +16,7 @@
 	</context-param>
 
 	<!-- JSF -->
+	<!-- 
 	<context-param>
 		<description>
 			JSF 1.2 detects the ViewHandler/StateManager version from the
@@ -34,7 +35,8 @@
 		<param-name>com.sun.faces.disableVersionTracking</param-name>
 		<param-value>true</param-value>
 	</context-param>
-
+	-->
+	
 	<context-param>
 		<description>
 			If the view cannot be found in the session on a JSF postback, rebuild

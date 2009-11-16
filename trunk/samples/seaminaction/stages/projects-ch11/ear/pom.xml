@@ -334,7 +334,7 @@
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3_min</artifactId>
 		</dependency>
-
+		
 		<!-- also needed by groovy -->
 		<dependency>
 			<groupId>org.antlr</groupId>
@@ -363,7 +363,7 @@
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-jpdl</artifactId>
 		</dependency>
-
+		
 	</dependencies>
 
 </project>

@@ -60,3 +60,25 @@ action/src/action/java/org/open18/action/TeeList.java,
 Pagination
 - Fixed search/pagination problem as described here:
   http://seamframework.org/Community/PaginationAndEntityQuery
+
+Authentication
+- Changed deprecated methods in org.open18.action.AuthenticationManager
+- Added security_error.xhtml
+- Changed
+	<exception class="org.jboss.seam.security.AuthorizationException">
+		<redirect view-id="/error.xhtml">
+			<message severity="warn">You don't have permission to access this resource</message>
+		</redirect>
+	</exception>
+
+  to:
+	<exception class="org.jboss.seam.security.AuthorizationException">
+		<end-conversation />
+		<redirect view-id="/security_error.xhtml">
+			<message severity="error">You do not have permission to do this</message>
+		</redirect>
+	</exception>
+
+
+Search
+- Added features from seam-2.2.0 entity framework
