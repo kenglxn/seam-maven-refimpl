@@ -3,225 +3,33 @@ package org.open18.permissions;
 dialect 'mvel'
 
 import java.security.Principal;
+
 import org.jboss.seam.security.permission.PermissionCheck;
+import org.jboss.seam.security.permission.RoleCheck;
 import org.jboss.seam.security.Role;
+
 import org.open18.model.Facility;
 import org.open18.model.Course;
 import org.open18.model.Golfer;
 import org.open18.model.Round;
 
+
 // There are two styles of OR matching in this file
 // IN style: action in ("update, "remove")
 // || style: type == "PRIVATE" || == "RESORT"
-
-// ===== Component-level rules =====
-
-// Allow an admin to update or remove a private facility
-// e.g., #{s:hasPermission(facilityHome.instance, 'update')}
-// e.g., #{s:hasPermission(facilityHome.instance, 'remove')}
-rule ModifyPrivateFacility
-	no-loop
-when
-	$facility: Facility(type == "PRIVATE" || == "RESORT")
-	$perm: PermissionCheck(target == $facility, action in ("update", "remove"), granted == false)
-	Role(name == "admin")
-then
-	$perm.grant();
-end
-
-// Allow a member to update or remove a non-private facility
-// e.g., #{s:hasPermission(facilityHome.instance, 'update')}
-// e.g., #{s:hasPermission(facilityHome.instance, 'remove')}
-rule ModifyNonPrivateFacility
-	no-loop
-when
-	$facility: Facility(type != "PRIVATE" && != "RESORT")
-	$perm: PermissionCheck(target == $facility, action in ("update", "remove"), granted == false)
-	Role(name == "member")
-then
-	$perm.grant();
-end
-
-// FIXME: disabled because owner is not yet implemented!
-//// Allow an owner to operate on his or her facility (regardless of type)
-//// e.g., #{s:hasPermission(facilityHome.instance, 'update')}
-//// e.g., #{s:hasPermission(facilityHome.instance, 'remove')}
-//rule OperateOnOwnFacility
-//	no-loop
-//when
-//	$facility: Facility()
-//	$perm: PermissionCheck(target == $facility, granted == false)
-//	Role(name == "member")
-//	$pricipal: Principal()
-//	Golfer(username == $principal.name) from $facility.owner
-//then
-//	$perm.grant();
-//end
-
-// Allow an admin to update or remove a course at a private facility
-// e.g., #{s:hasPermission(courseHome.instance, 'update')}
-// e.g., #{s:hasPermission(courseHome.instance, 'remove')}
-rule ModifyPrivateCourse
-	no-loop
-when
-	$course: Course()
-	$perm: PermissionCheck(target == $course, action in ("update", "remove"), granted == false)
-	Role(name == "admin")
-	Facility(type == "PRIVATE" || == "RESORT") from $course.facility
-then
-	$perm.grant();
-end
-
-// Allow a member to update or remove a course at a non-private facility
-// e.g., #{s:hasPermission(courseHome.instance, 'update')}
-// e.g., #{s:hasPermission(courseHome.instance, 'remove')}
-rule ModifyNonPrivateCourse
-	no-loop
-when
-	$course: Course()
-	$perm: PermissionCheck(target == $course, action in ("update", "remove"), granted == false)
-	Role(name == "member")
-	not (Facility(type == "PRIVATE" || == "RESORT") from $course.facility)
-	//alt syntax: Facility(type != "PRIVATE" && != "RESORT") from $course.facility
-then
-	$perm.grant();
-end
-
-// FIXME: disabled because owner is not yet implemented!
-// Allow an owner to operate on a course at his or her facility (regardless of type)
-// e.g., #{s:hasPermission(courseHome.instance, 'update')}
-// e.g., #{s:hasPermission(courseHome.instance, 'remove')}
-//rule OperateOnOwnCourse
-//	no-loop
-//when
-//  $course: Course()
-//	$perm: PermissionCheck(target == $course, granted == false)
-//	Role(name == "member")
-//	$principal: Principal()
-//	Golfer(username == $principal.name) from $course.facility.owner
-//then
-//	$perm.grant();
-//end
-
-// ===== Entity-level rules =====
-
-// Allow a golfer to update or delete his or her own round
-// e.g., @Restrict @PreUpdate @PreRemove on method of Round entity
-rule ModifyOwnRound
-	no-loop
-when
-	$round: Round()
-	$perm: PermissionCheck(target == $round, action in ("update", "delete"), granted == false)
-	Role(name == "member")
-	$principal: Principal()
-	Golfer(username == $principal.name) from $round.golfer
-then
-	$perm.grant();
-end
-
 // ===== Page-level rules =====
-
-// Allow any member to add a new facility
-// e.g., #{s:hasPermission(facilityHome.instance, '/FacilityEdit.xhtml')}
-rule EditNewFacility
-	no-loop
-when
-	$facility: Facility(id == null)
-	$perm: PermissionCheck(target == $facility, action == "/FacilityEdit.xhtml", granted == false)
-	Role(name == "member")
-then
-	$perm.grant();
-end
 
 // Allow an admin to bring up a private facility in the editor
 // e.g., #{s:hasPermission(facilityHome.instance, '/FacilityEdit.xhtml')}
 rule EditPrivateFacility
 	no-loop
+	activation-group "permissions"
 when
-	$facility: Facility(type == "PRIVATE" || == "RESORT")
-	$perm: PermissionCheck(target == $facility, action == "/FacilityEdit.xhtml", granted == false)
+	//facility: Facility(type == "PRIVATE" || == "RESORT")
+	perm: PermissionCheck(name == "facilityHome", action == "edit", granted == false)
 	Role(name == "admin")
 then
-	$perm.grant();
+	perm.grant();
+	System.out.println( "****** EditPrivateFacility OK ******" ); 
 end
 
-// Allow a member to bring up a non-private facility in the editor
-// e.g., #{s:hasPermission(facilityHome.instance, '/FacilityEdit.xhtml')}
-rule EditNonPrivateFacility
-	no-loop
-when
-	$facility: Facility(type != "PRIVATE" && != "RESORT")
-	$perm: PermissionCheck(target == $facility, action == "/FacilityEdit.xhtml", granted == false)
-	Role(name == "member")
-then
-	$perm.grant();
-end
-
-// FIXME: disabled because owner is net yet implemented!
-// Allow an owner to bring up his or her facility in the editor (regardless of type)
-// e.g., #{s:hasPermission(facilityHome.instance, '/FacilityEdit.xhtml')}
-//rule EditOwnFacility
-//	no-loop
-//when
-//	$facility: Facility()
-//	$perm: PermissionCheck(target == $facility, action == "/FacilityEdit.xhtml", granted == false)
-//	Role(name == "member")
-//	$principal: Principal()
-//	Golfer(username == $principal.name) from $facility.owner
-//then
-//	$perm.grant();
-//end
-
-// Allow any member to add a new course
-// e.g., #{s:hasPermission(courseHome.instance, '/CourseEdit.xhtml')}
-rule EditNewCourse
-	no-loop
-when
-	$course: Course(id == null)
-	$perm: PermissionCheck(target == $course, action == "/CourseEdit.xhtml", granted == false)
-	Role(name == "member")
-then
-	$perm.grant();
-end
-
-// Allow an admin to render a course at a private facility in the editor
-// e.g., #{s:hasPermission(courseHome.instance, '/CourseEdit.xhtml')}
-rule EditPrivateCourse
-	no-loop
-when
-	$course: Course()
-	$perm: PermissionCheck(target == $course, action == "/CourseEdit.xhtml", granted == false)
-	Role(name == "admin")
-	Facility(type == "PRIVATE" || == "RESORT") from $course.facility
-then
-	$perm.grant();
-end
-
-// Allow a member to render up a course at a non-private facility in the editor
-// e.g., #{s:hasPermission(courseHome.instance, '/CourseEdit.xhtml')}
-rule EditNonPrivateCourse
-	no-loop
-when
-	$course: Course()
-	$perm: PermissionCheck(target == $course, action == "/CourseEdit.xhtml", granted == false)
-	Role(name == "member")
-	not (Facility(type == "PRIVATE" || == "RESORT") from $course.facility)
-	//alt syntax: Facility(type != "PRIVATE" && != "RESORT") from $course.facility
-then
-	$perm.grant();
-end
-
-// FIXME: disabled because owner is not yet implemented!
-//// Allow an owner to render up a course at his or her facility in the editor (regardless of type)
-//// e.g., #{s:hasPermission(courseHome.instance, '/CourseEdit.xhtml')}
-//rule EditOwnCourse
-//	no-loop
-//when
-//	$course: Course()
-//	$perm: PermissionCheck(target == $course, action == "/CourseEdit.xhtml", granted == false)
-//	Role(name == "member")
-//	$principal: Principal()
-//	Golfer(username == $principal.name) from $course.facility.owner
-//then
-//	$perm.grant();
-//end
