@@ -1,0 +1,24 @@
+<rich:toolBar
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:rich="http://richfaces.org/rich">
+
+    <rich:toolBarGroup>
+			<h:outputText value="#{projectName}:"/>
+			<s:link 
+				id="menuHomeId" 
+				view="/home.xhtml" 
+				value="Home" 
+				propagation="none"/>
+    </rich:toolBarGroup>
+		
+    <!-- @newMenuItem@ -->
+    <s:link view="/view/jpql/console.xhtml"
+			value="JPQL Console"
+			includePageParams="false"
+			propagation="none"/>
+		
+</rich:toolBar>
