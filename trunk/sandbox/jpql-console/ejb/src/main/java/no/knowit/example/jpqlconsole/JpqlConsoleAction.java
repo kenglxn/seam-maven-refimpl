@@ -163,8 +163,8 @@ public class JpqlConsoleAction implements Serializable {
 				//TODO:
 			} 
 			else if (data instanceof Object[] || (type != null && (type.isPrimitive() || ALLOWED_TYPES.indexOf(type.getName()) > -1)) ) {
-				// e.g. select e.property_1, e.property_n from Entity e
-				// n.b. select e.property from Entiity e is a special case, see xhtml
+				// e.g. [select e.property_1, e.property_n from Entity e]
+				// n.b. [select e.property from Entiity e] is a special case, see xhtml
 				
     		String s = jpql.toLowerCase();
     		int i = s.indexOf("select");
@@ -177,7 +177,7 @@ public class JpqlConsoleAction implements Serializable {
       		}
     		}
 			} 
-			else if (data instanceof Object) {
+			else { // if (data instanceof Object) {
 				// e.g. select e from Entity e
 				
 				BeanMap beanMap = new BeanMap(data);
@@ -187,8 +187,13 @@ public class JpqlConsoleAction implements Serializable {
 				while (i.hasNext()) {
 					String name = (String) i.next();
 					type = beanMap.getType(name);
-					if(type != null && (type.isPrimitive() || ALLOWED_TYPES.indexOf(type.getName()) > -1)) {	
-						jpqlColumns.add(new ColumnData(name, name, type));
+					if(type != null) {
+						if(type.isPrimitive() || ALLOWED_TYPES.indexOf(type.getName()) > -1) {	
+							jpqlColumns.add(new ColumnData(name, name, type));
+						}
+						else {
+							//TODO: 
+						}
 					}
 				}			
 			}
@@ -206,9 +211,11 @@ public class JpqlConsoleAction implements Serializable {
 		}
 	}
 
+	
 	private static String getBeanTypeName(Class beanType) {
 		String result = "";
 		
+		// TODO: Create enum
 		if(beanType == null) {
 			result = "** NULL beanType";
 		}
@@ -241,7 +248,7 @@ public class JpqlConsoleAction implements Serializable {
 		String s = ""; 
 		
 		if (data == null) {
-			s = "[NULL]";
+			s = "NULL";
 		} 
 		else if (data instanceof Object[]) {
 			Object[] row = (Object[]) data;
@@ -265,18 +272,28 @@ public class JpqlConsoleAction implements Serializable {
 				s = "\n" +data.getClass().getName() + ": [\n";
 				while (i.hasNext()) {
 					String propertyName = (String) i.next( );
-					Object value = beanMap.get(  propertyName );
-					Class beanType = beanMap.getType( propertyName );
+					Object value = beanMap.get(propertyName);
+					Class beanType = beanMap.getType(propertyName);
+					String beanTypeName = getBeanTypeName(beanType);
 
 					s +="{Property: " + propertyName;
-					if (beanType != null && (beanType.isPrimitive() || ALLOWED_TYPES.indexOf(beanType.getName()) > -1)) {
-						s +=", Value: " + value;
+					if (beanType != null) {
+						if (beanType.isPrimitive() || ALLOWED_TYPES.indexOf(beanType.getName()) > -1) {
+							s +=", Value: " + value;
+						}
+						else {
+							//TODO:
+							if(beanTypeName.indexOf("class") > -1 && beanTypeName.indexOf("java.lang.Class") < 0) {
+								s += ", Value: [";
+								s += printRow(value);
+								s += "]";
+							}
+						}
 					}
-	      	s += ", Type: " + getBeanTypeName(beanType) + "}" +	(i.hasNext() == true ? ",\n" : "" );
+	      	s += ", Type: " + getBeanTypeName(beanType);
+	      	s += "}" + (i.hasNext() == true ? ",\n" : "" );
 				}
 				s += "]";
-				
-//    		(beanType.isInterface() ? "interface " : (beanType.isPrimitive() ? "" : "class ")) + "}" + 
 				
 //				s = "[";
 //				Map<?, ?> map = PropertyUtils.describe(result);
