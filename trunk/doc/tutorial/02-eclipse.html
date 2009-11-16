@@ -653,6 +653,8 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 <h3 id="configure-jboss-tools-for-a-project">Configure JBoss Tools For a Project</h3>
 <p>JBoss Tools will manage two projects: the WAR and the EJB project. The WAR project will be 
 the main source of configuration, so we'll start with the WAR.</p>
+<p><strong>Keep a copy of your project, preferably in svn, before you start configuring the tools.
+</strong></p>
 <ol class="vspace">
 	<li>
 	  The WAR module:
@@ -671,6 +673,10 @@ the main source of configuration, so we'll start with the WAR.</p>
 	<li>
 	  The parent module:<br/>
 		Should not be necessary to do anything here in connection with the Tools. Use default values.
+	</li>
+	<li>
+		Verify that no files has changed during configuring the tools. If you find any changes then 
+		revert files to it's origianl state.
 	</li>
 	<li>
 		That's it. You're now ready to play with the tools :-)
