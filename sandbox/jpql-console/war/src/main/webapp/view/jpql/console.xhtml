@@ -63,13 +63,11 @@
 						<h:outputText value="#{column.header}" />
 					</f:facet>
 
-					<!-- e.g. select e from Entity e -->
-					<!-- e.g. select e.property_1, e.property_n from Entity e -->
-					<!--  <h:outputText value="#{row[column.index]}" rendered="#{jpqlColumns.size > 1}" /> --> 
-					<h:outputText value="#{row[column.index]}" /> 
+					<!-- e.g. [from Entity e] or [select e.property_1, e.property_n from Entity e] -->
+					<h:outputText value="#{row[column.index]}" rendered="#{!jpqlConsoleAction.isSingleSubject}" /> 
 					
-					<!-- e.g. select e.property from Entity e -->
-					<!-- <h:outputText value="#{row}" rendered="#{jpqlColumns.size == 1}" /> -->
+					<!-- e.g. [select e.property from Entity e] -->
+					<h:outputText value="#{row}" rendered="#{jpqlConsoleAction.isSingleSubject}" />
 					
 				</rich:columns>
 

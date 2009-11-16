@@ -1,15 +1,18 @@
 package no.knowit.example.jpqlconsole;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.beanutils.PropertyUtilsBean;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.apache.commons.beanutils.BeanMap;
-
-
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.time.StopWatch;
-import org.hibernate.validator.Min;
-import org.hibernate.validator.NotNull;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
@@ -17,20 +20,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.international.StatusMessage.Severity;
 import org.jboss.seam.log.Log;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Name("jpqlConsoleAction")
 public class JpqlConsoleAction implements Serializable {
@@ -59,6 +48,7 @@ public class JpqlConsoleAction implements Serializable {
 	private Long jpqlResultCount = 0L;
 	private List<Object> jpqlResults = new ArrayList<Object>();
 	private List<ColumnData> jpqlColumns = new ArrayList<ColumnData>();
+	private Boolean isSingleSubject = false; // Becomes true when jpql like [select e.property from Entity e]
 	
 	//@Factory("jpqlResults")
 	public List<Object> getJpqlResults() {
@@ -108,51 +98,8 @@ public class JpqlConsoleAction implements Serializable {
 		}
 	}
 
-	public String getJpql() {
-		return jpql;
-	}
-
-	public Integer getIterations() {
-		return iterations;
-	}
-
-	public Integer getFirstResult() {
-		return firstResult;
-	}
-
-	public Integer getMaxResults() {
-		return maxResults;
-	}
-
-	public Boolean getPrintResults() {
-		return printResults;
-	}
-
-	public void setIterations(Integer iterations) {
-		this.iterations = iterations == null || iterations < 1 ? 1 : iterations;
-	}
-
-	public void setFirstResult(Integer firstResult) {
-		this.firstResult = firstResult == null || firstResult < 0 ? 0 : firstResult;
-	}
-
-	public void setMaxResults(Integer maxResults) {
-		this.maxResults = maxResults == null ? 0 : maxResults;
-	}
-
-	public void setPrintResults(Boolean printResults) {
-		this.printResults = printResults;
-	}
-
-	public void setJpql(String jpql) {
-		this.jpql = jpql;
-	}
-
-	public Long getJpqlResultCount() {
-		return jpqlResultCount;
-	}
-
-
+	
+	
 	private String getCountJpql(final String q) {
 		String s = q.toLowerCase();
 		int i = s.indexOf("from");
@@ -217,12 +164,13 @@ public class JpqlConsoleAction implements Serializable {
 			} 
 			else if (data instanceof Object[] || (type != null && (type.isPrimitive() || ALLOWED_TYPES.indexOf(type.getName()) > -1)) ) {
 				// e.g. select e.property_1, e.property_n from Entity e
-				// n.b. select e.prperty from Entiity e is a special case, see xhtml
+				// n.b. select e.property from Entiity e is a special case, see xhtml
 				
     		String s = jpql.toLowerCase();
     		int i = s.indexOf("select");
     		if(i >= 0) {
       		StringTokenizer st = new StringTokenizer(s.substring(i+6, s.indexOf("from")), ",");
+      		isSingleSubject = st.countTokens() < 2;
       		Long n = 0L;
       		while (st.hasMoreTokens()) {
       			jpqlColumns.add(new ColumnData(st.nextToken().trim(), n++, null));
@@ -323,6 +271,63 @@ public class JpqlConsoleAction implements Serializable {
 		}
 		
 		return s;
+	}
+
+	
+	public void setJpql(String jpql) {
+		this.jpql = jpql.trim();
+	}
+
+	public String getJpql() {
+		return jpql;
+	}
+
+	public void setIterations(Integer iterations) {
+		this.iterations = iterations == null || iterations < 1 ? 1 : iterations;
+	}
+
+	public Integer getIterations() {
+		return iterations;
+	}
+
+	public void setFirstResult(Integer firstResult) {
+		this.firstResult = firstResult == null || firstResult < 0 ? 0 : firstResult;
+	}
+
+	public Integer getFirstResult() {
+		return firstResult;
+	}
+
+	public void setMaxResults(Integer maxResults) {
+		this.maxResults = maxResults == null ? 0 : maxResults;
+	}
+
+	public Integer getMaxResults() {
+		return maxResults;
+	}
+
+	public void setPrintResults(Boolean printResults) {
+		this.printResults = printResults;
+	}
+
+	public Boolean getPrintResults() {
+		return printResults;
+	}
+
+	public void setIsSingleSubject(Boolean isSingeSubject) {
+		this.isSingleSubject = isSingeSubject;
+	}
+
+	public Boolean getIsSingleSubject() {
+		return isSingleSubject;
+	}
+
+	public void setJpqlResultCount(Long jpqlResultCount) {
+		this.jpqlResultCount = jpqlResultCount;
+	}
+
+	public Long getJpqlResultCount() {
+		return jpqlResultCount;
 	}
 
 }
