@@ -196,6 +196,7 @@
 		</dependency>
 
 		<!-- JBoss Rules. Needed if you implement Seam Idendity -->
+		<!-- 
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-core</artifactId>
@@ -230,14 +231,15 @@
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3_min</artifactId>
 		</dependency>
-
+		-->
+		
 		<!-- rules + groovy -->
+		<!-- 
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr-runtime</artifactId>
 		</dependency>
-		<!-- -->
-		
+		--> 
 		
 		<!-- Added transient by JBoss Rules 
 		<dependency>
