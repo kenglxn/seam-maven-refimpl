@@ -1,6 +1,7 @@
 package no.knowit.example.jpqlconsole;
 
 import java.io.Serializable;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -203,7 +204,7 @@ public class JpqlConsoleAction implements Serializable {
 	private void logResults() {
 		for (Object o : jpqlResults) {
 			try {
-				log.info(printRow(o));
+				log.info(printRow(o, 0));
 			} catch (Exception e) {
 				log.info("Logging failed:", e);
 				break;
@@ -243,7 +244,7 @@ public class JpqlConsoleAction implements Serializable {
 		return result;
 	}
 	
-	private static String printRow(Object data) throws Exception {
+	private static String printRow(Object data, int indent) throws Exception {
 
 		String s = ""; 
 		
@@ -254,7 +255,7 @@ public class JpqlConsoleAction implements Serializable {
 			Object[] row = (Object[]) data;
 			s += "[";
 			for (int i = 0; i < row.length; i++) {
-				s += printRow(row[i]);
+				s += printRow(row[i], 0);
 			}
 			s += "] ";
 		}
@@ -276,7 +277,10 @@ public class JpqlConsoleAction implements Serializable {
 					Class beanType = beanMap.getType(propertyName);
 					String beanTypeName = getBeanTypeName(beanType);
 
-					s +="{Property: " + propertyName;
+					if(indent > 0) {
+						s += String.format("%"+indent+"s", " ");
+					}
+					s += "{Property: " + propertyName;
 					if (beanType != null) {
 						if (beanType.isPrimitive() || ALLOWED_TYPES.indexOf(beanType.getName()) > -1) {
 							s +=", Value: " + value;
@@ -285,7 +289,7 @@ public class JpqlConsoleAction implements Serializable {
 							//TODO:
 							if(beanTypeName.indexOf("class") > -1 && beanTypeName.indexOf("java.lang.Class") < 0) {
 								s += ", Value: [";
-								s += printRow(value);
+								s += printRow(value, indent+2);
 								s += "]";
 							}
 						}
