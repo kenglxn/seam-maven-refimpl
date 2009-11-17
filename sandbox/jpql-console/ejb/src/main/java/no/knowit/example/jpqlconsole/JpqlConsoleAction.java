@@ -270,7 +270,8 @@ public class JpqlConsoleAction implements Serializable {
 				Set keys = beanMap.keySet( );
 				Iterator i = keys.iterator( );
 				
-				s = "\n" +data.getClass().getName() + ": [\n";
+				s = "\n" + (indent > 0 ? String.format("%"+indent+"s", " ") : "") +data.getClass().getName() + ": [\n";
+				
 				while (i.hasNext()) {
 					String propertyName = (String) i.next( );
 					Object value = beanMap.get(propertyName);
