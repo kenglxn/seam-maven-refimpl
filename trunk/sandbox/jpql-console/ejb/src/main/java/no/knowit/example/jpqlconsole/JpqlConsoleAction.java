@@ -280,7 +280,7 @@ public class JpqlConsoleAction implements Serializable {
 					if(indent > 0) {
 						s += String.format("%"+indent+"s", " ");
 					}
-					s += "{Property: " + propertyName;
+					s += "{Property: " + propertyName + ", Type: " + getBeanTypeName(beanType);
 					if (beanType != null) {
 						if (beanType.isPrimitive() || ALLOWED_TYPES.indexOf(beanType.getName()) > -1) {
 							s +=", Value: " + value;
@@ -294,7 +294,9 @@ public class JpqlConsoleAction implements Serializable {
 							}
 						}
 					}
-	      	s += ", Type: " + getBeanTypeName(beanType);
+					else {
+						s += "NULL";
+					}
 	      	s += "}" + (i.hasNext() == true ? ",\n" : "" );
 				}
 				s += "]";
