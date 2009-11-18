@@ -6,7 +6,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>no.knowit.seam</groupId>
+		<groupId>no.knowit.seam.examples</groupId>
 		<artifactId>jpql-console</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -14,7 +14,7 @@
 
 	<artifactId>jpql-console-ear</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${project.artifactId} : ${project.version}</name>
-	<description>The Seam Maven reference implementation EAR module</description>
+	<description>JPQL Console EAR module</description>
 	<packaging>ear</packaging>
 
 	<profiles>
@@ -173,15 +173,6 @@
 			<type>jar</type>
 		</dependency>
 
-		<!-- hibernate -->
-		<!--
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		-->
-		
 		<!-- commons -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
