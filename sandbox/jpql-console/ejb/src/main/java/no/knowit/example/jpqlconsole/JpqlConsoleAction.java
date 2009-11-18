@@ -216,9 +216,9 @@ public class JpqlConsoleAction implements Serializable {
 	private static String getBeanTypeName(Class beanType) {
 		String result = "";
 		
-		// TODO: Create enum
+		// TODO: Create enum class
 		if(beanType == null) {
-			result = "** NULL beanType";
+			result = "beanType(NULL)";
 		}
 		else {
 			if(beanType.isAnnotation()) {
@@ -246,31 +246,32 @@ public class JpqlConsoleAction implements Serializable {
 	
 	private static String printRow(Object data, int indent) throws Exception {
 
-		String s = ""; 
+		final StringBuilder sb = new StringBuilder();
 		
 		if (data == null) {
-			s = "NULL";
+			sb.append("Object(null)");
 		} 
 		else if (data instanceof Object[]) {
 			Object[] row = (Object[]) data;
-			s += "[";
+			sb.append("[");
 			for (int i = 0; i < row.length; i++) {
-				s += printRow(row[i], 0);
+				sb.append( printRow(row[i], 0) );
 			}
-			s += "] ";
+			sb.append("] ");
 		}
 		else {
-			Class type = data.getClass(); // Had to move this here due to strange exception from logger
+			Class type = data.getClass();
 			
 			if (type != null && (type.isPrimitive() || ALLOWED_TYPES.indexOf(type.getName()) > -1)) {
-				return (data.getClass().getName() + ": " + data + ", ");
+				sb.append(type.getName() + ": " + data + ", ");
 			} 
 			else if (data instanceof Object) {
 				BeanMap beanMap = new BeanMap( data );
 				Set keys = beanMap.keySet( );
 				Iterator i = keys.iterator( );
 				
-				s = "\n" + (indent > 0 ? String.format("%"+indent+"s", " ") : "") +data.getClass().getName() + ": [\n";
+				sb.append("\n" + (indent > 0 ? String.format("%"+indent+"s", " ") : "") + 
+						data.getClass().getName() + ": [\n");
 				
 				while (i.hasNext()) {
 					String propertyName = (String) i.next( );
@@ -279,28 +280,28 @@ public class JpqlConsoleAction implements Serializable {
 					String beanTypeName = getBeanTypeName(beanType);
 
 					if(indent > 0) {
-						s += String.format("%"+indent+"s", " ");
+						sb.append(String.format("%"+indent+"s", " "));
 					}
-					s += "{Property: " + propertyName + ", Type: " + getBeanTypeName(beanType);
+					sb.append("{Property: " + propertyName + ", Type: " + getBeanTypeName(beanType));
 					if (beanType != null) {
 						if (beanType.isPrimitive() || ALLOWED_TYPES.indexOf(beanType.getName()) > -1) {
-							s +=", Value: " + value;
+							sb.append(", Value: " + value);
 						}
 						else {
 							//TODO:
 							if(beanTypeName.indexOf("class") > -1 && beanTypeName.indexOf("java.lang.Class") < 0) {
-								s += ", Value: [";
-								s += printRow(value, indent+2);
-								s += "]";
+								sb.append(", Value: [");
+								sb.append( printRow(value, indent+2) );
+								sb.append("]");
 							}
 						}
 					}
 					else {
-						s += "NULL";
+						sb.append("beanType(NULL))");
 					}
-	      	s += "}" + (i.hasNext() == true ? ",\n" : "" );
+					sb.append("}" + (i.hasNext() ? ",\n" : "" ));
 				}
-				s += "]";
+				sb.append("]");
 				
 //				s = "[";
 //				Map<?, ?> map = PropertyUtils.describe(result);
@@ -325,7 +326,7 @@ public class JpqlConsoleAction implements Serializable {
 			}			
 		}
 		
-		return s;
+		return sb.toString();
 	}
 
 	
