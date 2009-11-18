@@ -6,7 +6,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>no.knowit.seam</groupId>
+		<groupId>no.knowit.seam.examples</groupId>
 		<artifactId>jpql-console</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -14,7 +14,7 @@
 
 	<artifactId>jpql-console-ejb</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${project.artifactId} : ${project.version}</name>
-	<description>The Seam Maven reference implementation EJB module</description>
+	<description>JPQL Console EJB module</description>
 	<packaging>ejb</packaging>
 
 	<profiles>
@@ -69,6 +69,7 @@
 				<filtering>true</filtering> <!-- filtering persistence.xml -->
 			</resource>
 		</resources>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
