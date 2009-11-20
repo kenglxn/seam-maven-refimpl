@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 public class OpenEjbBootStrap {
 
-	private static Logger logger = Logger.getLogger(OpenEjbBootStrap.class);
+	protected static Logger log = Logger.getLogger(OpenEjbBootStrap.class);
 
 	public static Context bootstrap() throws Exception {
 		return bootstrap(null);
@@ -17,14 +17,16 @@ public class OpenEjbBootStrap {
 
 	public static Context bootstrap(final Properties properties) throws Exception {
 		try {
+			// Initial properties are specified in src/main/resources/jndi.properties
+			Context context = new InitialContext(properties);
+			
 			// Check that OpenEJB is available
 			Class.forName("org.apache.openejb.OpenEJB");
-
-			// Initial properties are specified in src/main/resources/jndi.properties
-			return new InitialContext(properties);
+			
+			return context;
 		} 
 		catch (Exception e) {
-			logger.error("OpenEJB bootstrap failed", e);
+			log.fatal("OpenEJB bootstrap failed.", e);
 			throw new RuntimeException(e);
 		}
 	}
