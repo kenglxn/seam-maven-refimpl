@@ -12,17 +12,11 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
-	<artifactId>refimpl-openejb-service</artifactId>
+	<artifactId>refimpl-openejb-devutils</artifactId>
 	<name>${project.artifactId} : ${project.version}</name>
 	<packaging>ejb</packaging>
 	
   <dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-devutils</artifactId>
-			<type>ejb</type>
-		</dependency>
-		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>${app.context}-model</artifactId>
