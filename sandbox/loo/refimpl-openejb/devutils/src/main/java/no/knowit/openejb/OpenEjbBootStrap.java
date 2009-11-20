@@ -20,7 +20,7 @@ public class OpenEjbBootStrap {
 			// Check that OpenEJB is available
 			Class.forName("org.apache.openejb.OpenEJB");
 
-			// Initial properties are spesified in src/test/resources/jndi.properties
+			// Initial properties are specified in src/main/resources/jndi.properties
 			return new InitialContext(properties);
 		} 
 		catch (Exception e) {
