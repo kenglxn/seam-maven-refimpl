@@ -1,4 +1,4 @@
-package no.knowit.test.openejb;
+package no.knowit.openejb;
 
 import java.util.Properties;
 
