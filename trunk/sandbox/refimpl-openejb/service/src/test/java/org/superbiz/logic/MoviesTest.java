@@ -52,8 +52,8 @@ public class MoviesTest extends TestCase {
 	private Movies createService() throws Exception {
 		try {
 			Object obj = context.lookup("moviesLocal");
-			assertNotNull(obj);
-			assertTrue(obj instanceof Movies);
+			assertNotNull("context.lookup(moviesLocal): returned null", obj);
+			assertTrue("context.lookup(moviesLocal): incorrect type", obj instanceof Movies);
 			return (Movies) obj;
 		}
 		catch (NamingException e) {
@@ -78,5 +78,4 @@ public class MoviesTest extends TestCase {
 
 		assertEquals("Movies.getMovies()", 0, movies.getMovies().size());
 	}
-
 }
