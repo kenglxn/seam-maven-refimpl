@@ -21,11 +21,16 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
+import openejb.BootstrapSeam;
+
+import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
 public class CalculatorTest {
+	
+	private Logger log = Logger.getLogger(this.getClass());
 
 	// START SNIPPET: setup
 	private InitialContext initialContext;
@@ -34,8 +39,22 @@ public class CalculatorTest {
 	protected void setUp() throws Exception {
 		Properties properties = new Properties();
 		properties.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
+		properties.put("log4j.category.org.superbiz", "warn"); 
+		properties.put("log4j.category.org.superbiz.calculator.CalculatorTest", "debug"); 
+
+//		properties.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
 		
 		initialContext = new InitialContext(properties);
+		
+		
+		log.debug("**** Attempting to start SEAM");
+		
+		BootstrapSeam bs = new BootstrapSeam();
+		bs.beforeSuite();
+		bs.beforeClass();
+		bs.begin();
+		
+		log.debug("**** SEAM started");
 	}
 
 	// END SNIPPET: setup
