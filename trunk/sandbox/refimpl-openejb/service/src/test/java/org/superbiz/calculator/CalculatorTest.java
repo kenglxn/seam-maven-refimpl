@@ -21,17 +21,16 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.Assert;
 
-import junit.framework.TestCase;
-
-public class CalculatorTest extends TestCase {
+public class CalculatorTest {
 
 	// START SNIPPET: setup
 	private InitialContext initialContext;
 
-	@Before
+	@BeforeClass
 	protected void setUp() throws Exception {
 		Properties properties = new Properties();
 		properties.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
@@ -51,11 +50,11 @@ public class CalculatorTest extends TestCase {
 	public void testCalculatorViaRemoteInterface() throws Exception {
 		Object object = initialContext.lookup("CalculatorImplRemote");
 
-		assertNotNull(object);
-		assertTrue(object instanceof CalculatorRemote);
+		Assert.assertNotNull(object);
+		Assert.assertTrue(object instanceof CalculatorRemote);
 		CalculatorRemote calc = (CalculatorRemote) object;
-		assertEquals(10, calc.sum(4, 6));
-		assertEquals(12, calc.multiply(3, 4));
+		Assert.assertEquals(10, calc.sum(4, 6));
+		Assert.assertEquals(12, calc.multiply(3, 4));
 	}
 
 	// END SNIPPET: remote
@@ -70,11 +69,11 @@ public class CalculatorTest extends TestCase {
 	public void testCalculatorViaLocalInterface() throws Exception {
 		Object object = initialContext.lookup("CalculatorImplLocal");
 
-		assertNotNull(object);
-		assertTrue(object instanceof CalculatorLocal);
+		Assert.assertNotNull(object);
+		Assert.assertTrue(object instanceof CalculatorLocal);
 		CalculatorLocal calc = (CalculatorLocal) object;
-		assertEquals(10, calc.sum(4, 6));
-		assertEquals(12, calc.multiply(3, 4));
+		Assert.assertEquals(10, calc.sum(4, 6));
+		Assert.assertEquals(12, calc.multiply(3, 4));
 	}
 	// END SNIPPET: local
 

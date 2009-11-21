@@ -32,15 +32,21 @@
 		<app.description></app.description>
 		
 		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
-		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
 		<app.entity.manager.factory.name>entityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g jpql-consoleEntityManagerFactory is illegal-->
 
+		
+		
+		
+		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
 		
 		<app.persistence.unit.name>movie-unit</app.persistence.unit.name>
 		<app.jndi.name>${app.persistence.unit.name}Datasource</app.jndi.name>
 		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
 		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
 
+		
+		
+		
 		
 		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for JBoss 4.2.3 or newer -->
 		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
@@ -305,7 +311,7 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>

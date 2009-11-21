@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+	xmlns:core="http://jboss.com/products/seam/core" 
+	xmlns:persistence="http://jboss.com/products/seam/persistence"
+	xmlns:transaction="http://jboss.com/products/seam/transaction"
+	xmlns:security="http://jboss.com/products/seam/security"
+	xmlns:framework="http://jboss.com/products/seam/framework">
+
+	<!-- #### -->
+	<!-- CORE -->
+	<!-- #### -->
+
+	<core:init 
+		transaction-management-enabled="true" 
+		debug="${env.debug}"
+		jndi-pattern="${app.jndi.pattern}" 
+		distributable="${app.distributable}" />
+
+
+	<!-- ############# -->
+	<!-- ENTITYMANAGER -->
+	<!-- ############# -->
+
+	<!-- JPA -->
+	<transaction:ejb-transaction />
+
+	<persistence:entity-manager-factory
+		name="${app.entity.manager.factory.name}" />
+
+	<persistence:managed-persistence-context
+		name="entityManager"
+		auto-create="${app.persistence.mpc.auto.create}"
+		entity-manager-factory="#{${app.entity.manager.factory.name}}"
+		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
+
+</components>
