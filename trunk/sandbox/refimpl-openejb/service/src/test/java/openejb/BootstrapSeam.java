@@ -3,25 +3,15 @@ package openejb;
 import no.knowit.openejb.OpenEjbBootStrap;
 
 import org.jboss.seam.mock.AbstractSeamTest;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterSuite;
 
-import javax.servlet.ServletContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.naming.Context;
 import java.util.Hashtable;
 
-public class BootstrapEnvironment
-        extends AbstractSeamTest {
+public class BootstrapSeam extends AbstractSeamTest {
 
     private static boolean started = false;
-
-    private ServletContext servletContext;
 
     private static InitialContext initialContext = null;
 
@@ -30,37 +20,37 @@ public class BootstrapEnvironment
     /**
      * ********* Setup ***********
      */
-    @BeforeSuite
+//    @BeforeSuite
     // needs a WEB-INF/web.xml in resources!!!
     public void beforeSuite() throws Exception {
         startSeam();
     }
 
-    @BeforeClass
+//    @BeforeClass
     public void beforeClass() throws Exception {
         setupClass();
     }
 
-    @BeforeMethod
+//    @BeforeMethod
     @Override
     public void begin() {
         super.begin();
         //TestLifecycle.beginTest (servletContext, new ServletSessionMap (getSession ()));
     }
 
-    @AfterMethod
+//    @AfterMethod
     @Override
     public void end() {
         //TestLifecycle.endTest ();
         super.end();
     }
 
-    @AfterClass
+//    @AfterClass
     public void afterClass() throws Exception {
         cleanupClass();
     }
 
-    @AfterSuite
+//    @AfterSuite
     public void afterSuite() throws Exception {
         stopSeam();
     }
@@ -81,7 +71,8 @@ public class BootstrapEnvironment
 
     protected void startOpenEJB() throws Exception {
 
-        OpenEjbBootStrap.bootstrap();
+//        Context context = 
+        	OpenEjbBootStrap.bootstrap();
     }
 
     private boolean openEjbAvailable() {
@@ -187,8 +178,7 @@ public class BootstrapEnvironment
     private static Hashtable<String, String> getInitialContextProperties() {
 
         Hashtable<String, String> props = new Hashtable<String, String>(1);
-        props.put(Context.INITIAL_CONTEXT_FACTORY,
-                "org.apache.openejb.client.LocalInitialContextFactory");
+        props.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
 
         return props;
     }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components xmlns="http://jboss.com/products/seam/components"
-	xmlns:core="http://jboss.com/products/seam/core" 
-	xmlns:persistence="http://jboss.com/products/seam/persistence"
+	xmlns:core="http://jboss.com/products/seam/core" xmlns:persistence="http://jboss.com/products/seam/persistence"
 	xmlns:transaction="http://jboss.com/products/seam/transaction"
 	xmlns:security="http://jboss.com/products/seam/security"
 	xmlns:framework="http://jboss.com/products/seam/framework">
@@ -11,10 +10,14 @@
 	<!-- #### -->
 
 	<core:init 
-		transaction-management-enabled="true" 
-		debug="${env.debug}"
-		jndi-pattern="${app.jndi.pattern}" 
-		distributable="${app.distributable}" />
+		jndi-pattern="\#{ejbName}/local" 
+		debug="false"
+		transaction-management-enabled="true" />
+
+	<!--<component 
+		class="openejb.ReallyNoTransaction" 
+		name="org.jboss.seam.transaction.transaction"
+		scope="event" precedence="30" />-->
 
 
 	<!-- ############# -->
@@ -22,15 +25,31 @@
 	<!-- ############# -->
 
 	<!-- JPA -->
-	<transaction:ejb-transaction />
+	
+	<!--
+	<transaction:no-transaction />
 
 	<persistence:entity-manager-factory
-		name="${app.entity.manager.factory.name}" />
+		name="containerPU" />
 
 	<persistence:managed-persistence-context
-		name="entityManager"
-		auto-create="${app.persistence.mpc.auto.create}"
-		entity-manager-factory="#{${app.entity.manager.factory.name}}"
-		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
+		name="em" 
+		auto-create="true" 
+		entity-manager-factory="#{containerPU}" />
+	-->
+	
+	<!-- ######## -->
+	<!-- SECURITY -->
+	<!-- ######## -->
+
+	<!--
+		<security:jpa-identity-store user-class="com.TODO.entity.UserEntity"
+		role-class="com.TODO.entity.UserRoleEntity"/>
+
+		<security:jpa-permission-store
+		user-permission-class="com.TODO.entity.UserPermissionEntity"/>
+
+		<security:identity authenticate-method="#{TODO}" remember-me="false"/>
+	-->
 
 </components>
