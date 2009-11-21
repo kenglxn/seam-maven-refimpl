@@ -5,11 +5,9 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import org.apache.log4j.Logger;
-
 public class OpenEjbBootStrap {
 
-	protected static Logger log = Logger.getLogger(OpenEjbBootStrap.class);
+	//protected static Logger log = Logger.getLogger(OpenEjbBootStrap.class);
 
 	public static Context bootstrap() throws Exception {
 		return bootstrap(null);
@@ -17,16 +15,15 @@ public class OpenEjbBootStrap {
 
 	public static Context bootstrap(final Properties properties) throws Exception {
 		try {
-			// Initial properties are specified in src/main/resources/jndi.properties
-			Context context = new InitialContext(properties);
-			
 			// Check that OpenEJB is available
 			Class.forName("org.apache.openejb.OpenEJB");
 			
-			return context;
+			// Initial properties are specified in src/main/resources/jndi.properties
+			return new InitialContext(properties);
 		} 
 		catch (Exception e) {
-			log.fatal("OpenEJB bootstrap failed.", e);
+			// Since OpenEJB failed to start, we do not have a logger
+			System.out.println("\n*******\nOpenEJB bootstrap failed: " + e + "\n*******");
 			throw new RuntimeException(e);
 		}
 	}
