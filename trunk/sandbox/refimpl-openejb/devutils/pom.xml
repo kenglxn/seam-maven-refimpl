@@ -14,7 +14,7 @@
 	
 	<artifactId>refimpl-openejb-devutils</artifactId>
 	<name>${project.artifactId} : ${project.version}</name>
-	<packaging>ejb</packaging>
+	<packaging>jar</packaging>
 	
   <dependencies>
 		<dependency>
@@ -27,6 +27,10 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources-openejb</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
