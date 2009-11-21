@@ -6,18 +6,16 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-import junit.framework.TestCase;
 import no.knowit.openejb.OpenEjbBootStrap;
 
 import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.superbiz.model.Movie;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
-public class MoviesTest extends TestCase {
+public class MoviesTest {
 
   private Logger log = Logger.getLogger(this.getClass());
 
@@ -27,14 +25,6 @@ public class MoviesTest extends TestCase {
 	}
 
 	@BeforeClass
-	public static void setUpClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-	}
-	
-	@Before
 	public void setUp() throws Exception {
 		Properties p = new Properties();
 		
@@ -45,7 +35,7 @@ public class MoviesTest extends TestCase {
 		context = OpenEjbBootStrap.bootstrap(p);
 	}
 
-	@After
+	@AfterClass
 	public void tearDown() throws Exception {
 		context.close();
 	}
@@ -53,8 +43,8 @@ public class MoviesTest extends TestCase {
 	private Movies createService() throws Exception {
 		try {
 			Object obj = context.lookup("moviesLocal");
-			assertNotNull("context.lookup(moviesLocal): returned null", obj);
-			assertTrue("context.lookup(moviesLocal): incorrect type", obj instanceof Movies);
+			Assert.assertNotNull(obj, "context.lookup(moviesLocal): returned null");
+			Assert.assertTrue(obj instanceof Movies, "context.lookup(moviesLocal): incorrect type");
 			return (Movies) obj;
 		}
 		catch (NamingException e) {
@@ -71,12 +61,12 @@ public class MoviesTest extends TestCase {
 		movies.addMovie(new Movie("Joel Coen", "The Big Lebowski", 1998));
 
 		List<Movie> list = movies.getMovies();
-		assertEquals("List.size()", 3, list.size());
+		Assert.assertEquals(3, list.size(), "List.size()");
 
 		for (Movie movie : list) {
 			movies.deleteMovie(movie);
 		}
 
-		assertEquals("Movies.getMovies()", 0, movies.getMovies().size());
+		Assert.assertEquals(0, movies.getMovies().size(), "Movies.getMovies()");
 	}
 }
