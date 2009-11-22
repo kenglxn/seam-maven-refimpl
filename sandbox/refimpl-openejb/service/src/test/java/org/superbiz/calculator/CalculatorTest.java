@@ -10,6 +10,9 @@ import no.knowit.openejb.SeamOpenEjbTest;
 import org.apache.log4j.Logger;
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.contexts.Contexts;
+import org.jboss.seam.contexts.Lifecycle;
+import org.jboss.seam.web.Session;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -19,7 +22,7 @@ public class CalculatorTest extends SeamOpenEjbTest {
 	private Logger log = Logger.getLogger(this.getClass());
 
 	// START SNIPPET: setup
-	private InitialContext initialContext;
+	//private InitialContext initialContext;
 
 	@BeforeClass
 	protected void setUp() throws Exception {
@@ -43,8 +46,20 @@ public class CalculatorTest extends SeamOpenEjbTest {
 		
 //		bs.beforeClass();
 //		log.debug("**** before class executed");
-//		
-//		Object o = Component.getInstance("calculator");
+//
+		
+		log.debug("createContexts");
+		boolean createContexts = !Contexts.isEventContextActive() && !Contexts.isApplicationContextActive();
+    if (createContexts) {
+        Lifecycle.beginCall();
+    }
+		
+		Object seamComponent = Component.getInstance("calculator");
+		log.debug("seamComponent.class: " + seamComponent);
+		
+		Object jndiLookup = initialContext.lookup("calculator/Local");
+		log.debug("jndiLookup.class: " + jndiLookup);
+		
 	}
 
 	// END SNIPPET: setup
@@ -76,7 +91,7 @@ public class CalculatorTest extends SeamOpenEjbTest {
 	// START SNIPPET: local
 	@Test
 	public void testCalculatorViaLocalInterface() throws Exception {
-//		Object object = initialContext.lookup("CalculatorImpl/Local");
+//		Object object = initialContext.lookup("calculator/Local");
 //
 //		Assert.assertNotNull(object);
 //		Assert.assertTrue(object instanceof CalculatorLocal);

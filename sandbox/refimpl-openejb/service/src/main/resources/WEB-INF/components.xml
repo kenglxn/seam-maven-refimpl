@@ -30,7 +30,7 @@
 	<!-- #### -->
 
 	<core:init 
-		jndi-pattern="/#{ejbName}/local" 
+		jndi-pattern="/#{ejbName}/Local" 
 		debug="false"
 		transaction-management-enabled="true" />
 
