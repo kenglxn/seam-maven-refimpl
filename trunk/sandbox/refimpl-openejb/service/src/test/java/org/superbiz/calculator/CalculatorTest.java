@@ -5,7 +5,7 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import no.knowit.openejb.AbstractSeamOpenEjbTest;
+import no.knowit.seam.mock.openejb.AbstractSeamOpenEjbTest;
 
 import org.apache.log4j.Logger;
 import org.jboss.seam.Component;
