@@ -25,10 +25,6 @@
 ">
 
 
-	<!-- #### -->
-	<!-- CORE -->
-	<!-- #### -->
-
 	<core:init 
 		jndi-pattern="/#{ejbName}/Local" 
 		debug="false"
