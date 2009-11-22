@@ -5,6 +5,7 @@ import no.knowit.openejb.OpenEjbBootStrap;
 import org.apache.log4j.Logger;
 import org.jboss.seam.mock.AbstractSeamTest;
 import org.jboss.seam.mock.SeamTest;
+import org.jboss.seam.web.Session;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -22,7 +23,7 @@ public class SeamOpenEjbTest extends AbstractSeamTest {
 
     private static boolean started = false;
 
-    private static InitialContext initialContext = null;
+    protected static InitialContext initialContext = null;
 
     private static InitialContext securedInitialContext = null;
     
@@ -59,7 +60,18 @@ public class SeamOpenEjbTest extends AbstractSeamTest {
     @Override
     public void end() {
         //TestLifecycle.endTest ();
+
+    	Session.instance().invalidate();
+    	try {
         super.end();
+    	}
+    	catch (java.lang.IllegalStateException e) {
+    		// @TODO: LOO-20091122: Find out how to end HttpSession. 
+    		//Following exception occurs even if I call Session.instance().invalidate():
+    		// FAILED CONFIGURATION: @AfterMethod end
+    		// java.lang.IllegalStateException: Please end the HttpSession via org.jboss.seam.web.Session.instance().invalidate()
+    		;
+    	}
     }
 
     @AfterClass
@@ -89,7 +101,7 @@ public class SeamOpenEjbTest extends AbstractSeamTest {
 			
 			properties.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
 			
-			properties.put("log4j.category.openejb.OpenEjbBootStrap", "debug");
+			properties.put("log4j.category.no.knowit.openejb.OpenEjbBootStrap", "debug");
 			
 			properties.put("log4j.category.org.superbiz", "warn"); 
 			properties.put("log4j.category.org.superbiz.calculator.CalculatorTest", "debug"); 
