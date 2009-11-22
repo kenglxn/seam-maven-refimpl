@@ -12,11 +12,12 @@ import org.jboss.seam.annotations.Name;
  * interface, and CalculatorLocal, a local business interface
  * 
  */
-@Stateless
+@Stateless(name="calculator")
 //@Name("calculator")
 public class CalculatorImpl implements CalculatorRemote, CalculatorLocal {
 
 	public int sum(int add1, int add2) {
+		
 		return add1+add2;
 	}
 
