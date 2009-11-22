@@ -37,6 +37,7 @@ public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
   		// Following exception occurs, even if I call Session.instance().invalidate():
   		//   FAILED CONFIGURATION: @AfterMethod end
   		//   java.lang.IllegalStateException: Please end the HttpSession via org.jboss.seam.web.Session.instance().invalidate()
+  		// NOTE: Only occurs if I run mvn test on module and not when I run test on a spesific class i module
   		;
   	}
   }
