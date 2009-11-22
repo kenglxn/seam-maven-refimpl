@@ -19,13 +19,14 @@
   <dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-devutils</artifactId>
-			<type>ejb</type>
+			<artifactId>${app.context}-model</artifactId>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-model</artifactId>
+			<artifactId>refimpl-openejb-utils</artifactId>
+			<type>jar</type>
+			<scope>test</scope>
 		</dependency>
   </dependencies>
 
