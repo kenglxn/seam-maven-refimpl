@@ -1,4 +1,4 @@
-package no.knowit.seam.mock.openejb;
+package no.knowit.seam.mock;
 
 import no.knowit.openejb.OpenEjbBootStrap;
 
