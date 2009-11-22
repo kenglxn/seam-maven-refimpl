@@ -6,7 +6,7 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-import no.knowit.openejb.OpenEjbBootStrap;
+import no.knowit.openejb.BootStrapOpenEJB;
 
 import org.apache.log4j.Logger;
 import org.superbiz.model.Movie;
@@ -33,7 +33,7 @@ public class MoviesTest {
 		p.put("log4j.category.org.superbiz", "warn"); 
 		p.put("log4j.category.org.superbiz.logic.MoviesTest", "debug"); 
 		
-		context = OpenEjbBootStrap.bootstrap(p);
+		context = BootStrapOpenEJB.bootstrap(p);
 	}
 
 	@AfterClass
