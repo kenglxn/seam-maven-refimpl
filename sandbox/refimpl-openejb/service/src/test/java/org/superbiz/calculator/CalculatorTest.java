@@ -6,6 +6,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import no.knowit.seam.mock.AbstractSeamOpenEjbTest;
+import no.knowit.seam.mock.SeamOpenEjbTest;
 
 import org.apache.log4j.Logger;
 import org.jboss.seam.Component;
@@ -17,7 +18,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class CalculatorTest extends AbstractSeamOpenEjbTest {
+public class CalculatorTest extends SeamOpenEjbTest {
 	
 	private Logger log = Logger.getLogger(this.getClass());
 

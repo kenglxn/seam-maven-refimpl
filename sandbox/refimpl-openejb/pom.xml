@@ -92,9 +92,9 @@
 		<dependencies>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>${app.context}-devutils</artifactId>
+				<artifactId>refimpl-openejb-utils</artifactId>
 				<version>${project.version}</version>
-				<type>ejb</type>
+				<type>jar</type>
 			</dependency>
 			
 			<dependency>
@@ -306,14 +306,6 @@
 		-->
 		
 		<!-- unit test -->
-		<!-- 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		-->
-		
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
@@ -321,14 +313,6 @@
 		</dependency>
 
 		<!-- logging -->
-		<!-- 
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<scope>test</scope>
-		</dependency>
-		-->
-		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>

@@ -18,8 +18,9 @@
 	
   <dependencies>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${app.context}-model</artifactId>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>provided</scope>
 		</dependency>
   </dependencies>
 
