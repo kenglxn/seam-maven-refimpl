@@ -5,7 +5,7 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-public class OpenEjbBootStrap {
+public class BootStrapOpenEJB {
 
 	//protected static Logger log = Logger.getLogger(OpenEjbBootStrap.class);
 

@@ -1,23 +1,16 @@
 package no.knowit.seam.mock;
 
-import no.knowit.openejb.OpenEjbBootStrap;
+import java.util.Hashtable;
+import java.util.Properties;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import no.knowit.openejb.BootStrapOpenEJB;
 
 import org.apache.log4j.Logger;
 import org.jboss.seam.mock.AbstractSeamTest;
-import org.jboss.seam.mock.SeamTest;
-import org.jboss.seam.web.Session;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterSuite;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.naming.Context;
-import java.util.Hashtable;
-import java.util.Properties;
 
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
@@ -31,7 +24,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
 
   	/**
-  	 * 
+  	 * Start embedde OpenEJB
   	 */
     @Override
     protected void startJbossEmbeddedIfNecessary()
@@ -56,7 +49,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 			properties.put("log4j.category.org.superbiz", "warn"); 
 			properties.put("log4j.category.org.superbiz.calculator.CalculatorTest", "debug"); 
 		
-    	initialContext = (InitialContext) OpenEjbBootStrap.bootstrap(properties);
+    	initialContext = (InitialContext) BootStrapOpenEJB.bootstrap(properties);
     }
 
     private boolean openEjbAvailable() {
