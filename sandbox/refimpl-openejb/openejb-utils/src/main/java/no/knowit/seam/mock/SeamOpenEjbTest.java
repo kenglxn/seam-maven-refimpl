@@ -34,9 +34,9 @@ public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
   	}
   	catch (java.lang.IllegalStateException e) {
   		// TODO: LOO-20091122: Find out how to end HttpSession. 
-  		// Following exception occurs even if I call Session.instance().invalidate():
-  		// FAILED CONFIGURATION: @AfterMethod end
-  		// java.lang.IllegalStateException: Please end the HttpSession via org.jboss.seam.web.Session.instance().invalidate()
+  		// Following exception occurs, even if I call Session.instance().invalidate():
+  		//   FAILED CONFIGURATION: @AfterMethod end
+  		//   java.lang.IllegalStateException: Please end the HttpSession via org.jboss.seam.web.Session.instance().invalidate()
   		;
   	}
   }
