@@ -19,7 +19,7 @@ import javax.naming.Context;
 import java.util.Hashtable;
 import java.util.Properties;
 
-public class SeamOpenEjbTest extends AbstractSeamTest {
+public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
     private static boolean started = false;
 
@@ -61,8 +61,8 @@ public class SeamOpenEjbTest extends AbstractSeamTest {
     public void end() {
         //TestLifecycle.endTest ();
 
-    	Session.instance().invalidate();
     	try {
+      	Session.instance().invalidate();
         super.end();
     	}
     	catch (java.lang.IllegalStateException e) {

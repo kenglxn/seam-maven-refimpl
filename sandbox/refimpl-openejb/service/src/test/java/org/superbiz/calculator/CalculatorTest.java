@@ -5,7 +5,7 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import no.knowit.openejb.SeamOpenEjbTest;
+import no.knowit.openejb.AbstractSeamOpenEjbTest;
 
 import org.apache.log4j.Logger;
 import org.jboss.seam.Component;
@@ -17,7 +17,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class CalculatorTest extends SeamOpenEjbTest {
+public class CalculatorTest extends AbstractSeamOpenEjbTest {
 	
 	private Logger log = Logger.getLogger(this.getClass());
 
@@ -57,8 +57,8 @@ public class CalculatorTest extends SeamOpenEjbTest {
 		Object seamComponent = Component.getInstance("calculator");
 		log.debug("seamComponent.class: " + seamComponent);
 		
-		Object jndiLookup = initialContext.lookup("calculator/Local");
-		log.debug("jndiLookup.class: " + jndiLookup);
+//		Object jndiLookup = initialContext.lookup("calculator/Local");
+//		log.debug("jndiLookup.class: " + jndiLookup);
 		
 	}
 
@@ -72,13 +72,13 @@ public class CalculatorTest extends SeamOpenEjbTest {
 	// START SNIPPET: remote
 	@Test
 	public void testCalculatorViaRemoteInterface() throws Exception {
-//		Object object = initialContext.lookup("CalculatorImpl/Remote");
-//
-//		Assert.assertNotNull(object);
-//		Assert.assertTrue(object instanceof CalculatorRemote);
-//		CalculatorRemote calc = (CalculatorRemote) object;
-//		Assert.assertEquals(10, calc.sum(4, 6));
-//		Assert.assertEquals(12, calc.multiply(3, 4));
+		Object object = initialContext.lookup("calculator/Remote");
+
+		Assert.assertNotNull(object);
+		Assert.assertTrue(object instanceof CalculatorRemote);
+		CalculatorRemote calc = (CalculatorRemote) object;
+		Assert.assertEquals(10, calc.sum(4, 6));
+		Assert.assertEquals(12, calc.multiply(3, 4));
 	}
 
 	// END SNIPPET: remote
@@ -91,13 +91,13 @@ public class CalculatorTest extends SeamOpenEjbTest {
 	// START SNIPPET: local
 	@Test
 	public void testCalculatorViaLocalInterface() throws Exception {
-//		Object object = initialContext.lookup("calculator/Local");
-//
-//		Assert.assertNotNull(object);
-//		Assert.assertTrue(object instanceof CalculatorLocal);
-//		CalculatorLocal calc = (CalculatorLocal) object;
-//		Assert.assertEquals(10, calc.sum(4, 6));
-//		Assert.assertEquals(12, calc.multiply(3, 4));
+		Object object = initialContext.lookup("calculator/Local");
+
+		Assert.assertNotNull(object);
+		Assert.assertTrue(object instanceof CalculatorLocal);
+		CalculatorLocal calc = (CalculatorLocal) object;
+		Assert.assertEquals(10, calc.sum(4, 6));
+		Assert.assertEquals(12, calc.multiply(3, 4));
 	}
 	// END SNIPPET: local
 
