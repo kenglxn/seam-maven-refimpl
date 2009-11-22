@@ -19,7 +19,7 @@
 	<packaging>pom</packaging>
 	
 	<modules>
-		<module>devutils</module>
+		<module>openejb-utils</module>
 		<module>model</module>
 		<module>service</module>
 	</modules>
