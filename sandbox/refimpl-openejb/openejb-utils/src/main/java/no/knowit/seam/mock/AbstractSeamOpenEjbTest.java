@@ -7,7 +7,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import no.knowit.openejb.BootStrapOpenEJB;
+import no.knowit.openejb.BootStrapOpenEjb;
 
 import org.apache.log4j.Logger;
 import org.jboss.seam.mock.AbstractSeamTest;
@@ -49,7 +49,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 			properties.put("log4j.category.org.superbiz", "warn"); 
 			properties.put("log4j.category.org.superbiz.calculator.CalculatorTest", "debug"); 
 		
-    	initialContext = (InitialContext) BootStrapOpenEJB.bootstrap(properties);
+    	initialContext = (InitialContext) BootStrapOpenEjb.bootstrap(properties);
     }
 
     private boolean openEjbAvailable() {
