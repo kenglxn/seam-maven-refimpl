@@ -19,6 +19,7 @@ public class OpenEjbBootStrap {
 			Class.forName("org.apache.openejb.OpenEJB");
 			
 			// Initial properties are specified in src/main/resources-openejb/jndi.properties
+			// Properties defined in properties param will override initial properties  
 			return new InitialContext(properties);
 		} 
 		catch (Exception e) {
