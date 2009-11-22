@@ -96,7 +96,7 @@
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-model</artifactId>
@@ -245,8 +245,6 @@
 			<artifactId>log4j</artifactId>
 			<scope>provided</scope>
 		</dependency>	
-	
-	
 
 		<!-- ******** TEST DEPENDECIES ********	-->
 		
@@ -311,7 +309,7 @@
 			<artifactId>testng</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		
 		<!-- logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -325,8 +323,7 @@
 			<artifactId>javassist</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		
+
 	</dependencies>
 	
   <build>
