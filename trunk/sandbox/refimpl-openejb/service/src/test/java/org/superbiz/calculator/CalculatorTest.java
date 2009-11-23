@@ -1,21 +1,13 @@
 package org.superbiz.calculator;
 
-import java.util.Properties;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-
-import no.knowit.seam.mock.AbstractSeamOpenEjbTest;
 import no.knowit.seam.mock.SeamOpenEjbTest;
 
 import org.apache.log4j.Logger;
-import org.jboss.seam.Component;
-import org.jboss.seam.ScopeType;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.contexts.Lifecycle;
-import org.jboss.seam.web.Session;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 public class CalculatorTest extends SeamOpenEjbTest {
@@ -24,47 +16,46 @@ public class CalculatorTest extends SeamOpenEjbTest {
 
 	// START SNIPPET: setup
 	//private InitialContext initialContext;
-
+	
+	
+	@BeforeSuite
+	public void beforeSuite() throws Exception {
+		System.out.println("@BeforeSuite->CalculatorTest.beforeSuite");
+	}
+	
+	
 	@BeforeClass
 	protected void setUp() throws Exception {
+		System.out.println("@BeforeClass->CalculatorTest.setUp");
 
 //		Properties properties = new Properties();
-//		properties.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
-//		
-//		properties.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
 //		properties.put("log4j.category.org.superbiz", "warn"); 
-//		properties.put("log4j.category.org.superbiz.calculator.CalculatorTest", "debug"); 
-//		
-//		initialContext = new InitialContext(properties);
+//		properties.put("log4j.category.org.superbiz.calculator.CalculatorTest", "debug");
 		
-		
-//		log.debug("**** Attempting to start SEAM");
-//		SeamOpenEjbTest bs = new SeamOpenEjbTest();
-//		bs.beforeSuite();
-//		bs.beforeClass();
-//		bs.begin();
-//		log.debug("**** SEAM started");
-		
-//		bs.beforeClass();
-//		log.debug("**** before class executed");
-//
-		
-		log.debug("createContexts");
 		boolean createContexts = !Contexts.isEventContextActive() && !Contexts.isApplicationContextActive();
     if (createContexts) {
         Lifecycle.beginCall();
     }
-		
-		Object seamComponent = Component.getInstance("calculator");
-		log.debug("seamComponent.class: " + seamComponent);
-		
-//		Object jndiLookup = initialContext.lookup("calculator/Local");
-//		log.debug("jndiLookup.class: " + jndiLookup);
-		
 	}
 
 	// END SNIPPET: setup
 
+	/**
+	 * Lookup the Calculator bean via its Seam component name
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testCalculatorViaSeamComponentName() throws Exception {
+		//Object seamComponent = Component.getInstance("calculator", true, true);
+
+		Object seamComponent = getInstance("calculator");
+
+		Assert.assertNotNull(seamComponent);
+		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + seamComponent);
+	}
+
+	
 	/**
 	 * Lookup the Calculator bean via its remote home interface
 	 * 

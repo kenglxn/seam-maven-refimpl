@@ -16,58 +16,60 @@ import org.testng.annotations.BeforeSuite;
  * @author Mike Youngstrom
  */
 public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
+	
+	@Override
+	@BeforeSuite
+	public void startSeam() throws Exception {
+		// needs a WEB-INF/web.xml in resources!!!
+		
+		System.out.println("@BeforeSuite->SeamOpenEjbTest.startSeam");
 
-  @Override
-  @BeforeSuite
-  public void startSeam() throws Exception
-  {
-     super.startSeam(); // needs a WEB-INF/web.xml in resources!!!
-  }
-  
-  @Override
-  @AfterSuite
-  protected void stopSeam() throws Exception
-  {
-     super.stopSeam();
-  }
+		super.startSeam(); 
+	}
 
-  @Override
-  @BeforeClass
-  public void setupClass() throws Exception
-  {
-     super.setupClass();
-  }
-  
-  @Override
-  @AfterClass
-  public void cleanupClass() throws Exception
-  {
-     super.cleanupClass();
-  }
-  
-  @BeforeMethod
-  @Override
-  public void begin()
-  {
-     super.begin();
-  }
+	@Override
+	@AfterSuite
+	protected void stopSeam() throws Exception {
+		super.stopSeam();
+	}
 
-  @AfterMethod
-  @Override
-  public void end()
-  {
-  	try {
-    	Session.instance().invalidate();
-      super.end();
-  	}
-  	catch (java.lang.IllegalStateException e) {
-  		// TODO: LOO-20091122: Find out how to end HttpSession. 
-  		// Following exception occurs, even if I call Session.instance().invalidate():
-  		//   FAILED CONFIGURATION: @AfterMethod end
-  		//   java.lang.IllegalStateException: Please end the HttpSession via org.jboss.seam.web.Session.instance().invalidate()
-  		// NOTE: Only occurs if I run mvn test on module and not when I run test on a spesific class in module
-  		;
-  	}
-  }
-  
+	@Override
+	@BeforeClass
+	public void setupClass() throws Exception {
+		
+		System.out.println("@BeforeClass->SeamOpenEjbTest.setupClass");
+
+		super.setupClass();
+	}
+
+	@Override
+	@AfterClass
+	public void cleanupClass() throws Exception {
+		super.cleanupClass();
+	}
+
+	@BeforeMethod
+	@Override
+	public void begin() {
+		super.begin();
+	}
+
+	@AfterMethod
+	@Override
+	public void end() {
+		try {
+			Session.instance().invalidate();
+			super.end();
+		} 
+		catch (java.lang.IllegalStateException e) {
+			// TODO: LOO-20091122: Find out how to end HttpSession.
+			// Following exception occurs, even if I call
+			// Session.instance().invalidate():
+			//   FAILED CONFIGURATION: @AfterMethod end
+			//   java.lang.IllegalStateException: Please end the HttpSession via org.jboss.seam.web.Session.instance().invalidate()
+			// NOTE: Only occurs if I run mvn test on module and not when I run test on a spesific class in module
+			;
+		}
+	}
+
 }
