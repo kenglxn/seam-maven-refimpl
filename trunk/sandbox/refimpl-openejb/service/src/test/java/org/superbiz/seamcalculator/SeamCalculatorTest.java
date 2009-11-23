@@ -5,7 +5,7 @@ import no.knowit.seam.mock.SeamOpenEjbTest;
 import org.jboss.seam.Component;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.contexts.Lifecycle;
-import org.superbiz.calculator.CalculatorImpl;
+import org.superbiz.logic.Movies;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
@@ -26,16 +26,25 @@ public class SeamCalculatorTest extends SeamOpenEjbTest {
 		System.out.println("@BeforeClass->CalculatorTest.setUp");
 
 		// TODO:
-//		Properties properties = new Properties();
-//		properties.put("log4j.category.org.superbiz", "warn"); 
-//		properties.put("log4j.category.org.superbiz.calculator.CalculatorTest", "debug");
-		
-		boolean createContexts = !Contexts.isEventContextActive() && !Contexts.isApplicationContextActive();
-    if (createContexts) {
-        Lifecycle.beginCall();
-    }
+		//Properties properties = new Properties();
+		//properties.put("log4j.category.org.superbiz", "warn"); 
+		//properties.put("log4j.category.org.superbiz.calculator.CalculatorTest", "debug");
 	}
 
+	private SeamCalculator getService() {
+		Object obj;
+		Lifecycle.beginCall();
+		try {
+			obj = Component.getInstance("seamCalculator");
+		}
+		finally {
+			Lifecycle.endCall();
+		}
+		Assert.assertNotNull(obj, "Component.getInstance(\"seamCalculator\") returned null");
+		Assert.assertTrue(obj instanceof SeamCalculator, "Component.getInstance(\"seamCalculator\") returned incorrect type");
+		return (SeamCalculator)obj;
+	}
+	
 	/**
 	 * Lookup the Calculator bean via its Seam component name
 	 * 
@@ -44,10 +53,12 @@ public class SeamCalculatorTest extends SeamOpenEjbTest {
 	@Test
 	public void shallGetSeamComponentViaNameAnnotation() throws Exception {
 		
-		SeamCalculator calculator = (SeamCalculator)Component.getInstance("seamCalculator");
-		Assert.assertNotNull(calculator);
+//		SeamCalculator calculator = (SeamCalculator)Component.getInstance("seamCalculator");
+//		Assert.assertNotNull(calculator);
+//		
+//		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + calculator);
+//		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + calculator.sum(1, 1));
 		
-		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + calculator);
-		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + calculator.sum(1, 1));
+		SeamCalculator calculator = getService();
 	}
 }
