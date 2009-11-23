@@ -17,37 +17,6 @@ import org.testng.annotations.BeforeSuite;
  */
 public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
 	
-	@Override
-	@BeforeSuite
-	public void startSeam() throws Exception {
-		// needs a WEB-INF/web.xml in resources!!!
-		
-		System.out.println("@BeforeSuite->SeamOpenEjbTest.startSeam");
-
-		super.startSeam(); 
-	}
-
-	@Override
-	@AfterSuite
-	protected void stopSeam() throws Exception {
-		super.stopSeam();
-	}
-
-	@Override
-	@BeforeClass
-	public void setupClass() throws Exception {
-		
-		System.out.println("@BeforeClass->SeamOpenEjbTest.setupClass");
-
-		super.setupClass();
-	}
-
-	@Override
-	@AfterClass
-	public void cleanupClass() throws Exception {
-		super.cleanupClass();
-	}
-
 	@BeforeMethod
 	@Override
 	public void begin() {
@@ -72,4 +41,34 @@ public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
 		}
 	}
 
+	@Override
+	@BeforeClass
+	public void setupClass() throws Exception {
+		
+		System.out.println("@BeforeClass->SeamOpenEjbTest.setupClass");
+
+		super.setupClass();
+	}
+
+	@Override
+	@AfterClass
+	public void cleanupClass() throws Exception {
+		super.cleanupClass();
+	}
+
+	@Override
+	@BeforeSuite
+	public void startSeam() throws Exception {
+		// needs a WEB-INF/web.xml in resources!!!
+		
+		System.out.println("@BeforeSuite->SeamOpenEjbTest.startSeam");
+
+		super.startSeam(); 
+	}
+
+	@Override
+	@AfterSuite
+	protected void stopSeam() throws Exception {
+		super.stopSeam();
+	}
 }
