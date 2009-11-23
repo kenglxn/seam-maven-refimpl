@@ -2,6 +2,8 @@ package org.superbiz.calculator;
 
 import no.knowit.seam.mock.SeamOpenEjbTest;
 
+import org.superbiz.calculator.*;
+
 import org.apache.log4j.Logger;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.contexts.Lifecycle;
@@ -50,9 +52,12 @@ public class CalculatorTest extends SeamOpenEjbTest {
 		//Object seamComponent = Component.getInstance("calculator", true, true);
 
 		Object seamComponent = getInstance("calculator");
+		
+		//CalculatorImpl seamComponent = getContextComponent("calculator");
 
 		Assert.assertNotNull(seamComponent);
 		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + seamComponent);
+		//Assert.assertTrue(seamComponent instanceof CalculatorLocal);
 	}
 
 	
