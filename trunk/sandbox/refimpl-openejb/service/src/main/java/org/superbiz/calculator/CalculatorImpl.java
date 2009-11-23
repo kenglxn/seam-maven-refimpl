@@ -1,7 +1,10 @@
 package org.superbiz.calculator;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 
 /**
@@ -12,10 +15,18 @@ import org.jboss.seam.annotations.Name;
  * interface, and CalculatorLocal, a local business interface
  * 
  */
-@Stateless(name="calculator")
-@Name("calculator")
+//@Stateless //(name="ejbCalculator")
+@Name("seamCalculator")
 public class CalculatorImpl implements CalculatorRemote, CalculatorLocal {
 
+	@In(required=false)
+	private EntityManager em;
+	
+	@PostConstruct
+	public void postConstruct() {
+		System.out.println("****************** @PostConstruct");
+	}
+	
 	public int sum(int add1, int add2) {
 		
 		return add1+add2;
@@ -24,5 +35,8 @@ public class CalculatorImpl implements CalculatorRemote, CalculatorLocal {
 	public int multiply(int mul1, int mul2) {
 		return mul1*mul2;
 	}
-
+	
+	public EntityManager getEntityManager() {
+		return em;
+	}
 }
