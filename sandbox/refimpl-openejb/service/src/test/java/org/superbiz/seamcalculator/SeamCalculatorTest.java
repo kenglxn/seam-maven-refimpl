@@ -3,9 +3,7 @@ package org.superbiz.seamcalculator;
 import no.knowit.seam.mock.SeamOpenEjbTest;
 
 import org.jboss.seam.Component;
-import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.contexts.Lifecycle;
-import org.superbiz.logic.Movies;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
@@ -53,12 +51,20 @@ public class SeamCalculatorTest extends SeamOpenEjbTest {
 	@Test
 	public void shallGetSeamComponentViaNameAnnotation() throws Exception {
 		
-//		SeamCalculator calculator = (SeamCalculator)Component.getInstance("seamCalculator");
-//		Assert.assertNotNull(calculator);
-//		
 //		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + calculator);
 //		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + calculator.sum(1, 1));
 		
 		SeamCalculator calculator = getService();
+		System.out.println("@Test->CalculatorTest.shallGetInjectedSeamComponent: " + calculator);
+		
+		Assert.assertEquals(11, calculator.sum(5, 6));
+		Assert.assertEquals(16, calculator.multiply(4, 4));
+	}
+	
+	@Test
+	public void shallGetInjectedSeamComponent() throws Exception {
+		SeamCalculator calculator = getService();
+		Assert.assertNotNull(calculator.getInjectedSeamComponent(), "calculator.getInjectedSeamComponent() returned null");
+		Assert.assertEquals("HELLO", calculator.helloFromInjectedComponent());
 	}
 }

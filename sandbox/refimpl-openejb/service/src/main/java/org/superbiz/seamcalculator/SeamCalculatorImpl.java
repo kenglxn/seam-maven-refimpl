@@ -3,11 +3,15 @@ package org.superbiz.seamcalculator;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 
 @Name("seamCalculator")
-@Stateless
+//@Stateless
 public class SeamCalculatorImpl implements SeamCalculator {
+	
+	@In(create=true)
+	private InjectedSeamComponent injectedSeamComponent;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -20,5 +24,14 @@ public class SeamCalculatorImpl implements SeamCalculator {
 
 	public int multiply(int mul1, int mul2) {
 		return mul1*mul2;
+	}
+
+	public InjectedSeamComponent getInjectedSeamComponent() {
+		return injectedSeamComponent;
+	}
+
+	@Override
+	public String helloFromInjectedComponent() {
+		return injectedSeamComponent.say();
 	}
 }
