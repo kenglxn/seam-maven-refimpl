@@ -41,17 +41,21 @@
 	<!-- ############# -->
 
 	<!-- JPA -->
-	
-	<!--
-	<transaction:no-transaction />
+	<!-- 
+  <transaction:ejb-transaction />
 
 	<persistence:entity-manager-factory
-		name="containerPU" />
-
+		name="entityManagerFactory"
+		persistence-unit-name="movie-unit"
+		installed="true"
+		startup="true" />
+		 
 	<persistence:managed-persistence-context
-		name="em" 
+		name="entityManager" 
 		auto-create="true" 
-		entity-manager-factory="#{containerPU}" />
+		entity-manager-factory="#{entityManagerFactory}" 
+		persistence-unit-jndi-name="java:/refimpl-openejbEntityManagerFactory" />
+	
 	-->
 	
 	<!-- ######## -->

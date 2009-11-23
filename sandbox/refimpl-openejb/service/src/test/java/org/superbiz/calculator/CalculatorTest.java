@@ -5,6 +5,8 @@ import no.knowit.seam.mock.SeamOpenEjbTest;
 import org.superbiz.calculator.*;
 
 import org.apache.log4j.Logger;
+import org.jboss.seam.Component;
+import org.jboss.seam.Seam;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.contexts.Lifecycle;
 import org.testng.Assert;
@@ -48,18 +50,21 @@ public class CalculatorTest extends SeamOpenEjbTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void testCalculatorViaSeamComponentName() throws Exception {
-		//Object seamComponent = Component.getInstance("calculator", true, true);
-
-		Object seamComponent = getInstance("calculator");
+	public void shallGetSeamComponentViaNameAnnotation() throws Exception { //testCalculatorViaSeamComponentName
 		
-		//CalculatorImpl seamComponent = getContextComponent("calculator");
-
+		CalculatorImpl seamComponent = (CalculatorImpl)Component.getInstance("seamCalculator");
 		Assert.assertNotNull(seamComponent);
+		
 		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + seamComponent);
-		//Assert.assertTrue(seamComponent instanceof CalculatorLocal);
+		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + seamComponent.sum(1, 1));
 	}
 
+	@Test
+	public void shallReturnInjectedEntityManager() throws Exception {
+		CalculatorImpl seamComponent = (CalculatorImpl)Component.getInstance("seamCalculator");
+		Assert.assertNotNull(seamComponent);
+		//Assert.assertNotNull(seamComponent.getEntityManager(), "EntityManager was NULL");
+	}
 	
 	/**
 	 * Lookup the Calculator bean via its remote home interface
@@ -67,35 +72,46 @@ public class CalculatorTest extends SeamOpenEjbTest {
 	 * @throws Exception
 	 */
 	// START SNIPPET: remote
-	@Test
-	public void testCalculatorViaRemoteInterface() throws Exception {
-		Object object = initialContext.lookup("calculator/Remote");
-
-		Assert.assertNotNull(object);
-		Assert.assertTrue(object instanceof CalculatorRemote);
-		CalculatorRemote calc = (CalculatorRemote) object;
-		Assert.assertEquals(10, calc.sum(4, 6));
-		Assert.assertEquals(12, calc.multiply(3, 4));
-	}
-
-	// END SNIPPET: remote
-
-	/**
-	 * Lookup the Calculator bean via its local home interface
-	 * 
-	 * @throws Exception
-	 */
-	// START SNIPPET: local
-	@Test
-	public void testCalculatorViaLocalInterface() throws Exception {
-		Object object = initialContext.lookup("calculator/Local");
-
-		Assert.assertNotNull(object);
-		Assert.assertTrue(object instanceof CalculatorLocal);
-		CalculatorLocal calc = (CalculatorLocal) object;
-		Assert.assertEquals(10, calc.sum(4, 6));
-		Assert.assertEquals(12, calc.multiply(3, 4));
-	}
+//	@Test
+//	public void testCalculatorViaRemoteInterface() throws Exception {
+//		Object object = initialContext.lookup("calculator/Remote");
+//
+//		Assert.assertNotNull(object);
+//		Assert.assertTrue(object instanceof CalculatorRemote);
+//		CalculatorRemote calc = (CalculatorRemote) object;
+//		Assert.assertEquals(10, calc.sum(4, 6));
+//		Assert.assertEquals(12, calc.multiply(3, 4));
+//	}
+//
+//	// END SNIPPET: remote
+//
+//	/**
+//	 * Lookup the Calculator bean via its local home interface
+//	 * 
+//	 * @throws Exception
+//	 */
+//	// START SNIPPET: local
+	
+//	@Test
+//	public void shallGetEjbComponentViaNamedBean() throws Exception { testCalculatorViaLocalInterface
+//		
+//		/**
+//		 * Unnamed bean
+//		 */
+//		Object object = initialContext.lookup("CalculatorImpl/Local");
+//
+//		/**
+//		 * Named bean
+//		Object object = initialContext.lookup("ejbCalculator/Local");
+//		 */
+//
+//		
+//		Assert.assertNotNull(object);
+//		Assert.assertTrue(object instanceof CalculatorLocal);
+//		CalculatorLocal calc = (CalculatorLocal) object;
+//		Assert.assertEquals(10, calc.sum(4, 6));
+//		Assert.assertEquals(12, calc.multiply(3, 4));
+//	}
 	// END SNIPPET: local
 
 }
