@@ -1,10 +1,12 @@
 package org.superbiz.seamcalculator;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 
 import org.jboss.seam.annotations.Name;
 
 @Name("seamCalculator")
+@Stateless
 public class SeamCalculatorImpl implements SeamCalculator {
 
 	@PostConstruct
