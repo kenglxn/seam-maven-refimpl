@@ -1,6 +1,6 @@
 package org.superbiz.seamcalculator;
 
-import no.knowit.seam.mock.SeamOpenEjbTest;
+import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
 import org.jboss.seam.Component;
 import org.jboss.seam.contexts.Lifecycle;
@@ -58,13 +58,13 @@ public class SeamCalculatorTest extends SeamOpenEjbTest {
 	public void shallGetSeamComponentViaNameAnnotation() throws Exception {
 		
 		new ComponentTest() {
-			 @Override
-      protected void testComponents() throws Exception {
+			@Override
+			protected void testComponents() throws Exception {
 				SeamCalculator calculator = getService();
 				Assert.assertEquals(11, calculator.sum(5, 6));
 				Assert.assertEquals(16, calculator.multiply(4, 4));
-			 }
-		}.run();	 
+			}
+		}.run();
 	}
 	
 	@Test

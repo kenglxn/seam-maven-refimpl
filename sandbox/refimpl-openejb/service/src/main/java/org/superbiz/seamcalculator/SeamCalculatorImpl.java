@@ -2,6 +2,8 @@ package org.superbiz.seamcalculator;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
@@ -15,7 +17,11 @@ public class SeamCalculatorImpl implements SeamCalculator {
 	
 	@In(create=true)
 	private InjectedSeamComponent injectedSeamComponent;
-
+	
+	@In
+	private EntityManager entityManager;
+	
+	
 	@PostConstruct
 	public void postConstruct() {
 		System.out.println("@PostConstruct->SeamCalculatorImpl.postConstruct");
@@ -31,6 +37,10 @@ public class SeamCalculatorImpl implements SeamCalculator {
 
 	@Override
 	public String helloFromInjectedComponent() {
+//		Query q = entityManager.createQuery("select m from Movie m");
+//		q.getResultList();
+		
+		
 		return injectedSeamComponent != null ? injectedSeamComponent.say() : null;
 	}
 }
