@@ -30,14 +30,20 @@ public class SeamCalculatorTest extends SeamOpenEjbTest {
 	}
 
 	private SeamCalculator getService() {
+		
 		Object obj;
-		Lifecycle.beginCall();
-		try {
-			obj = Component.getInstance("seamCalculator");
-		}
-		finally {
-			Lifecycle.endCall();
-		}
+		
+		
+		// Lifecycle.beginCall()/endCall is not needed if you execute test inside ComponentTest() or FacesRequest()
+//		Lifecycle.beginCall();
+//		try {
+//			obj = Component.getInstance("seamCalculator");
+//		}
+//		finally {
+//			Lifecycle.endCall();
+//		}
+		
+		obj = Component.getInstance("seamCalculator");
 		Assert.assertNotNull(obj, "Component.getInstance(\"seamCalculator\") returned null");
 		Assert.assertTrue(obj instanceof SeamCalculator, "Component.getInstance(\"seamCalculator\") returned incorrect type");
 		return (SeamCalculator)obj;
@@ -51,20 +57,25 @@ public class SeamCalculatorTest extends SeamOpenEjbTest {
 	@Test
 	public void shallGetSeamComponentViaNameAnnotation() throws Exception {
 		
-//		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + calculator);
-//		System.out.println("@Test->CalculatorTest.testCalculatorViaSeamComponentName: " + calculator.sum(1, 1));
-		
-		SeamCalculator calculator = getService();
-		System.out.println("@Test->CalculatorTest.shallGetInjectedSeamComponent: " + calculator);
-		
-		Assert.assertEquals(11, calculator.sum(5, 6));
-		Assert.assertEquals(16, calculator.multiply(4, 4));
+		new ComponentTest() {
+			 @Override
+      protected void testComponents() throws Exception {
+				SeamCalculator calculator = getService();
+				Assert.assertEquals(11, calculator.sum(5, 6));
+				Assert.assertEquals(16, calculator.multiply(4, 4));
+			 }
+		}.run();	 
 	}
 	
 	@Test
 	public void shallGetInjectedSeamComponent() throws Exception {
-		SeamCalculator calculator = getService();
-		Assert.assertNotNull(calculator.getInjectedSeamComponent(), "calculator.getInjectedSeamComponent() returned null");
-		Assert.assertEquals("HELLO", calculator.helloFromInjectedComponent());
+		
+		new ComponentTest() {
+			 @Override
+       protected void testComponents() throws Exception {
+					SeamCalculator calculator = getService();
+					Assert.assertEquals("HELLO", calculator.helloFromInjectedComponent());
+			 }
+		}.run();
 	}
 }
