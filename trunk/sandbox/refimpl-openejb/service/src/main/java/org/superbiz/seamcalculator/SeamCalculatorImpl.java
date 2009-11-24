@@ -37,8 +37,8 @@ public class SeamCalculatorImpl implements SeamCalculator {
 
 	@Override
 	public String helloFromInjectedComponent() {
-//		Query q = entityManager.createQuery("select m from Movie m");
-//		q.getResultList();
+		Query q = entityManager.createQuery("select m from Movie m");
+		q.getResultList();
 		
 		
 		return injectedSeamComponent != null ? injectedSeamComponent.say() : null;
