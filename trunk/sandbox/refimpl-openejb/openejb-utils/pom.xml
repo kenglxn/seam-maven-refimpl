@@ -16,7 +16,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>${project.artifactId} : ${project.version}</name>
 	<description>Utilities to get Seam tests running in OpenEJB micro container</description>
-	<packaging>jar</packaging>
+	<packaging>ejb</packaging>
 	
   <properties>
 		<jdk.debug>${env.debug}</jdk.debug>

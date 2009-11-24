@@ -1,6 +1,5 @@
 package org.superbiz.seamcalculator;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -21,11 +20,6 @@ public class SeamCalculatorImpl implements SeamCalculator {
 	@In
 	private EntityManager entityManager;
 	
-	
-	@PostConstruct
-	public void postConstruct() {
-		System.out.println("@PostConstruct->SeamCalculatorImpl.postConstruct");
-	}
 	
 	public int sum(int add1, int add2) {
 		return add1+add2;
