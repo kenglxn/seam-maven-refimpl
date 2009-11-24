@@ -19,7 +19,6 @@
 	<packaging>pom</packaging>
 	
 	<modules>
-		<module>openejb-utils</module>
 		<module>model</module>
 		<module>service</module>
 	</modules>
@@ -90,13 +89,6 @@
 	
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>refimpl-openejb-utils</artifactId>
-				<version>${project.version}</version>
-				<type>ejb</type>
-			</dependency>
-
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-model</artifactId>
