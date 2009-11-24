@@ -6,8 +6,6 @@ import javax.naming.InitialContext;
 
 import no.knowit.openejb.BootStrapOpenEjb;
 
-import org.jboss.seam.Component;
-import org.jboss.seam.ScopeType;
 import org.jboss.seam.mock.AbstractSeamTest;
 
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
@@ -49,25 +47,13 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 	}
 
 	/**
-	 * 
+	 * Close the micro container
+	 * If you need the micro container restart between different test scenarios, then
+	 * you should bootstrap the container with the property 
+	 * <code>"openejb.embedded.initialcontext.close=destroy"</code>
+	 * see http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html 
 	 */
 	protected void closeInitialContext() {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
 	}
-
-	protected static <T> T getContextComponent(final Class<T> pClass) {
-
-		return (T) Component.getInstance(pClass);
-	}
-
-	protected static <T> T getContextComponent(final String pName) {
-
-		return (T) Component.getInstance(pName);
-	}
-
-	protected static <T> T getContextComponent(final String pName, final ScopeType pScope) {
-
-		return (T) Component.getInstance(pName, pScope);
-	}
-
 }
