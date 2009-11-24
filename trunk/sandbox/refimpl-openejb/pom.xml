@@ -94,7 +94,7 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>refimpl-openejb-utils</artifactId>
 				<version>${project.version}</version>
-				<type>jar</type>
+				<type>ejb</type>
 			</dependency>
 
 			<dependency>
@@ -108,6 +108,13 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>${app.context}-service</artifactId>
 				<version>${project.version}</version>
+				<type>ejb</type>
+			</dependency>
+			
+			<dependency>
+				<groupId>no.knowit.seam</groupId>
+				<artifactId>seam-openejb-utils</artifactId>
+				<version>1.0-SNAPSHOT</version>
 				<type>ejb</type>
 			</dependency>
 		</dependencies>
@@ -248,7 +255,7 @@
 
 		<!-- ******** TEST DEPENDECIES ********	-->
 		
-		<!-- openejb container for running tests -->
+		<!-- openejb embedded container for running tests -->
 		<dependency>
 			<groupId>org.apache.openejb</groupId>
 			<artifactId>openejb-core</artifactId>

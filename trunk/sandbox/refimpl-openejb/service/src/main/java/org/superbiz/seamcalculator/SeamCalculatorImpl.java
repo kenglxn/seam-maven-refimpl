@@ -40,7 +40,6 @@ public class SeamCalculatorImpl implements SeamCalculator {
 		Query q = entityManager.createQuery("select m from Movie m");
 		q.getResultList();
 		
-		
 		return injectedSeamComponent != null ? injectedSeamComponent.say() : null;
 	}
 }
