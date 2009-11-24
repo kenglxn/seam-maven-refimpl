@@ -5,13 +5,17 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
 		http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   
-  <persistence-unit name="${app.persistence.unit.name}" transaction-type="JTA">  
+  <persistence-unit name="${app.persistence.unit.name}" transaction-type="RESOURCE_LOCAL">  
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+<!--     
     <jta-data-source>${app.jta.data.source}</jta-data-source>
+-->    
     <properties>
+<!-- 
       <property name="jboss.entity.manager.factory.jndi.name" 
       					value="${app.persistence.unit.jndi.name}"/>
-
+-->
       <property name="hibernate.dialect" 
       					value="${ds.hibernate.dialect}"/>
       <property name="hibernate.hbm2ddl.auto" 
@@ -35,9 +39,13 @@
       <!-- These are the default for JBoss EJB3, but not for HEM: -->
       <property name="hibernate.cache.provider_class" 
       					value="org.hibernate.cache.HashtableCacheProvider"/>
+      					
+<!-- 
       <property name="hibernate.transaction.manager_lookup_class" 
       					value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
-
+-->
+      <property name="hibernate.transaction.manager_lookup_class" 
+      					value="org.apache.openejb.hibernate.TransactionManagerLookup"/>
     </properties>
   </persistence-unit>
    
