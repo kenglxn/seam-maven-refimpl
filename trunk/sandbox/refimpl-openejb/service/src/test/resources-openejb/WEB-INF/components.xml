@@ -28,7 +28,7 @@
 	<core:init 
 		jndi-pattern="/#{ejbName}/Local" 
 		debug="false"
-		transaction-management-enabled="true" />
+		transaction-management-enabled="false" />
 
 	<!--<component 
 		class="openejb.ReallyNoTransaction" 
@@ -41,8 +41,7 @@
 	<!-- ############# -->
 
 	<!-- JPA -->
-	<!-- 
-  <transaction:ejb-transaction />
+  <transaction:no-transaction />
 
 	<persistence:entity-manager-factory
 		name="entityManagerFactory"
@@ -56,6 +55,7 @@
 		entity-manager-factory="#{entityManagerFactory}" 
 		persistence-unit-jndi-name="java:/refimpl-openejbEntityManagerFactory" />
 	
+	<!-- 
 	-->
 	
 	<!-- ######## -->
