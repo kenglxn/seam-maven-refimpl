@@ -23,12 +23,11 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>refimpl-openejb-utils</artifactId>
-			<type>jar</type>
+			<groupId>no.knowit.seam</groupId>
+			<artifactId>seam-openejb-utils</artifactId>
+			<type>ejb</type>
 			<scope>test</scope>
 		</dependency>
-		
   </dependencies>
 
   <build>
