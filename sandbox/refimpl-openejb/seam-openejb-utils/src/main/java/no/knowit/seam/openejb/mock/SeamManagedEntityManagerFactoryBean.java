@@ -13,7 +13,7 @@ import org.jboss.seam.annotations.Unwrap;
 public class SeamManagedEntityManagerFactoryBean implements SeamManagedEntityManagerFactory {
 
 
-	@PersistenceUnit(name = "movie-unit")
+	@PersistenceUnit //(name = "movie-unit")
 	EntityManagerFactory factory;
 
 	@PostConstruct

@@ -108,7 +108,7 @@
 				<groupId>no.knowit.seam</groupId>
 				<artifactId>seam-openejb-utils</artifactId>
 				<version>1.0-SNAPSHOT</version>
-				<type>ejb</type>
+				<type>jar</type>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
