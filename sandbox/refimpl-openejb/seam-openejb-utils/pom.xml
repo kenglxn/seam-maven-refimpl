@@ -19,10 +19,18 @@
 	<packaging>jar</packaging>
 	
   <properties>
-		<jdk.debug>${env.debug}</jdk.debug>
+  	<!-- override from parent pom -->
+		<env>dev</env>
+		<jdk.debug>true</jdk.debug>
 		<jdk.optimize>false</jdk.optimize>
 		<jdk.source>1.6</jdk.source>
 		<jdk.target>1.6</jdk.target>
+		
+		<!-- properties for testing this module  -->
+		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+		<env.hibernate.show_sql>false</env.hibernate.show_sql>
+		<env.hibernate.format_sql>true</env.hibernate.format_sql>
+		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
 		
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -200,11 +208,6 @@
 				<directory>src/test/resources</directory>                                                                 
 				<filtering>true</filtering>                                                                               
 			</testResource>
-			                                                                                                   
-			<testResource>                                                                                                    
-				<directory>src/test/resources-openejb</directory>                                                                 
-				<filtering>true</filtering>                                                                               
-			</testResource>                                                                                                   
 		</testResources>
 		 
 		<plugins>
