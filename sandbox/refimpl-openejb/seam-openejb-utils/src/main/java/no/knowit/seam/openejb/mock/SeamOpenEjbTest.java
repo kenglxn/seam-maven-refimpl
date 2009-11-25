@@ -31,9 +31,6 @@ public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
 	@Override
 	@BeforeClass
 	public void setupClass() throws Exception {
-		
-		System.out.println("@BeforeClass->SeamOpenEjbTest.setupClass");
-
 		super.setupClass();
 	}
 
@@ -43,19 +40,14 @@ public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
 		super.cleanupClass();
 	}
 
-	@Override
 	@BeforeSuite
-	public void startSeam() throws Exception {
+	public void beforeSuite() throws Exception {
 		// needs a WEB-INF/web.xml in resources!!!
-		
-		System.out.println("@BeforeSuite->SeamOpenEjbTest.startSeam");
-
 		super.startSeam(); 
 	}
 
-	@Override
 	@AfterSuite
-	protected void stopSeam() throws Exception {
+	protected void afterSuite() throws Exception {
 		super.stopSeam();
 	}
 }

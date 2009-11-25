@@ -16,7 +16,7 @@ public class CalculatorTest {
 	
 	@BeforeClass
 	public void setUp() throws Exception {
-		Properties p = BootStrapOpenEjb.getDefaultProperties(null);
+		Properties p = BootStrapOpenEjb.getDefaultContextProperties(null);
 		
 		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
 		p.put("log4j.category.org.superbiz", "warn"); 
