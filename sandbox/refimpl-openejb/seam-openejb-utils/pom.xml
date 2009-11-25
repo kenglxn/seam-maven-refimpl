@@ -157,7 +157,6 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.4.0.GA</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -196,6 +195,18 @@
 			</resource>
 		</resources>
 		
+		<testResources>                                                                                                     
+			<testResource>                                                                                                    
+				<directory>src/test/resources</directory>                                                                 
+				<filtering>true</filtering>                                                                               
+			</testResource>
+			                                                                                                   
+			<testResource>                                                                                                    
+				<directory>src/test/resources-openejb</directory>                                                                 
+				<filtering>true</filtering>                                                                               
+			</testResource>                                                                                                   
+		</testResources>
+		 
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

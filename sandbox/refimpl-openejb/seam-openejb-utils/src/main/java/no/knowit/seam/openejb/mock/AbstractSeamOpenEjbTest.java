@@ -11,7 +11,7 @@ import org.jboss.seam.mock.AbstractSeamTest;
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
 	protected static InitialContext initialContext = null;
-	protected static Properties contextProperties = new Properties();
+	protected static Properties contextProperties = BootStrapOpenEjb.getDefaultProperties(null);
 
 	/**
 	 * Start embedded OpenEJB container

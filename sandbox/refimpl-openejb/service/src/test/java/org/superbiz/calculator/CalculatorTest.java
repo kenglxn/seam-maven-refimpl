@@ -16,8 +16,9 @@ public class CalculatorTest {
 	
 	@BeforeClass
 	public void setUp() throws Exception {
-		Properties p = new Properties();
-		p.put("openejb.embedded.initialcontext.close", "destroy"); // http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+		Properties p = BootStrapOpenEjb.getDefaultProperties(null);
+		
+		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
 		p.put("log4j.category.org.superbiz", "warn"); 
 		p.put("log4j.category.org.superbiz.logic.CalculatorTest", "debug"); 
 		initialContext = BootStrapOpenEjb.bootstrap(p);

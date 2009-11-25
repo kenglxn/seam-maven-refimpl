@@ -26,8 +26,7 @@ public class MoviesTest {
 
 	@BeforeClass
 	public void setUp() throws Exception {
-		Properties p = new Properties();
-		p.put("openejb.embedded.initialcontext.close", "destroy"); // http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+		Properties p =  BootStrapOpenEjb.getDefaultProperties(null);
 		p.put("log4j.category.org.superbiz", "warn"); 
 		p.put("log4j.category.org.superbiz.logic.MoviesTest", "debug"); 
 		context = BootStrapOpenEjb.bootstrap(p);

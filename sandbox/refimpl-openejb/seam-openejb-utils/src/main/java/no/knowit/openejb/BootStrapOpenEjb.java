@@ -34,7 +34,6 @@ public class BootStrapOpenEjb {
 				initialContext.close();
 			}
 
-			// Set some default values
 			Properties p = new Properties();
 
 			// Set the initial context factory
@@ -42,15 +41,6 @@ public class BootStrapOpenEjb {
 
 			// Corresponds to JBoss JNDI lookup
 			p.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
-
-			// For multi module projects
-			p.put("openejb.deployments.classpath.ear", "true");
-
-			// see: http://openejb.apache.org/3.0/alternate-descriptors.html
-			p.put("openejb.altdd.prefix", "openejb");
-
-			// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
-			p.put("log4j.category.no.knowit", "warn");
 
 			// Overrides default properties in p if key match
 			if (properties != null) {
@@ -68,24 +58,55 @@ public class BootStrapOpenEjb {
 	}
 
 	/**
-	 * 
+	 * Get a set of default propertis to boot the OpenEJB embedded container
+	 * Note: This is only a suggestion.  
+	 * @param properties
+	 * @return
+	 */
+	public static Properties getDefaultProperties(final Properties properties) {
+		Properties p = new Properties();
+		
+		// see: http://openejb.apache.org/3.0/alternate-descriptors.html
+		p.put("openejb.altdd.prefix", "openejb");
+		
+		// For multi module projects
+		p.put("openejb.deployments.classpath.ear", "true");
+		
+
+		// Property that ensures that OpenEJB destroys the embedded container when closing the initial context
+		// See: http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+		//p.put("openejb.embedded.initialcontext.close", "destroy"); 
+		
+		if (properties != null) {
+			p.putAll(properties);
+		}
+		
+		return p;
+	}
+
+	/**
+	 * Close the initial context
+	 * If the container was started with <code>openejb.embedded.initialcontext.close=close</code> then 
+	 * OpenEJB destroys the embedded container when closing the initial context, see:
+	 * http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+	 * @return
 	 */
 	public static InitialContext closeInitialContext() {
-		if (initialContext != null) {
-			try {
-				initialContext.close();
-				initialContext = null;
-			} 
-			catch (Exception e) {
-				System.out.println("\n*******\nClosing OpenEJB context failed: " + e + "\n*******");
-				throw new RuntimeException(e);
-			}
+		try {
+			initialContext.close();
+			initialContext = null;
+		} 
+		catch (Exception e) {
+			System.out.println("\n*******\nClosing OpenEJB context failed: " + e + "\n*******");
+			throw new RuntimeException(e);
 		}
 		return null;
 	}
 
+	
 	/**
 	 * Perform a clean shutdown of this embedded instance
+	 * This is an alternative to <code>initialContext.close()</code>
 	 */
 	public static void shutdown() {
 		if (OpenEJB.isInitialized()) {
@@ -112,7 +133,8 @@ public class BootStrapOpenEjb {
 	public static Boolean isopenEjbAvailable() {
 		try {
 			Class.forName("org.apache.openejb.OpenEJB");
-		} catch (ClassNotFoundException e) {
+		} 
+		catch (ClassNotFoundException e) {
 			return false;
 		}
 		return true;
