@@ -1,4 +1,4 @@
-package no.knowit.openejb.mock;
+package no.knowit.openejb.mock.test;
 
 import java.util.Properties;
 
