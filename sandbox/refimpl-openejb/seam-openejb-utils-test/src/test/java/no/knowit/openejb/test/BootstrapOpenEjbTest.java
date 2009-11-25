@@ -1,7 +1,8 @@
-package no.knowit.openejb;
+package no.knowit.openejb.test;
 
-import no.knowit.openejb.mock.ContextPropertiesForTest;
+import no.knowit.openejb.BootStrapOpenEjb;
 import no.knowit.openejb.mock.OpenEjbTest;
+import no.knowit.openejb.mock.test.ContextPropertiesForTest;
 
 import org.apache.openejb.OpenEJB;
 import org.testng.Assert;
