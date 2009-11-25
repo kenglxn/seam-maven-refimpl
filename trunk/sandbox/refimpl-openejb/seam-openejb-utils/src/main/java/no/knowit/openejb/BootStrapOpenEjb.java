@@ -19,7 +19,7 @@ public class BootStrapOpenEjb {
 	}
 
 	/**
-	 * 
+	 * Bootstrap the OpenEJB embedded container
 	 * @param properties
 	 * @return
 	 * @throws Exception
@@ -30,24 +30,22 @@ public class BootStrapOpenEjb {
 			// Is OpenEJB is available
 			Class.forName("org.apache.openejb.OpenEJB");
 
-			if (initialContext != null) {
-				initialContext.close();
+			if (!OpenEJB.isInitialized()) {
+				Properties p = new Properties();
+	
+				// Set the initial context factory
+				p.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
+	
+				// Corresponds to JBoss JNDI lookup
+				p.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
+	
+				// Overrides default properties in p if key match
+				if (properties != null) {
+					p.putAll(properties);
+				}
+				initialContext = new InitialContext(p);
 			}
-
-			Properties p = new Properties();
-
-			// Set the initial context factory
-			p.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
-
-			// Corresponds to JBoss JNDI lookup
-			p.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
-
-			// Overrides default properties in p if key match
-			if (properties != null) {
-				p.putAll(properties);
-			}
-
-			initialContext = new InitialContext(p);
+			
 			return initialContext;
 		} 
 		catch (Exception e) {
@@ -86,7 +84,7 @@ public class BootStrapOpenEjb {
 
 	/**
 	 * Close the initial context
-	 * If the container was started with <code>openejb.embedded.initialcontext.close=close</code> then 
+	 * If the container was started with <code>openejb.embedded.initialcontext.close=destroy</code> then 
 	 * OpenEJB destroys the embedded container when closing the initial context, see:
 	 * http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
 	 * @return
@@ -139,5 +137,4 @@ public class BootStrapOpenEjb {
 		}
 		return true;
 	}
-
 }
