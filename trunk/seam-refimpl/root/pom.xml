@@ -16,9 +16,8 @@
 	<version>2.2.0-SNAPSHOT</version> <!-- reflects Seam version -->
 	<name>${project.groupId} : ${project.artifactId} : ${project.version}</name>
 	<description>
-		The Examples root pom is a copy of the seam-refimpl parent POM. The 
-		only difference is that project spesific properties and the modules tag 
-		are removed. You can use this POM as a template for your own root pom.
+		The Seam Maven Reference implementation root POM. 
+		You can use this POM as a template for your own root pom.
 	</description>
 	<url>http://code.google.com/p/seam-maven-refimpl/</url>
 	<packaging>pom</packaging>
