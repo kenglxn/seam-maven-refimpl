@@ -15,16 +15,17 @@ public class SeamCalculatorTest extends SeamOpenEjbTest {
 
 	@BeforeSuite
 	@Override
-	public void startSeam() throws Exception {
-		System.out.println("@BeforeSuite->CalculatorTest.startSeam");
-		
+	public void beforeSuite() throws Exception {
+		System.out.println("@BeforeSuite->CalculatorTest.beforeSuite");
 		super.startSeam();
 	}
 	
 	
+	@Override
 	@BeforeClass
-	protected void setUp() throws Exception {
-		System.out.println("@BeforeClass->CalculatorTest.setUp");
+	public void setupClass() throws Exception {
+		System.out.println("@BeforeClass->CalculatorTest.setupClass");
+		super.setupClass();
 
 		// TODO:
 		//Properties properties = new Properties();

@@ -26,7 +26,7 @@ public class MoviesTest {
 
 	@BeforeClass
 	public void setUp() throws Exception {
-		Properties p =  BootStrapOpenEjb.getDefaultProperties(null);
+		Properties p =  BootStrapOpenEjb.getDefaultContextProperties(null);
 		p.put("log4j.category.org.superbiz", "warn"); 
 		p.put("log4j.category.org.superbiz.logic.MoviesTest", "debug"); 
 		context = BootStrapOpenEjb.bootstrap(p);

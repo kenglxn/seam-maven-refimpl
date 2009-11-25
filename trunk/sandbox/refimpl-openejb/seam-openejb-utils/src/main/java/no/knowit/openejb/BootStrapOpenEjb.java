@@ -10,10 +10,21 @@ import org.apache.openejb.assembler.classic.AppInfo;
 import org.apache.openejb.assembler.classic.Assembler;
 import org.apache.openejb.loader.SystemInstance;
 
+
+/**
+ * TODO: Refactor to singleton and extract interface
+ * @author LeifOO
+ *
+ */
 public class BootStrapOpenEjb {
 
 	private static InitialContext initialContext = null;
 
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public static InitialContext bootstrap() throws Exception {
 		return bootstrap(null);
 	}
@@ -61,7 +72,7 @@ public class BootStrapOpenEjb {
 	 * @param properties
 	 * @return
 	 */
-	public static Properties getDefaultProperties(final Properties properties) {
+	public static Properties getDefaultContextProperties(final Properties properties) {
 		Properties p = new Properties();
 		
 		// see: http://openejb.apache.org/3.0/alternate-descriptors.html
@@ -90,6 +101,7 @@ public class BootStrapOpenEjb {
 	 * @return
 	 */
 	public static InitialContext closeInitialContext() {
+		if(initialContext != null)
 		try {
 			initialContext.close();
 			initialContext = null;
