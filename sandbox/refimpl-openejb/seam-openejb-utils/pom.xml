@@ -26,12 +26,6 @@
 		<jdk.source>1.6</jdk.source>
 		<jdk.target>1.6</jdk.target>
 		
-		<!-- properties for testing this module  -->
-		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
-		<env.hibernate.show_sql>false</env.hibernate.show_sql>
-		<env.hibernate.format_sql>true</env.hibernate.format_sql>
-		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
-		
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -56,82 +50,6 @@
 			<type>ejb</type>
 		</dependency>
 
-		<dependency>
-			<groupId>org.jboss.el</groupId>
-			<artifactId>jboss-el</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<!-- richfaces -->
-		<dependency>
-			<groupId>org.richfaces.framework</groupId>
-			<artifactId>richfaces-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<scope>provided</scope>
-		</dependency>
-	
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- commons -->
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<scope>provided</scope>
-		</dependency>	
-
 		<!-- unit test -->
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -139,7 +57,7 @@
 			<scope>provided</scope>
 		</dependency>
 		
-		<!-- openejb embedded container for running tests -->
+		<!-- openejb embedded container -->
 		<dependency>
 			<groupId>org.apache.openejb</groupId>
 			<artifactId>openejb-core</artifactId>
@@ -160,37 +78,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<!-- For in-memory database -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.persistence</groupId>
-					<artifactId>persistence-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.transaction</groupId>
-					<artifactId>jta</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<!-- in-memory databases  -->
-		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
-		<!--  -->
-		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 	
   <build>
@@ -203,13 +90,6 @@
 			</resource>
 		</resources>
 		
-		<testResources>                                                                                                     
-			<testResource>                                                                                                    
-				<directory>src/test/resources</directory>                                                                 
-				<filtering>true</filtering>                                                                               
-			</testResource>
-		</testResources>
-		 
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
