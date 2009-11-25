@@ -14,8 +14,11 @@ public class SeamCalculatorTest extends SeamOpenEjbTest {
 	//private Logger log = Logger.getLogger(this.getClass());
 
 	@BeforeSuite
-	public void beforeSuite() throws Exception {
-		System.out.println("@BeforeSuite->CalculatorTest.beforeSuite");
+	@Override
+	public void startSeam() throws Exception {
+		System.out.println("@BeforeSuite->CalculatorTest.startSeam");
+		
+		super.startSeam();
 	}
 	
 	
