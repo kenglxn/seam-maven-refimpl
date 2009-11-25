@@ -1,9 +1,10 @@
-package org.superbiz.seamcalculator;
+package org.superbiz.seamcalculator.test;
 
 import no.knowit.seam.openejb.mock.SeamTest;
 
 import org.jboss.seam.Component;
 import org.jboss.seam.contexts.Lifecycle;
+import org.superbiz.seamcalculator.SeamCalculator;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;

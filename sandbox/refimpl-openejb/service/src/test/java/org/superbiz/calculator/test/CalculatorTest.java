@@ -1,4 +1,4 @@
-package org.superbiz.calculator;
+package org.superbiz.calculator.test;
 
 import java.util.Properties;
 
@@ -6,6 +6,8 @@ import javax.naming.Context;
 
 import no.knowit.openejb.BootStrapOpenEjb;
 
+import org.superbiz.calculator.CalculatorLocal;
+import org.superbiz.calculator.CalculatorRemote;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

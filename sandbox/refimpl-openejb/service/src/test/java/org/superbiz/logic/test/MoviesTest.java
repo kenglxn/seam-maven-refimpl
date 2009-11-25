@@ -1,4 +1,4 @@
-package org.superbiz.logic;
+package org.superbiz.logic.test;
 
 import java.util.List;
 import java.util.Properties;
@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 import no.knowit.openejb.BootStrapOpenEjb;
 
 import org.apache.log4j.Logger;
+import org.superbiz.logic.Movies;
 import org.superbiz.model.Movie;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
