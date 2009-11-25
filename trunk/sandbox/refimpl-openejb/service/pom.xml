@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>no.knowit.seam</groupId>
 			<artifactId>seam-openejb-utils</artifactId>
-			<type>ejb</type>
+			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
   </dependencies>
