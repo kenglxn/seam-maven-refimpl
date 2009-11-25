@@ -14,9 +14,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 /**
- * Provides Base OpenEJB test functionality for TestNG integration tests.
+ * Provides Base OpenEJB test functionality for TestNG tests.
  * This is a copy of the <code>org.jboss.seam.mock.SeamTest</code> class.
- * Use the <code>no.knowit.seam.openejb.mock.SeamOpenEjbTest</code> class to run Seam specific tests.
+ * Use the <code>no.knowit.seam.openejb.mock.SeamTest</code> class to run Seam specific tests.
  */
 public class OpenEjbTest {
 	

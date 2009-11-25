@@ -1,6 +1,6 @@
 package org.superbiz.seamcalculator;
 
-import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
+import no.knowit.seam.openejb.mock.SeamTest;
 
 import org.jboss.seam.Component;
 import org.jboss.seam.contexts.Lifecycle;
@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-public class SeamCalculatorTest extends SeamOpenEjbTest {
+public class SeamCalculatorTest extends SeamTest {
 	
 	//private Logger log = Logger.getLogger(this.getClass());
 
