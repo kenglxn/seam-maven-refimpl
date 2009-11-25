@@ -38,9 +38,6 @@
     </repository>
   </repositories>
   
-	<!-- 
-		All provided, shared and test dependencies goes into parent pom 
-	-->
 	<dependencies>
 		<!-- seam -->
 		<dependency>

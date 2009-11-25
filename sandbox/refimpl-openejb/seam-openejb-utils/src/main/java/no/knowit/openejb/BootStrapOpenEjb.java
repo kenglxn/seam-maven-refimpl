@@ -36,7 +36,7 @@ public class BootStrapOpenEjb {
 				// Set the initial context factory
 				p.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
 	
-				// Corresponds to JBoss JNDI lookup
+				// Corresponds to JBoss JNDI lookup format
 				p.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
 	
 				// Overrides default properties in p if key match
@@ -105,23 +105,24 @@ public class BootStrapOpenEjb {
 	/**
 	 * Perform a clean shutdown of this embedded instance
 	 * This is an alternative to <code>initialContext.close()</code>
+	 * @return
 	 */
-	public static void shutdown() {
+	public static InitialContext shutdown() {
 		if (OpenEJB.isInitialized()) {
 			Assembler assembler = SystemInstance.get().getComponent(Assembler.class);
 			try {
 				for (AppInfo appInfo : assembler.getDeployedApplications()) {
 						assembler.destroyApplication(appInfo.jarPath);
 				}
+				OpenEJB.destroy();
 			} 
 			catch (Exception e) {
 				System.out.println("\n*******\nClosing OpenEJB context failed: " + e + "\n*******");
 				throw new RuntimeException(e);
 			}
-			finally {
-				OpenEJB.destroy();
-			}
 		}
+		initialContext = null;
+		return null;
 	}
 
 	/**
