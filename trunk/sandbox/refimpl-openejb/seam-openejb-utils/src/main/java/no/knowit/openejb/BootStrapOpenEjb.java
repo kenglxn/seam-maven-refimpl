@@ -12,7 +12,8 @@ import org.apache.openejb.loader.SystemInstance;
 
 
 /**
- * TODO: Refactor to singleton and extract interface
+ * TODO: Refactor to singleton, extract interface and use e.g. a factory to 
+ * instantiate correct bootstrap implementation
  * @author LeifOO
  *
  */

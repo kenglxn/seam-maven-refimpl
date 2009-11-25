@@ -8,13 +8,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 /**
- * Provides BaseSeamTest functionality for TestNG integration tests.
+ * Provides Base Seam test functionality for TestNG tests running in the OpenEJB embedded container.
+ * This is a copy of the <code>org.jboss.seam.mock.SeamTest</code> class.
  * 
  * @author Gavin King
  * @author <a href="mailto:theute@jboss.org">Thomas Heute</a>
  * @author Mike Youngstrom
  */
-public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
+public class SeamTest extends AbstractSeamOpenEjbTest {
 	
 	@BeforeMethod
 	@Override
