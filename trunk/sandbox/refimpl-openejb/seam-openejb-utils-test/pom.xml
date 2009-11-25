@@ -24,7 +24,7 @@
 	</description>
 	
   <properties>
-	  	<!-- override from parent pom -->
+		<!-- override from parent pom -->
 		<env>dev</env>
 		<jdk.debug>true</jdk.debug>
 		<jdk.optimize>false</jdk.optimize>

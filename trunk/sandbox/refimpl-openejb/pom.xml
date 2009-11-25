@@ -22,6 +22,7 @@
 		<module>model</module>
 		<module>service</module>
 		<module>seam-openejb-utils</module>
+		<module>seam-openejb-utils-test</module>
 	</modules>
 	
   <properties>

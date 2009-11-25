@@ -6,6 +6,7 @@ import javax.naming.Context;
 
 import no.knowit.openejb.BootStrapOpenEjb;
 
+import org.apache.openejb.OpenEJB;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -21,13 +22,13 @@ public class BootstrapOpenEjbTest {
 		// Override default property value
 		p.put("openejb.deployments.classpath.ear", "false");
 		
-		// Database connection (*-ds.xml in JBoss)
-		p.put("movieDatabase = new://Resource?type", "DataSource");
-		p.put("movieDatabase.JdbcDriver ", "org.hsqldb.jdbcDriver");
-		p.put("movieDatabase.JdbcUrl ", "jdbc:hsqldb:mem:moviedb");
+		// Database connection (same as *-ds.xml in JBoss)
+		p.put("openejbTestDatabase = new://Resource?type", "DataSource");
+		p.put("openejbTestDatabase.JdbcDriver ", "org.hsqldb.jdbcDriver");
+		p.put("openejbTestDatabase.JdbcUrl ", "jdbc:hsqldb:mem:moviedb");
 
-		// override properties on your "movie-unit" persistence unit (persistence.xml)
-		p.put("movie-unit.hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+		// override properties on "openejb-test-unit" persistence unit (src/main/resources/META-INF/persistence.xml)
+		p.put("openejb-test-unit.hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		
 		
 		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
@@ -43,6 +44,7 @@ public class BootstrapOpenEjbTest {
 	@Test
 	public void shallBootstrapOpenEjb() throws Exception {
 		initialContext = BootStrapOpenEjb.bootstrap(null);
+		Assert.assertNotNull(initialContext);
 	}
 
 	/**
@@ -52,5 +54,18 @@ public class BootstrapOpenEjbTest {
 	@Test(dependsOnMethods={ "shallBootstrapOpenEjb" })
 	public void shallCloseInitialContext() throws Exception {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
+		Assert.assertNull(initialContext);
 	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	@Test(dependsOnMethods={ "shallCloseInitialContext" })
+	public void shallShutdown() throws Exception {
+		initialContext = BootStrapOpenEjb.bootstrap(null);
+		initialContext = BootStrapOpenEjb.shutdown();
+		Assert.assertFalse(OpenEJB.isInitialized());
+	}
+	
 }
