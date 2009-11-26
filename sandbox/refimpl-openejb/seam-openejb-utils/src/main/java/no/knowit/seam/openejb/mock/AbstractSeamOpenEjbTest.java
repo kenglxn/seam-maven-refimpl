@@ -10,6 +10,7 @@ import no.knowit.openejb.BootStrapOpenEjb;
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.mock.AbstractSeamTest;
+import org.testng.Assert;
 
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
@@ -85,5 +86,23 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 	protected static <T> T getComponentInstance(final String name, final ScopeType scope) {
 		return (T) Component.getInstance(name, scope);
 	}
+	
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @return
+	 */
+	protected static <T> T getComponentInstanceWithAssertNotNull(final String name) {
+		try {
+			T instance = (T)Component.getInstance(name);
+			Assert.assertNotNull(instance, "Component.getInstance(\"" + name + "\") returned null");
+			return instance;
+		} catch (Exception e) {
+			Assert.fail("Could not lookup Seam component", e);
+		}
+		return null;
+	}
+
 
 }
