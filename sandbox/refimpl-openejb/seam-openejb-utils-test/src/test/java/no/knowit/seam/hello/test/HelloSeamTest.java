@@ -15,6 +15,7 @@ public class HelloSeamTest extends SeamTest {
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
 		 contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
+		 contextProperties.put("log4j.category.no.knowit.seam.hello", "debug");
 		 super.beforeSuite();
 	}
 
