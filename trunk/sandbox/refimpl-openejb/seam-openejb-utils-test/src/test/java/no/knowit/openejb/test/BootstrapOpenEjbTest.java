@@ -37,7 +37,7 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(groups={ "openejb" }, enabled=true)
+	@Test(groups={ "openejb", "unit-test" }, enabled=true)
 	public void bootstrapOpenEjb() throws Exception {
 		Assert.assertTrue(BootStrapOpenEjb.isopenEjbAvailable());
 		
@@ -49,7 +49,7 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(groups={ "openejb" }, dependsOnMethods={ "bootstrapOpenEjb" }, enabled=true)
+	@Test(groups={ "openejb", "unit-test" }, dependsOnMethods={ "bootstrapOpenEjb" }, enabled=true)
 	public void closeOpenEjbInitialContext() throws Exception {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
 		Assert.assertNull(initialContext);
@@ -59,7 +59,7 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(groups={ "openejb" }, dependsOnMethods={ "closeOpenEjbInitialContext" }, enabled=false)
+	@Test(groups={ "openejb", "unit-test" }, dependsOnMethods={ "closeOpenEjbInitialContext" }, enabled=false)
 	public void shutdownopenEjb() throws Exception {
 		initialContext = BootStrapOpenEjb.bootstrap(null);
 		initialContext = BootStrapOpenEjb.shutdown();

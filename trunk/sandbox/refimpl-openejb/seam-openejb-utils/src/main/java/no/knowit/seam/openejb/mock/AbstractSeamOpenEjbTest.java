@@ -86,12 +86,14 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 	protected static <T> T getComponentInstance(final String name, final ScopeType scope) {
 		return (T) Component.getInstance(name, scope);
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
 	 * @param name
+	 * @param clazz
 	 * @return
+	 * @throws Exception
 	 */
 	protected static <T> T getComponentInstanceWithAsserts(final String name, Class<?> clazz) throws Exception {
 		try {
