@@ -37,8 +37,8 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test
-	public void shallBootstrapOpenEjb() throws Exception {
+	@Test(groups={ "openejb" })
+	public void bootstrapOpenEjb() throws Exception {
 		Assert.assertTrue(BootStrapOpenEjb.isopenEjbAvailable());
 		
 		initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
@@ -49,8 +49,8 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(dependsOnMethods={ "shallBootstrapOpenEjb" })
-	public void shallCloseInitialContext() throws Exception {
+	@Test(groups={ "openejb" }, dependsOnMethods={ "bootstrapOpenEjb" })
+	public void closeOpenEjbInitialContext() throws Exception {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
 		Assert.assertNull(initialContext);
 	}
@@ -59,8 +59,8 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(dependsOnMethods={ "shallCloseInitialContext" })
-	public void shallShutdownContainer() throws Exception {
+	@Test(groups={ "openejb" }, dependsOnMethods={ "closeOpenEjbInitialContext" })
+	public void shutdownopenEjb() throws Exception {
 		initialContext = BootStrapOpenEjb.bootstrap(null);
 		initialContext = BootStrapOpenEjb.shutdown();
 		Assert.assertFalse(OpenEJB.isInitialized());

@@ -18,7 +18,7 @@ public class SeamCalculatorTest extends SeamTest {
 	@Override
 	public void beforeSuite() throws Exception {
 		System.out.println("@BeforeSuite->CalculatorTest.beforeSuite");
-		super.startSeam();
+		super.beforeSuite();
 	}
 	
 	
