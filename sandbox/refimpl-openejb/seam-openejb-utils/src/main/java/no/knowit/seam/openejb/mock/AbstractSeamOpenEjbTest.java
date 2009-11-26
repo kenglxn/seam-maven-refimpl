@@ -97,10 +97,10 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 	 */
 	protected static <T> T getComponentInstanceWithAsserts(final String name, Class<?> clazz) throws Exception {
 		try {
-			Object obj = Component.getInstance(name);
-			Assert.assertNotNull(obj, "Component.getInstance(\"" + name + "\") returned null");
-			Assert.assertTrue(obj.getClass() instanceof Class, "Component.getInstance(\"name\") returned incorrect type");
-			return (T)obj;
+			Object instance = Component.getInstance(name);
+			Assert.assertNotNull(instance, "Component.getInstance(\"" + name + "\") returned null");
+			Assert.assertTrue(instance.getClass() instanceof Class, "Component.getInstance(\"name\") returned incorrect type");
+			return (T)instance;
 		}
 		catch (Exception e) {
 			Assert.fail("Could not lookup Seam component: " + name, e);
