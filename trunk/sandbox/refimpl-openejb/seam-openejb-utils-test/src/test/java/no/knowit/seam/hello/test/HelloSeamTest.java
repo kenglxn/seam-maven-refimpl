@@ -22,15 +22,15 @@ public class HelloSeamTest extends SeamTest {
 		 super.beforeSuite();
 	}
 
-	@Test(groups={ "seam" })
+	@Test(groups={ "seam", "unit-test" })
 	public void sayHelloSeam() throws Exception {
 
 		new ComponentTest() {
 			@Override
 			protected void testComponents() throws Exception {
-				HelloSeam seamComponent = getComponentInstanceWithAssertNotNull("helloSeam");
+				HelloSeam seamComponent = getComponentInstanceWithAsserts("helloSeam", HelloSeam.class);
 				Assert.assertEquals("Hello Seam", seamComponent.sayHello());
-				log.debug("Seam says Hello :-)");
+				log.debug("*** Seam says Hello :-)");
 			}
 		}.run();
 	}
