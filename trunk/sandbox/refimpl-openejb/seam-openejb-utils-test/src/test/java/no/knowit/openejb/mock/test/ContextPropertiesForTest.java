@@ -25,8 +25,6 @@ public class ContextPropertiesForTest {
 		//p.put("openejb-test-unit.hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		
 		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
-		p.put("log4j.category.no.knowit.openejb", "debug");
-		p.put("log4j.category.no.knowit.seam.openejb", "debug");
 		p.put("log4j.category.org.jboss.seam.Component", "DEBUG");
 		p.put("log4j.category.org.jboss.seam.mock", "DEBUG");
 
