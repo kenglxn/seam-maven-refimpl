@@ -44,11 +44,12 @@ public class SeamTest extends AbstractSeamOpenEjbTest {
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
 		// needs a WEB-INF/web.xml in resources!!!
-		super.startSeam(); 
+		startSeam(); 
 	}
 
 	@AfterSuite
 	protected void afterSuite() throws Exception {
 		super.stopSeam();
+		closeInitialContext();
 	}
 }
