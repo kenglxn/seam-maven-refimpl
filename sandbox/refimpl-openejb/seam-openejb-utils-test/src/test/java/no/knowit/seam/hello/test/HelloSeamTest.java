@@ -25,9 +25,8 @@ public class HelloSeamTest extends SeamTest {
 		new ComponentTest() {
 			@Override
 			protected void testComponents() throws Exception {
-				Object obj = Component.getInstance("helloSeam");
+				HelloSeam obj = getComponentInstance("helloSeam");
 				Assert.assertNotNull(obj, "Component.getInstance(\"helloSeam\") returned null");
-				Assert.assertTrue(obj instanceof HelloSeam, "Component.getInstance(\"seamCalculator\") returned incorrect type");
 				Assert.assertEquals("Hello Seam", ((HelloSeam)obj).sayHello());
 			}
 		}.run();

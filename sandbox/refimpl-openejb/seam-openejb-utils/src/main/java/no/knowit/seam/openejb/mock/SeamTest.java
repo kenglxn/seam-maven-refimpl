@@ -49,7 +49,7 @@ public class SeamTest extends AbstractSeamOpenEjbTest {
 
 	@AfterSuite
 	protected void afterSuite() throws Exception {
-		super.stopSeam();
+		stopSeam();
 		closeInitialContext();
 	}
 }

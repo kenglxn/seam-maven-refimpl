@@ -3,9 +3,12 @@ package no.knowit.seam.openejb.mock;
 import java.util.Properties;
 
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import no.knowit.openejb.BootStrapOpenEjb;
 
+import org.jboss.seam.Component;
+import org.jboss.seam.ScopeType;
 import org.jboss.seam.mock.AbstractSeamTest;
 
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
@@ -21,6 +24,14 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 		if (initialContext == null) {
 			initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
 		}
+	}
+
+	/**
+	 * 
+	 */
+  @Override
+	protected InitialContext getInitialContext() throws NamingException {
+		return initialContext;
 	}
 
 	/**
@@ -43,4 +54,36 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 	protected void closeInitialContext() {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
 	}
+	
+  /**
+   * Type safe version of Component.getInstance(name)
+   * @param <T>
+   * @param name
+   * @return
+   */
+	protected static <T> T getComponentInstance(final String name) {
+		return (T)Component.getInstance(name);
+	}
+
+	/**
+   * Type safe version of Component.getInstance(class)
+	 * @param <T>
+	 * @param clazz
+	 * @return
+	 */
+  protected static <T> T getComponentInstance(final Class<T> clazz) {
+		return (T) Component.getInstance(clazz);
+	}
+
+	/**
+   * Type safe version of Component.getInstance(name, scope)
+	 * @param <T>
+	 * @param name
+	 * @param scope
+	 * @return
+	 */
+	protected static <T> T getComponentInstance(final String name, final ScopeType scope) {
+		return (T) Component.getInstance(name, scope);
+	}
+
 }
