@@ -12,8 +12,9 @@ import org.apache.openejb.loader.SystemInstance;
 
 
 /**
- * TODO: Refactor to singleton, extract interface and use e.g. a factory to 
- * instantiate correct bootstrap implementation
+ * Copied/Modified from http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting
+ *
+ * TODO: Extract interface and use e.g. a factory to instantiate correct bootstrap implementation
  * @author LeifOO
  *
  */
