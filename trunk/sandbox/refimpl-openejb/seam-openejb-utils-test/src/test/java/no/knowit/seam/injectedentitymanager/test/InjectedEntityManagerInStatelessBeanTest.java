@@ -16,10 +16,10 @@ public class InjectedEntityManagerInStatelessBeanTest extends SeamTest {
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-		 contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
-		 
-		 contextProperties.put("log4j.category.no.knowit.seam.injectedentitymanager.test", "DEBUG");
-		 super.beforeSuite();
+	 contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
+	 
+	 contextProperties.put("log4j.category.no.knowit.seam.injectedentitymanager.test", "DEBUG");
+	 super.beforeSuite();
 	}
 
 	@Test(groups={ "seam", "unit-test" })

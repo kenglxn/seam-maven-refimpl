@@ -12,6 +12,12 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.mock.AbstractSeamTest;
 import org.testng.Assert;
 
+/**
+ * Copied/Modified from http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting
+ * 
+ * @author LeifOO
+ *
+ */
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
 	protected static InitialContext initialContext = null;
@@ -32,6 +38,13 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 	 */
   @Override
 	protected InitialContext getInitialContext() throws NamingException {
+		return initialContext;
+	}
+
+  /**
+   * 
+   */
+	public static InitialContext getStaticInitialContext() throws NamingException {
 		return initialContext;
 	}
 
