@@ -2,9 +2,9 @@ package no.knowit.seam.injectedentitymanager;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import no.knowit.seam.model.Movie;
@@ -14,43 +14,59 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
-@Name("injectedEntityManager")
+@Name("injectedEntityManagerInStatelessBean")
 @Stateless
 @Scope(ScopeType.STATELESS)
-public class InjectedEntityManagerBean implements InjectedEntityManager {
+public class InjectedEntityManagerInStatelessBean implements InjectedEntityManagerInStateless {
 
 	@In
 	private EntityManager entityManager;
 
-	@PostConstruct
-	protected void initDatabase() throws Exception {
-		addMovie(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
-		addMovie(new Movie("Joel Coen", "Fargo", 1996));
-		addMovie(new Movie("Joel Coen", "The Big Lebowski", 1998));
-	}
-	
 	@Override
 	public EntityManager getEntityManager() {
 		return entityManager;
 	}
 	
 	@Override
-	public void addMovie(Movie movie) throws Exception {
+	public void addMovie(Movie movie) {
 		entityManager.persist(movie);
 	}
-
+	
 	@Override
-	public void deleteMovie(Movie movie) throws Exception {
+	public void deleteMovie(Movie movie) {
 		entityManager.remove(movie);
+	}
+	
+	@Override
+	public void deleteAllMovies() {
+		List<Movie> list = getMovies();
+		for (Movie movie : list) {
+			deleteMovie(movie);
+		}
 	}
 
 	@Override
-	public List<Movie> getMovies() throws Exception {
+	public List<Movie> getMovies() {
 		
 		if(entityManager != null) {
 			Query query = entityManager.createQuery("select m from Movie as m");
 			return query.getResultList();
 		}
 		return null;
+	}
+
+	@Override
+	public Movie findMovieByTitle(String title) {
+		Query query = entityManager
+			.createQuery("from Movie m where m.title=:title")
+			.setParameter("title", title);
+		
+		Movie result = null;
+		try {
+			result = (Movie)query.getSingleResult();
+		} catch (NoResultException e) {
+			result = null;
+		}
+		return result;		
 	}
 }
