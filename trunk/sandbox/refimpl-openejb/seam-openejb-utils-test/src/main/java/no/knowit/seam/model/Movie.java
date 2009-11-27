@@ -40,7 +40,7 @@ public class Movie implements Serializable {
 		@Column
     private String director;
 
-    @Column
+    @Column(unique=true)
     private String title;
 
     @Column
