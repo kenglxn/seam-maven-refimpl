@@ -14,8 +14,8 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
-@Name("injectedEntityManagerInStatelessBean")
 @Stateless
+@Name("injectedEntityManagerInStatelessBean")
 @Scope(ScopeType.STATELESS)
 
 public class InjectedEntityManagerInStatelessBean implements InjectedEntityManagerInStateless {
