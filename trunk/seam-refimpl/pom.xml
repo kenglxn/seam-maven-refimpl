@@ -20,7 +20,6 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>root</module>
 		<module>ear</module>
 		<module>ejb</module>
 		<module>war</module>
