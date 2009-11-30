@@ -29,7 +29,7 @@ public class HelloSeamTest extends SeamTest {
 			@Override
 			protected void testComponents() throws Exception {
 				HelloSeam seamComponent = getComponentInstanceWithAsserts("helloSeam", HelloSeam.class);
-				Assert.assertEquals("Hello Seam", seamComponent.sayHello());
+				Assert.assertEquals(seamComponent.sayHello(), "Hello Seam");
 				log.debug("*** Seam says Hello :-)");
 			}
 		}.run();

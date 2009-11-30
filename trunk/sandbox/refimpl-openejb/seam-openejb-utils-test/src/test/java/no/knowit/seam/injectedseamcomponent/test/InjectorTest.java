@@ -31,7 +31,7 @@ public class InjectorTest extends SeamTest {
 				Injector injector = getComponentInstanceWithAsserts("injector", Injector.class);
 				
 				Assert.assertNotNull(injector.getInjectedSeamComponent(), "The injected Seam component was NULL!");
-				Assert.assertEquals("Hello Seam", injector.getInjectedSeamComponent().sayHello());
+				Assert.assertEquals(injector.getInjectedSeamComponent().sayHello(), "Hello Seam");
 				log.debug("*** The @In(jected) Seam component says Hello :-)");
 			}
 		}.run();
