@@ -1,13 +1,16 @@
 package no.knowit.seam.statefulaction;
 
 
+import java.io.Serializable;
+import java.util.List;
+
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.Query;
+
+import no.knowit.seam.model.Message;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
@@ -17,13 +20,6 @@ import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
-import org.jboss.seam.log.LogProvider;
-import org.jboss.seam.log.Logging;
-
-import no.knowit.seam.model.Message;
-
-import java.io.Serializable;
-import java.util.List;
 
 @Stateful
 @Name("messageManager")

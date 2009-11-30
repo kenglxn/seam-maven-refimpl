@@ -1,7 +1,5 @@
 package no.knowit.seam.statefulaction;
 
-import java.util.List;
-
 import javax.ejb.Local;
 import javax.persistence.EntityManager;
 
