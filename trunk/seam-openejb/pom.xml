@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project 
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+  <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>no.knowit.seam</groupId>
+		<artifactId>root</artifactId>
+		<version>2.2.0-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>no.knowit.seam</groupId>
+	<artifactId>seam-openejb</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
+	<version>1.0-SNAPSHOT</version>
+	<name>${project.artifactId} : ${project.version}</name>
+	<description>Seam test with OpenEJB and JPA with Hibernate</description>
+	<packaging>pom</packaging>
+	
+	<modules>
+		<module>seam-openejb-utils</module>
+		<module>seam-openejb-utils-test</module>
+	</modules>
+	
+  <properties>
+		<!-- application properties -->
+		<app.context>seam-openejb</app.context>  <!-- hint: same value as artifactId -->
+		<app.web.context>${app.context}</app.web.context>
+		<app.display.name>Multi module Unit test with OpenEJB and JPA with Hibernate</app.display.name>
+		<app.description></app.description>
+		
+		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
+		<app.entity.manager.factory.name>entityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g jpql-consoleEntityManagerFactory is illegal-->
+
+		
+		
+		
+		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
+		
+		<app.persistence.unit.name>movie-unit</app.persistence.unit.name>
+		<app.jndi.name>${app.persistence.unit.name}Datasource</app.jndi.name>
+		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
+		<app.persistence.unit.jndi.name>java:/${app.persistence.unit.name}EntityManagerFactory</app.persistence.unit.jndi.name>
+
+		
+		
+		
+		
+		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for JBoss 4.2.3 or newer -->
+		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
+		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
+		<app.distributable>false</app.distributable> <!-- see: WEB-INF/components.xml and ejb/../resources/META-INF/jboss.xml -->
+		
+		<env>dev</env>
+		<env.debug>true</env.debug>
+		<env.unpack.modules>true</env.unpack.modules>
+		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+		<env.hibernate.show_sql>false</env.hibernate.show_sql>
+		<env.hibernate.format_sql>true</env.hibernate.format_sql>
+		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+		
+		<jdk.debug>${env.debug}</jdk.debug>
+		<jdk.optimize>false</jdk.optimize>
+		<jdk.source>1.6</jdk.source>
+		<jdk.target>1.6</jdk.target>
+		
+		<ds>hsqldb</ds>
+		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
+		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
+		<ds.server.name></ds.server.name>
+		<ds.database.name>moviedb</ds.database.name>
+		<ds.connection.url>jdbc:hsqldb:mem:${ds.database.name}</ds.connection.url>
+		<ds.user.name>sa</ds.user.name>
+		<ds.password></ds.password>
+
+		
+    <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>apache-m2-snapshot</id>
+      <name>Apache Snapshot Repository</name>
+      <url>http://repository.apache.org/snapshots</url>
+    </repository>
+  </repositories>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>no.knowit.seam</groupId>
+				<artifactId>seam-openejb-utils</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			
+			<dependency>
+				<groupId>no.knowit.seam</groupId>
+				<artifactId>seam-openejb-utils-test</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			
+			<!-- openejb embedded container -->
+			<dependency>
+				<groupId>org.apache.openejb</groupId>
+				<artifactId>openejb-core</artifactId>
+				<version>3.1.2</version>
+				<scope>provided</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.apache.openjpa</groupId>
+						<artifactId>openjpa</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>hsqldb</groupId>
+						<artifactId>hsqldb</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- 
+		All provided, shared and test dependencies goes into parent pom 
+	-->
+	<dependencies>
+	
+		<!-- seam -->
+		<dependency>
+			<groupId>org.jboss.seam</groupId>
+			<artifactId>jboss-seam</artifactId>
+			<scope>provided</scope>
+			<type>ejb</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.el</groupId>
+			<artifactId>jboss-el</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- richfaces -->
+		<dependency>
+			<groupId>org.richfaces.framework</groupId>
+			<artifactId>richfaces-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- jee -->
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>ejb-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>jms</artifactId>
+			<scope>provided</scope>
+		</dependency>		
+		
+		<!-- commons -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>provided</scope>
+		</dependency>	
+
+		<!-- ******** TEST DEPENDECIES ********	-->
+		
+		<!-- openejb embedded container for running tests -->
+		<dependency>
+			<groupId>org.apache.openejb</groupId>
+			<artifactId>openejb-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- For in-memory database -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.persistence</groupId>
+					<artifactId>persistence-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.transaction</groupId>
+					<artifactId>jta</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- in-memory databases  -->
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!--
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.1.111</version>
+		</dependency>
+		-->
+		
+		<!-- unit test -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!--  -->
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	
+  <build>
+    <defaultGoal>install</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${jdk.source}</source>
+					<target>${jdk.target}</target>
+					<encoding>utf-8</encoding>
+					<debug>${jdk.debug}</debug>
+					<optimize>${jdk.optimize}</optimize>
+				</configuration>
+			</plugin>
+		</plugins>
+  </build>
+	
+</project>

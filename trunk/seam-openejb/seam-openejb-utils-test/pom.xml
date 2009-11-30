@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project 
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+  <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>no.knowit.seam</groupId>
+		<artifactId>seam-openejb</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>seam-openejb-utils-test</artifactId>
+	<name>${project.artifactId} : ${project.version}</name>
+	<packaging>jar</packaging>
+	<description>
+		Tests for "seam-openejb-utils" module must be split into a separate project because 
+		the "openejb.altdd.prefix" property does not work on persistence.xml and we do not 
+		want to expose this persistence.xml while running tests on modules in other projects. 
+		see http://openejb.apache.org/3.0/alternate-descriptors.html
+	</description>
+	
+  <properties>
+		<!-- override from parent pom -->
+
+		<!-- properties for testing this module  -->
+		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
+		<env.hibernate.show_sql>false</env.hibernate.show_sql>
+		<env.hibernate.format_sql>true</env.hibernate.format_sql>
+		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
+  </properties>
+  	
+	<dependencies>
+		<dependency>
+			<groupId>no.knowit.seam</groupId>
+			<artifactId>seam-openejb-utils</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- hibernate. Tests fail if it is not here - not shure why -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+  <build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		
+		<testResources>                                                                                                     
+			<testResource>                                                                                                    
+				<directory>src/test/resources</directory>                                                                 
+				<filtering>true</filtering>                                                                               
+			</testResource>
+		</testResources>
+  </build>
+</project>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project 
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+  <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>no.knowit.seam</groupId>
+		<artifactId>seam-openejb</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>seam-openejb-utils</artifactId>
+	<name>${project.artifactId} : ${project.version}</name>
+	<description>Utilities to get Seam tests running in OpenEJB embedded container</description>
+	<packaging>jar</packaging>
+	
+	<dependencies>
+		<!-- unit test -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- openejb embedded container -->
+		<dependency>
+			<groupId>org.apache.openejb</groupId>
+			<artifactId>openejb-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+  <build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+  </build>
+</project>
