@@ -33,21 +33,21 @@ public class InjectedEntityManagerInStatelessBeanTest extends SeamTest {
 				Assert.assertNotNull(injectedEntityManager, "Entity manager was null");
 				
 				injectedEntityManager.deleteAllMovies();
-				Assert.assertEquals(0, injectedEntityManager.getMovies().size(), "InjectedEntityManager.deleteAllMovies()");
+				Assert.assertEquals(injectedEntityManager.getMovies().size(), 0, "InjectedEntityManager.deleteAllMovies()");
 				
 				injectedEntityManager.addMovie(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
 				injectedEntityManager.addMovie(new Movie("Joel Coen", "Fargo", 1996));
 				injectedEntityManager.addMovie(new Movie("Joel Coen", "The Big Lebowski", 1998));
 				
 				List<Movie> list = injectedEntityManager.getMovies();
-				Assert.assertEquals(3, list.size(), "List.size()");
+				Assert.assertEquals(list.size(), 3, "List.size()");
 				
 				Movie movie = injectedEntityManager.findMovieByTitle("Fargo");
 				Assert.assertNotNull(movie, "InjectedEntityManager.findMovieByTitle");
-				Assert.assertEquals("Fargo", movie.getTitle(), "InjectedEntityManager.findMovieByTitle()");
+				Assert.assertEquals(movie.getTitle(), "Fargo", "InjectedEntityManager.findMovieByTitle()");
 				
 				injectedEntityManager.deleteAllMovies();
-				Assert.assertEquals(0, injectedEntityManager.getMovies().size(), "InjectedEntityManager.deleteAllMovies()");
+				Assert.assertEquals(injectedEntityManager.getMovies().size(), 0, "InjectedEntityManager.deleteAllMovies()");
 			}
 		}.run();
 	}

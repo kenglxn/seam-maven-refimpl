@@ -1,5 +1,6 @@
 package no.knowit.seam.injectedentitymanager;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -18,8 +19,10 @@ import org.jboss.seam.annotations.Scope;
 @Name("injectedEntityManagerInStatelessBean")
 @Scope(ScopeType.STATELESS)
 
-public class InjectedEntityManagerInStatelessBean implements InjectedEntityManagerInStateless {
+public class InjectedEntityManagerInStatelessBean implements Serializable, InjectedEntityManagerInStateless {
 
+	private static final long serialVersionUID = 1L;
+	
 	@In
 	private EntityManager entityManager;
 
