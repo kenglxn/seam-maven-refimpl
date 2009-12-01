@@ -38,7 +38,7 @@
 		
 		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
 		
-		<app.persistence.unit.name>movie-unit</app.persistence.unit.name>
+		<app.persistence.unit.name>openejb-test-unit</app.persistence.unit.name>
 		<app.jndi.name>${app.persistence.unit.name}Datasource</app.jndi.name>
 		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
 		<app.persistence.unit.jndi.name>java:/${app.persistence.unit.name}EntityManagerFactory</app.persistence.unit.jndi.name>

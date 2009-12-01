@@ -21,16 +21,6 @@
 		see http://openejb.apache.org/3.0/alternate-descriptors.html
 	</description>
 	
-  <properties>
-		<!-- override from parent pom -->
-
-		<!-- properties for testing this module  -->
-		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
-		<env.hibernate.show_sql>false</env.hibernate.show_sql>
-		<env.hibernate.format_sql>true</env.hibernate.format_sql>
-		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
-  </properties>
-  	
 	<dependencies>
 		<dependency>
 			<groupId>no.knowit.seam</groupId>

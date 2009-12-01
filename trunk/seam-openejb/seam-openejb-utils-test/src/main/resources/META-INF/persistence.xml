@@ -5,34 +5,24 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
 		http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 		
-  <persistence-unit name="openejb-test-unit" transaction-type="JTA">  
+  <persistence-unit name="${app.persistence.unit.name}" transaction-type="JTA">  
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-    <jta-data-source>java:/openejbTestDatabase</jta-data-source>
+    <jta-data-source>${app.jta.data.source}</jta-data-source>
     <properties>
-      <property name="hibernate.dialect" 
-      					value="org.hibernate.dialect.HSQLDialect"/>
-      <property name="hibernate.hbm2ddl.auto" 
-      					value="${env.hibernate.hbm2ddl.auto}"/>
-      <property name="hibernate.default_batch_fetch_size" 
-      					value="${env.hibernate.default_batch_size}"/>
-      <property name="hibernate.show_sql" 
-      					value="${env.hibernate.show_sql}"/>
-      <property name="hibernate.format_sql" 
-      					value="${env.hibernate.format_sql}"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+      <property name="hibernate.hbm2ddl.auto" value="${env.hibernate.hbm2ddl.auto}"/>
+      <property name="hibernate.default_batch_fetch_size" value="${env.hibernate.default_batch_size}"/>
+      <property name="hibernate.show_sql" value="${env.hibernate.show_sql}"/>
+      <property name="hibernate.format_sql"	value="${env.hibernate.format_sql}"/>
 								
 			<!-- Encoding -->      
-			<property name="hibernate.connection.useUnicode" 
-								value="true" />
-			<property name="hibernate.connection.characterEncoding" 
-								value="UTF-8" />
+			<property name="hibernate.connection.useUnicode" value="true" />
+			<property name="hibernate.connection.characterEncoding" value="UTF-8" />
 			
       <!-- These are the default for JBoss EJB3, but not for HEM: -->
-      <property name="hibernate.cache.provider_class" 
-      					value="org.hibernate.cache.HashtableCacheProvider"/>
-      					
-      <property name="hibernate.transaction.manager_lookup_class" 
-      					value="org.apache.openejb.hibernate.TransactionManagerLookup"/>
+      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/>
+      <property name="hibernate.transaction.manager_lookup_class" value="org.apache.openejb.hibernate.TransactionManagerLookup"/>
     </properties>
   </persistence-unit>
    
