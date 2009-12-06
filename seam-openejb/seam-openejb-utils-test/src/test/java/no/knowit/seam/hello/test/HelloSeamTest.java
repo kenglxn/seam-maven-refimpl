@@ -8,6 +8,7 @@ import org.jboss.seam.log.Logging;
 
 import no.knowit.openejb.mock.test.ContextPropertiesForTest;
 import no.knowit.seam.hello.HelloSeam;
+import no.knowit.seam.hello.HelloSeamNoInterface;
 import no.knowit.seam.openejb.mock.SeamTest;
 
 public class HelloSeamTest extends SeamTest {
@@ -23,15 +24,29 @@ public class HelloSeamTest extends SeamTest {
 	}
 
 	@Test(groups={ "seam", "unit-test" })
-	public void sayHelloSeam() throws Exception {
+	public void shouldLookupSeamComponentWithNoInterface() throws Exception {
+
+		new ComponentTest() {
+			@Override
+			protected void testComponents() throws Exception {
+				HelloSeamNoInterface seamComponent = getComponentInstanceWithAsserts("helloSeamNoInterface", HelloSeamNoInterface.class);
+				Assert.assertEquals(seamComponent.sayHello(), "Hello Seam - No Interface");
+				log.debug("*** Seam with no interface says Hello :-)");
+			}
+		}.run();
+	}
+	
+	@Test(groups={ "seam", "unit-test" }, dependsOnMethods={ "shouldLookupSeamComponentWithNoInterface" })
+	public void shouldLookupSeamComponentWithLocalInterface() throws Exception {
 
 		new ComponentTest() {
 			@Override
 			protected void testComponents() throws Exception {
 				HelloSeam seamComponent = getComponentInstanceWithAsserts("helloSeam", HelloSeam.class);
 				Assert.assertEquals(seamComponent.sayHello(), "Hello Seam");
-				log.debug("*** Seam says Hello :-)");
+				log.debug("*** Seam with local interface says Hello :-)");
 			}
 		}.run();
 	}
+
 }
