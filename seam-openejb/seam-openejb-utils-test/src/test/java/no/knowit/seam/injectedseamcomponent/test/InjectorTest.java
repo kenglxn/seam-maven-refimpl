@@ -32,7 +32,11 @@ public class InjectorTest extends SeamTest {
 				
 				Assert.assertNotNull(injector.getInjectedSeamComponent(), "The injected Seam component was NULL!");
 				Assert.assertEquals(injector.getInjectedSeamComponent().sayHello(), "Hello Seam");
-				log.debug("*** The @In(jected) Seam component says Hello :-)");
+				
+				Assert.assertNotNull(injector.getNoInterfaceInjectedSeamComponent(), "The injected Seam component was NULL!");
+				Assert.assertEquals(injector.getNoInterfaceInjectedSeamComponent().sayHello(), "Hello Seam - No Interface");
+				
+				log.debug("*** The @In(jected) Seam components says Hello :-)");
 			}
 		}.run();
 	}
