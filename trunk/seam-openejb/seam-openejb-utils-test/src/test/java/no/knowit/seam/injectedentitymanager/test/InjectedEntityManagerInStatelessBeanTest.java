@@ -2,6 +2,8 @@ package no.knowit.seam.injectedentitymanager.test;
 
 import java.util.List;
 
+import org.jboss.seam.log.LogProvider;
+import org.jboss.seam.log.Logging;
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -13,17 +15,20 @@ import no.knowit.seam.openejb.mock.SeamTest;
 
 public class InjectedEntityManagerInStatelessBeanTest extends SeamTest {
 	
+  private static final LogProvider log = Logging.getLogProvider(InjectedEntityManagerInStatelessBeanTest.class);
+	
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
 	 contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
 	 
-	 contextProperties.put("log4j.category.no.knowit.seam.injectedentitymanager.test", "DEBUG");
+	 contextProperties.put("log4j.category.no.knowit.seam.injectedentitymanager", "DEBUG");
 	 super.beforeSuite();
 	}
 
-	@Test(groups={ "seam", "unit-test" })
-	public void testInjectedEntityManagerInStatelessSessionBean() throws Exception {
+
+	@Test(groups={ "seam", "unit-test" } )
+	public void shouldGetInjectedEntityManagerInStatelessSessionBean() throws Exception {
 
 		new ComponentTest() {
 			@Override
@@ -51,4 +56,5 @@ public class InjectedEntityManagerInStatelessBeanTest extends SeamTest {
 			}
 		}.run();
 	}
+
 }
