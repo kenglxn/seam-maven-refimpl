@@ -1,5 +1,7 @@
 package no.knowit.seam.seamframework.test;
 
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -11,8 +13,10 @@ import org.jboss.seam.mock.AbstractSeamTest.FacesRequest;
 
 
 import no.knowit.openejb.mock.test.ContextPropertiesForTest;
+import no.knowit.seam.model.Movie;
 import no.knowit.seam.openejb.mock.SeamTest;
 import no.knowit.seam.seamframework.MovieHome;
+import no.knowit.seam.seamframework.MovieList;
 
 public class MovieTest extends SeamTest {
 
@@ -27,7 +31,7 @@ public class MovieTest extends SeamTest {
 	}
 	
 	@Test
-	public void newMovie() throws Exception {
+	public void newMovies() throws Exception {
 		
 		new FacesRequest() {
 			
@@ -37,29 +41,91 @@ public class MovieTest extends SeamTest {
 				assert !isSessionInvalid();
 				
 //				MovieHome movieHome = getComponentInstanceWithAsserts("movieHome", MovieHome.class);
-//				MovieHome movieHome = (MovieHome)Component.getInstance("movieHome");
-//				
-//				movieHome.clearInstance();
-//				movieHome.getInstance().setDirector("TEST-DIRECTOR");
-//				movieHome.getInstance().setTitle("TEST-TITLE");
-//				movieHome.getInstance().setYear(2007);
-//				movieHome.persist();
+				MovieHome movieHome = (MovieHome)Component.getInstance("movieHome");
 				
-
-				invokeMethod( "#{movieHome.clearInstance}" );
-				setValue("#{movieHome.instance.director}", "TEST-DIRECTOR");
-				setValue("#{movieHome.instance.title}", "TEST-TITLE");
-				setValue("#{movieHome.instance.year}", 2007);
-				Object result = invokeMethod( "#{movieHome.persist}" );
+				movieHome.clearInstance();
+				movieHome.getInstance().setDirector("Joel Coen");
+				movieHome.getInstance().setTitle("Fargo");
+				movieHome.getInstance().setYear(1996);
+				String result = movieHome.persist();
 				Assert.assertEquals(result, "persisted");
-
 				Conversation.instance().end();
-
 			}
 
 		}.run();
-
 		
+		new FacesRequest() {
+			
+			@Override
+			protected void invokeApplication() throws Exception {
+				Conversation.instance().begin();
+				assert !isSessionInvalid();
+				
+				invokeMethod( "#{movieHome.clearInstance}" );
+				setValue("#{movieHome.instance.director}", "Quentin Tarantino");
+				setValue("#{movieHome.instance.title}", "Reservoir Dogs");
+				setValue("#{movieHome.instance.year}", 1992);
+				Object result = invokeMethod( "#{movieHome.persist}" );
+				Assert.assertEquals(result, "persisted");
+				
+				invokeMethod( "#{movieHome.clearInstance}" );
+				setValue("#{movieHome.instance.director}", "Joel Coen");
+				setValue("#{movieHome.instance.title}", "The Big Lebowski");
+				setValue("#{movieHome.instance.year}", 1998);
+				result = invokeMethod( "#{movieHome.persist}" );
+				Assert.assertEquals(result, "persisted");
+
+				Conversation.instance().end();
+			}
+		}.run();
 	}
 
+	@Test(dependsOnMethods={ "newMovies" })
+	public void listMovies() throws Exception {
+		
+		new FacesRequest() {
+			
+	    @Override
+	    protected void updateModelValues() throws Exception {
+				setValue("#{movieList.movie.director}", "");
+				setValue("#{movieList.movie.title}", "");
+	    }
+	    
+      @Override
+      protected void renderResponse() throws Exception {
+				MovieList movieList = (MovieList)Component.getInstance("movieList");
+      	List<Movie> list = movieList.getResultList();
+      	Assert.assertEquals(list.size(), 3, "List.size()");
+      }
+		}.run();
+	}
+
+	
+	@Test(dependsOnMethods={ "listMovies" })
+	public void findMovie() throws Exception {
+		
+		new FacesRequest() {
+      @Override
+      protected void updateModelValues() throws Exception {
+				setValue("#{movieList.movie.director}", "Quentin Tarantino");
+      }
+      
+			@Override
+			protected void invokeApplication() throws Exception {
+			}
+			
+      @Override
+      protected void renderResponse() throws Exception {
+      	List<Movie> list = (List<Movie>) invokeMethod( "#{movieList.getResultList}" );
+      	Assert.assertEquals(list.size(), 1, "List.size()");
+      	Movie movie = list.get(0);
+      	Assert.assertEquals(movie.getDirector(), "Quentin Tarantino", "Movie.getTitle()");
+      }
+		}.run();
+	}
+
+	// TODO: editMovie
+	
+	// TODO: deleteMovie
+	
 }
