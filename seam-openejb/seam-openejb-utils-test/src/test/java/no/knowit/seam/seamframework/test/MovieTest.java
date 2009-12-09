@@ -40,8 +40,8 @@ public class MovieTest extends SeamTest {
 				Conversation.instance().begin();
 				assert !isSessionInvalid();
 				
-//				MovieHome movieHome = getComponentInstanceWithAsserts("movieHome", MovieHome.class);
-				MovieHome movieHome = (MovieHome)Component.getInstance("movieHome");
+				MovieHome movieHome = getComponentInstanceWithAsserts("movieHome", MovieHome.class);
+//				MovieHome movieHome = (MovieHome)Component.getInstance("movieHome");
 				
 				movieHome.clearInstance();
 				movieHome.getInstance().setDirector("Joel Coen");
