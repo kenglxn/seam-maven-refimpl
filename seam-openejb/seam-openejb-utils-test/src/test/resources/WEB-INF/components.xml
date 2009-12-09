@@ -36,6 +36,7 @@
 		name="entityManager" 
 		auto-create="true"
 		scope="conversation" 
-		entity-manager-factory="#{entityManagerFactory}" />
+		entity-manager-factory="#{entityManagerFactory}" 
+		persistence-unit-jndi-name="java:/openejbEntityManagerFactory" />
 		
 </components>
