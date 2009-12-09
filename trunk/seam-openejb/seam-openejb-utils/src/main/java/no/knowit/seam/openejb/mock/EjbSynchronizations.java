@@ -23,7 +23,7 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
  * transaction.
  * </p>
  * <p>
- * LOO-20091209: Had to override this class due to following exception:
+ * LOO-20091209: Had to extend this class due to following exception:
  *   <code><pre>
  *   java.lang.AssertionError: javax.el.ELException: org.jboss.seam.InstantiationException: Could not instantiate Seam component: org.jboss.seam.transaction.synchronizations
  *   .
