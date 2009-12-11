@@ -35,8 +35,8 @@
 		<env>prod</env>
 		<jdk.debug>false</jdk.debug>
 		<jdk.optimize>true</jdk.optimize>
-		<jdk.source>1.5</jdk.source>
-		<jdk.target>1.5</jdk.target>
+		<jdk.source>1.6</jdk.source>
+		<jdk.target>1.6</jdk.target>
 		
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
