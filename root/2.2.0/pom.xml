@@ -50,17 +50,24 @@
 		</repository>
 		
 		<repository>
+			<id>repository.codehaus</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+		</repository>
+
+		<repository>
 			<snapshots />
 			<id>snapshots.jboss.org</id>
 			<name>JBoss Snapshot Repository</name>
 			<url>http://snapshots.jboss.org/maven2</url>
 		</repository> 
 
-		<repository>
-			<id>repository.codehaus</id>
-			<name>Codehaus Repository</name>
-			<url>http://repository.codehaus.org</url>
-		</repository>
+		<!-- for openejb -->
+    <repository>
+      <id>apache-m2-snapshot</id>
+      <name>Apache Snapshot Repository</name>
+      <url>http://repository.apache.org/snapshots</url>
+    </repository>
 		
 		<!-- Add more repos as needed -->
 		<!--
