@@ -891,7 +891,6 @@
 				<groupId>org.apache.openejb</groupId>
 				<artifactId>openejb-core</artifactId>
 				<version>3.1.2</version>
-				<scope>test</scope>
 				<exclusions>
 					<exclusion>
 						<groupId>org.apache.openjpa</groupId>
@@ -913,14 +912,12 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${version.junit}</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.testng</groupId>
 				<artifactId>testng</artifactId>
 				<version>${version.testng}</version>
-				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
