@@ -37,16 +37,17 @@
 		</dependency>
 	
 		<dependency>
+			<groupId>org.apache.openejb</groupId>
+			<artifactId>openejb-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<scope>compile</scope>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.apache.openejb</groupId>
-			<artifactId>openejb-core</artifactId>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
 	
   <build>
