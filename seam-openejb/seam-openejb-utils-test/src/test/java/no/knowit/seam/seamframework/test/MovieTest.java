@@ -66,7 +66,7 @@ public class MovieTest extends SeamTest {
 				setValue("#{movieHome.instance.title}", "Reservoir Dogs");
 				setValue("#{movieHome.instance.year}", 1992);
 				Object result = invokeMethod( "#{movieHome.persist}" );
-				Assert.assertEquals(result, "persisted");
+				Assert.assertEquals(result, "persisted", "Persist failed!");
 				
 				invokeMethod( "#{movieHome.clearInstance}" );
 				setValue("#{movieHome.instance.director}", "Joel Coen");

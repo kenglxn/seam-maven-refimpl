@@ -20,7 +20,8 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-		 contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
+		contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
+		//contextProperties.put("openejb.deployments.classpath.ear", "true");
 		 
 		// Normally we would have called super.beforeSuite() to bootstrap container, but here
 		// one of the tests is to actually verify that we're able to bootstrap the container
