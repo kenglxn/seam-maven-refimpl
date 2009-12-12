@@ -13,26 +13,15 @@
 	
 	<artifactId>seam-openejb-utils-test</artifactId>
 	<name>${project.artifactId} : ${project.version}</name>
-	<packaging>jar</packaging>
-	<description>
-		Tests for "seam-openejb-utils" module must be split into a separate project because 
-		the "openejb.altdd.prefix" property does not work on persistence.xml and we do not 
-		want to expose this persistence.xml while running tests on modules in other projects. 
-		see http://openejb.apache.org/3.0/alternate-descriptors.html
-	</description>
+	<packaging>ejb</packaging>
+	<description>Tests for "seam-openejb-utils" module are split into a separate module</description>
 	
 	<dependencies>
 		<dependency>
 			<groupId>no.knowit.seam</groupId>
 			<artifactId>seam-openejb-utils</artifactId>
+			<type>ejb</type>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- hibernate. Tests fail if it is not here - not shure why -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	
@@ -50,5 +39,12 @@
 				<filtering>true</filtering>                                                                               
 			</testResource>
 		</testResources>
+		
+  	<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ejb-plugin</artifactId>
+			</plugin>
+		</plugins>
   </build>
 </project>

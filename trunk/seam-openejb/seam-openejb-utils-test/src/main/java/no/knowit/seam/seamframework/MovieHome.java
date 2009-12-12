@@ -12,8 +12,8 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.framework.EntityHome;
 
 @Name("movieHome")
-//@Scope(ScopeType.CONVERSATION)
-//@Conversational
+@Scope(ScopeType.CONVERSATION)
+@Conversational
 
 public class MovieHome extends EntityHome<Movie> {
 

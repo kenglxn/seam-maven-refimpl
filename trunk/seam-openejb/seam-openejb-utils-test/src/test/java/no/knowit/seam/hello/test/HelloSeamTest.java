@@ -18,9 +18,10 @@ public class HelloSeamTest extends SeamTest {
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-		 contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
-		 contextProperties.put("log4j.category.no.knowit.seam.hello", "debug");
-		 super.beforeSuite();
+		contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
+		//contextProperties.put("openejb.deployments.classpath.ear", "true");
+		contextProperties.put("log4j.category.no.knowit.seam.hello", "debug");
+		super.beforeSuite();
 	}
 
 	@Test(groups={ "seam", "unit-test" })
