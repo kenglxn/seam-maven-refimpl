@@ -10,6 +10,8 @@ import no.knowit.seam.model.Movie;
 
 import org.apache.log4j.Logger;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
@@ -47,6 +49,16 @@ public class CrudServiceTest extends OpenEjbTest {
 		super.beforeSuite();
 	}
 
+	@Override
+	@AfterClass
+	public void cleanupClass() throws Exception {
+		CrudService crudService = lookupCrudService();
+		List<Movie> allMovies = crudService.find(Movie.class);
+  	crudService.remove((List)allMovies);
+		super.cleanupClass();
+	}
+	
+	
 	@Test
 	public void create() throws Exception {
 		CrudService crudService = lookupCrudService();
@@ -107,10 +119,15 @@ public class CrudServiceTest extends OpenEjbTest {
 		CrudService crudService = lookupCrudService();
 		List<Movie> allMovies = crudService.find(Movie.class);
   	Assert.assertEquals(allMovies.size(), 2, "List.size()");
-  	
-  	crudService.remove((List)allMovies);
-		allMovies = crudService.find(Movie.class);
-  	Assert.assertEquals(allMovies.size(), 0, "List.size()");
 	}
 	
+	@Test(dependsOnMethods={ "findAll" })
+	public void findByExample() throws Exception {
+		CrudService crudService = lookupCrudService();
+		Movie exampleMovie = new Movie();
+		exampleMovie.setDirector("Joel%");
+		exampleMovie.setTitle("The Big%");
+		List<Movie> exampleMovies = crudService.find(exampleMovie, false, true);
+  	Assert.assertEquals(exampleMovies.size(), 1, "List.size()");
+	}
 }
