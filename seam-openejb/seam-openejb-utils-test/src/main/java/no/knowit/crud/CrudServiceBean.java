@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +37,8 @@ import javax.persistence.Query;
 
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
+
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 /**
  * A minimalistic implementation of the generic CrudService.
@@ -72,9 +75,33 @@ public class CrudServiceBean implements CrudService {
 		return (T)getEntityManager().find(entityClass, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass) {
     return getEntityManager().createQuery("from " + entityClass.getName()).getResultList();
 	}
+
+	@SuppressWarnings("unchecked")
+	public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult) {
+    return getEntityManager().createQuery("from " + entityClass.getName())
+      .setFirstResult(startPosition)
+      .setMaxResults(maxResult)
+    	.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> List<T> find(T example, boolean distinct, boolean any) {
+		Query query = createExampleQuery(example, distinct, any);
+		return query.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+  public <T> List<T> find(T example, boolean distinct, boolean any, int startPosition, int maxResult) {
+		Query query = createExampleQuery(example, distinct, any);
+		return query
+	    .setFirstResult(startPosition)
+	    .setMaxResults(maxResult)
+			.getResultList();
+  }
 	
 	// 'U'
 	public <T> T merge(T entity) {
@@ -227,6 +254,67 @@ public class CrudServiceBean implements CrudService {
     return entityManager;
   }
 
+  /**
+   * This is a simple for of query by example. We can not e.g. handle arrays and object references.
+   * This is sufficient for now, but our intension is to make it more advanced/flexible later
+   * 
+   * @param example
+   * @param distinct
+   * @param any
+   * @return
+   */
+	protected Query createExampleQuery(Object example, boolean distinct, boolean any) {
+		final String condition = any ? "or" : "and";
+		BeanMap beanMap = new BeanMap(example);
+		Set keys = beanMap.keySet();
+		Iterator i = keys.iterator();
+		List<Object> values = new ArrayList<Object>();
+		
+		final StringBuilder jpql = new StringBuilder(	
+				String.format("select %s e from %s e", (distinct ? "distinct" : ""), example.getClass().getName()) );
+		
+		boolean where = false;
+		int n = 1;
+		while (i.hasNext()) {
+			String propertyName = (String) i.next( );
+			Object value = beanMap.get(propertyName);
+			if(value != null && propertyName.compareToIgnoreCase("class") != 0) {
+				values.add(value);
+				if(!where) {
+					where = true;
+					jpql.append(String.format(" where e.%s like ?%d", propertyName , n));
+				}
+				else {
+					jpql.append(String.format(" %s e.%s like ?%d", condition, propertyName , n));
+				}
+				n++;
+			}
+		}
+
+		Query query = getEntityManager().createQuery(jpql.toString());
+
+		if(log.isDebugEnabled()) {
+			// The jpql string in it's valid form is not needed anymore
+			jpql.append('\n');
+		}
+
+		n = 1;
+		for (Object v : values) {
+			if(log.isDebugEnabled()) {
+				jpql.append("\t[?" + n + " = " + v + "]\n");
+			}
+			query.setParameter(n, v);
+			n++;
+		}
+
+		if(log.isDebugEnabled()) {
+			log.debug("createExampleQuery, jpql = \n\t[" + jpql.toString() );
+		}
+		
+		return query;
+	}
+
+
   
   // -------------------------------
   // Utility methods
@@ -252,14 +340,14 @@ public class CrudServiceBean implements CrudService {
   }
   
 	protected static String getIdentityPropertyName(Class<?> clazz) {
-		String idPropertyName = searchFieldsForPK(clazz);
+		String idPropertyName = searchFieldsForIndentity(clazz);
 		if(idPropertyName == null) {
-			idPropertyName = searchMethodsForPK(clazz);
+			idPropertyName = searchMethodsForIdentity(clazz);
 		}
 		return idPropertyName != null ? idPropertyName : "id";
 	}
 	
-	protected static String searchFieldsForPK(Class<?> clazz) {
+	protected static String searchFieldsForIndentity(Class<?> clazz) {
 		String pkName = null;
 		
 		Field[] fields = clazz.getDeclaredFields();
@@ -272,12 +360,12 @@ public class CrudServiceBean implements CrudService {
 			}
 		}
 		if (pkName == null && clazz.getSuperclass() != null) {
-			pkName = searchFieldsForPK((Class<?>) clazz.getSuperclass());
+			pkName = searchFieldsForIndentity((Class<?>) clazz.getSuperclass());
 		}
 		return pkName;
 	}
 
-	protected static String searchMethodsForPK(Class<?> clazz) {
+	protected static String searchMethodsForIdentity(Class<?> clazz) {
 		String pkName = null;
 		Method[] methods = clazz.getDeclaredMethods();
 		for (Method method : methods) {
@@ -289,9 +377,8 @@ public class CrudServiceBean implements CrudService {
 			}
 		}
 		if (pkName == null && clazz.getSuperclass() != null) {
-			pkName = searchMethodsForPK(clazz.getSuperclass());
+			pkName = searchMethodsForIdentity(clazz.getSuperclass());
 		}
 		return pkName;
 	}
-
 }
