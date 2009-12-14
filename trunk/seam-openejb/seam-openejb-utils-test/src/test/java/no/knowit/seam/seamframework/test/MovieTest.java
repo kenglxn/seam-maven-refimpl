@@ -24,6 +24,8 @@ public class MovieTest extends SeamTest {
 
   private static final LogProvider log = Logging.getLogProvider(MovieTest.class);
   
+  private Integer reservoirDogsMovieId;
+  
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
@@ -132,12 +134,43 @@ public class MovieTest extends SeamTest {
       	Assert.assertEquals(list.size(), 1, "List.size()");
       	Movie movie = list.get(0);
       	Assert.assertEquals(movie.getDirector(), "Quentin Tarantino", "Movie.getTitle()");
+      	
+      	reservoirDogsMovieId = movie.getId();
       }
 		}.run();
 	}
 
-	// TODO: editMovie
+	@Test(dependsOnMethods={ "findMovie" })
+	public void editMovie() throws Exception {
+		new FacesRequest() {
+			@Override
+			protected void invokeApplication() throws Exception {
+				Conversation.instance().begin();
+				assert !isSessionInvalid();
+				setValue("#{movieHome.movieId}", reservoirDogsMovieId);
+				invokeMethod( "#{movieHome.wire}" );
+				setValue("#{movieHome.instance.director}", "Joel Coen Edited");
+				Object result = invokeMethod( "#{movieHome.update}" );
+				Assert.assertEquals(result, "updated", "Update failed!");
+				Conversation.instance().end();
+			}
+		}.run();
+	}
 	
-	// TODO: deleteMovie
+	@Test(dependsOnMethods={ "editMovie" })
+	public void deleteMovie() throws Exception {
+		new FacesRequest() {
+			@Override
+			protected void invokeApplication() throws Exception {
+				Conversation.instance().begin();
+				assert !isSessionInvalid();
+				setValue("#{movieHome.movieId}", reservoirDogsMovieId);
+				invokeMethod( "#{movieHome.wire}" );
+				Object result = invokeMethod( "#{movieHome.remove}" );
+				Assert.assertEquals(result, "removed", "Remove failed!");
+				Conversation.instance().end();
+			}
+		}.run();
+	}
 	
 }

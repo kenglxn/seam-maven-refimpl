@@ -44,17 +44,59 @@ public interface CrudService {
    * Find all entities of a particular type. 
    * This is similar to the JPQL statement: <br/>
    * <code>select e from entity e as e</code>
-   * @return a list of the entities
+   * @return A list of populated entities
+   * @throws IllegalStateException if this EntityManager has been closed
    */
   public <T> List<T> find(Class<T> entityClass);
+  
+  
+  /**
+   * <p> Find all entities of a particular type. The number of entities 
+   * returned is limited by the <code>startPosition</code> and 
+   * <code>maxResult</code> parameters.</p>
+   * @param startPosition position of the first result to be returned by the query, numbered from 0
+   * @param maxResult the maximum number of entities that should be returned by the query
+   * @return A list of populated entities
+   * @throws java.lang.IllegalArgumentException if <code>startPosition</code>
+   *         or <code>maxResult</code> is negative.
+   * @throws IllegalStateException if this EntityManager has been closed
+   */
+  public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult);
+  
+  /**
+   * <p> Find all entities of a particular type.</p> 
+   * 
+   * @param example An entity instantiated with the fields to match
+   * @param distinct Whether  the query should be distinct or not 
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
+   * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
+   * @return A list of populated entities
+   */
+  public <T> List<T> find(T example, boolean distinct, boolean any);
+
+  /**
+   * <p> Find all entities of a particular type. The number of entities 
+   * returned is limited by the <code>startPosition</code> and 
+   * <code>maxResult</code> parameters.</p>
+   * 
+   * @param example An entity instantiated with the fields to match
+   * @param distinct Whether  the query should be distinct or not 
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
+   * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
+   * @param startPosition position of the first result to be returned by the query, numbered from 0
+   * @param maxResult the maximum number of entities that should be returned by the query
+   * @return A list of populated entities
+   */
+  public <T> List<T> find(T example, boolean distinct, boolean any, int startPosition, int maxResult);
   
   
 	/**
 	 * Merge the state of the given entity into the current persistence context, 
 	 * returning (a potentially different object) the persisted entity.
-	 * entity. The entity with the merged state is returned.
+	 * entity. 
 	 * 
 	 * @param entity The entity instance to merge
+   * @return The entity with the merged state
    * @see javax.persistence.EntityManager#merge
 	 */
 	public <T> T merge(T entity);
