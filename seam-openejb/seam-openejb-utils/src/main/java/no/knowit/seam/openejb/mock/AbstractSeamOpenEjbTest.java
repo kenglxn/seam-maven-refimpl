@@ -120,4 +120,5 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 		}
 		return null;
 	}
+	
 }
