@@ -97,12 +97,20 @@ public class CrudServiceTest extends OpenEjbTest {
 		movie.setDirector("Joel Coen");
 		movie.setTitle("The Big Lebowski");
 		crudService.store(movie);
+		
+		// Two Movies in list
+		crudService.store(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
 	}
 	
 	@Test(dependsOnMethods={ "createOrUpdate" })
 	public void findAll() throws Exception {
 		CrudService crudService = lookupCrudService();
 		List<Movie> allMovies = crudService.find(Movie.class);
+  	Assert.assertEquals(allMovies.size(), 2, "List.size()");
+  	
+  	crudService.remove((List)allMovies);
+		allMovies = crudService.find(Movie.class);
+  	Assert.assertEquals(allMovies.size(), 0, "List.size()");
 	}
 	
 }
