@@ -3,6 +3,7 @@ package no.knowit.seam.seamframework.test;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import org.jboss.seam.Component;
@@ -12,6 +13,7 @@ import org.jboss.seam.log.Logging;
 import org.jboss.seam.mock.AbstractSeamTest.FacesRequest;
 
 
+import no.knowit.crud.CrudService;
 import no.knowit.openejb.mock.test.ContextPropertiesForTest;
 import no.knowit.seam.model.Movie;
 import no.knowit.seam.openejb.mock.SeamTest;
@@ -28,6 +30,16 @@ public class MovieTest extends SeamTest {
 		 contextProperties = ContextPropertiesForTest.getDefaultContextProperties(contextProperties);
 		 contextProperties.put("log4j.category.no.knowit.seam.seamframework.test", "debug");
 		 super.beforeSuite();
+	}
+	
+	@Override
+	@BeforeClass
+	public void setupClass() throws Exception {
+		super.setupClass();
+		
+		CrudService crudService = (CrudService)initialContext.lookup("crudService/Local");
+		crudService.persist(new Movie("Alan Parker", "The Wall", 1999));
+
 	}
 	
 	@Test
@@ -95,7 +107,7 @@ public class MovieTest extends SeamTest {
       protected void renderResponse() throws Exception {
 				MovieList movieList = (MovieList)Component.getInstance("movieList");
       	List<Movie> list = movieList.getResultList();
-      	Assert.assertEquals(list.size(), 3, "List.size()");
+      	Assert.assertEquals(list.size(), 4, "List.size()");
       }
 		}.run();
 	}
