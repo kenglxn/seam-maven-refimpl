@@ -284,7 +284,7 @@ public class CrudServiceBean implements CrudService {
 		List<Object> values = new ArrayList<Object>();
 		
 		final StringBuilder jpql = new StringBuilder(	
-				String.format("SELECT %s e FROM %s AS e", (distinct ? "DISTINCT" : ""), example.getClass().getName()) );
+				String.format("SELECT %s e FROM %s e", (distinct ? "DISTINCT" : ""), example.getClass().getName()) );
 		
 		String operator = (any ? "OR" : "AND");
 		boolean where = false;
