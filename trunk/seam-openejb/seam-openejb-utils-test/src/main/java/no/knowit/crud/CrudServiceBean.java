@@ -22,6 +22,7 @@ package no.knowit.crud;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -254,9 +255,22 @@ public class CrudServiceBean implements CrudService {
     return entityManager;
   }
 
+  
+	private static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
+			"java.lang.String", "java.lang.Boolean", "java.lang.Byte", "java.lang.Character",	"java.lang.Double", 
+			"java.lang.Float",  "java.lang.Integer", "java.lang.Long", "java.lang.Number"   , "java.lang.Short" ,	
+			"java.util.Date" );
+  
   /**
-   * This is a simple for of query by example. We can not e.g. handle arrays and object references.
-   * This is sufficient for now, but our intension is to make it more advanced/flexible later
+   * This is a simple form of query by example. 
+   * 
+   * The limitations are:
+   * <ul>
+   * <li>Only  one @Id annotation</li>
+   * <li>We can not e.g. handle arrays and object references while generating JPQL</li>
+   * </ul>
+   * 
+   * Our intension is to make this method more advanced/flexible later 
    * 
    * @param example
    * @param distinct
@@ -264,53 +278,55 @@ public class CrudServiceBean implements CrudService {
    * @return
    */
 	protected Query createExampleQuery(Object example, boolean distinct, boolean any) {
-		final String condition = any ? "or" : "and";
 		BeanMap beanMap = new BeanMap(example);
 		Set keys = beanMap.keySet();
 		Iterator i = keys.iterator();
 		List<Object> values = new ArrayList<Object>();
 		
 		final StringBuilder jpql = new StringBuilder(	
-				String.format("select %s e from %s e", (distinct ? "distinct" : ""), example.getClass().getName()) );
+				String.format("SELECT %s e FROM %s AS e", (distinct ? "DISTINCT" : ""), example.getClass().getName()) );
 		
+		String operator = (any ? "OR" : "AND");
 		boolean where = false;
 		int n = 1;
 		while (i.hasNext()) {
-			String propertyName = (String) i.next( );
-			Object value = beanMap.get(propertyName);
-			if(value != null && propertyName.compareToIgnoreCase("class") != 0) {
-				values.add(value);
-				if(!where) {
-					where = true;
-					jpql.append(String.format(" where e.%s like ?%d", propertyName , n));
+			String propertyName = (String) i.next();
+			Class type = beanMap.getType(propertyName);
+			if(type != null) {
+				Object value = beanMap.get(propertyName);
+				int k = OBJECT_PRIMITIVES.indexOf(type.getName());
+				if(value != null && (type.isPrimitive() || k > -1)) {
+					values.add(value);
+					String equals = (k==0 ? "LIKE" : "=");  // 0 -> String
+					if(!where) {
+						where = true;
+						jpql.append(String.format(" where e.%s %s ?%d", propertyName, equals, n));
+					}
+					else {
+						jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName , equals, n));
+					}
+					n++;
 				}
-				else {
-					jpql.append(String.format(" %s e.%s like ?%d", condition, propertyName , n));
-				}
-				n++;
 			}
-		}
+		}			
 
 		Query query = getEntityManager().createQuery(jpql.toString());
 
 		if(log.isDebugEnabled()) {
-			// The jpql string in it's valid form is not needed anymore
+			// The jpql string in it's valid form is not needed anymore - so we use it for debug output
 			jpql.append('\n');
 		}
-
+		
 		n = 1;
 		for (Object v : values) {
 			if(log.isDebugEnabled()) {
 				jpql.append("\t[?" + n + " = " + v + "]\n");
 			}
-			query.setParameter(n, v);
-			n++;
+			query.setParameter(n++, v);
 		}
-
 		if(log.isDebugEnabled()) {
 			log.debug("createExampleQuery, jpql = \n\t[" + jpql.toString() );
 		}
-		
 		return query;
 	}
 
@@ -320,7 +336,6 @@ public class CrudServiceBean implements CrudService {
   // Utility methods
   // TODO: move to separate package
   // -------------------------------
-  
 
   protected static boolean hasIdentity(Object entity) {
 		return getIdentity(entity) != null ? true : false;
@@ -381,4 +396,7 @@ public class CrudServiceBean implements CrudService {
 		}
 		return pkName;
 	}
+
+	
+
 }
