@@ -3,8 +3,10 @@ Before you build any projects you'll have to build the root pom and required dep
 * Open a command shell and CD to the trunk folder, e.g. ./seam-maven-refimpl/trunk.
 
 * Type: mvn clean install
-  - The maven install command builds the no.knowit.seam root pom which all projects in this trunk
+  - The maven install command builds the no.knowit.seam:root pom which all projects in this trunk
     uses as its root pom.
+	- Builds the no.knowit.seam:seam-openejb modules which is used for test purposes
+	- Builds the no.knowit.seam:seam-refimpl modules
 
 Note to Eclipse users:
 The m2eclipse plugin seems to be a bit unpredictable when it comes to downloading source code and 
