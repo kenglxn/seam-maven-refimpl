@@ -126,8 +126,8 @@ public class CrudServiceTest extends OpenEjbTest {
 		CrudService crudService = lookupCrudService();
 		Movie exampleMovie = new Movie();
 		exampleMovie.setDirector("Joel%");
-		exampleMovie.setTitle("The Big%");
-		List<Movie> exampleMovies = crudService.find(exampleMovie, false, true);
-  	Assert.assertEquals(exampleMovies.size(), 1, "List.size()");
+		exampleMovie.setYear(1992);
+		List<Movie> exampleMovies = crudService.find(exampleMovie, true, true);
+  	Assert.assertEquals(exampleMovies.size(), 2, "List.size()");
 	}
 }
