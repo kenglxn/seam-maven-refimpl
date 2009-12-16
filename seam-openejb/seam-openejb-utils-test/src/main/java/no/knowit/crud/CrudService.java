@@ -64,9 +64,11 @@ public interface CrudService {
   public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult);
   
   /**
-   * <p> Find all entities of a particular type.</p> 
+   * <p> Find all entities of a particular type matching conditions 
+   * in the <code>example</code> parameter.</p> 
    * 
-   * @param example An entity instantiated with the fields to match
+   * @param example An entity instantiated with the fields to match. Only non <code>null</code>
+   * 	primitives (e.g. String, Integer) vill be used to construct the query.
    * @param distinct Whether  the query should be distinct or not 
    * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
    * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
@@ -75,11 +77,13 @@ public interface CrudService {
   public <T> List<T> find(T example, boolean distinct, boolean any);
 
   /**
-   * <p> Find all entities of a particular type. The number of entities 
+   * <p> Find all entities of a particular type matching conditions 
+   * in the <code>example</code> parameter. The number of entities 
    * returned is limited by the <code>startPosition</code> and 
    * <code>maxResult</code> parameters.</p>
    * 
-   * @param example An entity instantiated with the fields to match
+   * @param example An entity instantiated with the fields to match. Only non <code>null</code>
+   * 	primitives (e.g. String, Integer) vill be used to construct the query.
    * @param distinct Whether  the query should be distinct or not 
    * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
    * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
@@ -141,6 +145,17 @@ public interface CrudService {
 	 * @param entities A collection of entities to delete
 	 */
 	public void remove(Collection<Object> entities);
+
+
+	/**
+   * <p>Remove all entities matching conditions in the <code>example</code> parameter.</p> 
+	 * 
+   * @param example An entity instantiated with the fields to match. Only non <code>null</code>
+   * 	primitives (e.g. String, Integer) vill be used to construct the query.
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
+   * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
+	 */
+	public void remove(Object example, boolean any);
 
 	
   /**
