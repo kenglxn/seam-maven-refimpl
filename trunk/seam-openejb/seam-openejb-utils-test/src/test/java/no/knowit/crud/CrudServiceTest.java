@@ -130,4 +130,11 @@ public class CrudServiceTest extends OpenEjbTest {
 		List<Movie> exampleMovies = crudService.find(exampleMovie, true, true);
   	Assert.assertEquals(exampleMovies.size(), 2, "List.size()");
 	}
+	
+	@Test(dependsOnMethods={ "findByExample" })
+	public void deleteByExample() throws Exception {
+		CrudService crudService = lookupCrudService();
+		Movie exampleMovie = new Movie();
+		crudService.remove(exampleMovie, true);
+	}
 }

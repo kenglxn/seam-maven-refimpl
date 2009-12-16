@@ -39,8 +39,6 @@ import javax.persistence.Query;
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
 
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
-
 /**
  * A minimalistic implementation of the generic CrudService.
  * 
@@ -91,13 +89,13 @@ public class CrudServiceBean implements CrudService {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(T example, boolean distinct, boolean any) {
-		Query query = createExampleQuery(example, distinct, any);
+		Query query = createExampleQuery(example, true, distinct, any);
 		return query.getResultList();
 	}
 	
 	@SuppressWarnings("unchecked")
   public <T> List<T> find(T example, boolean distinct, boolean any, int startPosition, int maxResult) {
-		Query query = createExampleQuery(example, distinct, any);
+		Query query = createExampleQuery(example, true, distinct, any);
 		return query
 	    .setFirstResult(startPosition)
 	    .setMaxResults(maxResult)
@@ -133,6 +131,11 @@ public class CrudServiceBean implements CrudService {
 		for (Object entity : entities) {
 			remove(entity);
 		}
+	}
+
+	public void remove(final Object example, boolean any) {
+		Query query = createExampleQuery(example, false, false, any);
+		query.executeUpdate();
 	}
 
 	// :-)
@@ -262,7 +265,7 @@ public class CrudServiceBean implements CrudService {
 			"java.util.Date" );
   
   /**
-   * This is a simple form of query by example. 
+   * This is a simple form of query by example. Produces a SELECT or DELETE query
    * 
    * The limitations are:
    * <ul>
@@ -273,48 +276,55 @@ public class CrudServiceBean implements CrudService {
    * Our intension is to make this method more advanced/flexible later 
    * 
    * @param example
+   * @param select
    * @param distinct
    * @param any
    * @return
    */
-	protected Query createExampleQuery(Object example, boolean distinct, boolean any) {
-		BeanMap beanMap = new BeanMap(example);
-		Set keys = beanMap.keySet();
-		Iterator i = keys.iterator();
-		List<Object> values = new ArrayList<Object>();
+	protected Query createExampleQuery(Object example, boolean select, boolean distinct, boolean any) {
 		
 		final StringBuilder jpql = new StringBuilder(	
-				String.format("SELECT %s e FROM %s e", (distinct ? "DISTINCT" : ""), example.getClass().getName()) );
+			(select ? String.format("SELECT %s e", (distinct ? "DISTINCT" : "")) : "DELETE") 
+		)
+		.append( String.format(" FROM %s e", example.getClass().getName()) );
 		
-		String operator = (any ? "OR" : "AND");
-		boolean where = false;
+		
 		int n = 1;
-		while (i.hasNext()) {
-			String propertyName = (String) i.next();
-			Class type = beanMap.getType(propertyName);
-			if(type != null) {
-				Object value = beanMap.get(propertyName);
-				int k = OBJECT_PRIMITIVES.indexOf(type.getName());
-				if(value != null && (type.isPrimitive() || k > -1)) {
-					values.add(value);
-					String equals = (k==0 ? "LIKE" : "=");  // 0 -> String
-					if(!where) {
-						where = true;
-						jpql.append(String.format(" where e.%s %s ?%d", propertyName, equals, n));
+		List<Object> values = new ArrayList<Object>();
+		if(example != null) {
+			BeanMap beanMap = new BeanMap(example);
+			Set keys = beanMap.keySet();
+			Iterator i = keys.iterator();
+			String operator = (any ? "OR" : "AND");
+			boolean where = false;
+			
+			while (i.hasNext()) {
+				String propertyName = (String) i.next();
+				Class type = beanMap.getType(propertyName);
+				if(type != null) {
+					Object value = beanMap.get(propertyName);
+					int k = OBJECT_PRIMITIVES.indexOf(type.getName());
+					if(value != null && (type.isPrimitive() || k > -1)) {
+						values.add(value);
+						String equals = (k==0 ? "LIKE" : "=");  // 0 -> String
+						if(!where) {
+							where = true;
+							jpql.append(String.format(" where e.%s %s ?%d", propertyName, equals, n));
+						}
+						else {
+							jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName , equals, n));
+						}
+						n++;
 					}
-					else {
-						jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName , equals, n));
-					}
-					n++;
 				}
-			}
-		}			
+			}			
+		}
 
 		Query query = getEntityManager().createQuery(jpql.toString());
 
 		if(log.isDebugEnabled()) {
 			// The jpql string in it's valid form is not needed anymore - so we use it for debug output
-			jpql.append('\n');
+			jpql.append("]\n");
 		}
 		
 		n = 1;
@@ -324,6 +334,7 @@ public class CrudServiceBean implements CrudService {
 			}
 			query.setParameter(n++, v);
 		}
+		
 		if(log.isDebugEnabled()) {
 			log.debug("createExampleQuery, jpql = \n\t[" + jpql.toString() );
 		}
