@@ -21,8 +21,6 @@
 		<env>dev</env>
 		<jdk.debug>true</jdk.debug>
 		<jdk.optimize>false</jdk.optimize>
-		<jdk.source>1.6</jdk.source>
-		<jdk.target>1.6</jdk.target>
 		
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,14 +56,19 @@
 		</resources>
   </build>
 
-<!-- 
-	<distributionManagement>
+<!--
+	<distributionManagement>		
 		<repository>
 			<id>logit</id>
 			<name>Logit Repository Switchboard</name>
-			<url>http://ls02/logitrepo/</url>
+			<url>http://192.168.106.15:8081/nexus/content/repositories/releases</url>
 		</repository>
+
+		<snapshotRepository>
+			<id>logit</id>
+			<name>Internal Snapshots</name>
+			<url>http://192.168.106.15:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
 	</distributionManagement>
 -->
-
 </project>

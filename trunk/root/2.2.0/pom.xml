@@ -32,9 +32,9 @@
 		<version.junit>4.7</version.junit>
 		<version.testng>5.9</version.testng>
 
-		<env>prod</env>
-		<jdk.debug>false</jdk.debug>
-		<jdk.optimize>true</jdk.optimize>
+		<env>dev</env>
+		<jdk.debug>true</jdk.debug>
+		<jdk.optimize>false</jdk.optimize>
 		<jdk.source>1.6</jdk.source>
 		<jdk.target>1.6</jdk.target>
 		
@@ -42,73 +42,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
-	<repositories>
-		<repository>
-			<id>repository.jboss.org</id>
-			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/maven2</url>
-		</repository>
-		
-		<repository>
-			<id>repository.codehaus</id>
-			<name>Codehaus Repository</name>
-			<url>http://repository.codehaus.org</url>
-		</repository>
-
-		<repository>
-			<snapshots />
-			<id>snapshots.jboss.org</id>
-			<name>JBoss Snapshot Repository</name>
-			<url>http://snapshots.jboss.org/maven2</url>
-		</repository> 
-
-		<!-- for openejb -->
-    <repository>
-      <id>apache-m2-snapshot</id>
-      <name>Apache Snapshot Repository</name>
-      <url>http://repository.apache.org/snapshots</url>
-    </repository>
-		
-		<!-- Add more repos as needed -->
-		<!--
-		<repository>
-			<id>download.java.net</id>
-			<url>http://download.java.net/maven/1</url>
-			<layout>legacy</layout>
-		</repository>
-		-->
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>repository.codehaus</id>
-			<name>Codehaus Repository</name>
-			<url>http://repository.codehaus.org</url>
-		</pluginRepository>
-		
-		<!-- Add more repos as needed -->
-		<!--
-		<pluginRepository>
-			<id>apache.snapshots</id>
-			<url>http://people.apache.org/maven-snapshot-repository/</url>
-		</pluginRepository>
-		-->
-		
-		<!-- see: http://mojo.codehaus.org/using-sandbox-plugins.html -->
-		<!--
-		<pluginRepository>
-			<id>codehaus.snapshots</id>
-			<url>http://snapshots.repository.codehaus.org/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-		-->
-	</pluginRepositories>
-
 	<dependencyManagement>
 		<dependencies>
 			<!-- 
@@ -129,7 +62,7 @@
 				* To find and list transitive dependencies: 
 					mvn install dependency:tree 
 				
-				* To write the dependency content into a file:
+				* To write the dependency content into a file, type e.g:
 					mvn install dependency:tree > dependency.txt			 
 			-->
 			
@@ -1291,7 +1224,89 @@
 		</developer>
 	</developers>
 
+	<repositories>
+		<repository>
+			<id>repository.jboss.org</id>
+			<name>JBoss Repository</name>
+			<url>http://repository.jboss.org/maven2</url>
+		</repository>
+		
+		<repository>
+			<id>repository.codehaus</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+		</repository>
+
+		<repository>
+			<snapshots />
+			<id>snapshots.jboss.org</id>
+			<name>JBoss Snapshot Repository</name>
+			<url>http://snapshots.jboss.org/maven2</url>
+		</repository>
+		
+		<!-- for openejb -->
+		<repository>
+			<id>apache-m2-snapshot</id>
+			<name>Apache Snapshot Repository</name>
+			<url>http://repository.apache.org/snapshots</url>
+		</repository>
+		
+		<!-- Add more repos if needed -->
+		<!--
+		<repository>
+			<id>download.java.net</id>
+			<url>http://download.java.net/maven/1</url>
+			<layout>legacy</layout>
+		</repository>
+		-->
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repository.codehaus</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+		</pluginRepository>
+		
+		<!-- Add more repos if needed -->
+		<!--
+		<pluginRepository>
+			<id>apache.snapshots</id>
+			<url>http://people.apache.org/maven-snapshot-repository/</url>
+		</pluginRepository>
+		-->
+		
+		<!-- see: http://mojo.codehaus.org/using-sandbox-plugins.html -->
+		<!--
+		<pluginRepository>
+			<id>codehaus.snapshots</id>
+			<url>http://snapshots.repository.codehaus.org/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+		-->
+	</pluginRepositories>
 	
+<!--
+	<distributionManagement>		
+		<repository>
+			<id>logit</id>
+			<name>Logit Repository Switchboard</name>
+			<url>http://192.168.106.15:8081/nexus/content/repositories/releases</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>logit</id>
+			<name>Internal Snapshots</name>
+			<url>http://192.168.106.15:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+-->
+
 <!--	
 	<distributionManagement>
 		<repository>

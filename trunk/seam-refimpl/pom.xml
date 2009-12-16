@@ -63,8 +63,6 @@
 		
 		<jdk.debug>${env.debug}</jdk.debug>
 		<jdk.optimize>true</jdk.optimize>
-		<jdk.source>1.5</jdk.source>
-		<jdk.target>1.5</jdk.target>
 		
 		<as>jboss423</as>
 		<as.version>4.2</as.version>
@@ -108,8 +106,6 @@
 				
 				<jdk.debug>${env.debug}</jdk.debug>
 				<jdk.optimize>true</jdk.optimize>
-				<jdk.source>1.5</jdk.source>
-				<jdk.target>1.5</jdk.target>
 				
 				<as>jboss423</as>
 				<as.version>4.2</as.version>
