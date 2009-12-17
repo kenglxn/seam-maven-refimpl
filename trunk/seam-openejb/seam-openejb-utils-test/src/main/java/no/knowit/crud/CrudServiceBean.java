@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -267,21 +266,16 @@ public class CrudServiceBean implements CrudService {
   
   /**
    * This is a simple form of query by example. Produces a SELECT or DELETE query
+   * based on non null property values in the <code>example</code> parameter
    * 
    * The limitations are:
    * <ul>
-   * <li>Only  one @Id annotation</li>
+   * <li>Only one @Id annotation</li>
    * <li>We can not e.g. handle arrays and object references while generating JPQL</li>
    * </ul>
    * 
-   * Our intension is to make this method more advanced/flexible later 
-   * 
-   * @param example
-   * @param select
-   * @param distinct
-   * @param any
-   * @return
    */
+	@SuppressWarnings("unchecked")
 	protected Query createExampleQuery(Object example, boolean select, boolean distinct, boolean any) {
 		
 		assert example != null : "The example parameter can not be null"; 
@@ -291,17 +285,17 @@ public class CrudServiceBean implements CrudService {
 		)
 		.append( String.format(" FROM %s e", example.getClass().getName()) );
 		
-		BeanMap beanMap = new BeanMap(example);
-		Set keys = beanMap.keySet();
-		Iterator i = keys.iterator();
+		BeanMap beanMap = new BeanMap(example); //Map<String, Object> beanMap = new BeanMap(example);
+		Set<Entry<String, Object>> properties = beanMap.entrySet();
 		List<Object> parameterValues = new ArrayList<Object>();
 		
 		boolean where = false;
 		String operator = (any ? "OR" : "AND");
 		int n = 1;
-		while (i.hasNext()) {
-			String propertyName = (String) i.next();
-			Class type = beanMap.getType(propertyName);
+		for (Entry<String, Object> property : properties) {
+			String propertyName = property.getKey();
+			Class<?> type = beanMap.getType(propertyName); //((BeanMap)beanMap).getType(propertyName);
+			
 			if(type != null) {
 				Object value = beanMap.get(propertyName);
 				int k = OBJECT_PRIMITIVES.indexOf(type.getName());
@@ -318,7 +312,7 @@ public class CrudServiceBean implements CrudService {
 					n++;
 				}
 			}
-		}			
+		}
 
 		Query query = getEntityManager().createQuery(jpql.toString());
 
@@ -405,4 +399,51 @@ public class CrudServiceBean implements CrudService {
 		}
 		return pkName;
 	}
+
+	/**
+	 * Create a parametrized JPQL based on non null values in the <code>example</code> parameter
+	 * @param example
+	 * @param select
+	 * @param distinct
+	 * @param any
+	 * @return The created JPQL string
+	 */
+	
+//	protected static String createJPQL(Object example, boolean select, boolean distinct, boolean any) {
+//		
+//		assert example != null : "The example parameter can not be null";
+//		
+//		final StringBuilder jpql = new StringBuilder(	
+//				(select ? String.format("SELECT %s e", (distinct ? "DISTINCT" : "")) : "DELETE") 
+//			)
+//			.append( String.format(" FROM %s e", example.getClass().getName()) );
+//			
+//		BeanMap beanMap = new BeanMap(example);
+//		Set keys = beanMap.keySet();
+//		Iterator i = keys.iterator();
+//		
+//		boolean where = false;
+//		String operator = (any ? "OR" : "AND");
+//		int n = 1;
+//		while (i.hasNext()) {
+//			String propertyName = (String) i.next();
+//			Class type = beanMap.getType(propertyName);
+//			if(type != null) {
+//				Object value = beanMap.get(propertyName);
+//				int k = OBJECT_PRIMITIVES.indexOf(type.getName());
+//				if(value != null && (type.isPrimitive() || k > -1)) {
+//					String equals = (k==0 ? "LIKE" : "=");  // 0 == String
+//					if(!where) {
+//						where = true;
+//						jpql.append(String.format(" where e.%s %s ?%d", propertyName, equals, n));
+//					}
+//					else {
+//						jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName , equals, n));
+//					}
+//					n++;
+//				}
+//			}
+//		}			
+//		return jpql.toString();
+//	}
 }
