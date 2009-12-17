@@ -135,6 +135,20 @@ public class CrudServiceTest extends OpenEjbTest {
 	public void deleteByExample() throws Exception {
 		CrudService crudService = lookupCrudService();
 		Movie exampleMovie = new Movie();
+		exampleMovie.setDirector("Joel Coen");
 		crudService.remove(exampleMovie, true);
+		
+		List<Movie> movies = crudService.find(exampleMovie, false, true);
+  	Assert.assertEquals(movies.size(), 0, "List.size()");
+	}
+
+	@Test(dependsOnMethods={ "deleteByExample" })
+	public void deleteAll() throws Exception {
+		CrudService crudService = lookupCrudService();
+		Movie exampleMovie = new Movie();
+		crudService.remove(exampleMovie, true);
+		
+		List<Movie> movies = crudService.find(exampleMovie, false, false);
+  	Assert.assertEquals(movies.size(), 0, "List.size()");
 	}
 }
