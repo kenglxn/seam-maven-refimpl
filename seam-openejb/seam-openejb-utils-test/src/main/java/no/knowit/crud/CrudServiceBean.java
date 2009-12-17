@@ -76,11 +76,13 @@ public class CrudServiceBean implements CrudService {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass) {
+		assert entityClass != null : "The 'entityClass' parameter can not be null"; 
     return getEntityManager().createQuery("from " + entityClass.getName()).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult) {
+		assert entityClass != null : "The 'entityClass' parameter can not be null"; 
     return getEntityManager().createQuery("from " + entityClass.getName())
       .setFirstResult(startPosition)
       .setMaxResults(maxResult)
@@ -108,6 +110,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> merge(Collection<T> entities) {
+		assert entities != null : "The 'entities' parameter can not be null"; 
 		Collection<T> mergedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			mergedResults.add(merge(entity));		
@@ -128,6 +131,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public void remove(Collection<Object> entities) {
+		assert entities != null : "The 'entities' parameter can not be null"; 
 		for (Object entity : entities) {
 			remove(entity);
 		}
@@ -140,8 +144,8 @@ public class CrudServiceBean implements CrudService {
 
 	// :-)
 	public <T> T store(T entity) {
-		assert entity != null;
-		
+		assert entity != null : "The 'entity' parameter can not be null"; 
+
 		Object id = getIdentity(entity);
 		if(!log.isDebugEnabled()) {			
 			if(id != null) {
@@ -172,6 +176,7 @@ public class CrudServiceBean implements CrudService {
 	}
 	
 	public <T> Collection<T> store(Collection<T> entities) {
+		assert entities != null : "The 'entities' parameter can not be null"; 
 		Collection<T> storedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			storedResults.add(store(entity));
@@ -194,6 +199,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> refresh(Collection<T> entities) {
+		assert entities != null : "The 'entities' parameter can not be null"; 
 		Collection<T> refreshedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			refreshedResults.add(refresh(entity));
@@ -252,9 +258,9 @@ public class CrudServiceBean implements CrudService {
    * @throws java.lang.IllegalStateException if EntityManager has not been set on this service before usage
    */
   protected EntityManager getEntityManager() {
-    if (entityManager == null) 
+    if (entityManager == null) {
       throw new IllegalStateException("EntityManager has not been set on service before usage");
-
+    }
     return entityManager;
   }
 
@@ -283,42 +289,41 @@ public class CrudServiceBean implements CrudService {
    */
 	protected Query createExampleQuery(Object example, boolean select, boolean distinct, boolean any) {
 		
+		assert example != null : "The example parameter can not be null"; 
+		
 		final StringBuilder jpql = new StringBuilder(	
 			(select ? String.format("SELECT %s e", (distinct ? "DISTINCT" : "")) : "DELETE") 
 		)
 		.append( String.format(" FROM %s e", example.getClass().getName()) );
 		
-		
-		int n = 1;
+		BeanMap beanMap = new BeanMap(example);
+		Set keys = beanMap.keySet();
+		Iterator i = keys.iterator();
 		List<Object> values = new ArrayList<Object>();
-		if(example != null) {
-			BeanMap beanMap = new BeanMap(example);
-			Set keys = beanMap.keySet();
-			Iterator i = keys.iterator();
-			String operator = (any ? "OR" : "AND");
-			boolean where = false;
-			
-			while (i.hasNext()) {
-				String propertyName = (String) i.next();
-				Class type = beanMap.getType(propertyName);
-				if(type != null) {
-					Object value = beanMap.get(propertyName);
-					int k = OBJECT_PRIMITIVES.indexOf(type.getName());
-					if(value != null && (type.isPrimitive() || k > -1)) {
-						values.add(value);
-						String equals = (k==0 ? "LIKE" : "=");  // 0 -> String
-						if(!where) {
-							where = true;
-							jpql.append(String.format(" where e.%s %s ?%d", propertyName, equals, n));
-						}
-						else {
-							jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName , equals, n));
-						}
-						n++;
+		
+		boolean where = false;
+		String operator = (any ? "OR" : "AND");
+		int n = 1;
+		while (i.hasNext()) {
+			String propertyName = (String) i.next();
+			Class type = beanMap.getType(propertyName);
+			if(type != null) {
+				Object value = beanMap.get(propertyName);
+				int k = OBJECT_PRIMITIVES.indexOf(type.getName());
+				if(value != null && (type.isPrimitive() || k > -1)) {
+					values.add(value);
+					String equals = (k==0 ? "LIKE" : "=");  // 0 == String
+					if(!where) {
+						where = true;
+						jpql.append(String.format(" where e.%s %s ?%d", propertyName, equals, n));
 					}
+					else {
+						jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName , equals, n));
+					}
+					n++;
 				}
-			}			
-		}
+			}
+		}			
 
 		Query query = getEntityManager().createQuery(jpql.toString());
 
@@ -407,7 +412,4 @@ public class CrudServiceBean implements CrudService {
 		}
 		return pkName;
 	}
-
-	
-
 }
