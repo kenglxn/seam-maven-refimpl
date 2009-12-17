@@ -321,9 +321,10 @@ public class CrudServiceBean implements CrudService {
   // TODO: move to separate package
   // -------------------------------
 	private static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
-		"java.lang.String", "java.lang.Boolean", "java.lang.Byte",    "java.lang.Character",	
-		"java.lang.Double",	"java.lang.Float",   "java.lang.Integer", "java.lang.Long", 
-		"java.lang.Number", "java.lang.Short" ,  "java.util.Date" );
+		"java.lang.String", "java.lang.Boolean", "java.lang.Byte"    , "java.lang.Character",	
+		"java.lang.Double",	"java.lang.Float"  , "java.lang.Integer" , "java.lang.Long", 
+		"java.lang.Number", "java.lang.Short"  , "java.util.Currency", "java.util.Date"   ,
+		"java.sql.Date"   , "java.sql.Time"    , "java.sql.Timestamp" );
   
 
   protected static boolean hasIdentity(Object entity) {
