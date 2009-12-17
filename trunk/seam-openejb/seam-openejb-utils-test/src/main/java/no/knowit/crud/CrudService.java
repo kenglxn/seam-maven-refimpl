@@ -23,6 +23,7 @@ public interface CrudService {
 	 * Basics - persist will take the entity and put it into the db.
 	 * 
 	 * @param entities
+   * @see javax.persistence.EntityManager#persist(Object)
 	 */
 	public <T> Collection<T> persist(Collection<T> entities);
 
