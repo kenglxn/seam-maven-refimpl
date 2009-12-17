@@ -265,11 +265,6 @@ public class CrudServiceBean implements CrudService {
   }
 
   
-	private static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
-			"java.lang.String", "java.lang.Boolean", "java.lang.Byte", "java.lang.Character",	"java.lang.Double", 
-			"java.lang.Float",  "java.lang.Integer", "java.lang.Long", "java.lang.Number"   , "java.lang.Short" ,	
-			"java.util.Date" );
-  
   /**
    * This is a simple form of query by example. Produces a SELECT or DELETE query
    * 
@@ -299,7 +294,7 @@ public class CrudServiceBean implements CrudService {
 		BeanMap beanMap = new BeanMap(example);
 		Set keys = beanMap.keySet();
 		Iterator i = keys.iterator();
-		List<Object> values = new ArrayList<Object>();
+		List<Object> parameterValues = new ArrayList<Object>();
 		
 		boolean where = false;
 		String operator = (any ? "OR" : "AND");
@@ -311,7 +306,7 @@ public class CrudServiceBean implements CrudService {
 				Object value = beanMap.get(propertyName);
 				int k = OBJECT_PRIMITIVES.indexOf(type.getName());
 				if(value != null && (type.isPrimitive() || k > -1)) {
-					values.add(value);
+					parameterValues.add(value);
 					String equals = (k==0 ? "LIKE" : "=");  // 0 == String
 					if(!where) {
 						where = true;
@@ -333,7 +328,7 @@ public class CrudServiceBean implements CrudService {
 		}
 		
 		n = 1;
-		for (Object v : values) {
+		for (Object v : parameterValues) {
 			if(log.isDebugEnabled()) {
 				jpql.append("\t[?" + n + " = " + v + "]\n");
 			}
@@ -352,6 +347,11 @@ public class CrudServiceBean implements CrudService {
   // Utility methods
   // TODO: move to separate package
   // -------------------------------
+	private static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
+		"java.lang.String", "java.lang.Boolean", "java.lang.Byte",    "java.lang.Character",	
+		"java.lang.Double",	"java.lang.Float",   "java.lang.Integer", "java.lang.Long", 
+		"java.lang.Number", "java.lang.Short" ,  "java.util.Date" );
+  
 
   protected static boolean hasIdentity(Object entity) {
 		return getIdentity(entity) != null ? true : false;
@@ -361,13 +361,6 @@ public class CrudServiceBean implements CrudService {
   	String identityName = getIdentityPropertyName(entity.getClass());
 		BeanMap beanMap = new BeanMap(entity);
 		return beanMap.get(identityName);
-		
-//		try {
-//			return PropertyUtils.getNestedProperty(entity, identityName);
-//		} catch (Exception e) {
-//			log.fatal("PropertyUtils.getNestedProperty", e); 
-//		}
-//		return null;
   }
   
 	protected static String getIdentityPropertyName(Class<?> clazz) {
