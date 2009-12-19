@@ -15,7 +15,7 @@ import org.testng.annotations.BeforeSuite;
  * @author <a href="mailto:theute@jboss.org">Thomas Heute</a>
  * @author Mike Youngstrom
  */
-public class SeamTest extends AbstractSeamOpenEjbTest {
+public class SeamOpenEjbTest extends AbstractSeamOpenEjbTest {
 	
 	@BeforeMethod
 	@Override
