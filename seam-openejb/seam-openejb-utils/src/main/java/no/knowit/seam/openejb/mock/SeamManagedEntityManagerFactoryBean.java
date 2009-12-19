@@ -21,13 +21,12 @@ public class SeamManagedEntityManagerFactoryBean implements SeamManagedEntityMan
 	
 	private static final LogProvider log = Logging.getLogProvider(SeamManagedEntityManagerFactoryBean.class); 
 	
-	@PersistenceUnit(name="openejb-unit")
+	@PersistenceUnit //(name="openejb-unit")
 	EntityManagerFactory entityManagerFactory;
 
 	@Unwrap
 	public EntityManagerFactory getEntityMangagerFactory() {
-		
-		log.debug("**** @Unwrap -> SeamManagedEntityManagerFactoryBean.getEntityMangagerFactory");
+		log.debug("@Unwrap -> SeamManagedEntityManagerFactoryBean.getEntityMangagerFactory");
 		return entityManagerFactory;
 	}
 }

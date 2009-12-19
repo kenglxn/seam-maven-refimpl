@@ -50,7 +50,7 @@ public class BootStrapOpenEjb {
 				p.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
 	
 				// Corresponds to JBoss JNDI lookup format
-				p.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
+				// p.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
 	
 				// Overrides default properties in p if key match
 				if (properties != null) {
@@ -78,15 +78,15 @@ public class BootStrapOpenEjb {
 		Properties p = new Properties();
 		
 		// see: http://openejb.apache.org/3.0/alternate-descriptors.html
-		p.put("openejb.altdd.prefix", "openejb");
+		// p.put("openejb.altdd.prefix", "openejb");
 		
 		// For multi module projects
-		p.put("openejb.deployments.classpath.ear", "true");
+		// p.put("openejb.deployments.classpath.ear", "true");
 		
 
 		// Property that ensures that OpenEJB destroys the embedded container when closing the initial context
 		// See: http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
-		//p.put("openejb.embedded.initialcontext.close", "destroy"); 
+		// p.put("openejb.embedded.initialcontext.close", "destroy"); 
 		
 		if (properties != null) {
 			p.putAll(properties);

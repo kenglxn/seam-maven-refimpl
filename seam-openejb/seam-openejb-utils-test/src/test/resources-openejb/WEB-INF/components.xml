@@ -25,18 +25,27 @@
 ">
 
 	<core:init 
-		jndi-pattern="/#{ejbName}/Local" 
-		debug="false"
+		jndi-pattern="${app.jndi.pattern.test}" 
+		debug="${jdk.debug}"
 		transaction-management-enabled="true" />
 
 	<!-- JPA -->
   <transaction:ejb-transaction />
 
+	<!-- TODO: Figure out how to define entity manager factory here 
+	<persistence:entity-manager-factory
+		name="entityManagerFactory"
+		class="no.knowit.seam.openejb.mock.SeamManagedEntityManagerFactoryBean"
+		persistence-unit-name="${pu.name}"
+		installed="true"
+		startup="true" />
+	-->
+	
 	<persistence:managed-persistence-context
 		name="entityManager" 
 		auto-create="true"
 		scope="conversation" 
 		entity-manager-factory="#{entityManagerFactory}" 
-		persistence-unit-jndi-name="java:/openejbEntityManagerFactory" />
+		persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name.test}" />
 		
 </components>
