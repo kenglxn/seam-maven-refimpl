@@ -46,8 +46,8 @@ import org.apache.log4j.Logger;
 @Stateless(name = "crudService")
 public class CrudServiceBean implements CrudService {
 
-	protected Logger log = Logger.getLogger(this.getClass());
-	// protected static Logger log = Logger.getLogger(CrudServiceBean.class);
+	//protected Logger log = Logger.getLogger(this.getClass());
+	protected static Logger log = Logger.getLogger(CrudServiceBean.class);
 
 	@PersistenceContext
 	EntityManager entityManager;
@@ -275,34 +275,19 @@ public class CrudServiceBean implements CrudService {
 		assert example != null : "The 'example' parameter can not be null";
 
 		BeanMap beanMap = new BeanMap(example); // Map<String, Object> beanMap = new BeanMap(example);
-		final StringBuilder jpql = new StringBuilder(
-				createJPQL(example.getClass().getName(), beanMap, select, distinct, any));
-
-		Query query = getEntityManager().createQuery(jpql.toString());
-
-		if (log.isDebugEnabled()) {
-			// The jpql string in it's valid form is not needed anymore - so we can reuse it for debug output
-			jpql.append("]\n");
-		}
-
-		int n = 1;
+		String jpql = createJPQL(example.getClass().getName(), beanMap, select, distinct, any);
+		Query query = getEntityManager().createQuery(jpql);
+		
 		Set<Entry<String, Object>> properties = beanMap.entrySet();
+		int n = 1;
 		for (Entry<String, Object> entry : properties) {
 			Object value = entry.getValue();
 			if (value != null) {
 				Class<?> type = value.getClass();
-				if (type != null) {
-					if (type.isPrimitive() || OBJECT_PRIMITIVES.indexOf(type.getName()) > -1) {
-						if (log.isDebugEnabled()) {
-							jpql.append("\t[?" + n + " = " + value + "]\n");
-						}
-						query.setParameter(n++, value);
-					}
+				if (type != null && (type.isPrimitive() || OBJECT_PRIMITIVES.indexOf(type.getName()) > -1)) {
+					query.setParameter(n++, value);
 				}
 			}
-		}
-		if (log.isDebugEnabled()) {
-			log.debug("createExampleQuery, jpql = \n\t[" + jpql.toString());
 		}
 		return query;
 	}
@@ -379,17 +364,19 @@ public class CrudServiceBean implements CrudService {
 	protected static String createJPQL(final String entityClass, 
 			final Map<String, Object> fields, boolean select, boolean distinct,	boolean any) {
 
-		assert (entityClass != null || entityClass.trim().length() == 0) : "The 'entityClass' parameter can not be null!";
+		assert (entityClass != null) : "The 'entityClass' parameter can not be null!";
 
 		final StringBuilder jpql = new StringBuilder((select ? String.format(
 				"SELECT %s e", (distinct ? "DISTINCT" : "")) : "DELETE")
 			)
 			.append(String.format(" FROM %s e", entityClass));
+		
+		final StringBuilder debugData = new StringBuilder();
 
+		Set<Entry<String, Object>> properties = fields.entrySet();
 		boolean where = false;
 		String operator = (any ? "OR" : "AND");
 		int n = 1;
-		Set<Entry<String, Object>> properties = fields.entrySet();
 		
 		for (Entry<String, Object> entry : properties) {
 			String propertyName = entry.getKey();
@@ -407,10 +394,17 @@ public class CrudServiceBean implements CrudService {
 						} else {
 							jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName, equals, n));
 						}
+						if(log.isDebugEnabled()) {
+							debugData.append("\n\t[?" + n + " = " + value + ']');
+						}
 						n++;
 					}
 				}
 			}
+		}
+		if(log.isDebugEnabled()) {
+			debugData.insert(0, "createJPQL, jpql = \n\t[" + jpql.toString() + "]");
+			log.debug(debugData);
 		}
 		return jpql.toString();
 	}
