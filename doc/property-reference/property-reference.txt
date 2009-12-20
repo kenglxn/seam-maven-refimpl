@@ -3,6 +3,7 @@ Property reference
 ${property}                                     =example value                               [file]
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ${env}                                           =dev                                         [ear/pom.xml, ejb/pom.xml, war/pom.xml]
+
 ${app}                                           =                                            []
 ${app.unpack.modules}                            =true                                        [ear/pom.xml]
 ${app.context}                                   =seam-refimpl                                [ear/pom.xml, ejb/pom.xml, war/pom.xml, jboss-web.xml]
