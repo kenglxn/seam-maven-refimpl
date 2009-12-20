@@ -24,76 +24,68 @@
 	</modules>
 	
   <properties>
-		<app>app</app>
-		<app.profile>dev</app.profile>
-		<app.unpack.modules>true</app.unpack.modules>
+		<env>prod</env>
+		
 		<app.context>seam-openejb</app.context>
 		<app.web.context>${app.context}</app.web.context>
 		<app.display.name>Seam tests with OpenEJB and JPA with Hibernate</app.display.name>
 		<app.description>${app.display.name}</app.description>
 		<app.distributable>false</app.distributable>
-		<app.persistence.emf.installed>true</app.persistence.emf.installed>
-		<app.persistence.emf.startup>true</app.persistence.emf.startup>
-		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create>
 		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
+		<app.jndi.pattern.test>/#{ejbName}/Local</app.jndi.pattern.test>
 		
 		<jdk.debug>true</jdk.debug>
 		<jdk.optimize>false</jdk.optimize>
 		<jdk.source>1.6</jdk.source>
 		<jdk.target>1.6</jdk.target>
 		
-		<as>jboss423</as>
-		<as.version>4.2</as.version>
-		<as.home>./jboss-4.2.3.GA-jdk6</as.home>
-		<as.deploy>${as.home}/server/default/deploy</as.deploy>
-		
-		<ds>mysql5</ds>
-		<ds.jndi.name>refimplDatabase</ds.jndi.name>
-		<ds.database.name>refimpl_db</ds.database.name>
-		<ds.server.name>localhost:3306</ds.server.name>
-		<ds.driver.class>com.mysql.jdbc.Driver</ds.driver.class>
-		<ds.connection.url>jdbc:mysql://${ds.server.name}/${ds.database.name}?characterEncoding=UTF-8</ds.connection.url>
-		<ds.user.name>root</ds.user.name>
-		<ds.password></ds.password>
-		<ds.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</ds.hibernate.dialect>
-		<ds.xml>${app.context}-ds.xml </ds.xml>
-	
-		<pu.name>refimpl-unit</pu.name>
-		<pu.jta.data.source>java:/${ds.jndi.name}</pu.jta.data.source>
-		<pu.jndi.name>java:/${app.context}EntityManagerFactory</pu.jndi.name>
-		<pu.hibernate.dialect>${ds.hibernate.dialect}</pu.hibernate.dialect>
-		<pu.hibernate.hbm2ddl.auto>create-drop</pu.hibernate.hbm2ddl.auto>
-		<pu.hibernate.show_sql>false</pu.hibernate.show_sql>
-		<pu.hibernate.format_sql>true</pu.hibernate.format_sql>
-		<pu.hibernate.default_batch_fetch_size>16</pu.hibernate.default_batch_fetch_size>
-		<pu.jboss.entity.manager.factory.jndi.name>java:/${app.context}EntityManagerFactory</pu.jboss.entity.manager.factory.jndi.name>
-		<pu.hibernate.transaction.manager_lookup_class>org.hibernate.transaction.JBossTransactionManagerLookup</pu.hibernate.transaction.manager_lookup_class>
-		
-		<!-- for test -->
-		<app.jndi.pattern.test>/#{ejbName}/Local</app.jndi.pattern.test>
+		<!-- 
+			Properties for production are located src/main/filters/filter-prod.properties
 
-		<ds.test>hsqldb</ds.test>
-		<ds.jndi.name.test>refimplDatabase</ds.jndi.name.test>
-		<ds.database.name.test>refimpl_db</ds.database.name.test>
-		<ds.server.name.test></ds.server.name.test>
-		<ds.driver.class.test>org.hsqldb.jdbcDriver</ds.driver.class.test>
-		<ds.connection.url.test>jdbc:hsqldb:mem:${ds.database.name.test}</ds.connection.url.test>
-		<ds.user.name.test>sa</ds.user.name.test>
-		<ds.password.test></ds.password.test>
-		<ds.hibernate.dialect.test>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect.test>
-		
-		<pu.name.test>refimpl-unit</pu.name.test>
-		<pu.jta.data.source.test>java:/${ds.jndi.name}</pu.jta.data.source.test>
-		<pu.jndi.name.test>java:/${app.context}EntityManagerFactory</pu.jndi.name.test>
-		<pu.hibernate.dialect.test>${ds.hibernate.dialect.test}</pu.hibernate.dialect.test>
-		<pu.hibernate.hbm2ddl.auto.test>create-drop</pu.hibernate.hbm2ddl.auto.test>
-		<pu.hibernate.show_sql.test>false</pu.hibernate.show_sql.test>
-		<pu.hibernate.format_sql.test>true</pu.hibernate.format_sql.test>
-		<pu.hibernate.default_batch_fetch_size.test>16</pu.hibernate.default_batch_fetch_size.test>
-		<pu.jboss.entity.manager.factory.jndi.name.test>java:/${app.context}EntityManagerFactory</pu.jboss.entity.manager.factory.jndi.name.test>
-		<pu.hibernate.transaction.manager_lookup_class.test>org.apache.openejb.hibernate.TransactionManagerLookup</pu.hibernate.transaction.manager_lookup_class.test>
+			Properties that can be modified by developer are located src/main/filters/filter-dev.properties
+			Remember to add "filter-dev.properties" to svn:ignore 
+		-->
   </properties>
 
+  <profiles>
+		<profile>
+			<id>show-properties</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<echo>env                   : ${env}</echo>
+										<echo>app.context           : ${app.context}</echo>
+										<echo>project.parent.basedir: ${project.parent.basedir}</echo>
+										<echo>project.basedir       : ${project.basedir}</echo>
+										<echo>jdk.source            : ${jdk.source}</echo>
+										<echo>jdk.target            : ${jdk.target}</echo>
+										<echo>jdk.debug             : ${jdk.debug}</echo>
+										<echo>jdk.optimize          : ${jdk.optimize}</echo>
+										<echo>as                    : ${as}</echo>
+										<echo>as.deploy             : ${as.deploy}</echo>
+										<echo>ds                    : ${ds}</echo>
+										<echo>ds.connection.url     : ${ds.connection.url}</echo>
+										<echo>ds.test               : ${ds.test}</echo>
+										<echo>ds.connection.url.test: ${ds.connection.url.test}</echo>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+  	  
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -271,25 +263,25 @@
 		</dependency>
 
 		<!-- databases  -->
+		<!--
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<scope>test</scope>
 		</dependency>
+		-->
 		
-		<!--
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.1.111</version>
+			<scope>test</scope>
 		</dependency>
-		-->
 		
 		<!-- 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.8</version>
+			<scope>test</scope>
 		</dependency>
 		-->
 		
@@ -319,18 +311,9 @@
 			<artifactId>javassist</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
-	
+
   <build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-		</plugins>
-		
     <defaultGoal>install</defaultGoal>
   </build>
-
 </project>

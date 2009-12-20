@@ -6,14 +6,14 @@ import javax.faces.model.DataModel;
 
 import no.knowit.openejb.mock.test.ContextPropertiesForTest;
 import no.knowit.seam.model.Message;
-import no.knowit.seam.openejb.mock.SeamTest;
+import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 import no.knowit.seam.statefulaction.MessageManager;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-public class MessageManagerTest extends SeamTest {
+public class MessageManagerTest extends SeamOpenEjbTest {
 	
 	@Override
 	@BeforeSuite

@@ -18,13 +18,47 @@
 	<packaging>ejb</packaging>
 	
 	<properties>
-		<env>dev</env>
-		<jdk.debug>true</jdk.debug>
-		<jdk.optimize>false</jdk.optimize>
-		
-    <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	<profiles>
+	  <profile>
+	    <id>env-prod</id>
+	    <properties>
+	      <env>prod</env>
+				<jdk.debug>true</jdk.debug>
+				<jdk.optimize>true</jdk.optimize>
+	    </properties>
+	  </profile>
+	  
+		<profile>
+			<id>show-properties</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<echo>env                   : ${env}</echo>
+										<echo>jdk.source            : ${jdk.source}</echo>
+										<echo>jdk.target            : ${jdk.target}</echo>
+										<echo>jdk.debug             : ${jdk.debug}</echo>
+										<echo>jdk.optimize          : ${jdk.optimize}</echo>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
 	
 	<dependencies>
 		<dependency>

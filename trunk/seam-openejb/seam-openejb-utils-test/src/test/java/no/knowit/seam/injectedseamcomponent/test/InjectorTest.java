@@ -8,9 +8,9 @@ import org.jboss.seam.log.Logging;
 
 import no.knowit.openejb.mock.test.ContextPropertiesForTest;
 import no.knowit.seam.injectedseamcomponent.Injector;
-import no.knowit.seam.openejb.mock.SeamTest;
+import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
-public class InjectorTest extends SeamTest {
+public class InjectorTest extends SeamOpenEjbTest {
 	
   private static final LogProvider log = Logging.getLogProvider(InjectorTest.class);
 
