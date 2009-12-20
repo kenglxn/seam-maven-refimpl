@@ -90,7 +90,7 @@
 		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
 
 	<!--
-		In an EJB3 environment, it is recommend yo use a special built-in  component  for  transaction  
+		In an EJB3 environment, it is recommend to use a special built-in  component  for  transaction  
 		management,  that  is  fully  aware  of  container  transactions,	and can correctly process 
 		transaction success events registered with the Events component. If you don't add this line to 
 		your components.xml file, Seam won't know when container-managed transactions end 
