@@ -72,6 +72,11 @@ pom.xml properties
 	<as.version>4.2</as.version>
 	<as.home>./jboss-4.2.3.GA-jdk6</as.home>
 	<as.deploy>${as.home}/server/default/deploy</as.deploy>
+
+	<as>jboss5</as>
+	<as.version>5</as.version>
+	<as.home>C:/dev/server/jboss-5.1.0.GA-jdk6</as.home>
+	<as.deploy>${as.home}/server/default/deploy</as.deploy>
 	
 	<ds>mysql5</ds>
 	<ds.jndi.name>refimplDatabase</ds.jndi.name>
