@@ -11,9 +11,9 @@ import org.testng.annotations.Test;
 import no.knowit.openejb.mock.test.ContextPropertiesForTest;
 import no.knowit.seam.injectedentitymanager.InjectedEntityManagerInStateless;
 import no.knowit.seam.model.Movie;
-import no.knowit.seam.openejb.mock.SeamTest;
+import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
-public class InjectedEntityManagerInStatelessBeanTest extends SeamTest {
+public class InjectedEntityManagerInStatelessBeanTest extends SeamOpenEjbTest {
 	
   private static final LogProvider log = Logging.getLogProvider(InjectedEntityManagerInStatelessBeanTest.class);
 	

@@ -16,11 +16,11 @@ import org.jboss.seam.mock.AbstractSeamTest.FacesRequest;
 import no.knowit.crud.CrudService;
 import no.knowit.openejb.mock.test.ContextPropertiesForTest;
 import no.knowit.seam.model.Movie;
-import no.knowit.seam.openejb.mock.SeamTest;
+import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 import no.knowit.seam.seamframework.MovieHome;
 import no.knowit.seam.seamframework.MovieList;
 
-public class MovieTest extends SeamTest {
+public class MovieTest extends SeamOpenEjbTest {
 
   private static final LogProvider log = Logging.getLogProvider(MovieTest.class);
   

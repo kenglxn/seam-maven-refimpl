@@ -31,12 +31,10 @@
 			More than one profile can be active at once. Since profiles can contain the same 
 			types of configuration there can be clashes. If two profiles clash the last to be activated 
 			will override those activated earlier. But clashes can be used to our advantage as well :-)
+			"mvn install -Penv-dev" deactivates default activation of the env-prod profile
 		 -->
 	  <profile>
 	    <id>env-dev</id>
-			<activation>
-	      <activeByDefault>true</activeByDefault>
-			</activation>
 	    <properties>
 	      <env>dev</env>
 	    </properties>
@@ -44,6 +42,9 @@
 
 	  <profile>
 	    <id>env-prod</id>
+			<activation>
+	      <activeByDefault>true</activeByDefault>
+			</activation>
 	    <properties>
 	      <env>prod</env>
 	    </properties>

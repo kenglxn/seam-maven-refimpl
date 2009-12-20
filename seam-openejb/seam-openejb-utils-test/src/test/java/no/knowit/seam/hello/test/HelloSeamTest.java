@@ -9,9 +9,9 @@ import org.jboss.seam.log.Logging;
 import no.knowit.openejb.mock.test.ContextPropertiesForTest;
 import no.knowit.seam.hello.HelloSeam;
 import no.knowit.seam.hello.HelloSeamNoInterface;
-import no.knowit.seam.openejb.mock.SeamTest;
+import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
-public class HelloSeamTest extends SeamTest {
+public class HelloSeamTest extends SeamOpenEjbTest {
 	
   private static final LogProvider log = Logging.getLogProvider(HelloSeamTest.class);
 
