@@ -44,11 +44,11 @@
 								</goals>
 								<configuration>
 									<tasks>
-										<echo>env                   : ${env}</echo>
-										<echo>jdk.source            : ${jdk.source}</echo>
-										<echo>jdk.target            : ${jdk.target}</echo>
-										<echo>jdk.debug             : ${jdk.debug}</echo>
-										<echo>jdk.optimize          : ${jdk.optimize}</echo>
+										<echo>env         : ${env}</echo>
+										<echo>jdk.source  : ${jdk.source}</echo>
+										<echo>jdk.target  : ${jdk.target}</echo>
+										<echo>jdk.debug   : ${jdk.debug}</echo>
+										<echo>jdk.optimize: ${jdk.optimize}</echo>
 									</tasks>
 								</configuration>
 							</execution>
@@ -74,6 +74,12 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
