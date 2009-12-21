@@ -94,8 +94,16 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+ 		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+		</plugins>
   </build>
 
+<!-- 
 	<distributionManagement>		
 		<repository>
 			<id>logit</id>
@@ -109,5 +117,5 @@
 			<url>http://192.168.106.15:8081/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
-
+-->
 </project>
