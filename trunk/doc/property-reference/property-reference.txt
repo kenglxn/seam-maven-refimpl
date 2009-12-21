@@ -133,8 +133,8 @@ pom.xml properties
 	<pu.hibernate.show_sql.test>false</pu.hibernate.show_sql.test>
 	<pu.hibernate.format_sql.test>true</pu.hibernate.format_sql.test>
 	<pu.hibernate.default_batch_fetch_size.test>16</pu.hibernate.default_batch_fetch_size.test>
-	<pu.jboss.entity.manager.factory.jndi.name.test>java:/${app.context}EntityManagerFactory</pu.jboss.entity.manager.factory.jndi.name.test>
 	<pu.hibernate.transaction.manager_lookup_class.test>org.apache.openejb.hibernate.TransactionManagerLookup</pu.hibernate.transaction.manager_lookup_class.test>
+	<pu.jboss.entity.manager.factory.jndi.name.test>java:/${app.context}EntityManagerFactory</pu.jboss.entity.manager.factory.jndi.name.test>
 </properties>
 
 
