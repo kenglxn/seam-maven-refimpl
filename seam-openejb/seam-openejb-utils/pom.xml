@@ -96,7 +96,6 @@
 		</resources>
   </build>
 
-<!--
 	<distributionManagement>		
 		<repository>
 			<id>logit</id>
@@ -110,5 +109,5 @@
 			<url>http://192.168.106.15:8081/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
--->
+
 </project>
