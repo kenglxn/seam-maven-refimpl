@@ -39,9 +39,10 @@ import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
 
 /**
- * A minimalistic implementation of the generic CrudService.
+ * A minimalistic implementation of the generic CrudService.<br/>
  * 
  * @author adam-bien.com
+ * @author Leif Olsen
  */
 @Stateless(name = "crudService")
 public class CrudServiceBean implements CrudService {
@@ -136,7 +137,7 @@ public class CrudServiceBean implements CrudService {
 		query.executeUpdate();
 	}
 
-	// :-)
+	// C or U :-)
 	public <T> T store(T entity) {
 		assert entity != null : "The 'entity' parameter can not be null";
 
