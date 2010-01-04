@@ -11,18 +11,18 @@
     <non-jta-data-source>${pu.jta.data.source.test}Unmanaged</non-jta-data-source>
     
     <properties>
-      <property name="hibernate.dialect" value="${pu.hibernate.dialect.test}"/>
-      <property name="hibernate.hbm2ddl.auto" value="${pu.hibernate.hbm2ddl.auto.test}"/>
-      <property name="hibernate.default_batch_fetch_size" value="${pu.hibernate.default_batch_fetch_size.test}"/>
-      <property name="hibernate.show_sql" value="${pu.hibernate.show_sql.test}"/>
-      <property name="hibernate.format_sql"	value="true"/>
+      <property name="hibernate.dialect" value="${pu.hibernate.dialect.test}" />
+      <property name="hibernate.hbm2ddl.auto" value="${pu.hibernate.hbm2ddl.auto.test}" />
+      <property name="hibernate.default_batch_fetch_size" value="${pu.hibernate.default_batch_fetch_size.test}" />
+      <property name="hibernate.show_sql" value="${pu.hibernate.show_sql.test}" />
+      <property name="hibernate.format_sql"	value="true" />
 								
 			<!-- Encoding -->      
 			<property name="hibernate.connection.useUnicode" value="true" />
 			<property name="hibernate.connection.characterEncoding" value="UTF-8" />
 
 			<!-- OpenEJB TransactionManagerLookup -->			
-      <property name="hibernate.transaction.manager_lookup_class" value="org.apache.openejb.hibernate.TransactionManagerLookup"/>
+      <property name="hibernate.transaction.manager_lookup_class" value="${pu.hibernate.transaction.manager_lookup_class.test}" />
     </properties>
   </persistence-unit>
 </persistence>
