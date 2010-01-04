@@ -25,7 +25,7 @@ ${as.home}                                       =./jboss-4.2.3.GA-jdk6         
 ${as.deploy}                                     =${as.home}/server/default/deploy            [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
 ${ds}                                            =mysql5                                      []
-${ds.jndi.name}                                  =refimplDatabase                             [*-ds.xml, persistence.xml, jndi.properties, openejb.persistence.xml]
+${ds.jndi.name}                                  =refimpl-unitDatabase                        [*-ds.xml, persistence.xml, jndi.properties, openejb.persistence.xml]
 ${ds.database.name}                              =refimpl_db                                  []
 ${ds.server.name}                                =localhost:3306                              []
 ${ds.driver.class}                               =com.mysql.jdbc.Driver                       [*-ds.xml, jndi.properties]
@@ -90,17 +90,6 @@ pom.xml properties
 	<ds.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</ds.hibernate.dialect>
 	<ds.xml>${app.context}-ds.xml </ds.xml>
 
-	<ds>hsqldb</ds>
-	<ds.jndi.name>refimplDatabase</ds.jndi.name>
-	<ds.database.name>refimpl_db</ds.database.name>
-	<ds.server.name></ds.server.name>
-	<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
-	<ds.connection.url>jdbc:hsqldb:mem:${refimpl_db}</ds.connection.url>
-	<ds.user.name>sa</ds.user.name>
-	<ds.password></ds.password>
-	<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
-	<ds.xml>${app.context}-ds.xml </ds.xml>
-	
 	<pu.name>refimpl-unit</pu.name>
 	<pu.jta.data.source>java:/${ds.jndi.name}</pu.jta.data.source>
 	<pu.jndi.name>java:/${app.context}EntityManagerFactory</pu.jndi.name>

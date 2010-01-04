@@ -34,15 +34,9 @@
 		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
 		<app.jndi.pattern.test>/#{ejbName}/Local</app.jndi.pattern.test>
 		
-		<jdk.debug>true</jdk.debug>
-		<jdk.optimize>false</jdk.optimize>
-		<jdk.source>1.6</jdk.source>
-		<jdk.target>1.6</jdk.target>
-		
 		<!-- 
-			Properties for production are located src/main/filters/filter-prod.properties
-
-			Properties that can be modified by developer are located src/main/filters/filter-dev.properties
+			Properties for production are located in src/main/filters/filter-prod.properties
+			Properties to be modified by developer are located in src/main/filters/filter-dev.properties
 			Remember to add "filter-dev.properties" to svn:ignore 
 		-->
   </properties>
@@ -64,6 +58,7 @@
 									<tasks>
 										<echo>env                   : ${env}</echo>
 										<echo>app.context           : ${app.context}</echo>
+										<echo>app.unpack.modules    : ${app.unpack.modules}</echo>
 										<echo>project.parent.basedir: ${project.parent.basedir}</echo>
 										<echo>project.basedir       : ${project.basedir}</echo>
 										<echo>jdk.source            : ${jdk.source}</echo>

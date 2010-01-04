@@ -10,22 +10,22 @@
     <jta-data-source>${pu.jta.data.source}</jta-data-source>
     
     <properties>
-      <property name="hibernate.dialect" value="${pu.hibernate.dialect}"/>
-      <property name="hibernate.hbm2ddl.auto" value="${pu.hibernate.hbm2ddl.auto}"/>
-      <property name="hibernate.default_batch_fetch_size" value="${pu.hibernate.default_batch_fetch_size}"/>
-      <property name="hibernate.show_sql" value="${pu.hibernate.show_sql}"/>
-      <property name="hibernate.format_sql"	value="true"/>
+      <property name="hibernate.dialect" value="${pu.hibernate.dialect}" />
+      <property name="hibernate.hbm2ddl.auto" value="${pu.hibernate.hbm2ddl.auto}" />
+      <property name="hibernate.default_batch_fetch_size" value="${pu.hibernate.default_batch_fetch_size}" />
+      <property name="hibernate.show_sql" value="${pu.hibernate.show_sql}" />
+      <property name="hibernate.format_sql"	value="true" />
 								
 			<!-- Encoding -->      
 			<property name="hibernate.connection.useUnicode" value="true" />
 			<property name="hibernate.connection.characterEncoding" value="UTF-8" />
 			
       <!-- These are the default for JBoss EJB3, but not for HEM: -->
-      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/>
-      <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
+      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+      <property name="hibernate.transaction.manager_lookup_class" value="${pu.hibernate.transaction.manager_lookup_class}" />
       
       <!--  -->
-      <property name="jboss.entity.manager.factory.jndi.name" value="${pu.jboss.entity.manager.factory.jndi.name}"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="${pu.jboss.entity.manager.factory.jndi.name}" />
     </properties>
   </persistence-unit>
 </persistence>

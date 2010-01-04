@@ -30,8 +30,8 @@
 		<!--
 			More than one profile can be active at once. Since profiles can contain the same 
 			types of configuration there can be clashes. If two profiles clash the last to be activated 
-			will override those activated earlier. But clashes can be used to our advantage as well :-)
-			"mvn install -Penv-dev" deactivates default activation of the env-prod profile
+			will override those activated earlier. 
+			Note: "mvn install -Penv-dev" deactivates activeByDefault for the env-prod profile
 		 -->
 	  <profile>
 	    <id>env-dev</id>
@@ -84,7 +84,8 @@
 					<execution>
 						<configuration>
 							<files>
-								<file>../src/main/filters/filter-${env}.properties</file>
+								<!-- <file>../src/main/filters/filter-${env}.properties</file> -->
+								<file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file>
 							</files>
 						</configuration>
 					</execution>

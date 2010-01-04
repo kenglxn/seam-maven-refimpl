@@ -22,14 +22,23 @@
 	
 	<profiles>
 	  <profile>
-	    <id>env-prod</id>
+	    <id>env-dev</id>
 	    <properties>
-	      <env>prod</env>
+	      <env>dev</env>
 				<jdk.debug>true</jdk.debug>
-				<jdk.optimize>true</jdk.optimize>
+				<jdk.optimize>false</jdk.optimize>
 	    </properties>
 	  </profile>
 	  
+	  <profile>
+	    <id>env-prod</id>
+	    <properties>
+	      <env>prod</env>
+				<jdk.debug>false</jdk.debug>
+				<jdk.optimize>true</jdk.optimize>
+	    </properties>
+	  </profile>
+
 		<profile>
 			<id>show-properties</id>
 			<build>
@@ -44,11 +53,13 @@
 								</goals>
 								<configuration>
 									<tasks>
-										<echo>env         : ${env}</echo>
-										<echo>jdk.source  : ${jdk.source}</echo>
-										<echo>jdk.target  : ${jdk.target}</echo>
-										<echo>jdk.debug   : ${jdk.debug}</echo>
-										<echo>jdk.optimize: ${jdk.optimize}</echo>
+										<echo>env                   : ${env}</echo>
+										<echo>project.parent.basedir: ${project.parent.basedir}</echo>
+										<echo>project.basedir       : ${project.basedir}</echo>
+										<echo>jdk.source            : ${jdk.source}</echo>
+										<echo>jdk.target            : ${jdk.target}</echo>
+										<echo>jdk.debug             : ${jdk.debug}</echo>
+										<echo>jdk.optimize          : ${jdk.optimize}</echo>
 									</tasks>
 								</configuration>
 							</execution>
