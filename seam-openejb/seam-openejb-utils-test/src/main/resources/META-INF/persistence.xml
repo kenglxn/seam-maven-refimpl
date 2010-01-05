@@ -8,6 +8,7 @@
   <persistence-unit name="${pu.name}" transaction-type="JTA">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>${pu.jta.data.source}</jta-data-source>
+    <non-jta-data-source>${pu.jta.data.source}Unmanaged</non-jta-data-source>
     
     <properties>
       <property name="hibernate.dialect" value="${pu.hibernate.dialect}" />
@@ -20,11 +21,12 @@
 			<property name="hibernate.connection.useUnicode" value="true" />
 			<property name="hibernate.connection.characterEncoding" value="UTF-8" />
 			
-      <!-- These are the default for JBoss EJB3, but not for HEM: -->
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+      
+      <!-- see: http://cwiki.apache.org/OPENEJBx30/configuring-persistenceunits-in-tests.html -->
       <property name="hibernate.transaction.manager_lookup_class" value="${pu.hibernate.transaction.manager_lookup_class}" />
       
-      <!--  -->
+      <!-- JBoss spesific. Does not affect OpenEJB -->
       <property name="jboss.entity.manager.factory.jndi.name" value="${pu.jboss.entity.manager.factory.jndi.name}" />
     </properties>
   </persistence-unit>
