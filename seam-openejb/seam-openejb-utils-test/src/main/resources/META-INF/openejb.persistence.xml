@@ -21,7 +21,10 @@
 			<property name="hibernate.connection.useUnicode" value="true" />
 			<property name="hibernate.connection.characterEncoding" value="UTF-8" />
 
-			<!-- OpenEJB TransactionManagerLookup -->			
+			<!-- 
+				OpenEJB TransactionManagerLookup
+				see: http://cwiki.apache.org/OPENEJBx30/configuring-persistenceunits-in-tests.html
+			-->
       <property name="hibernate.transaction.manager_lookup_class" value="${pu.hibernate.transaction.manager_lookup_class.test}" />
     </properties>
   </persistence-unit>
