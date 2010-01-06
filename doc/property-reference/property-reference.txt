@@ -1,11 +1,11 @@
 ﻿-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Property reference
-${property}                                     =example value                               [file]
+${property}                                      =example value                               [file]
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ${env}                                           =dev                                         [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
 ${app}                                           =                                            []
-${app.unpack.modules}                            =true                                        [ear/pom.xml]
+${app}                                           =                                            []
 ${app.context}                                   =seam-refimpl                                [ear/pom.xml, ejb/pom.xml, war/pom.xml, jboss-web.xml]
 ${app.web.context}                               =${app.context}                              [ear/pom.xml]
 ${app.display.name}                              =Seam Reference Implementation               [ear/pom.xml, web.xml]
@@ -52,16 +52,12 @@ pom.xml properties
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <properties>
 	<env>dev</env>
-	<app.profile>dev</app.profile>
 	<app.unpack.modules>true</app.unpack.modules>
 	<app.context>seam-openejb</app.context>
 	<app.web.context>${app.context}</app.web.context>
 	<app.display.name>Seam tests with OpenEJB and JPA with Hibernate</app.display.name>
 	<app.description>${app.display.name}</app.description>
 	<app.distributable>false</app.distributable>
-	<app.persistence.emf.installed>true</app.persistence.emf.installed>
-	<app.persistence.emf.startup>true</app.persistence.emf.startup>
-	<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create>
 	<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
 	
 	<jdk.debug>true</jdk.debug>
@@ -100,8 +96,7 @@ pom.xml properties
 	<pu.hibernate.transaction.manager_lookup_class>org.hibernate.transaction.JBossTransactionManagerLookup</pu.hibernate.transaction.manager_lookup_class>
 	<pu.jboss.entity.manager.factory.jndi.name>java:/${app.context}EntityManagerFactory</pu.jboss.entity.manager.factory.jndi.name>
 	
-	<!-- for test -->
-	<env.test>test</env.test>
+	<!-- for running tests -->
 	<app.jndi.pattern.test>/#{ejbName}/Local</app.jndi.pattern.test>
 	
 	<ds.test>hsqldb</ds.test>
@@ -114,16 +109,12 @@ pom.xml properties
 	<ds.password.test></ds.password.test>
 	<ds.hibernate.dialect.test>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect.test>
 	
-	<pu.name.test>refimpl-unit</pu.name.test>
-	<pu.jta.data.source.test>java:/${ds.jndi.name}</pu.jta.data.source.test>
-	<pu.jndi.name.test>java:/${app.context}EntityManagerFactory</pu.jndi.name.test>
 	<pu.hibernate.dialect.test>${ds.hibernate.dialect.test}</pu.hibernate.dialect.test>
 	<pu.hibernate.hbm2ddl.auto.test>create-drop</pu.hibernate.hbm2ddl.auto.test>
 	<pu.hibernate.show_sql.test>false</pu.hibernate.show_sql.test>
 	<pu.hibernate.format_sql.test>true</pu.hibernate.format_sql.test>
 	<pu.hibernate.default_batch_fetch_size.test>16</pu.hibernate.default_batch_fetch_size.test>
 	<pu.hibernate.transaction.manager_lookup_class.test>org.apache.openejb.hibernate.TransactionManagerLookup</pu.hibernate.transaction.manager_lookup_class.test>
-	<pu.jboss.entity.manager.factory.jndi.name.test>java:/${app.context}EntityManagerFactory</pu.jboss.entity.manager.factory.jndi.name.test>
 </properties>
 
 
