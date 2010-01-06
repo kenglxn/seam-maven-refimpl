@@ -25,7 +25,6 @@
 	
   <properties>
 		<env>prod</env>
-		
 		<app.context>seam-openejb</app.context>
 		<app.web.context>${app.context}</app.web.context>
 		<app.display.name>Seam tests with OpenEJB and JPA with Hibernate</app.display.name>

@@ -26,7 +26,7 @@
 
 	<core:init 
 		jndi-pattern="${app.jndi.pattern.test}" 
-		debug="${jdk.debug}"
+		debug="${app.debug}"
 		transaction-management-enabled="true" />
 
 	<!-- JPA -->
@@ -46,6 +46,6 @@
 		auto-create="true"
 		scope="conversation" 
 		entity-manager-factory="#{entityManagerFactory}" 
-		persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name.test}" />
+		persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name}" />
 		
 </components>
