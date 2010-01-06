@@ -1,7 +1,7 @@
-﻿-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+﻿----------------------------------------------------------------------------------------------------------------------------------------------------
 Property reference
 ${property}                                      =example value                               [file]
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------
 ${env}                                           =dev                                         [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
 ${app}                                           =                                            []
@@ -25,7 +25,7 @@ ${as.home}                                       =./jboss-4.2.3.GA-jdk6         
 ${as.deploy}                                     =${as.home}/server/default/deploy            [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
 ${ds}                                            =mysql5                                      []
-${ds.jndi.name}                                  =refimpl-unitDatabase                        [*-ds.xml, persistence.xml, jndi.properties, openejb.persistence.xml]
+${ds.jndi.name}                                  =refimpl-unitDatabase                        [*-ds.xml, persistence.xml, jndi.properties]
 ${ds.database.name}                              =refimpl_db                                  []
 ${ds.server.name}                                =localhost:3306                              []
 ${ds.driver.class}                               =com.mysql.jdbc.Driver                       [*-ds.xml, jndi.properties]
@@ -37,19 +37,19 @@ ${ds.hibernate.dialect}                          =org.hibernate.dialect.MySQL5In
 ${ds.xml}                                        =${app.context}-ds.xml                       [ear/pom.xml]
 
 ${pu}                                            =                                            []
-${pu.name}                                       =refimpl-unit                                [persistence.xml, components.xml, openejb.persistence.xml]
-${pu.jta.data.source}                            =java:/${ds.jndi.name}                       [persistence.xml, openejb.persistence.xml]
-${pu.hibernate.dialect}                          =${ds.hibernate.dialect}                     [persistence.xml, openejb.persistence.xml]
-${pu.hibernate.hbm2ddl.auto}                     =create-drop                                 [persistence.xml, openejb.persistence.xml]
-${pu.hibernate.show_sql}                         =false                                       [persistence.xml, openejb.persistence.xml]
-${pu.hibernate.default_batch_fetch_size}         =16                                          [persistence.xml, openejb.persistence.xml]
+${pu.name}                                       =refimpl-unit                                [persistence.xml, components.xml]
+${pu.jta.data.source}                            =java:/${ds.jndi.name}                       [persistence.xml]
+${pu.hibernate.dialect}                          =${ds.hibernate.dialect}                     [persistence.xml]
+${pu.hibernate.hbm2ddl.auto}                     =create-drop                                 [persistence.xml]
+${pu.hibernate.show_sql}                         =false                                       [persistence.xml]
+${pu.hibernate.default_batch_fetch_size}         =16                                          [persistence.xml]
+${pu.jboss.entity.manager.factory.jndi.name}     =java:/${app.context}EntityManagerFactory    [persistence.xml, components.xml]
 ${pu.hibernate.transaction.manager_lookup_class} =org.hibernate.transaction.
-                                                  JBossTransactionManagerLookup               [persistence.xml, openejb.persistence.xml]
-${pu.jboss.entity.manager.factory.jndi.name}     =java:/${app.context}EntityManagerFactory    [persistence.xml, components.xml, openejb.persistence.xml] 
+                                                  JBossTransactionManagerLookup               [persistence.xml]
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------
 pom.xml properties
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------
 <properties>
 	<env>dev</env>
 	<app.unpack.modules>true</app.unpack.modules>
