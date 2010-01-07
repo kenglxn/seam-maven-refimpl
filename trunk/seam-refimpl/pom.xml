@@ -26,104 +26,25 @@
 	</modules>
 
 	<properties>
-		<!-- application properties -->
+		<env>prod</env>
 		<app.context>seam-refimpl</app.context>  <!-- hint: same value as artifactId -->
 		<app.web.context>${app.context}</app.web.context>
 		<app.display.name>Seam Reference Implementation</app.display.name>
 		<app.description>
-			The Seam Reference Implementation is a Maven project you 
-			can use as a template for your own JBoss Seam projects
+			The Seam Reference Implementation is a Maven multi module project 
+			you can use as a template for your own JBoss Seam project
 		</app.description>
-		
-		<app.database.name>refimpl_db</app.database.name> <!-- @DEPRECATED, use ds.database.name property -->
-		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
-		<app.jndi.name>${app.context}Datasource</app.jndi.name>
-		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
-		<app.jta.data.source>java:/${app.jndi.name}</app.jta.data.source>
-		<app.entity.manager.factory.name>entityManagerFactory</app.entity.manager.factory.name> <!-- Does not accept hyphens in value, so e.g seam-refimplEntityManagerFactory is illegal-->
-		<app.persistence.unit.name>${app.context}Database</app.persistence.unit.name>
-		<app.persistence.unit.jndi.name>java:/${app.context}EntityManagerFactory</app.persistence.unit.jndi.name>
-		<app.persistence.emf.installed>true</app.persistence.emf.installed> <!-- true for JBoss 4.2.3 or newer -->
-		<app.persistence.emf.startup>true</app.persistence.emf.startup> <!-- SiA-9.3.1-p363 -->
-		<app.persistence.mpc.auto.create>true</app.persistence.mpc.auto.create> <!-- SiA-9.3.2-p366 -->
-		<app.distributable>false</app.distributable> <!-- see: WEB-INF/components.xml and ejb/../resources/META-INF/jboss.xml -->
-		
+		<app.distributable>false</app.distributable>
+		<app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern> <!-- JBoss JNDI Pattern -->
+		<app.jndi.pattern.test>/#{ejbName}/Local</app.jndi.pattern.test>         <!-- OpenEJB JNDI Pattern -->
+
 		<!-- 
-			Developer environment properties. 
-			Property values listed here is overridden by values in "profiles.xml" or by activating 
-			a profile in pom, see e.g. env-prod profile.
+			Properties for production are located in src/main/filters/filter-prod.properties
+			Properties to be modified by developer are located in src/main/filters/filter-dev.properties
+			Copy filter-prod.properties to filter-dev.properties and add to svn:ignore 
 		-->
-		<env>prod</env>
-		<env.debug>false</env.debug>
-		<env.unpack.modules>false</env.unpack.modules>
-		<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
-		<env.hibernate.show_sql>true</env.hibernate.show_sql>
-		<env.hibernate.format_sql>true</env.hibernate.format_sql>
-		<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
-		
-		<jdk.debug>${env.debug}</jdk.debug>
-		<jdk.optimize>true</jdk.optimize>
-		
-		<as>jboss423</as>
-		<as.version>4.2</as.version>
-		<as.home>./jboss-4.2.3.GA-jdk6</as.home>
-		<as.deploy>${as.home}/server/default/deploy</as.deploy>
-		
-		<ds>hsqldb</ds>
-		<ds.hibernate.dialect>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect>
-		<ds.driver.class>org.hsqldb.jdbcDriver</ds.driver.class>
-		<ds.server.name></ds.server.name>
-		<ds.database.name>refimpl_db</ds.database.name>
-		<ds.connection.url>jdbc:hsqldb:.</ds.connection.url>
-		<ds.user.name>sa</ds.user.name>
-		<ds.password></ds.password>
-		<!-- END: Developer environment properties. -->
 	</properties>
 
-	<profiles>
-		<profile>
-			<id>env-prod</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>prod</value>
-				</property>
-			</activation>
-			<properties>
-				<!-- 
-					Property values listed here overrides property values in "profiles.xml"
-					and property values in the pom's properties section.
-					Run e.g. mvn install -Penv-prod or mvn install -Denv=prod to activate this profile
-				-->
-				<env>prod</env>
-				<env.debug>false</env.debug>
-				
-				<env.unpack.modules>false</env.unpack.modules>
-				<env.hibernate.hbm2ddl.auto>create-drop</env.hibernate.hbm2ddl.auto>
-				<env.hibernate.show_sql>false</env.hibernate.show_sql>
-				<env.hibernate.format_sql>true</env.hibernate.format_sql>
-				<env.hibernate.default_batch_size>16</env.hibernate.default_batch_size>
-				
-				<jdk.debug>${env.debug}</jdk.debug>
-				<jdk.optimize>true</jdk.optimize>
-				
-				<as>jboss423</as>
-				<as.version>4.2</as.version>
-				<as.home>C:/dev/server/jboss-4.2.3.GA-jdk6</as.home>
-				<as.deploy>${as.home}/server/default/deploy</as.deploy>
-
-				<ds>mysql5</ds>
-				<ds.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</ds.hibernate.dialect>
-				<ds.driver.class>com.mysql.jdbc.Driver</ds.driver.class>
-				<ds.server.name>localhost:3306</ds.server.name>
-				<ds.database.name>refimpl_db</ds.database.name>
-				<ds.connection.url>jdbc:mysql://${ds.server.name}/${ds.database.name}?characterEncoding=UTF-8</ds.connection.url>
-				<ds.user.name>root</ds.user.name>
-				<ds.password></ds.password>
-			</properties>
-		</profile>
-	</profiles>
-	
 	<dependencyManagement>
 		<dependencies>
 			<!-- project modules -->
@@ -156,6 +77,14 @@
 				<type>jar</type> 
 			</dependency>
 			-->
+
+			<dependency>
+				<groupId>no.knowit.seam</groupId>
+				<artifactId>seam-openejb-utils-test</artifactId>
+				<version>${project.version}</version>
+				<type>ejb</type>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -272,7 +201,47 @@
 		</dependency>
 		
 	</dependencies>
-	
+
+	<profiles>
+		<profile>
+			<id>show-properties</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<echo>env                   : ${env}</echo>
+										<echo>app.context           : ${app.context}</echo>
+										<echo>app.unpack.modules    : ${app.unpack.modules}</echo>
+										<echo>project.parent.basedir: ${project.parent.basedir}</echo>
+										<echo>project.basedir       : ${project.basedir}</echo>
+										<echo>jdk.source            : ${jdk.source}</echo>
+										<echo>jdk.target            : ${jdk.target}</echo>
+										<echo>jdk.debug             : ${jdk.debug}</echo>
+										<echo>jdk.optimize          : ${jdk.optimize}</echo>
+										<echo>as                    : ${as}</echo>
+										<echo>as.deploy             : ${as.deploy}</echo>
+										<echo>ds                    : ${ds}</echo>
+										<echo>ds.connection.url     : ${ds.connection.url}</echo>
+										<echo>ds.xml                : ${ds.xml}</echo>
+										<echo>ds.test               : ${ds.test}</echo>
+										<echo>ds.connection.url.test: ${ds.connection.url.test}</echo>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>	
 	<build>
 		<plugins>
 			<plugin>

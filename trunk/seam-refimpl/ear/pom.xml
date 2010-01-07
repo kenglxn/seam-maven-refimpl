@@ -18,6 +18,55 @@
 	<packaging>ear</packaging>
 
 	<profiles>
+		<!--
+			More than one profile can be active at once. Since profiles can contain the same 
+			types of configuration there can be clashes. If two profiles clash the last to be activated 
+			will override those activated earlier. 
+			Note: "mvn install -Penv-dev" deactivates activeByDefault
+		 -->
+	  <profile>
+	    <id>env-dev</id>
+	    <activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+	    </activation>
+	    <properties>
+	      <env>dev</env>
+	    </properties>
+	  </profile>
+
+    <profile>
+      <id>env-prod</id>
+      <activation>
+	      <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+      	<!-- Exclude logging in production (and leave it to JBoss AS) -->
+		    <plugins>    
+		      <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-ear-plugin</artifactId>
+		        <configuration>
+		          <modules>
+		            <jarModule>
+		              <groupId>commons-logging</groupId>
+		              <artifactId>commons-logging</artifactId>
+		              <excluded>true</excluded>
+		            </jarModule>
+		            <jarModule>
+		              <groupId>log4j</groupId>
+		              <artifactId>log4j</artifactId>
+		              <excluded>true</excluded>
+		            </jarModule>
+		          </modules>
+		        </configuration>
+		      </plugin>
+		    </plugins>
+      </build>
+    </profile>
+	
 		<profile>
 			<!--
 				Explode ear to appserver deploy folder. execute e.g. 
@@ -49,7 +98,7 @@
 										</sync>
 										<!--
 											Uncomment this tag if you want to deploy the *-ds.xml file to the appserver's deploy folder
-											<copy todir="${as.deploy}" file="${project.build.directory}/${app.ds.xml}" verbose="true" />
+											<copy todir="${as.deploy}" file="${project.build.directory}/${ds.xml}" verbose="true" />
 										-->
 									</tasks>
 								</configuration>
@@ -84,7 +133,7 @@
 										<delete	dir="${deploy-path}" quiet="true" />
 										<!--
 											Uncomment this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
-											<delete file="${as.deploy}/${app.ds.xml}"	quiet="true" />
+											<delete file="${as.deploy}/${ds.xml}"	quiet="true" />
 										-->
 									</tasks>
 								</configuration>
@@ -97,39 +146,6 @@
 				</plugins>
 			</build>
 		</profile>
-
-    <profile>
-      <id>env-prod</id>
-      <activation>
-        <property>
-          <name>env</name>
-          <value>prod</value>
-        </property>
-      </activation>
-      <build>
-      	<!-- Exclude logging in production (and leave it to JBoss AS) -->
-		    <plugins>    
-		      <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-ear-plugin</artifactId>
-		        <configuration>
-		          <modules>
-		            <jarModule>
-		              <groupId>commons-logging</groupId>
-		              <artifactId>commons-logging</artifactId>
-		              <excluded>true</excluded>
-		            </jarModule>
-		            <jarModule>
-		              <groupId>log4j</groupId>
-		              <artifactId>log4j</artifactId>
-		              <excluded>true</excluded>
-		            </jarModule>
-		          </modules>
-		        </configuration>
-		      </plugin>
-		    </plugins>
-      </build>
-    </profile>
 	</profiles>
 
 	<dependencies>
@@ -268,7 +284,34 @@
 	</dependencies>
 
 	<build>
+		<!-- 
+		<filters>
+		  <filter>../src/main/filters/filter-${env}.properties</filter>
+		</filters>
+		-->
+		
 		<plugins>
+			<!--
+				The CodeHaus "Properties Maven plugin" read properties immediately after the
+				"initialize" phase and the properties are then accessible from the pom. 
+				The "filters" tag read properties after the "generate-resources" phase but 
+				you can not reference property values from the pom - they are only visible to 
+				filters (filtering=true).
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<files>
+								<file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>		
+			
 			<!--
 				Maven resources plugin The default resources folder for ear is the
 				src/main/application folder. Stuff in this folder will go into the
@@ -289,7 +332,7 @@
 				<executions>
 					<execution>
 						<id>copy-app-ds-xml</id>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -309,7 +352,7 @@
 									<directory>src/main/resources</directory>
 									<filtering>true</filtering>
 									<includes>
-										<include>${app.ds.xml}</include>
+										<include>${ds.xml}</include>
 									</includes>
 								</resource>
 							</resources>
@@ -372,7 +415,7 @@
 							Comment out this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
 						-->
 						<data-sources>
-							<data-source>${app.ds.xml}</data-source>
+							<data-source>${ds.xml}</data-source>
 						</data-sources>
 					</jboss>
 
@@ -389,20 +432,20 @@
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${app.context}-war</artifactId>
 							<contextRoot>/${app.web.context}</contextRoot>
-							<unpack>${env.unpack.modules}</unpack>
+							<unpack>${app.unpack.modules}</unpack>
 						</webModule>
 
 						<ejbModule>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${app.context}-ejb</artifactId>
-							<unpack>${env.unpack.modules}</unpack>
+							<unpack>${app.unpack.modules}</unpack>
 						</ejbModule>
 
 						<!--
 						<jarModule> 
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${app.context}-jar</artifactId>
-							<unpack>${env.unpack.modules}</unpack>
+							<unpack>${app.unpack.modules}</unpack>
 							<includeInApplicationXml>true</includeInApplicationXml>
 						</jarModule>
 						-->

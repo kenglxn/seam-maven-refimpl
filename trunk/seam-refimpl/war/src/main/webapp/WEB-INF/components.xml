@@ -40,7 +40,7 @@
   -->
 	<core:init
 		transaction-management-enabled="true"
-		debug="${env.debug}"
+		debug="${app.debug}"
 		jndi-pattern="${app.jndi.pattern}" 
 		distributable="${app.distributable}" />
 
@@ -64,18 +64,17 @@
 	  To have Seam defer loading of the persistence unit until it's needed, perhaps for a quicker 
 		deployment turnaround, you can  disable the startup behavior of this component, SiA-9.3.1-p363
 		
-		entity-manager-factory name is also referenced in in persistence.xml: 
-		persistence-unit name="${app.persistence.unit.name}"
+		persistrence:entity-manager-factory.persistence-unit-name is also referenced in in persistence.xml: 
 	-->
 	<persistence:entity-manager-factory
-		name="${app.entity.manager.factory.name}"
-		persistence-unit-name="${app.persistence.unit.name}"
-		installed="${app.persistence.emf.installed}"
-		startup="${app.persistence.emf.startup}" />
+		name="entityManagerFactory"
+		persistence-unit-name="${pu.name}"
+		installed="true"
+		startup="true" />
 
 	<!--
 		If Seam loads the persistence unit (JBoss 4.x), the
-		EntityManagerFactory will be resolved from #{${app.entity.manager.factory.name}}. 
+		EntityManagerFactory will be resolved from #{entityManagerFactory}. 
 		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-9.3.1-p362.
 		
@@ -85,9 +84,9 @@
 	-->
 	<persistence:managed-persistence-context
 		name="entityManager"
-		auto-create="${app.persistence.mpc.auto.create}"
-		entity-manager-factory="#{${app.entity.manager.factory.name}}"
-		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
+		auto-create="true"
+		entity-manager-factory="#{entityManagerFactory}"
+		persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name}" />
 
 	<!--
 		In an EJB3 environment, it is recommend to use a special built-in  component  for  transaction  

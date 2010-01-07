@@ -10,8 +10,8 @@ Before you build any projects you'll have to build the root pom and required dep
 
 Note to Eclipse users:
 The m2eclipse plugin seems to be a bit unpredictable when it comes to downloading source code and 
-javadocs for the projects dependencies. If you find that source code and javadocs are missing for 
-some dependencies, then try this:
+javadocs for the projects dependencies. Try this if you find that source code and javadocs are missing for 
+some dependencies:
 
 * Open a command shell and CD to the ./trunk/seam-openejb folder and type: 
   mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true

@@ -4,8 +4,20 @@ ${property}                                      =example value                 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 ${env}                                           =dev                                         [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
+${jdk}                                           =                                            []
+${jdk.debug}                                     =true                                        []
+${jdk.optimize}                                  =false                                       []
+${jdk.source}                                    =1.6                                         []
+${jdk.target}                                    =1.6                                         []
+
+${as}                                            =jboss423                                    []
+${as.version}                                    =4.2                                         [ear/pom.xml]
+${as.home}                                       =./jboss-4.2.3.GA-jdk6                       []
+${as.deploy}                                     =${as.home}/server/default/deploy            [ear/pom.xml, ejb/pom.xml, war/pom.xml]
+
 ${app}                                           =                                            []
-${app}                                           =                                            []
+${app.debug}                                     =${jdk.debug}                                [components.xml, web.xml]
+${app.unpack.modules}                            =true                                        [ear/pom.xml]
 ${app.context}                                   =seam-refimpl                                [ear/pom.xml, ejb/pom.xml, war/pom.xml, jboss-web.xml]
 ${app.web.context}                               =${app.context}                              [ear/pom.xml]
 ${app.display.name}                              =Seam Reference Implementation               [ear/pom.xml, web.xml]
@@ -13,19 +25,8 @@ ${app.description}                               =The Seam Refimpl lorem ipsum d
 ${app.distributable}                             =false                                       [components.xml, web.xml]
 ${app.jndi.pattern}                              =${app.context}-ear/#{ejbName}/local         [components.xml]
 
-${jdk}                                           =                                            []
-${jdk.debug}                                     =true                                        [components.xml]
-${jdk.optimize}                                  =false                                       []
-${jdk.source}                                    =1.6                                         []
-${jdk.target}                                    =1.6                                         []
-
-${as}                                            =jboss423                                    [pom.xml]
-${as.version}                                    =4.2                                         [ear/pom.xml]
-${as.home}                                       =./jboss-4.2.3.GA-jdk6                       []
-${as.deploy}                                     =${as.home}/server/default/deploy            [ear/pom.xml, ejb/pom.xml, war/pom.xml]
-
 ${ds}                                            =mysql5                                      []
-${ds.jndi.name}                                  =refimpl-unitDatabase                        [*-ds.xml, persistence.xml, jndi.properties]
+${ds.jndi.name}                                  =refimpl-unitDatabase                        [*-ds.xml, jndi.properties]
 ${ds.database.name}                              =refimpl_db                                  []
 ${ds.server.name}                                =localhost:3306                              []
 ${ds.driver.class}                               =com.mysql.jdbc.Driver                       [*-ds.xml, jndi.properties]
@@ -33,19 +34,19 @@ ${ds.connection.url}                             =jdbc:mysql://${ds.server.name}
                                                   ${ds.database.name}?characterEncoding=UTF-8 [*-ds.xml, jndi.properties]
 ${ds.user.name}                                  =root                                        [*-ds.xml, jndi.properties]
 ${ds.password}                                   =                                            [*-ds.xml, jndi.properties]
-${ds.hibernate.dialect}                          =org.hibernate.dialect.MySQL5InnoDBDialect   []
 ${ds.xml}                                        =${app.context}-ds.xml                       [ear/pom.xml]
+${ds.hibernate.dialect}                          =org.hibernate.dialect.MySQL5InnoDBDialect   []
 
 ${pu}                                            =                                            []
-${pu.name}                                       =refimpl-unit                                [persistence.xml, components.xml]
-${pu.jta.data.source}                            =java:/${ds.jndi.name}                       [persistence.xml]
-${pu.hibernate.dialect}                          =${ds.hibernate.dialect}                     [persistence.xml]
-${pu.hibernate.hbm2ddl.auto}                     =create-drop                                 [persistence.xml]
-${pu.hibernate.show_sql}                         =false                                       [persistence.xml]
-${pu.hibernate.default_batch_fetch_size}         =16                                          [persistence.xml]
-${pu.jboss.entity.manager.factory.jndi.name}     =java:/${app.context}EntityManagerFactory    [persistence.xml, components.xml]
+${pu.name}                                       =refimpl-unit                                [persistence.xml, components.xml, jndi.properties]
+${pu.jta.data.source}                            =java:/${ds.jndi.name}                       [persistence.xml, jndi.properties]
+${pu.hibernate.dialect}                          =${ds.hibernate.dialect}                     [persistence.xml, jndi.properties]
+${pu.hibernate.hbm2ddl.auto}                     =create-drop                                 [persistence.xml, jndi.properties]
+${pu.hibernate.show_sql}                         =false                                       [persistence.xml, jndi.properties]
+${pu.hibernate.default_batch_fetch_size}         =16                                          [persistence.xml, jndi.properties]
+${pu.jboss.entity.manager.factory.jndi.name}     =java:/${app.context}EntityManagerFactory    [persistence.xml, components.xml, jndi.properties]
 ${pu.hibernate.transaction.manager_lookup_class} =org.hibernate.transaction.
-                                                  JBossTransactionManagerLookup               [persistence.xml]
+                                                  JBossTransactionManagerLookup               [persistence.xml, jndi.properties]
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 pom.xml properties
@@ -53,6 +54,7 @@ pom.xml properties
 <properties>
 	<env>dev</env>
 	<app.unpack.modules>true</app.unpack.modules>
+	<app.debug>true</app.debug>
 	<app.context>seam-openejb</app.context>
 	<app.web.context>${app.context}</app.web.context>
 	<app.display.name>Seam tests with OpenEJB and JPA with Hibernate</app.display.name>
@@ -83,13 +85,13 @@ pom.xml properties
 	<ds.connection.url>jdbc:mysql://${ds.server.name}/${ds.database.name}?characterEncoding=UTF-8</ds.connection.url>
 	<ds.user.name>root</ds.user.name>
 	<ds.password></ds.password>
-	<ds.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</ds.hibernate.dialect>
 	<ds.xml>${app.context}-ds.xml </ds.xml>
+	<ds.hibernate.dialect>${app.context}-ds.xml </ds.hibernate.dialect>
 
 	<pu.name>refimpl-unit</pu.name>
 	<pu.jta.data.source>java:/${ds.jndi.name}</pu.jta.data.source>
 	<pu.jndi.name>java:/${app.context}EntityManagerFactory</pu.jndi.name>
-	<pu.hibernate.dialect>${ds.dialect}</pu.hibernate.dialect>
+	<pu.hibernate.dialect>${ds.hibernate.dialect}</pu.hibernate.dialect>
 	<pu.hibernate.hbm2ddl.auto>create-drop</pu.hibernate.hbm2ddl.auto>
 	<pu.hibernate.show_sql>false</pu.hibernate.show_sql>
 	<pu.hibernate.default_batch_fetch_size>16</pu.hibernate.default_batch_size>
@@ -99,7 +101,7 @@ pom.xml properties
 	<!-- for running tests -->
 	<app.jndi.pattern.test>/#{ejbName}/Local</app.jndi.pattern.test>
 	
-	<ds.test>hsqldb</ds.test>
+	<ds.test>h2</ds.test>
 	<ds.jndi.name.test>refimplDatabase</ds.jndi.name.test>
 	<ds.database.name.test>refimpltest_db</ds.database.name.test>
 	<ds.server.name.test></ds.server.name.test>
@@ -107,7 +109,7 @@ pom.xml properties
 	<ds.connection.url.test>jdbc:hsqldb:mem:${ds.database.name.test}</ds.connection.url.test>
 	<ds.user.name.test>sa</ds.user.name.test>
 	<ds.password.test></ds.password.test>
-	<ds.hibernate.dialect.test>org.hibernate.dialect.HSQLDialect</ds.hibernate.dialect.test>
+	<ds.hibernate.dialect.test>org.hibernate.dialect.H2Dialect</ds.hibernate.dialect.test>
 	
 	<pu.hibernate.dialect.test>${ds.hibernate.dialect.test}</pu.hibernate.dialect.test>
 	<pu.hibernate.hbm2ddl.auto.test>create-drop</pu.hibernate.hbm2ddl.auto.test>
