@@ -6,19 +6,17 @@
 		http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" 
 >
   
-  <persistence-unit name="${app.persistence.unit.name}" transaction-type="JTA">  
+  <persistence-unit name="${pu.name}" transaction-type="JTA">  
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <jta-data-source>${app.jta.data.source}</jta-data-source>
+    <jta-data-source>${pu.jta.data.source}</jta-data-source>
+    <!-- <non-jta-data-source>${pu.jta.data.source}Unmanaged</non-jta-data-source>  -->
+    
     <properties>
-      <property name="jboss.entity.manager.factory.jndi.name" value="${app.persistence.unit.jndi.name}"/>
-
-      <property name="hibernate.dialect" value="${ds.hibernate.dialect}"/>
-      <property name="hibernate.hbm2ddl.auto" value="${env.hibernate.hbm2ddl.auto}"/>
-      <property name="hibernate.show_sql" value="${env.hibernate.show_sql}"/>
-      <property name="hibernate.format_sql" value="${env.hibernate.format_sql}"/>
-      <!-- <property name="hibernate.default_catalog" value="${ds.database.name}"/> -->
-      
-      <property name="hibernate.default_batch_fetch_size" value="${env.hibernate.default_batch_size}"/>
+      <property name="hibernate.dialect" value="${pu.hibernate.dialect}" />
+      <property name="hibernate.hbm2ddl.auto" value="${pu.hibernate.hbm2ddl.auto}" />
+      <property name="hibernate.default_batch_fetch_size" value="${pu.hibernate.default_batch_fetch_size}" />
+      <property name="hibernate.show_sql" value="${pu.hibernate.show_sql}" />
+      <property name="hibernate.format_sql"	value="true" />
 
 			<!-- Encoding -->      
 			<property name="hibernate.connection.useUnicode" value="true" />
@@ -27,6 +25,12 @@
       <!-- These are the default for JBoss EJB3, but not for HEM: -->
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/>
       <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
+
+      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+      <property name="hibernate.transaction.manager_lookup_class" value="${pu.hibernate.transaction.manager_lookup_class}" />
+      
+      <!--  -->
+      <property name="jboss.entity.manager.factory.jndi.name" value="${pu.jboss.entity.manager.factory.jndi.name}" />
     </properties>
   </persistence-unit>
    
