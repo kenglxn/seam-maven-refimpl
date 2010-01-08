@@ -114,8 +114,12 @@
 
 		<profile>
 			<!--
-				Unexplode ear. Remove project from appserver deploy folder. execute e.g. 
-				"mvn clean -Punexplode"
+				Unexplode ear. Remove project from appserver deploy folder. 
+				Execute e.g. "mvn clean -Punexplode"
+				
+				Note: Unexplode does not work in combination with the Properties Maven Plugin. 
+				The plugin does not	read properties during the clean phases. An alternative is  
+				to make the "as" properties global by moving them to e.g. ./.m2/settings.xml
 			-->
 			<id>unexplode</id>
 			<build>
@@ -129,6 +133,9 @@
 								<configuration>
 									<tasks>
 										<property name="deploy-path" value="${as.deploy}/${app.context}-ear.ear" />
+										
+										<echo>Unexploding: ${deploy-path}</echo>
+										
 										<delete	file="${deploy-path}"	quiet="true" />
 										<delete	dir="${deploy-path}" quiet="true" />
 										<!--
@@ -292,11 +299,17 @@
 		
 		<plugins>
 			<!--
-				The CodeHaus "Properties Maven plugin" read properties immediately after the
-				"initialize" phase and the properties are then accessible from the pom. 
-				The "filters" tag read properties after the "generate-resources" phase but 
-				you can not reference property values from the pom - they are only visible to 
-				filters (filtering=true).
+				The Properties Maven Plugin is here to make life a little easier when 
+				dealing with properties. It provides goals to read and write properties 
+				from and to	files, and also to set system properties. It's main use-case 
+				is loading properties	from files instead of declaring them in pom.xml, 
+				something that comes in handy when dealing with different environments. 
+				The plugin read properties during the	"initialize" phase and the 
+				properties are then accessible from the pom.
+				 
+				The "filters" tag read properties after the "generate-resources" phase 
+				but you can not	access the property values from the pom - they are only 
+				visible to filters (filtering=true).
 			-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
