@@ -191,11 +191,17 @@
 	<build>
 		<plugins>
 			<!--
-				The CodeHaus "Properties Maven plugin" read properties immediately after the
-				"initialize" phase and the properties are then accessible from the pom. 
-				The "filters" tag read properties after the "generate-resources" phase but 
-				you can not reference property values from the pom - they are only visible to 
-				filters (filtering=true).
+				The Properties Maven Plugin is here to make life a little easier when 
+				dealing with properties. It provides goals to read and write properties 
+				from and to	files, and also to set system properties. It's main use-case 
+				is loading properties	from files instead of declaring them in pom.xml, 
+				something that comes in handy when dealing with different environments. 
+				The plugin read properties during the	"initialize" phase and the 
+				properties are then accessible from the pom.
+				 
+				The "filters" tag read properties after the "generate-resources" phase 
+				but you can not	access the property values from the pom - they are only 
+				visible to filters (filtering=true).
 			-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
