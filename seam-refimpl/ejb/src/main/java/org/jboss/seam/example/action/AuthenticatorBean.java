@@ -1,4 +1,4 @@
-package no.knowit.example.security.action;
+package org.jboss.seam.example.action;
 
 import javax.ejb.Stateless;
 import org.jboss.seam.annotations.In;
