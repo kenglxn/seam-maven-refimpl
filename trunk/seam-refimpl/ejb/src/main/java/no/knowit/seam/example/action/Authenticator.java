@@ -1,4 +1,4 @@
-package org.jboss.seam.example.action;
+package no.knowit.seam.example.action;
 
 import javax.ejb.Local;
 
