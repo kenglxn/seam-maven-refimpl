@@ -1,4 +1,4 @@
-package no.knowit.example.security.action;
+package org.jboss.seam.example.action;
 
 import javax.ejb.Local;
 
