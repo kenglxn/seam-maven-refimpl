@@ -41,7 +41,8 @@
 		<!-- 
 			Properties for production are located in src/main/filters/filter-prod.properties
 			Properties to be modified by developer are located in src/main/filters/filter-dev.properties
-			Copy filter-prod.properties to filter-dev.properties and add to svn:ignore 
+			Copy filter-prod.properties to filter-dev.properties and add filter-dev.properties to svn:ignore
+			Type e.g "mvn -Penv-dev" to activate the developemnt profile.  
 		-->
 	</properties>
 
@@ -78,10 +79,11 @@
 			</dependency>
 			-->
 
+			<!-- For running tests with OpenEJB embedded container -->
 			<dependency>
 				<groupId>no.knowit.seam</groupId>
-				<artifactId>seam-openejb-utils-test</artifactId>
-				<version>${project.version}</version>
+				<artifactId>seam-openejb-utils</artifactId>
+				<version>1.0-SNAPSHOT</version>
 				<type>ejb</type>
 			</dependency>
 
@@ -199,6 +201,83 @@
 			<artifactId>log4j</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+
+		<!-- ******** TEST DEPENDECIES ********	-->
+		
+		<!-- openejb embedded container for running tests -->
+		<dependency>
+			<groupId>org.apache.openejb</groupId>
+			<artifactId>openejb-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- For in-memory database -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.persistence</groupId>
+					<artifactId>persistence-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.transaction</groupId>
+					<artifactId>jta</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- databases  -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!--
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>test</scope>
+		</dependency>
+		-->
+		
+		<!-- 
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>test</scope>
+		</dependency>
+		-->
+		
+		<!-- unit test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!--  -->
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<scope>test</scope>
+		</dependency>
 		
 	</dependencies>
 
@@ -227,6 +306,7 @@
 										<echo>jdk.debug             : ${jdk.debug}</echo>
 										<echo>jdk.optimize          : ${jdk.optimize}</echo>
 										<echo>as                    : ${as}</echo>
+										<echo>as.version            : ${as.version}</echo>
 										<echo>as.deploy             : ${as.deploy}</echo>
 										<echo>ds                    : ${ds}</echo>
 										<echo>ds.connection.url     : ${ds.connection.url}</echo>

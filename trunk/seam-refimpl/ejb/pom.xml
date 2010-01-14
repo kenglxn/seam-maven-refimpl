@@ -89,6 +89,12 @@
 	</profiles>
 
 	<dependencies>
+		<dependency>
+			<groupId>no.knowit.seam</groupId>
+			<artifactId>seam-openejb-utils</artifactId>
+			<type>ejb</type>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
