@@ -278,7 +278,6 @@
 			<artifactId>javassist</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 	</dependencies>
 
 	<profiles>
@@ -321,7 +320,8 @@
 				</plugins>
 			</build>
 		</profile>
-	</profiles>	
+	</profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
