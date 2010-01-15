@@ -210,8 +210,11 @@
 					<execution>
 						<configuration>
 							<files>
-								<!-- <file>../src/main/filters/filter-${env}.properties</file> -->
-								<file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file>
+								<file>../src/main/filters/filter-${env}.properties</file>
+								<!-- 
+									does not work with mvn eclipse:m2eclipse
+									<file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file> 
+								-->
 							</files>
 						</configuration>
 					</execution>
