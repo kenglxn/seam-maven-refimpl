@@ -62,6 +62,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> persist(Collection<T> entities) {
+		assert entities != null : "The 'entities' parameter can not be null";
 		Collection<T> persistedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			persistedResults.add(persist(entity));
