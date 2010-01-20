@@ -48,4 +48,8 @@
 		entity-manager-factory="#{entityManagerFactory}" 
 		persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name}" />
 		
+  <security:identity 
+	  authenticate-method="#{authenticator.authenticate}" 
+	  remember-me="true" />
+		
 </components>

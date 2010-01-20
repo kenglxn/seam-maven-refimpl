@@ -10,24 +10,24 @@ import org.jboss.seam.security.Identity;
 
 @Stateless
 @Name("authenticator")
-public class AuthenticatorBean implements Authenticator
-{
-    @Logger private Log log;
-    @In Identity identity;
-    @In Credentials credentials;
+public class AuthenticatorBean implements Authenticator {
+	@Logger
+	private Log log;
+	@In
+	Identity identity;
+	@In
+	Credentials credentials;
 
-    public boolean authenticate()
-    {
-        log.info("authenticating {0}", credentials.getUsername());
-        //write your authentication logic here,
-        //return true if the authentication was
-        //successful, false otherwise
-        if ("admin".equals(credentials.getUsername()))
-        {
-            identity.addRole("admin");
-            return true;
-        }
-        return false;
-    }
-
+	public boolean authenticate() {
+		log.info("Authenticating '{0}'", credentials.getUsername());
+		
+		// write your authentication logic here,
+		// return true if the authentication was
+		// successful, false otherwise
+		if ("admin".equals(credentials.getUsername())) {
+			identity.addRole("admin");
+			return true;
+		}
+		return false;
+	}
 }

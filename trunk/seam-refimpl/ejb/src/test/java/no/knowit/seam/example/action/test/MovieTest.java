@@ -2,26 +2,23 @@ package no.knowit.seam.example.action.test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.naming.NamingException;
-
-import org.jboss.seam.Component;
-import org.jboss.seam.contexts.Context;
-import org.jboss.seam.contexts.Contexts;
-import org.jboss.seam.core.Conversation;
-import org.jboss.seam.log.LogProvider;
-import org.jboss.seam.log.Logging;
-import org.jboss.seam.mock.AbstractSeamTest.FacesRequest;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
-
-import org.jboss.seam.mock.DBUnitSeamTest;
 
 import no.knowit.crud.CrudService;
 import no.knowit.seam.example.model.Movie;
 import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
-import no.knowit.seam.example.action.MovieList;
+
+import org.jboss.seam.Component;
+import org.jboss.seam.core.Conversation;
+import org.jboss.seam.log.LogProvider;
+import org.jboss.seam.log.Logging;
+import org.jboss.seam.security.Credentials;
+import org.jboss.seam.security.Identity;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
 public class MovieTest extends SeamOpenEjbTest {
 
@@ -45,6 +42,14 @@ public class MovieTest extends SeamOpenEjbTest {
 			log.error(e);
 			throw(e);
 		}
+	}
+	
+	private boolean mockLogin() {
+		Credentials credentials = (Credentials)Component.getInstance("org.jboss.seam.security.credentials");
+		Identity identity = (Identity)Component.getInstance("org.jboss.seam.security.identity");
+		credentials.setUsername("admin");
+		identity.addRole("admin");
+		return identity.login().equals("loggedIn");
 	}
 
 	@Override
@@ -73,7 +78,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		crudService.remove(new Movie(), true);
 		assert crudService.find(Movie.class).size() == 0 : "List.size():";
 		
-		// Add some movies
+		// Add 3 movies
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		movies.add(new Movie(DIRECTOR_JOEL_COEN, "The Big Lebowski", 1998, 
 			"\"Dude\" Lebowski, mistaken for a millionaire Lebowski, seeks restitution for his " +
@@ -88,6 +93,45 @@ public class MovieTest extends SeamOpenEjbTest {
 		crudService.persist(movies);
 	}
 
+//  @Test
+//	public void shouldAuthenticate() throws Exception {
+//		new ComponentTest() {
+//			@Override
+//			protected void testComponents() throws Exception {
+//				// given
+//				Credentials cred = (Credentials) getValue("#{credentials}");
+//				Authenticator auth = (Authenticator) getValue("#{authenticator}");
+//
+//				// when
+//				cred.setUsername("admin");
+//				boolean success = auth.authenticate();
+//
+//				// then
+//				Assert.assertTrue(success);
+//				
+//				log.debug("**** Authenticated " + cred.getUsername());
+//			}
+//		}.run();
+//	}	
+
+//  @Test
+//	public void shouldAuthenticate() throws Exception {
+//		new FacesRequest() {
+//			@Override
+//			protected void updateModelValues() throws Exception {
+//				setValue("#{credentials.username}", "admin");
+//			}
+//
+//			@Override
+//			protected void invokeApplication() throws Exception {
+//				assert !isSessionInvalid();
+//				assert invokeMethod("#{authenticator.authenticate}").equals(true) : "Authentication failed";
+//				assert invokeMethod("#{identity.login}").equals("loggedIn") : "Login failed";
+//			}
+//		}.run();
+//	}	
+  
+	
 	@Test
 	public void newMovie() throws Exception {
 		
@@ -98,9 +142,23 @@ public class MovieTest extends SeamOpenEjbTest {
       	Assert.assertEquals(actual, 3, "movieList.size:");
       }
 		}.run();
-		
-		new FacesRequest("/view/example/MovieEdit.xhtml") {
 
+		new FacesRequest("/login.xhtml") {
+			@Override
+			protected void updateModelValues() throws Exception {
+				assert !isSessionInvalid() : "Invalid session";
+				setValue("#{credentials.username}", "admin");
+			}
+			
+			@Override
+			protected void invokeApplication() throws Exception {
+				assert invokeMethod("#{authenticator.authenticate}").equals(true) : "Authentication failed";
+				assert invokeMethod("#{identity.login}").equals("loggedIn") : "Login failed";
+				setOutcome("/view/example/MovieEdit.xhtml");
+			}
+		}.run();
+   
+		new FacesRequest("/view/example/MovieEdit.xhtml") {
 	    @Override
 	    protected void updateModelValues() throws Exception {
 				invokeMethod( "#{movieHome.clearInstance}" );
@@ -124,13 +182,10 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();
 		
 		new NonFacesRequest("/view/example/Movie.xhtml") {
-
 			@Override
 			protected void renderResponse() {
-				log.debug("**** renderResponse()");
-				
 				setValue("#{movieHome.movieId}", theWallId);
-				invokeMethod( "#{movieHome.wire}" );
+				invokeMethod("#{movieHome.wire}");
 				assert getValue("#{movieHome.instance.director}").equals(THE_WALL_DIRECTOR);
 				assert getValue("#{movieHome.instance.title}").equals(THE_WALL_TITLE);
 				assert getValue("#{movieHome.instance.year}").equals(THE_WALL_YEAR);
@@ -140,11 +195,12 @@ public class MovieTest extends SeamOpenEjbTest {
 
 	@Test(dependsOnMethods={ "newMovie" })
 	public void editMovie() throws Exception {
-		new FacesRequest("/view/example/Movie.xhtml") {
+		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
 			protected void invokeApplication() throws Exception {
 				Conversation.instance().begin();
-				assert !isSessionInvalid();
+				assert !isSessionInvalid() : "Invalid session";
+				assert mockLogin() : "Login failed";
 				setValue("#{movieHome.movieId}", theWallId);
 				invokeMethod( "#{movieHome.wire}" );
 				setValue("#{movieHome.instance.plot}", THE_WALL_PLOT);
@@ -154,15 +210,43 @@ public class MovieTest extends SeamOpenEjbTest {
 			}
 		}.run();
 	}
-
+	
 	@Test(dependsOnMethods={ "editMovie" })
-	public void insertDuplicateMovieTitle() throws Exception {
-		new FacesRequest("/view/example/Movie.xhtml") {
+	public void unauthorizedAccess() throws Exception {
+		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
 			protected void invokeApplication() throws Exception {
 				Conversation.instance().begin();
-				assert !isSessionInvalid();
+				assert !isSessionInvalid() : "Invalid session";
+				setValue("#{movieHome.movieId}", theWallId);
+				invokeMethod( "#{movieHome.wire}" );
+				setValue("#{movieHome.instance.plot}", THE_WALL_PLOT);
 				
+				try {
+					invokeMethod( "#{movieHome.update}" );
+					assert false : "Unauthorized access!";
+				} 
+				catch (javax.el.ELException e) {
+					assert e.getCause() instanceof org.jboss.seam.security.NotLoggedInException : 
+						"Expected to fail with: 'org.jboss.seam.security.NotLoggedInException'";
+					
+					log.debug("Passed expected failure: " + e.getMessage());
+				}
+				finally {
+					Conversation.instance().end();
+				}
+			}
+		}.run();
+	}
+
+	@Test(dependsOnMethods={ "editMovie" })
+	public void insertDuplicateMovieTitle() throws Exception {
+		new FacesRequest("/view/example/MovieEdit.xhtml") {
+			@Override
+			protected void invokeApplication() throws Exception {
+				Conversation.instance().begin();
+				assert !isSessionInvalid() : "Invalid session";
+				assert mockLogin() : "Login failed";
 				invokeMethod("#{movieHome.clearInstance}");
 				setValue("#{movieHome.instance.director}", THE_WALL_DIRECTOR);
 				setValue("#{movieHome.instance.title}",    THE_WALL_TITLE);
@@ -184,14 +268,15 @@ public class MovieTest extends SeamOpenEjbTest {
 			}
 		}.run();
 	}
-	
+
 	@Test(dependsOnMethods={ "insertDuplicateMovieTitle" })
 	public void deleteMovie() throws Exception {
-		new FacesRequest() {
+		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
 			protected void invokeApplication() throws Exception {
 				Conversation.instance().begin();
-				assert !isSessionInvalid();
+				assert !isSessionInvalid() : "Invalid session";
+				assert mockLogin() : "Login failed";
 				setValue("#{movieHome.movieId}", theWallId);
 				invokeMethod( "#{movieHome.wire}" );
 				Assert.assertEquals(invokeMethod( "#{movieHome.remove}" ), "removed", "#{movieHome.remove}");
