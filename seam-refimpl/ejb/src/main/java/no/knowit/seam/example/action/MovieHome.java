@@ -3,6 +3,7 @@ package no.knowit.seam.example.action;
 import no.knowit.seam.example.model.Movie;
 
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.framework.EntityHome;
 
 @Name("movieHome")
@@ -41,5 +42,22 @@ public class MovieHome extends EntityHome<Movie> {
 	public Movie getDefinedInstance() {
 		return isIdDefined() ? getInstance() : null;
 	}
+	
+	@Override
+	@Restrict("#{identity.loggedIn}")
+  public String persist() {
+  	return super.persist();
+  }
 
+	@Override
+	@Restrict("#{identity.loggedIn}")
+	public String update() {
+		return super.update();
+	}
+	
+	@Override
+	@Restrict("#{identity.loggedIn}")
+	public String remove() {
+		return super.remove();
+	}
 }
