@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+
+<suite name="SeamRefimpl" verbose="2" parallel="false">
+
+   <test name="SeamRefimpl: Auth">
+     <classes>
+       <class name="no.knowit.seam.example.action.AuthenticatorTest"/>
+     </classes>
+   </test>
+   
+   <test name="SeamSpace: Movie">
+     <classes>
+       <class name="no.knowit.seam.example.action.MovieTest"/>
+     </classes>
+   </test>
+	
+</suite>
