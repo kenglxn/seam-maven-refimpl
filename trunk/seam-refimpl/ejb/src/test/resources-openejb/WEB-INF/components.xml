@@ -32,7 +32,7 @@
 	<!-- JPA -->
   <transaction:ejb-transaction />
 
-	<!-- TODO: How to define OpenEjb entity manager factory here??? 
+	<!-- TODO: How do we define OpenEjb entity manager factory here??? 
 	<persistence:entity-manager-factory
 		name="entityManagerFactory"
 		class="no.knowit.seam.openejb.mock.SeamManagedEntityManagerFactoryBean"

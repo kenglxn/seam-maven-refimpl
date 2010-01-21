@@ -1,12 +1,8 @@
 package no.knowit.seam.example.action.test;
 
-import no.knowit.seam.example.action.Authenticator;
 import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
 import org.jboss.seam.core.Manager;
-import org.jboss.seam.mock.AbstractSeamTest.NonFacesRequest;
-import org.jboss.seam.security.Credentials;
-import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
