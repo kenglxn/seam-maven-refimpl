@@ -73,6 +73,8 @@ public class MovieTest extends SeamOpenEjbTest {
 	public void setupClass() throws Exception {
 		super.setupClass();
 		
+		// DBUnit not needed?
+		
 		// Delete all movies
 		CrudService crudService = lookupCrudService();
 		crudService.remove(new Movie(), true);
@@ -153,6 +155,15 @@ public class MovieTest extends SeamOpenEjbTest {
 				assert getValue("#{movieHome.instance.year}").equals(THE_WALL_YEAR);
 			}
 		}.run();
+		
+    new FacesRequest() {
+			@Override
+			protected void invokeApplication() throws Exception {
+				assert getValue("#{identity.loggedIn}").equals(true) : "Not logged in";
+				assert invokeAction("#{identity.logout}") == null;
+				assert getValue("#{identity.loggedIn}").equals(false) : "Logout failed";
+			}
+		}.run();       
 	}
 
 	@Test(dependsOnMethods={ "newMovie" })
@@ -248,7 +259,7 @@ public class MovieTest extends SeamOpenEjbTest {
 	}
 
 	@Test(dependsOnMethods={ "deleteMovie" })
-	public void findMoviesByJoelCoen() throws Exception {
+	public void findMoviesDirectedByJoelCoen() throws Exception {
 		
 		new FacesRequest("/view/example/MovieList.xhtml") {
       @Override
