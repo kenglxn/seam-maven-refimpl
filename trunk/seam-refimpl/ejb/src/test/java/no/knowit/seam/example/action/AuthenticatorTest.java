@@ -73,9 +73,9 @@ public class AuthenticatorTest extends SeamOpenEjbTest {
 			}
 		}.run();
 		
-		new NonFacesRequest() {
+		new FacesRequest() {
       @Override
-      protected void renderResponse() throws Exception {
+      protected void invokeApplication() throws Exception {
 				assert getValue("#{identity.loggedIn}").equals(true) : "Not logged in";
 				invokeMethod("#{identity.logout}");
 				assert getValue("#{identity.loggedIn}").equals(false) : "Logout failed";
