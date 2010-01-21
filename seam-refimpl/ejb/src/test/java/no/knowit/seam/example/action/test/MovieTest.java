@@ -78,7 +78,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		crudService.remove(new Movie(), true);
 		assert crudService.find(Movie.class).size() == 0 : "List.size():";
 		
-		// Add 3 movies
+		// Persist 3 movies
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		movies.add(new Movie(DIRECTOR_JOEL_COEN, "The Big Lebowski", 1998, 
 			"\"Dude\" Lebowski, mistaken for a millionaire Lebowski, seeks restitution for his " +
@@ -93,45 +93,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		crudService.persist(movies);
 	}
 
-//  @Test
-//	public void shouldAuthenticate() throws Exception {
-//		new ComponentTest() {
-//			@Override
-//			protected void testComponents() throws Exception {
-//				// given
-//				Credentials cred = (Credentials) getValue("#{credentials}");
-//				Authenticator auth = (Authenticator) getValue("#{authenticator}");
-//
-//				// when
-//				cred.setUsername("admin");
-//				boolean success = auth.authenticate();
-//
-//				// then
-//				Assert.assertTrue(success);
-//				
-//				log.debug("**** Authenticated " + cred.getUsername());
-//			}
-//		}.run();
-//	}	
 
-//  @Test
-//	public void shouldAuthenticate() throws Exception {
-//		new FacesRequest() {
-//			@Override
-//			protected void updateModelValues() throws Exception {
-//				setValue("#{credentials.username}", "admin");
-//			}
-//
-//			@Override
-//			protected void invokeApplication() throws Exception {
-//				assert !isSessionInvalid();
-//				assert invokeMethod("#{authenticator.authenticate}").equals(true) : "Authentication failed";
-//				assert invokeMethod("#{identity.login}").equals("loggedIn") : "Login failed";
-//			}
-//		}.run();
-//	}	
-  
-	
 	@Test
 	public void newMovie() throws Exception {
 		
@@ -288,12 +250,12 @@ public class MovieTest extends SeamOpenEjbTest {
 	@Test(dependsOnMethods={ "deleteMovie" })
 	public void findMoviesByJoelCoen() throws Exception {
 		
-		new FacesRequest() {
+		new FacesRequest("/view/example/MovieList.xhtml") {
       @Override
       protected void updateModelValues() throws Exception {
 				setValue("#{movieList.movie.director}", DIRECTOR_JOEL_COEN);
       }
-      
+
       @Override
       protected void renderResponse() throws Exception {
       	List<Movie> list= (List<Movie>) invokeMethod( "#{movieList.getResultList()}" );
