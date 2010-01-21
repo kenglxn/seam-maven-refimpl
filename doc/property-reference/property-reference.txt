@@ -12,7 +12,7 @@ ${jdk.target}                                    =1.6                           
 
 ${as}                                            =jboss423                                    []
 ${as.version}                                    =4.2                                         [ear/pom.xml]
-${as.home}                                       =./jboss-4.2.3.GA-jdk6                       []
+${as.home}                                       =./target/jboss-4.2.3.GA-jdk6                []
 ${as.deploy}                                     =${as.home}/server/default/deploy            [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
 ${app}                                           =                                            []
