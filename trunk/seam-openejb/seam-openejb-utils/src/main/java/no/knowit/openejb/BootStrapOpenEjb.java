@@ -12,11 +12,7 @@ import org.apache.openejb.loader.SystemInstance;
 
 
 /**
- * Copied/Modified from http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting
- *
- * TODO: Extract interface and use e.g. a factory to instantiate correct bootstrap implementation
- * @author LeifOO
- *
+ * @author <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">Using OpenEJB for integration testing</a>
  */
 public class BootStrapOpenEjb {
 
