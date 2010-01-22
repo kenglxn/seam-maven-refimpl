@@ -11,8 +11,10 @@ public class AuthenticatorTest extends SeamOpenEjbTest {
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
-		contextProperties.put("log4j.category.org.jboss.seam.Component", "DEBUG");
+		
+		//System.out.println("**** AuthenticatorTest.beforeSuite()");
+		
+		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL		contextProperties.put("log4j.category.org.jboss.seam.Component", "DEBUG");
 		contextProperties.put("log4j.category.org.jboss.seam.transaction", "DEBUG");
 		contextProperties.put("log4j.category.org.jboss.seam.mock", "DEBUG");
 		contextProperties.put("log4j.category.no.knowit.seam.openejb.mock", "DEBUG");
@@ -37,7 +39,6 @@ public class AuthenticatorTest extends SeamOpenEjbTest {
 				invokeMethod("#{identity.logout}");
 				assert getValue("#{identity.loggedIn}").equals(false) : "Logout failed";
 			}
-
 		}.run();
 	}
 	

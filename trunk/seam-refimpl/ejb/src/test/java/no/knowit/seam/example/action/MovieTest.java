@@ -56,6 +56,9 @@ public class MovieTest extends SeamOpenEjbTest {
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
 		
+		//System.out.println("**** MovieTest.beforeSuite()");
+
+		
 		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
 		contextProperties.put("log4j.category.org.jboss.seam.Component", "DEBUG");
 		contextProperties.put("log4j.category.org.jboss.seam.transaction", "DEBUG");
@@ -72,8 +75,6 @@ public class MovieTest extends SeamOpenEjbTest {
 	@BeforeClass
 	public void setupClass() throws Exception {
 		super.setupClass();
-		
-		// DBUnit not needed?
 		
 		// Delete all movies
 		CrudService crudService = lookupCrudService();

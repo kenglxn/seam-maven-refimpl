@@ -2,7 +2,7 @@
 
 <suite name="SeamRefimpl" verbose="2" parallel="false">
 
-   <test name="SeamRefimpl: Auth">
+   <test name="SeamRefimpl: test">
      <classes>
        <class name="no.knowit.seam.example.action.AuthenticatorTest"/>
      </classes>
