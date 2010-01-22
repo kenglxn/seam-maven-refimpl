@@ -13,10 +13,7 @@ import org.jboss.seam.mock.AbstractSeamTest;
 import org.testng.Assert;
 
 /**
- * Copied/Modified from http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting
- * 
- * @author LeifOO
- *
+ * @author <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">Using OpenEJB for integration testing</a>
  */
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 

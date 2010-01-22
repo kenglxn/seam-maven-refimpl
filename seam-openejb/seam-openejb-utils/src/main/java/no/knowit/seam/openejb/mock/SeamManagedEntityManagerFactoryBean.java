@@ -11,8 +11,7 @@ import org.jboss.seam.log.Logging;
 
 
 /**
- * Copied from http://www.jboss.org/index.html?module=bb&op=viewtopic&p=4177645
- *
+ * @author <a href="http://community.jboss.org/message/5521#5521">jboss.entity.manager.factory.jndi.name does not publish</a>
  */
 
 @Stateless
