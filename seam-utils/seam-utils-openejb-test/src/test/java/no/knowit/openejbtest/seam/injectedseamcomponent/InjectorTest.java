@@ -1,0 +1,41 @@
+package no.knowit.openejbtest.seam.injectedseamcomponent;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
+import org.jboss.seam.log.LogProvider;
+import org.jboss.seam.log.Logging;
+
+import no.knowit.openejbtest.seam.injectedseamcomponent.Injector;
+import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
+
+public class InjectorTest extends SeamOpenEjbTest {
+	
+  private static final LogProvider log = Logging.getLogProvider(InjectorTest.class);
+
+	@Override
+	@BeforeSuite
+	public void beforeSuite() throws Exception {
+		 contextProperties.put("log4j.category.no.knowit.seam.injectedseamcomponent", "DEBUG");
+		 super.beforeSuite();
+	}
+
+	@Test(groups={ "seam", "unit-test" })
+	public void sayHelloInjectedSeamComponent() throws Exception {
+
+		new ComponentTest() {
+			@Override
+			protected void testComponents() throws Exception {
+				Injector injector = getComponentInstanceWithAsserts("injector", Injector.class);
+				
+				Assert.assertNotNull(injector.getInjectedSeamComponent(), "The injected Seam component was NULL!");
+				Assert.assertEquals(injector.getInjectedSeamComponent().sayHello(), "Hello Seam");
+				
+				Assert.assertNotNull(injector.getNoInterfaceInjectedSeamComponent(), "The injected Seam component was NULL!");
+				Assert.assertEquals(injector.getNoInterfaceInjectedSeamComponent().sayHello(), "Hello Seam - No Interface");
+				
+				log.debug("*** The @In(jected) Seam components says Hello :-)");
+			}
+		}.run();
+	}
+}
