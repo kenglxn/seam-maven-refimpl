@@ -55,8 +55,8 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
 
 <h2>Download and Install Software</h2>
 <ul>
-  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-5 or jdk-6</a></li>
-  <li><a href="http://maven.apache.org/download.html">Maven 2.0.9</a> or later.<br/>
+  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-6</a></li>
+  <li><a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.<br/>
     <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
     <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.<br/>
   </li>
@@ -67,7 +67,10 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
   </li>
   <li>
 		<a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.<br/>
-		<strong>Note:</strong> Download a build that corresponds with your installed jdk.
+		<strong>Note 1:</strong> Download a build that corresponds with your installed jdk, 
+		<code><strong>jboss-4.2.3.GA.jdk6.zip</strong></code> is the correct build for jdk-6.<br/>
+		<strong>Note 2:</strong> JBoss AS 5 does not work with seam-refimpl right now. 
+		Please use JBoss AS 4.2.3.GA until we have solved the problem.
 	</li>
 </ul>
 <p>Install the required software.</p>
