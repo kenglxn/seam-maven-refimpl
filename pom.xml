@@ -14,7 +14,7 @@
 
 	<modules>
 		<module>./root/2.2.0</module>
-		<module>./seam-openejb</module>
+		<module>./seam-utils</module>
 	</modules>
 
 	<build>

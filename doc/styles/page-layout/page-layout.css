@@ -3,8 +3,7 @@
  * Created     : 20080503
  * Version     : 1.0
  * Author      : leif.olsen@communityr.com, loo@knowit.no
- * Copyright   : (c)2008-2009, 
- *               Do not use (or abuse) this code without permission.
+ * Copyright   : LGPL
  *
  * Description : x-browser semi liquid layout with Sticky Footer.
  *               The footer will stick to the bottom of the browser window until the 
@@ -23,7 +22,7 @@
  *               This css will no longer support ie6, hipp, hipp horray!
  *
  * Tested in   : IE7                                    : OK,
- *               IE8                                    : NT  (Not Tested),
+ *               IE8                                    : OK,
  *               Firefox 3   win                        : OK, 
  *               Firefox 3   linux                      : NT, 
  *               Opera 9     win                        : OK, 
@@ -31,7 +30,7 @@
  *               Safari 3.1 win                         : OK
  *               Chrome 1.x win                         : OK
  *
- * Dependencies: blueprint.css (or reset.css and typography.css)
+ * Dependencies: base.css
  * History     : 20090303 - no more ie6 hacks
  */
 html, body {

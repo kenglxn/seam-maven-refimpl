@@ -1,1 +1,1 @@
-﻿target .externalToolBuilders .settings .classpath .project .pages.xml.spdia .faces-config.xml.jsfdia .metadata *.launch hibernate-console.properties appClientModule
+﻿*.o *.lo *.la *.al .libs *.so *.so.[0-9]* *.a *.pyc *.pyo *.rej *~ #*# .#* .*.swp .DS_Store target .externalToolBuilders .settings .classpath .project .pages.xml.spdia .faces-config.xml.jsfdia .metadata *.launch hibernate-console.properties .checkstyle appClientModule temp-testng-customsuite.xml filter-dev.properties
