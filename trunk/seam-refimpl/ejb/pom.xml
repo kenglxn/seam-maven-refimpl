@@ -91,7 +91,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>no.knowit.seam</groupId>
-			<artifactId>seam-openejb-utils</artifactId>
+			<artifactId>seam-utils-ejb</artifactId>
+			<type>ejb</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>no.knowit.seam</groupId>
+			<artifactId>seam-utils-openejb</artifactId>
 			<type>ejb</type>
 			<scope>test</scope>
 		</dependency>
