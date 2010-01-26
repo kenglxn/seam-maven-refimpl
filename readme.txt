@@ -18,6 +18,6 @@ some dependencies:
   mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true
 	
 * type:
-  mev eclipse:m2eclipse
+  mvn eclipse:m2eclipse
 	
 * Import the project into Eclipse
