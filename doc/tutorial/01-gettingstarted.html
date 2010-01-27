@@ -9,10 +9,10 @@
 
 <script type="text/javascript">
 function toggle( target ) {
-	if( target ) {
-		target = typeof target === "string" ? document.getElementById( target ) : target;
-		target.style.display = target.style.display.match(/none/i) ? 'block' : 'none';
-	}
+  if( target ) {
+    target = typeof target === "string" ? document.getElementById( target ) : target;
+    target.style.display = target.style.display.match(/none/i) ? 'block' : 'none';
+  }
 }
 </script>
 
@@ -66,17 +66,17 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
     <a href="http://subclipse.tigris.org/">SubClipse-1.6.x</a> if you are using the Eclipse IDE.
   </li>
   <li>
-		<a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.<br/>
-		<strong>Note 1:</strong> Download a build that corresponds with your installed jdk, 
-		<code><strong>jboss-4.2.3.GA.jdk6.zip</strong></code> is the correct build for jdk-6.<br/>
-		<strong>Note 2:</strong> JBoss AS 5 does not work with seam-refimpl right now. 
-		Please use JBoss AS 4.2.3.GA until we have solved the problem.
-	</li>
+    <a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.<br/>
+    <strong>Note 1:</strong> Download a build that corresponds with your installed jdk, 
+    <code><strong>jboss-4.2.3.GA.jdk6.zip</strong></code> is the correct build for jdk-6.<br/>
+    <strong>Note 2:</strong> JBoss AS 5 does not work with seam-refimpl right now. 
+    Please use JBoss AS 4.2.3.GA until we have solved the problem.
+  </li>
 </ul>
 <p>Install the required software.</p>
 
 <h2 id="checkout-install"><a href="javascript: toggle('checkout-install-div');">
-	Check Out, Install and Run the Project</a>
+  Check Out, Install and Run the Project</a>
 </h2>
 <div id="checkout-install-div">
 <p>The example uses Tortoise SVN to check out the project.<br/>
@@ -84,8 +84,8 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
   of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
 <ol class="vspace">
   <li>In file explorer right click on the folder where you want to check out the project and select 
-		<code><strong style="white-space:nowrap;">TortoiseSVN &gt; Repo-browser</strong></code> 
-		from the menu.
+    <code><strong style="white-space:nowrap;">TortoiseSVN &gt; Repo-browser</strong></code> 
+    from the menu.
     <img src="img/tortoise-menu.png" style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
@@ -94,7 +94,7 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
   </li>
   <li>Checkout trunk.
     <ul>
-			<li>Right click <strong>trunk</strong> and select <strong>checkout...</strong> from the menu.</li>
+      <li>Right click <strong>trunk</strong> and select <strong>checkout...</strong> from the menu.</li>
       <li>Modify the checkout directory name if desired.</li>
       <li>Click the <strong>OK</strong> button to check out the project.</li>
     </ul>
@@ -107,13 +107,13 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
   <li>Copy <code>${SEAM_REFIMPL}/ear/target/seam-refimpl-ear.ear</code> to the 
     <code>${JBOSS_DEPLOY}</code> folder.
   </li>
-	<li>Start JBossAS<br/>
-		JBoss AS runs on port 8080, so first ensure this port isn't already in use (be aware that Apache 
-		Tomcat also runs on port 8080 by default). In your command shell, navigate to 
-		<code>${JBOSS_HOME}/bin</code>. If you're using a Unix platform, execute the command:<br/>
-		<code><strong>./run.sh</strong></code><br/>
-		On Windows, execute the command:<br/>
-		<code><strong>run</strong></code>	
+  <li>Start JBossAS<br/>
+    JBoss AS runs on port 8080, so first ensure this port isn't already in use (be aware that Apache 
+    Tomcat also runs on port 8080 by default). In your command shell, navigate to 
+    <code>${JBOSS_HOME}/bin</code>. If you're using a Unix platform, execute the command:<br/>
+    <code><strong>./run.sh</strong></code><br/>
+    On Windows, execute the command:<br/>
+    <code><strong>run</strong></code>	
   </li>
   <li>Open a browser and point the URL to 
     <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
@@ -130,8 +130,8 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
   <li>
     Activate <code>profiles.xml</code>
     <ul>
-			<li>Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code>.</li>
-			<li>Cd to to <code>${SEAM_REFIMPL}</code> and edit <code>profiles.xml</code>.</li>
+      <li>Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code>.</li>
+      <li>Cd to to <code>${SEAM_REFIMPL}</code> and edit <code>profiles.xml</code>.</li>
       <li>
       JBoss profile<br/>
       Locate the <code>as-jboss423</code> profile and point the <code>as.home </code> property to your
@@ -217,17 +217,17 @@ The following profiles are active:
     Deploy the exploded EAR to the application server.
     <ul>
       <li>Run: <code>mvn clean install -Pexplode</code></li>
-			<li>
-				It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
-				development mode.
-			</li>
+      <li>
+        It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
+        development mode.
+      </li>
     </ul>
-		<br/>
+    <br/>
     Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
     <img src="img/exploded-ear.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>
-	<li>
-	  <a name="start-jboss">Start JBossAS</a><br/>
+  <li>
+    <a name="start-jboss">Start JBossAS</a><br/>
       Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>run</code> 
   </li>
   <li>Open a browser and point the URL to 
@@ -316,7 +316,7 @@ prior to running <code><strong>mvn install -Pexplode</strong></code> to be sure 
 the previous profile do not linger.
 </p>	
 <ol class="vspace">
-	<li>Shutdown JBossAS before cleaning the project:<br/>
+  <li>Shutdown JBossAS before cleaning the project:<br/>
     Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>shutdown -S</code>
     or press Ctrl+C from the command shell that started the server.
   </li>
@@ -324,9 +324,9 @@ the previous profile do not linger.
     In the projects command shell run: <code>mvn clean -Punexplode</code>
   </li>
   <li>
-		The <code><strong>unexplode</strong></code> profile takes care of removing the exploded project
-		from the server. Just verify that the <code>seam-refimpl-ear.ear</code> folder actually is 
-		deleted from the <code>${JBOSS_DEPLOY}</code> folder.
+    The <code><strong>unexplode</strong></code> profile takes care of removing the exploded project
+    from the server. Just verify that the <code>seam-refimpl-ear.ear</code> folder actually is 
+    deleted from the <code>${JBOSS_DEPLOY}</code> folder.
   </li>
   <li>
     This completes the basic steps of the tutorial!
@@ -337,7 +337,7 @@ the previous profile do not linger.
 
 
 <h2 id="use-as-template"><a href="javascript: toggle('export-template');">
-	Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a>
+  Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a>
 </h2>
 <div id="export-template">
 <p> Follow these steps to use the <code>seam-refimpl</code> project as a template for your own
@@ -345,7 +345,7 @@ the previous profile do not linger.
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
   of your choice and <a href="#modfy-the-poms">jump to step 2</a> in this section.</p>
 <ol class="vspace">
-	<li> Export from svn.<br/>
+  <li> Export from svn.<br/>
     <ul>
       <li>Right click the ${PROJECT} folder and select <strong style="white-space:nowrap;">
         TortoiseSVN&nbsp;&gt;&nbsp;Repo-browser</strong> from the menu.</li>
@@ -375,11 +375,11 @@ the previous profile do not linger.
   &lt;/properties&gt;
   .
   &lt;/project&gt;
-	</pre>
+  </pre>
     </li>
     <li>
       The EAR pom:
-			<pre>
+      <pre>
   &lt;parent&gt;
     &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
@@ -388,11 +388,11 @@ the previous profile do not linger.
 
   &lt;artifactId&gt;<font color="blue">seam-tutorial-ear</font>&lt;/artifactId&gt;
   &lt;description&gt;<font color="blue">The Seam Tutorial EAR module</font>&lt;/description&gt;
-			</pre>
+      </pre>
     </li>
     <li>
       The EJB pom:
-			<pre>
+      <pre>
   &lt;parent&gt;
     &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
@@ -401,11 +401,11 @@ the previous profile do not linger.
 
   &lt;artifactId&gt;<font color="blue">seam-tutorial-ejb</font>&lt;/artifactId&gt;
   &lt;description&gt;<font color="blue">The Seam Tutorial EJB module</font>&lt;/description&gt;
-			</pre>
+      </pre>
     </li>
     <li>
       The WAR pom:
-			<pre>
+      <pre>
   &lt;parent&gt;
     &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
@@ -414,15 +414,15 @@ the previous profile do not linger.
 
   &lt;artifactId&gt;<font color="blue">seam-tutorial-war</font>&lt;/artifactId&gt;
   &lt;description&gt;<font color="blue">The Seam Tutorial WAR module</font>&lt;/description&gt;
-			</pre>
+      </pre>
     </li>
     </ul>
   </li>
   <li>
     Rename the datasource file <code>ear/src/main/resources/seam-refimpl-ds.xml</code> 
     to <code>seam-tutorial-ds.xml</code><br/>
-		Tip: Modify the	<code>&lt;app.ds.xml&gt;${app.context}-ds.xml&lt;/app.ds.xml&gt;</code> property
-		if you want to give the datasource file a different name.
+    Tip: Modify the	<code>&lt;app.ds.xml&gt;${app.context}-ds.xml&lt;/app.ds.xml&gt;</code> property
+    if you want to give the datasource file a different name.
   </li>
   <li>
     <a href="#install-and-run">Deploy the project "out of the box" to verify that everyting works</a>
@@ -562,19 +562,19 @@ the previous profile do not linger.
     Open a command shell and navigate to the <code>${SEAM_TUTORIAL}</code> folder.
     <ul>
       <li>
-				Run: <code>mvn clean package -Pexplode</code> (or <code>mvn clean install -Pexplode</code>)
-			</li>
-			<li>
-				It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
-				development mode. 
-			</li>
+        Run: <code>mvn clean package -Pexplode</code> (or <code>mvn clean install -Pexplode</code>)
+      </li>
+      <li>
+        It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
+        development mode. 
+      </li>
     </ul><br/>
     Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
     <img src="img/exploded-ear-tutorial.png" style="width:730px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>
-	<li>
-	  <a href="#start-jboss">Start JBoss, open browser, etc...</a>
-	</li>
+  <li>
+    <a href="#start-jboss">Start JBoss, open browser, etc...</a>
+  </li>
 </ol>
 
 <h2>Tips for Debugging</h2>
@@ -621,60 +621,60 @@ Configuring a Seam EJB project for development with Maven and JBoss Tools</a>.</
 <p>Some files and folders, like user spesific settings and generated files shall not be under revision 
 control. The following folders and files are added to <strong>svn ignore</strong>.</p>
 <code>
-	<ul>
-		<li>
-			In ${SEAM_REFIMPL} folder
-			<ul>
-				<li>appClientModule/</li>
-				<li>.classpath</li>
-				<li>.externalToolBuilders/</li>
-				<li>*.launch</li>
-				<li>.metadata/</li>
-				<li>profiles.xml</li>
-				<li>.project</li>
-				<li>.settings/</li>
-				<li>target/</li>
-			</ul>
-		</li>
-		<li>
-			In ${SEAM_REFIMPL}/<strong>ear</strong> folder
-			<ul>
-				<li>.externalToolBuilders/</li>
-				<li>.settings/</li>
-				<li>target/</li>
-				<li>.classpath</li>
-				<li>.project</li>
-				<li>*.launch</li>
-			</ul>
-		</li>
-		<li>
-			In ${SEAM_REFIMPL}/<strong>ejb</strong> folder
-			<ul>
-				<li>.checkstyle</li>
-				<li>.externalToolBuilders/</li>
-				<li>.settings/</li>
-				<li>target/</li>
-				<li>.classpath</li>
-				<li>.project</li>
-				<li>hibernate-console.properties</li>
-				<li>*.launch</li>
-			</ul>
-		</li>
-		<li>
-			In ${SEAM_REFIMPL}/<strong>war</strong> folder
-			<ul>
-				<li>.checkstyle</li>
-				<li>.externalToolBuilders/</li>
-				<li>.settings/</li>
-				<li>target/</li>
-				<li>.classpath</li>
-				<li>.project</li>
-				<li>*.launch</li>
-				<li>src/main/webapp/WEB-INF/.pages.xml.spdia</li>
-				<li>src/main/webapp/WEB-INF/.faces-config.xml.jsfdia</li>
-			</ul>
-		</li>
-	</ul>
+  <ul>
+    <li>
+      In ${SEAM_REFIMPL} folder
+      <ul>
+        <li>appClientModule/</li>
+        <li>.classpath</li>
+        <li>.externalToolBuilders/</li>
+        <li>*.launch</li>
+        <li>.metadata/</li>
+        <li>profiles.xml</li>
+        <li>.project</li>
+        <li>.settings/</li>
+        <li>target/</li>
+      </ul>
+    </li>
+    <li>
+      In ${SEAM_REFIMPL}/<strong>ear</strong> folder
+      <ul>
+        <li>.externalToolBuilders/</li>
+        <li>.settings/</li>
+        <li>target/</li>
+        <li>.classpath</li>
+        <li>.project</li>
+        <li>*.launch</li>
+      </ul>
+    </li>
+    <li>
+      In ${SEAM_REFIMPL}/<strong>ejb</strong> folder
+      <ul>
+        <li>.checkstyle</li>
+        <li>.externalToolBuilders/</li>
+        <li>.settings/</li>
+        <li>target/</li>
+        <li>.classpath</li>
+        <li>.project</li>
+        <li>hibernate-console.properties</li>
+        <li>*.launch</li>
+      </ul>
+    </li>
+    <li>
+      In ${SEAM_REFIMPL}/<strong>war</strong> folder
+      <ul>
+        <li>.checkstyle</li>
+        <li>.externalToolBuilders/</li>
+        <li>.settings/</li>
+        <li>target/</li>
+        <li>.classpath</li>
+        <li>.project</li>
+        <li>*.launch</li>
+        <li>src/main/webapp/WEB-INF/.pages.xml.spdia</li>
+        <li>src/main/webapp/WEB-INF/.faces-config.xml.jsfdia</li>
+      </ul>
+    </li>
+  </ul>
 </code>
 <p><strong>Note:</strong> This is the files found so far using Eclipse with the m2eclipse and JBoss 
 Tools plugin. There will be more IDE spesific files to add as other IDEs are put to use. Please
@@ -685,16 +685,16 @@ and add it to <strong>svn ignore</strong>!
 
 <h2>Useful Links</h2>
 <ul>
-	<li>
-		<a href="http://www.maestrodev.com/better-build-maven">
-			Better Builds with Maven
-		</a>
-	</li>
-	<li>
-		<a href="http://sujitpal.blogspot.com/2006/07/maven2-step-by-step.html">
-			Maven2, Step by Step
-		</a>
-	</li>
+  <li>
+    <a href="http://www.maestrodev.com/better-build-maven">
+      Better Builds with Maven
+    </a>
+  </li>
+  <li>
+    <a href="http://sujitpal.blogspot.com/2006/07/maven2-step-by-step.html">
+      Maven2, Step by Step
+    </a>
+  </li>
 </ul>
 
 </div>

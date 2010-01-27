@@ -204,7 +204,7 @@ public class MovieTest extends SeamOpenEjbTest {
 					assert e.getCause() instanceof org.jboss.seam.security.NotLoggedInException : 
 						"Expected to fail with: 'org.jboss.seam.security.NotLoggedInException'";
 					
-					log.debug("Passed expected failure: " + e.getMessage());
+					log.debug("Passed expected unauthorized access failure: " + e.getMessage());
 				}
 				finally {
 					Conversation.instance().end();
@@ -214,7 +214,37 @@ public class MovieTest extends SeamOpenEjbTest {
 	}
 
 	@Test(dependsOnMethods={ "editMovie" })
-	public void insertDuplicateMovieTitle() throws Exception {
+	public void persistWithMissingRequiredFieldValue() throws Exception {
+		new FacesRequest("/view/example/MovieEdit.xhtml") {
+			@Override
+			protected void invokeApplication() throws Exception {
+				Conversation.instance().begin();
+				assert !isSessionInvalid() : "Invalid session";
+				assert mockLogin() : "Login failed";
+				invokeMethod("#{movieHome.clearInstance}");
+				setValue("#{movieHome.instance.director}", THE_WALL_DIRECTOR);
+				setValue("#{movieHome.instance.year}",     THE_WALL_YEAR);
+				
+				try {
+					invokeMethod( "#{movieHome.persist}" );
+					assert false : "Movie with missing field value persisted!";
+				} 
+				catch (javax.el.ELException e) {
+					assert e.getCause() instanceof javax.persistence.PersistenceException : 
+						"Expected to fail with: 'javax.persistence.PersistenceException'";
+					
+					log.debug("Passed expected missing required field value failure: " + e.getMessage());
+				}
+				finally {
+					Conversation.instance().end();
+				}
+			}
+		}.run();
+	}
+	
+	
+	@Test(dependsOnMethods={ "editMovie" })
+	public void duplicateUniqueSecondaryIndex() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
 			protected void invokeApplication() throws Exception {
@@ -234,7 +264,7 @@ public class MovieTest extends SeamOpenEjbTest {
 					assert e.getCause() instanceof javax.persistence.PersistenceException : 
 						"Expected to fail with: 'javax.persistence.PersistenceException'";
 					
-					log.debug("Passed expected failure: " + e.getMessage());
+					log.debug("Passed expected duplicate unique secondary index failure: " + e.getMessage());
 				}
 				finally {
 					Conversation.instance().end();
@@ -243,7 +273,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();
 	}
 
-	@Test(dependsOnMethods={ "insertDuplicateMovieTitle" })
+	@Test(dependsOnMethods={ "duplicateUniqueSecondaryIndex" })
 	public void deleteMovie() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override

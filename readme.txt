@@ -7,7 +7,7 @@ Before you build any projects you'll have to build the root pom and required dep
     uses as its root pom.
 	- Builds the no.knowit.seam:seam-utils modules
 	
-* CD to the "seam-refimpl" folder amd type "mvn clean install"
+* CD to the "seam-refimpl" folder and type "mvn clean install"
 
 Note to Eclipse users:
 The m2eclipse plugin seems to be a bit unpredictable when it comes to downloading source code and 
@@ -20,4 +20,4 @@ some dependencies:
 * type:
   mvn eclipse:m2eclipse
 	
-* Import the project into Eclipse
+* Import the project into Eclipse as described in the Eclipse tutorial
