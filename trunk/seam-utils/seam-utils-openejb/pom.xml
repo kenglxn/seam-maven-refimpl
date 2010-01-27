@@ -1,86 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project 
-	xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	
+  xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
   <modelVersion>4.0.0</modelVersion>
- 	<parent>
-		<groupId>no.knowit.seam</groupId>
-		<artifactId>root</artifactId>
-		<version>2.2.0-SNAPSHOT</version>
-	</parent>
+  <parent>
+    <groupId>no.knowit.seam</groupId>
+    <artifactId>root</artifactId>
+    <version>2.2.0-SNAPSHOT</version>
+  </parent>
    
-	<artifactId>seam-utils-openejb</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<name>${project.artifactId} : ${project.version}</name>
-	<description>Utilities to run Seam tests in the Apache OpenEJB embedded container</description>
-	<packaging>ejb</packaging>
-	
-	<profiles>
-		<!--
-			More than one profile can be active at once. Since profiles can contain the same 
-			types of configuration there can be clashes. If two profiles clash the last to be activated 
-			will override those activated earlier. 
-			Note: "mvn install -Penv-dev" deactivates activeByDefault for the env-prod profile
-		 -->
-	  <profile>
-	    <id>env-dev</id>
-	    <properties>
-	      <env>dev</env>
-	    </properties>
-	  </profile>
+  <artifactId>seam-utils-openejb</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>${project.artifactId} : ${project.version}</name>
+  <description>Utilities to run Seam tests in the Apache OpenEJB embedded container</description>
+  <packaging>ejb</packaging>
+  
+  <profiles>
+    <!--
+      More than one profile can be active at once. Since profiles can contain the same 
+      types of configuration there can be clashes. If two profiles clash the last to be activated 
+      will override those activated earlier. 
+      Note: "mvn install -Penv-dev" deactivates activeByDefault for the env-prod profile
+     -->
+    <profile>
+      <id>env-dev</id>
+      <properties>
+        <env>dev</env>
+      </properties>
+    </profile>
 
-	  <profile>
-	    <id>env-prod</id>
-			<activation>
-	      <activeByDefault>true</activeByDefault>
-			</activation>
-	    <properties>
-	      <env>prod</env>
-	    </properties>
-	  </profile>
-	</profiles>
-	
-	<dependencies>
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-seam</artifactId>
-			<type>ejb</type>
-			<scope>compile</scope>
-		</dependency>
-	
-		<dependency>
-			<groupId>org.apache.openejb</groupId>
-			<artifactId>openejb-core</artifactId>
-			<scope>compile</scope>
-		</dependency>
+    <profile>
+      <id>env-prod</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <env>prod</env>
+      </properties>
+    </profile>
+  </profiles>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam</artifactId>
+      <type>ejb</type>
+      <scope>compile</scope>
+    </dependency>
+  
+    <dependency>
+      <groupId>org.apache.openejb</groupId>
+      <artifactId>openejb-core</artifactId>
+      <scope>compile</scope>
+    </dependency>
 
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
-	
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  
   <build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
- 		
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-			</plugin>
-		</plugins>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 </project>
