@@ -760,12 +760,32 @@
 			  <groupId>org.richfaces.samples</groupId>
 			  <artifactId>glassX</artifactId>
 			  <version>${version.richfaces}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>jstl</artifactId>
+					</exclusion>
+					<exclusion>
+					  <groupId>nekohtml</groupId>
+					  <artifactId>nekohtml</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
 			  <groupId>org.richfaces.samples</groupId>
 			  <artifactId>darkX</artifactId>
 			  <version>${version.richfaces}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>jstl</artifactId>
+					</exclusion>
+					<exclusion>
+					  <groupId>nekohtml</groupId>
+					  <artifactId>nekohtml</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<!-- drools Why is not this in seam-root? -->
