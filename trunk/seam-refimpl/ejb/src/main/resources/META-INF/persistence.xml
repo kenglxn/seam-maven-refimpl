@@ -23,9 +23,6 @@
 			<property name="hibernate.connection.characterEncoding" value="UTF-8" />
 			
       <!-- These are the default for JBoss EJB3, but not for HEM: -->
-      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/>
-      <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
-
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
       <property name="hibernate.transaction.manager_lookup_class" value="${pu.hibernate.transaction.manager_lookup_class}" />
       

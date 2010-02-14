@@ -18,7 +18,8 @@ function toggle( target ) {
 
 <title>Seam Maven reference Implentation - Getting Started</title>
 </head>
-<body onload="javascript: toggle('checkout-install-div'); toggle('export-template');">
+<!-- <body onload="javascript: toggle('checkout-install-div'); toggle('export-template');"> -->
+<body>
 
 <div id="sizer">
 <div id="expander">
@@ -33,7 +34,7 @@ function toggle( target ) {
 <div id="page">
 
 <p>The getting started tutorial outlines the necessary steps to get a Mavenized Seam project up and 
-running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
+running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
 <p>You must have a basic understanding of 
   <a href="http://docs.jboss.com/seam/latest/reference/en-US/html/Book-Preface.html">
     JBoss Seam</a> (EJB3, JPA, JSF, EL), the
@@ -45,20 +46,18 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
 <p>The shortcuts are listed here so we don't have to type the tedious file 
   paths over and over again in this document.</p>
 <ul>
-  <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation folder, e.g. C:\servers\jboss-4.2.3.GA</li>
+  <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation directory, e.g. C:\servers\jboss-4.2.3.GA</li>
   <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
-  <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy folder, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
-  <li><code>${PROJECT}</code> - the project root folder, i.e. seam-maven-refimpl</li>
-  <li><code>${SEAM_REFIMPL}</code> - the folder where the reference project, i.e. seam-refimpl, is installed on your computer</li>
-  <li><code>${SEAM_TUTORIAL}</code> - the folder where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
+  <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy directory, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
+  <li><code>${TRUNK}</code> - the project root directory, i.e. seam-maven-refimpl</li>
+  <li><code>${SEAM_REFIMPL}</code> - the directory where the reference project, i.e. seam-refimpl, is installed on your computer</li>
+  <li><code>${SEAM_TUTORIAL}</code> - the directory where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
 </ul>
 
 <h2>Download and Install Software</h2>
 <ul>
-  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-6</a></li>
+  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-6</a>.</li>
   <li><a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.<br/>
-    <strong>Note:</strong> Do not use Maven 2.1.0, it has a serious bug, see the 
-    <code>${PROJECT}/doc/maven-2.1.0-bug</code> folder for an explanation.<br/>
   </li>
   <li>
     <a href="http://tortoisesvn.tigris.org/">Tortoise SVN</a> or a SVN client of your choice.<br/> 
@@ -80,32 +79,63 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
 </h2>
 <div id="checkout-install-div">
 <p>The example uses Tortoise SVN to check out the project.<br/>
-  <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
-  of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
+  <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a 
+  directory of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
 <ol class="vspace">
-  <li>In file explorer right click on the folder where you want to check out the project and select 
-    <code><strong style="white-space:nowrap;">TortoiseSVN &gt; Repo-browser</strong></code> 
-    from the menu.
-    <img src="img/tortoise-menu.png" style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
+  <li>Create a project directory, e.g. <code>C:/dev/projects/seam-maven-refimpl</code></li>
+  <li>In file explorer right click on the project directory and select 
+    <code><strong style="white-space:nowrap;">TortoiseSVN &gt; Repo-browser</strong></code> from the 
+    menu.
+    <img src="img/tortoise-menu.png" style="width:450px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
-    Navigate to http(s)://seam-maven-refimpl.googlecode.com/svn/trunk.
-    <img src="img/tortoise-repo-url.png" style="width:397px; display:block; margin-top:1em; margin-bottom:1em;" />
-  </li>
-  <li>Checkout trunk.
+    Check out the latest project source code from trunk.
     <ul>
-      <li>Right click <strong>trunk</strong> and select <strong>checkout...</strong> from the menu.</li>
-      <li>Modify the checkout directory name if desired.</li>
-      <li>Click the <strong>OK</strong> button to check out the project.</li>
+    <li>
+      Project members authenticate over HTTPS to allow committing changes: 
+      <code>https://seam-maven-refimpl.googlecode.com/svn/trunk/</code><br/>
+      When prompted, enter your generated googlecode.com password.
+    </li>
+    <li>
+      Non-members may check out a read-only working copy anonymously over HTTP: 
+      <code>http://seam-maven-refimpl.googlecode.com/svn/trunk/</code>
+    </li>
     </ul>
+    <img src="img/tortoise-repo-url.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
     <img src="img/tortoise-checkout.png" style="width:750px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <ul>
+      <li>
+        In reposytory broser right click <code><strong>trunk</strong></code> and select 
+        <code><strong>checkout...</strong></code> from the menu.
+       </li>
+      <li>The checkout directory should point to the directory where you want to checkout the trunk.</li>
+      <li>Click the <strong>OK</strong> button to checkout.</li>
+    </ul>
+    <br/>
+    (Command-line access to svn is described here: 
+    <a href="http://code.google.com/p/seam-maven-refimpl/source/checkout">http://code.google.com/p/seam-maven-refimpl/source/checkout</a>)
   </li>
   <li><a name="install-and-run">
-    Navigate to <code>${SEAM_REFIMPL}</code> using a command shell and run: 
-    <code>mvn clean install</code></a>
+    Open a command shell and navigate to your checkout directory, the <code>${TRUNK}</code>.</a>
+    <img src="img/trunk-clean-install.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
+    Run: <code>mvn clean install</code>
+    <ul>
+    <li>
+      The maven install command builds the <code>no.knowit.seam:root</code> pom which all projects 
+      in this trunk uses as its root pom.
+    </li>
+    <li>Builds the <code>no.knowit.seam:seam-utils</code> modules.</li>
+    </ul>
+    <img src="img/trunk-clean-install-success.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
-  <li>Copy <code>${SEAM_REFIMPL}/ear/target/seam-refimpl-ear.ear</code> to the 
-    <code>${JBOSS_DEPLOY}</code> folder.
+  <li>
+    Navigate to <code>${SEAM_REFIMPL}</code> and run: <code>mvn clean install</code>.
+    <img src="img/refimpl-clean-install-success.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
+  </li>
+  <li>
+    Copy the <code>${SEAM_REFIMPL}/ear/target/seam-refimpl-ear.ear</code> file to the 
+    <code>${JBOSS_DEPLOY}</code> directory.
+    <img src="img/refimpl-ear-to-as.png" style="width:450px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>Start JBossAS<br/>
     JBoss AS runs on port 8080, so first ensure this port isn't already in use (be aware that Apache 
@@ -114,15 +144,343 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
     <code><strong>./run.sh</strong></code><br/>
     On Windows, execute the command:<br/>
     <code><strong>run</strong></code>	
+    <img src="img/jboss-run.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>Open a browser and point the URL to 
-    <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
-    After logging in, your welcome screen should look like this:
-    <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block; margin-top:1em; margin-bottom:1em;" />
-    The User Registration page should look something like this:
-    <img src="img/seam-refimpl-userreg.png" style="width:590px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl/</a>.
+    <br/>
+    <div class="inline-block" style="width:49%;">
+      <img src="img/seam-refimpl-welcome.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      Click on the <code><strong>Movie List</strong></code> menu.
+    </div>
+    
+    <div class="inline-block" style="width:49%;">
+      <img src="img/seam-refimpl-list.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      Click the <code><strong>Create movie</strong></code> button to create a new movie.
+    </div>
+    
+    <div class="inline-block" style="width:49%;">
+    <img src="img/seam-refimpl-login.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    Login and proceed to the registration form.
+    </div>
+    
+    <div class="inline-block" style="width:49%;">
+      <img src="img/seam-refimpl-register.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      Register and click <code><strong>Save</strong></code>.
+    </div>
+    
+    <div class="inline-block" style="width:49%;">
+      <img src="img/seam-refimpl-register-success.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      Click <code><strong>Done</strong></code> to return to the Movie List view.
+    </div>
+    
+    <div class="inline-block" style="width:49%;">
+      <img src="img/seam-refimpl-register-done.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    </div>
+  </li>
+  <li>
+    Shutdown JBossAS and delete the <code>seam-refimpl-ear.ear</code> file from the server's 
+    <code>${JBOSS_DEPLOY}</code> directory.
+   </li>
   </li>
 </ol>
+
+
+<h2 id="use-as-template"><a href="javascript: toggle('export-template');">
+  Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a>
+</h2>
+<div id="export-template">
+<p>This section explains how to use the <strong>seam-refimpl</strong> project as a template for your
+own project.</p>
+
+<ol class="vspace">
+  <li> Export from svn.<br/>
+    <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a directory 
+    of your choice and <a href="#modfy-the-poms">jump to step 2</a> in this section.
+    <ul>
+      <li>
+        Right click the <code>${TRUNK}/seam-refimpl</code> directory and select 
+        <strong style="white-space:nowrap;">TortoiseSVN&nbsp;&gt;&nbsp;Repo-browser</strong> 
+        from the menu.
+       </li>
+      <li>
+        In repo browser right click the <code>seam-refimpl</code> directory and select 
+        <code>export... </code>
+       </li>
+      <li>Select <code>Export directory</code> and click <code><strong>OK</strong></code></li>
+    </ul>
+    <img src="img/tortoise-export.png" style="width:800px; display:block; margin-top:1em; margin-bottom:1em;" />
+  </li>
+  <li><a name="modfy-the-poms">Modify the poms:</a>
+    <ul>
+    <li>
+    The parent pom:
+    <pre>
+&lt;project
+  .
+  &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+  &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
+  &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
+  &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
+  &lt;description&gt;<font color="blue">The Seam Tutorial parent pom</font>&lt;/description&gt;
+  &lt;packaging&gt;pom&amp;lt;/packaging&gt;
+  &lt;modules&gt;
+    &lt;module&gt;ejb&lt;/module&gt;
+    &lt;module&gt;war&lt;/module&gt;
+    &lt;module&gt;ear&lt;/module&gt;
+  &lt;/modules&gt;
+  &lt;properties&gt;
+    &lt;app.context&gt;<font color="blue">seam-tutorial</font>&lt;/app.context&gt;
+    &lt;app.web.context&gt;${app.context}&lt;/app.web.context&gt;
+    &lt;app.display.name&gt;<font color="blue">Seam Tutorial</font>&lt;/app.display.name&gt;
+    &lt;app.description&gt;<font color="blue">The Seam Tutorial uses seam-refimpl as a project template</font>&lt;/app.description&gt;
+    &lt;app.distributable&gt;false&lt;/app.distributable&gt;
+    &lt;app.jndi.pattern&gt;${app.context}-ear/#{ejbName}/local&lt;/app.jndi.pattern&gt;
+    &lt;app.jndi.pattern.test&gt;/#{ejbName}/Local&lt;/app.jndi.pattern.test&gt;
+    &lt;!-- 
+      Properties for production are located in src/main/filters/filter-prod.properties
+      Properties to be modified by developer are located in src/main/filters/filter-dev.properties
+      Copy filter-prod.properties to filter-dev.properties and add filter-dev.properties to svn:ignore
+      Type e.g "mvn -Penv-dev" to activate the developemnt profile.  
+    --&gt;
+  &lt;/properties&gt;
+  .
+&lt;/project&gt;
+  </pre>
+    </li>
+    <li>
+      The EAR pom:
+      <pre>
+&lt;project
+  .
+  &lt;parent&gt;
+    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
+    &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
+  &lt;/parent&gt;
+
+  &lt;artifactId&gt;<font color="blue">seam-tutorial-ear</font>&lt;/artifactId&gt;
+  &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
+  &lt;description&gt;<font color="blue">The Seam Tutorial EAR module</font>&lt;/description&gt;
+  &lt;packaging&gt;ear&lt;/packaging&gt;
+  .
+&lt;/project&gt;
+      </pre>
+    </li>
+    <li>
+      The EJB pom:
+      <pre>
+&lt;project
+  .
+  &lt;parent&gt;
+    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
+    &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
+  &lt;/parent&gt;
+
+  &lt;artifactId&gt;<font color="blue">seam-tutorial-ejb</font>&lt;/artifactId&gt;
+  &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
+  &lt;description&gt;<font color="blue">The Seam Tutorial EJB module</font>&lt;/description&gt;
+  &lt;packaging&gt;ejb&lt;/packaging&gt;
+  .
+&lt;/project&gt;
+      </pre>
+    </li>
+    <li>
+      The WAR pom:
+      <pre>
+&lt;project
+  .
+  &lt;parent&gt;
+    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
+    &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
+  &lt;/parent&gt;
+
+  &lt;artifactId&gt;<font color="blue">seam-tutorial-war</font>&lt;/artifactId&gt;
+  &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
+  &lt;description&gt;<font color="blue">The Seam Tutorial WAR module</font>&lt;/description&gt;
+  &lt;packaging&gt;war&lt;/packaging&gt;
+  .
+&lt;/project&gt;
+      </pre>
+    </li>
+    </ul>
+  </li>
+  <li>
+    Rename the datasource file <code>ear/src/main/resources/seam-refimpl-ds.xml</code> 
+    to <code>seam-tutorial-ds.xml</code><br/>
+    Tip: Modify the	<code>&lt;app.ds.xml&gt;${app.context}-ds.xml&lt;/app.ds.xml&gt;</code> property
+    if you want to give the datasource file a different name.
+  </li>
+  <li>
+    <a href="#install-and-run">Deploy the project "out of the box" to verify that everyting works</a>
+  </li>
+  <li>
+    <a href="#switch-to-development-mode">Switch to development mode</a>
+  </li>
+  <li>
+    <a href="#activate-a-database-profile">Activate a Database Profile.</a>
+  </li>
+  <li>
+    How to deploy the data source.<br/>
+    You can deploy the <code>*-ds.xml</code> data source file in two ways: <strong>embedded</strong> 
+    in the ear project or as  a <strong>separate</strong> service deployed to the 
+    <code>${JBOSS_DEPLOY}</code> directory. The default for this build is to embed the 
+    <code>*-ds.xml</code> data source in the ear project.<br/>
+    If you want to deploy the <code>*-ds.xml</code> data source as a separate service then open the 
+    ear pom and make the changes <font color="blue">emphasized in blue</font>.<br/><br/>
+    <ol>
+    <li>
+      Locate the explode and unexplode profiles:
+    <pre>
+&lt;profiles&gt;
+  &lt;profile&gt;
+    ..
+    &lt;id&gt;explode&lt;/id&gt;
+    ..
+    &lt;build&gt;
+      &lt;plugins&gt;
+        &lt;plugin&gt;
+          &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+          &lt;executions&gt;
+            &lt;execution&gt;
+              &lt;id&gt;package&lt;/id&gt;
+              &lt;phase&gt;package&lt;/phase&gt;
+              &lt;configuration&gt;
+                &lt;tasks&gt;
+                  ..
+                  <font color="blue">
+                  &lt;!-- Uncomment if you want to deploy the *-ds.xml file to appserver deploy directory
+                   --&gt;
+                  &lt;copy todir=&quot;${as.deploy}&quot; file=&quot;${project.build.directory}/${app.ds.xml}&quot; verbose=&quot;true&quot; /&gt;
+                  </font>
+                &lt;/tasks&gt;
+              &lt;/configuration&gt;
+    ..
+  &lt;/profile&gt;
+  
+  &lt;profile&gt;
+    ..
+    &lt;id&gt;unexplode&lt;/id&gt;
+    &lt;build&gt;
+      &lt;plugins&gt;
+        &lt;plugin&gt;
+          &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+          &lt;executions&gt;
+            &lt;execution&gt;
+              &lt;id&gt;clean&lt;/id&gt;
+              &lt;phase&gt;clean&lt;/phase&gt;
+              &lt;configuration&gt;
+                &lt;tasks&gt;
+                  ..
+                  <font color="blue">
+                  &lt;!-- Uncomment if you have deployed the *-ds.xml file to appserver deploy directory
+                   --&gt;
+                  &lt;delete file=&quot;${as.deploy}/${app.ds.xml}&quot; quiet=&quot;true&quot; /&gt;
+                  </font>
+                &lt;/tasks&gt;
+              &lt;/configuration&gt;
+    ..
+  &lt;/profile&gt;
+  
+&lt;/profiles&gt;</pre>
+    </li>
+    <li>
+      Locate the Maven resources plugin with execution id <code>copy-app-ds-xml</code>:
+      <pre>
+&lt;plugins&gt;
+  &lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;id&gt;copy-app-ds-xml&lt;/id&gt;
+        ..
+        &lt;configuration&gt;
+          <font color="blue">
+          &lt;!-- Comment out this tag if you have deployed the *-ds.xml file to appserver deploy directory 
+          &lt;outputDirectory&gt;${project.build.directory}/${project.build.finalName}&lt;/outputDirectory&gt;
+          --&gt;
+          
+          &lt;!-- Uncomment this tag if you have deployed the *-ds.xml file to appserver deploy directory
+          --&gt;
+          &lt;outputDirectory&gt;${project.build.directory}&lt;/outputDirectory&gt;
+          </font>
+          &lt;resources&gt;
+            &lt;resource&gt;
+              &lt;directory&gt;src/main/resources&lt;/directory&gt;
+              &lt;filtering&gt;true&lt;/filtering&gt;
+              &lt;includes&gt;
+                &lt;include&gt;${app.ds.xml}&lt;/include&gt;
+              &lt;/includes&gt;
+            &lt;/resource&gt;
+          &lt;/resources&gt;
+        &lt;/configuration&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+  &lt;/plugin&gt; 
+  ..</pre>
+    </li>
+    <li>
+        Locate the Maven EAR plugin:
+        <pre>
+..
+&lt;!-- Maven EAR plugin --&gt;
+&lt;plugin&gt;
+  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+  &lt;artifactId&gt;maven-ear-plugin&lt;/artifactId&gt;
+  &lt;configuration&gt;
+    ..
+    &lt;jboss&gt;
+      ..<font color="blue">
+      &lt;!-- Comment out this tag if you have deployed the *-ds.xml file to appserver deploy directory 
+      &lt;data-sources&gt;
+        &lt;data-source&gt;${app.ds.xml}&lt;/data-source&gt;
+      &lt;/data-sources&gt;
+      --&gt;</font>
+    &lt;/jboss&gt;
+    ..
+  &lt;/configuration&gt;
+&lt;/plugin&gt;
+..</pre>
+    </li>
+    </ol>
+  </li>
+  <li>
+    Open a command shell and navigate to the <code>${SEAM_TUTORIAL}</code> directory.
+    <ul>
+      <li>
+        Run: <code>mvn clean package -Pexplode</code> (or <code>mvn clean install -Pexplode</code>)
+      </li>
+      <li>
+        It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
+        development mode. 
+      </li>
+    </ul><br/>
+    Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
+    <img src="img/exploded-ear-tutorial.png" style="width:730px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
+  </li>
+  <li>
+    <a href="#start-jboss">Start JBoss, open browser, etc...</a>
+  </li>
+</ol>
+
+
+
+
+<h3>Maven Project Structure</h3>
+<p>The Seam Refimpl project is a standard Maven multimodule project for Seam using EJB and JSF 
+that is archived in an ear-archive. A parent project pom will manage the EAR, EJB and WAR 
+modules. <a href="http://blog.xebia.com/">Xebia Labs</a> has an excellent blog that explains the 
+Maven project structure for an enterprise application project using Seam, 
+<a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
+Configuring a Seam EJB project for development with Maven and JBoss Tools</a>.</p>
+
+
 
 <h2><a name="switch-to-development-mode">Switch to Development Mode</a></h2>
 <p>The application will be deployed as an exploded EAR archive when you switch to development mode.</p>
@@ -135,7 +493,7 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.0.x.AS).</p>
       <li>
       JBoss profile<br/>
       Locate the <code>as-jboss423</code> profile and point the <code>as.home </code> property to your
-      <code>${JBOSS_HOME}</code> folder.
+      <code>${JBOSS_HOME}</code> directory.
       <pre>
 &lt;!-- jboss-4.2.3 --&gt;
 &lt;profile&gt;
@@ -223,7 +581,7 @@ The following profiles are active:
       </li>
     </ul>
     <br/>
-    Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
+    Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
     <img src="img/exploded-ear.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>
   <li>
@@ -325,8 +683,8 @@ the previous profile do not linger.
   </li>
   <li>
     The <code><strong>unexplode</strong></code> profile takes care of removing the exploded project
-    from the server. Just verify that the <code>seam-refimpl-ear.ear</code> folder actually is 
-    deleted from the <code>${JBOSS_DEPLOY}</code> folder.
+    from the server. Just verify that the <code>seam-refimpl-ear.ear</code> directory actually is 
+    deleted from the <code>${JBOSS_DEPLOY}</code> directory.
   </li>
   <li>
     This completes the basic steps of the tutorial!
@@ -335,247 +693,6 @@ the previous profile do not linger.
 
 </div>
 
-
-<h2 id="use-as-template"><a href="javascript: toggle('export-template');">
-  Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a>
-</h2>
-<div id="export-template">
-<p> Follow these steps to use the <code>seam-refimpl</code> project as a template for your own
-  project.<br/>  
-  <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a folder 
-  of your choice and <a href="#modfy-the-poms">jump to step 2</a> in this section.</p>
-<ol class="vspace">
-  <li> Export from svn.<br/>
-    <ul>
-      <li>Right click the ${PROJECT} folder and select <strong style="white-space:nowrap;">
-        TortoiseSVN&nbsp;&gt;&nbsp;Repo-browser</strong> from the menu.</li>
-      <li>In repo browser right click the <code>seam-refimpl</code> folder and select <code>export... </code></li>
-      <li>Select Export directory and click <strong>OK</strong></li>
-    </ul>
-    <img src="img/tortoise-export.png" style="width:750px; display:block; margin-top:1em; margin-bottom:1em;" />
-  </li>
-  <li><a name="modfy-the-poms">Modify the poms:</a>
-    <ul>
-    <li>
-    The root pom:
-    <pre>
-  &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
-  &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
-  &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
-  &lt;description&gt;<font color="blue">The Seam Tutorial parent pom</font>&lt;/description&gt;
-  .
-  .
-  &lt;properties&gt;
-    &lt;app.context&gt;<font color="blue">seam-tutorial</font>&lt;/app.context&gt;
-    &lt;app.display.name&gt;<font color="blue">Seam Tutorial</font>&lt;/app.display.name&gt;
-    &lt;app.description&gt;<font color="blue">The Seam Tutorial uses seam-refimpl as a project template</font>&lt;/app.description&gt;
-    &lt;app.database.name&gt;<font color="blue">refimpl_db</font>&lt;/app.database.name&gt;
-    .
-    .
-  &lt;/properties&gt;
-  .
-  &lt;/project&gt;
-  </pre>
-    </li>
-    <li>
-      The EAR pom:
-      <pre>
-  &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
-    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
-    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
-  &lt;/parent&gt;
-
-  &lt;artifactId&gt;<font color="blue">seam-tutorial-ear</font>&lt;/artifactId&gt;
-  &lt;description&gt;<font color="blue">The Seam Tutorial EAR module</font>&lt;/description&gt;
-      </pre>
-    </li>
-    <li>
-      The EJB pom:
-      <pre>
-  &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
-    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
-    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
-  &lt;/parent&gt;
-
-  &lt;artifactId&gt;<font color="blue">seam-tutorial-ejb</font>&lt;/artifactId&gt;
-  &lt;description&gt;<font color="blue">The Seam Tutorial EJB module</font>&lt;/description&gt;
-      </pre>
-    </li>
-    <li>
-      The WAR pom:
-      <pre>
-  &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
-    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
-    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
-  &lt;/parent&gt;
-
-  &lt;artifactId&gt;<font color="blue">seam-tutorial-war</font>&lt;/artifactId&gt;
-  &lt;description&gt;<font color="blue">The Seam Tutorial WAR module</font>&lt;/description&gt;
-      </pre>
-    </li>
-    </ul>
-  </li>
-  <li>
-    Rename the datasource file <code>ear/src/main/resources/seam-refimpl-ds.xml</code> 
-    to <code>seam-tutorial-ds.xml</code><br/>
-    Tip: Modify the	<code>&lt;app.ds.xml&gt;${app.context}-ds.xml&lt;/app.ds.xml&gt;</code> property
-    if you want to give the datasource file a different name.
-  </li>
-  <li>
-    <a href="#install-and-run">Deploy the project "out of the box" to verify that everyting works</a>
-  </li>
-  <li>
-    <a href="#switch-to-development-mode">Switch to development mode</a>
-  </li>
-  <li>
-    <a href="#activate-a-database-profile">Activate a Database Profile.</a>
-  </li>
-  <li>
-    How to deploy the data source.<br/>
-    You can deploy the <code>*-ds.xml</code> data source file in two ways: <strong>embedded</strong> 
-    in the ear project or as  a <strong>separate</strong> service deployed to the 
-    <code>${JBOSS_DEPLOY}</code> folder. The default for this build is to embed the 
-    <code>*-ds.xml</code> data source in the ear project.<br/>
-    If you want to deploy the <code>*-ds.xml</code> data source as a separate service then open the 
-    ear pom and make the changes <font color="blue">emphasized in blue</font>.<br/><br/>
-    <ol>
-    <li>
-      Locate the explode and unexplode profiles:
-    <pre>
-&lt;profiles&gt;
-  &lt;profile&gt;
-    ..
-    &lt;id&gt;explode&lt;/id&gt;
-    ..
-    &lt;build&gt;
-      &lt;plugins&gt;
-        &lt;plugin&gt;
-          &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
-          &lt;executions&gt;
-            &lt;execution&gt;
-              &lt;id&gt;package&lt;/id&gt;
-              &lt;phase&gt;package&lt;/phase&gt;
-              &lt;configuration&gt;
-                &lt;tasks&gt;
-                  ..
-                  <font color="blue">
-                  &lt;!-- Uncomment if you want to deploy the *-ds.xml file to appserver deploy folder
-                   --&gt;
-                  &lt;copy todir=&quot;${as.deploy}&quot; file=&quot;${project.build.directory}/${app.ds.xml}&quot; verbose=&quot;true&quot; /&gt;
-                  </font>
-                &lt;/tasks&gt;
-              &lt;/configuration&gt;
-    ..
-  &lt;/profile&gt;
-  
-  &lt;profile&gt;
-    ..
-    &lt;id&gt;unexplode&lt;/id&gt;
-    &lt;build&gt;
-      &lt;plugins&gt;
-        &lt;plugin&gt;
-          &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
-          &lt;executions&gt;
-            &lt;execution&gt;
-              &lt;id&gt;clean&lt;/id&gt;
-              &lt;phase&gt;clean&lt;/phase&gt;
-              &lt;configuration&gt;
-                &lt;tasks&gt;
-                  ..
-                  <font color="blue">
-                  &lt;!-- Uncomment if you have deployed the *-ds.xml file to appserver deploy folder
-                   --&gt;
-                  &lt;delete file=&quot;${as.deploy}/${app.ds.xml}&quot; quiet=&quot;true&quot; /&gt;
-                  </font>
-                &lt;/tasks&gt;
-              &lt;/configuration&gt;
-    ..
-  &lt;/profile&gt;
-  
-&lt;/profiles&gt;</pre>
-    </li>
-    <li>
-      Locate the Maven resources plugin with execution id <code>copy-app-ds-xml</code>:
-      <pre>
-&lt;plugins&gt;
-  &lt;plugin&gt;
-    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-    &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
-    &lt;executions&gt;
-      &lt;execution&gt;
-        &lt;id&gt;copy-app-ds-xml&lt;/id&gt;
-        ..
-        &lt;configuration&gt;
-          <font color="blue">
-          &lt;!-- Comment out this tag if you have deployed the *-ds.xml file to appserver deploy folder 
-          &lt;outputDirectory&gt;${project.build.directory}/${project.build.finalName}&lt;/outputDirectory&gt;
-          --&gt;
-          
-          &lt;!-- Uncomment this tag if you have deployed the *-ds.xml file to appserver deploy folder
-          --&gt;
-          &lt;outputDirectory&gt;${project.build.directory}&lt;/outputDirectory&gt;
-          </font>
-          &lt;resources&gt;
-            &lt;resource&gt;
-              &lt;directory&gt;src/main/resources&lt;/directory&gt;
-              &lt;filtering&gt;true&lt;/filtering&gt;
-              &lt;includes&gt;
-                &lt;include&gt;${app.ds.xml}&lt;/include&gt;
-              &lt;/includes&gt;
-            &lt;/resource&gt;
-          &lt;/resources&gt;
-        &lt;/configuration&gt;
-      &lt;/execution&gt;
-    &lt;/executions&gt;
-  &lt;/plugin&gt; 
-  ..</pre>
-    </li>
-    <li>
-        Locate the Maven EAR plugin:
-        <pre>
-..
-&lt;!-- Maven EAR plugin --&gt;
-&lt;plugin&gt;
-  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-  &lt;artifactId&gt;maven-ear-plugin&lt;/artifactId&gt;
-  &lt;configuration&gt;
-    ..
-    &lt;jboss&gt;
-      ..<font color="blue">
-      &lt;!-- Comment out this tag if you have deployed the *-ds.xml file to appserver deploy folder 
-      &lt;data-sources&gt;
-        &lt;data-source&gt;${app.ds.xml}&lt;/data-source&gt;
-      &lt;/data-sources&gt;
-      --&gt;</font>
-    &lt;/jboss&gt;
-    ..
-  &lt;/configuration&gt;
-&lt;/plugin&gt;
-..</pre>
-    </li>
-    </ol>
-  </li>
-  <li>
-    Open a command shell and navigate to the <code>${SEAM_TUTORIAL}</code> folder.
-    <ul>
-      <li>
-        Run: <code>mvn clean package -Pexplode</code> (or <code>mvn clean install -Pexplode</code>)
-      </li>
-      <li>
-        It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
-        development mode. 
-      </li>
-    </ul><br/>
-    Your <code>${JBOSS_DEPLOY}</code> folder should now contain the exploded EAR project:
-    <img src="img/exploded-ear-tutorial.png" style="width:730px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
-  </li>
-  <li>
-    <a href="#start-jboss">Start JBoss, open browser, etc...</a>
-  </li>
-</ol>
 
 <h2>Tips for Debugging</h2>
 <p>When your application starts up it will print all components being created (Seam and your own) 
@@ -618,12 +735,12 @@ Configuring a Seam EJB project for development with Maven and JBoss Tools</a>.</
 
 
 <h2>Files To Add To Svn Ignore</h2>
-<p>Some files and folders, like user spesific settings and generated files shall not be under revision 
-control. The following folders and files are added to <strong>svn ignore</strong>.</p>
+<p>Some files and directories, like user spesific settings and generated files should not be under revision 
+control. The following directories and files are added to <strong>svn ignore</strong>.</p>
 <code>
   <ul>
     <li>
-      In ${SEAM_REFIMPL} folder
+      In ${SEAM_REFIMPL} directory
       <ul>
         <li>appClientModule/</li>
         <li>.classpath</li>
@@ -633,11 +750,12 @@ control. The following folders and files are added to <strong>svn ignore</strong
         <li>profiles.xml</li>
         <li>.project</li>
         <li>.settings/</li>
+        <li>src/main/filters/filter-dev.properties
         <li>target/</li>
       </ul>
     </li>
     <li>
-      In ${SEAM_REFIMPL}/<strong>ear</strong> folder
+      In ${SEAM_REFIMPL}/<strong>ear</strong> directory
       <ul>
         <li>.externalToolBuilders/</li>
         <li>.settings/</li>
@@ -648,7 +766,7 @@ control. The following folders and files are added to <strong>svn ignore</strong
       </ul>
     </li>
     <li>
-      In ${SEAM_REFIMPL}/<strong>ejb</strong> folder
+      In ${SEAM_REFIMPL}/<strong>ejb</strong> directory
       <ul>
         <li>.checkstyle</li>
         <li>.externalToolBuilders/</li>
@@ -661,7 +779,7 @@ control. The following folders and files are added to <strong>svn ignore</strong
       </ul>
     </li>
     <li>
-      In ${SEAM_REFIMPL}/<strong>war</strong> folder
+      In ${SEAM_REFIMPL}/<strong>war</strong> directory
       <ul>
         <li>.checkstyle</li>
         <li>.externalToolBuilders/</li>
