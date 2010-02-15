@@ -190,6 +190,11 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
   Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a>
 </h2>
 <div id="export-template">
+<p>The Seam Refimpl project is a standard Maven multimodule project for Seam using EJB and JSF 
+that is archived in an ear-archive. A parent project pom will manage the EAR, EJB and WAR 
+modules.</p>
+
+<h3>Export from svn</h3>
 <p>This section explains how to use the <strong>seam-refimpl</strong> project as a template for your
 own project.</p>
 
@@ -211,19 +216,29 @@ own project.</p>
     </ul>
     <img src="img/tortoise-export.png" style="width:800px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
-  <li><a name="modfy-the-poms">Modify the poms:</a>
+  <li><a name="modfy-the-poms">Modify the poms by changing text emphasized in <font color="blue">blue</font>:</a>
     <ul>
     <li>
     The parent pom:
     <pre>
 &lt;project
-  .
-  &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+  xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;parent&gt;
+    &lt;groupId&gt;no.knowit.seam&lt;/groupId&gt;
+    &lt;artifactId&gt;root&lt;/artifactId&gt;
+    &lt;version&gt;2.2.0-SNAPSHOT&lt;/version&gt;
+  &lt;/parent&gt;
+  
+  &lt;groupId&gt;<font color="blue">com.company.seam</font>&lt;/groupId&gt;
   &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
   &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
   &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
   &lt;description&gt;<font color="blue">The Seam Tutorial parent pom</font>&lt;/description&gt;
-  &lt;packaging&gt;pom&amp;lt;/packaging&gt;
+  &lt;packaging&gt;pom&lt;/packaging&gt;
   &lt;modules&gt;
     &lt;module&gt;ejb&lt;/module&gt;
     &lt;module&gt;war&lt;/module&gt;
@@ -235,8 +250,8 @@ own project.</p>
     &lt;app.display.name&gt;<font color="blue">Seam Tutorial</font>&lt;/app.display.name&gt;
     &lt;app.description&gt;<font color="blue">The Seam Tutorial uses seam-refimpl as a project template</font>&lt;/app.description&gt;
     &lt;app.distributable&gt;false&lt;/app.distributable&gt;
-    &lt;app.jndi.pattern&gt;${app.context}-ear/#{ejbName}/local&lt;/app.jndi.pattern&gt;
-    &lt;app.jndi.pattern.test&gt;/#{ejbName}/Local&lt;/app.jndi.pattern.test&gt;
+    &lt;app.jndi.pattern&gt;${app.context}-ear/#{ejbName}/local&lt;/app.jndi.pattern&gt; &lt;!-- JBoss JNDI Pattern --&gt;
+    &lt;app.jndi.pattern.test&gt;/#{ejbName}/Local&lt;/app.jndi.pattern.test&gt;         &lt;!-- OpenEJB JNDI Pattern --&gt;
     &lt;!-- 
       Properties for production are located in src/main/filters/filter-prod.properties
       Properties to be modified by developer are located in src/main/filters/filter-dev.properties
@@ -254,7 +269,7 @@ own project.</p>
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+    &lt;groupId&gt;<font color="blue">com.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
     &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
@@ -274,7 +289,7 @@ own project.</p>
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+    &lt;groupId&gt;<font color="blue">com.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
     &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
@@ -294,7 +309,7 @@ own project.</p>
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">no.company.seam</font>&lt;/groupId&gt;
+    &lt;groupId&gt;<font color="blue">com.company.seam</font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
     &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
@@ -311,14 +326,79 @@ own project.</p>
     </ul>
   </li>
   <li>
-    Rename the datasource file <code>ear/src/main/resources/seam-refimpl-ds.xml</code> 
-    to <code>seam-tutorial-ds.xml</code><br/>
-    Tip: Modify the	<code>&lt;app.ds.xml&gt;${app.context}-ds.xml&lt;/app.ds.xml&gt;</code> property
-    if you want to give the datasource file a different name.
+    Rename the datasource file <code>${SEAM_TUTORIAL}/ear/src/main/resources/seam-refimpl-ds.xml</code> 
+    to <code>seam-tutorial-rename-ds.xml</code> (by default the datasource file name starts with the project
+    artifact id).
+    <img src="img/seam-tutorial-rename-ds-xml.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
-    <a href="#install-and-run">Deploy the project "out of the box" to verify that everyting works</a>
+    Run <code>mvn clean install</code> to verify that the project builds.
+    <img src="img/seam-tutorial-clean-install-success.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
+  </ol>
+
+  <h3>Switch to development profile</h3>
+  <ol>
+  <li>
+<pre>
+This is how you switch to dev mode:
+* Copy the src/main/filters/filter-prod.properties to filter-dev.properties and add the filter-dev.properties file to svn:ignore.
+* Open the filter-dev.properties file and modify property values as needed.
+* The env-prod profile is active by default, so you must open each POM 
+  in the project and set the env-dev profile to active by default.
+* In each pom locate:
+&lt;profile&gt;
+  &lt;id&gt;env-dev&lt;/id&gt;
+  &lt;activation&gt;
+    &lt;property&gt;
+      &lt;name&gt;env&lt;/name&gt;
+      &lt;value&gt;dev&lt;/value&gt;
+    &lt;/property&gt;
+  &lt;/activation&gt;
+  &lt;properties&gt;
+    &lt;env&gt;dev&lt;/env&gt;
+  &lt;/properties&gt;
+&lt;/profile&gt;
+
+&lt;profile&gt;
+  &lt;id&gt;env-prod&lt;/id&gt;
+  &lt;activation&gt;
+    &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+  &lt;/activation&gt;
+  &lt;properties&gt;
+    &lt;env&gt;prod&lt;/env&gt;
+  &lt;/properties&gt;
+&lt;/profile&gt;
+
+* Move the activeByDefault tag to the env-dev profile:
+&lt;profile&gt;
+  &lt;id&gt;env-dev&lt;/id&gt;
+  &lt;activation&gt;
+    &lt;property&gt;
+      &lt;name&gt;env&lt;/name&gt;
+      &lt;value&gt;dev&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+  &lt;/activation&gt;
+  &lt;properties&gt;
+    &lt;env&gt;dev&lt;/env&gt;
+  &lt;/properties&gt;
+&lt;/profile&gt;
+
+&lt;profile&gt;
+  &lt;id&gt;env-prod&lt;/id&gt;
+  &lt;properties&gt;
+    &lt;env&gt;prod&lt;/env&gt;
+  &lt;/properties&gt;
+&lt;/profile&gt;
+</pre>
+  </li>
+  </ol>
+  
+  
+  
+  <h1>NOTE: The rest of the tutorial is temporary out of sync with the project!</h1>
+  <ol>
   <li>
     <a href="#switch-to-development-mode">Switch to development mode</a>
   </li>
@@ -472,13 +552,7 @@ own project.</p>
 
 
 
-<h3>Maven Project Structure</h3>
-<p>The Seam Refimpl project is a standard Maven multimodule project for Seam using EJB and JSF 
-that is archived in an ear-archive. A parent project pom will manage the EAR, EJB and WAR 
-modules. <a href="http://blog.xebia.com/">Xebia Labs</a> has an excellent blog that explains the 
-Maven project structure for an enterprise application project using Seam, 
-<a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
-Configuring a Seam EJB project for development with Maven and JBoss Tools</a>.</p>
+
 
 
 
@@ -812,6 +886,16 @@ and add it to <strong>svn ignore</strong>!
     <a href="http://sujitpal.blogspot.com/2006/07/maven2-step-by-step.html">
       Maven2, Step by Step
     </a>
+  </li>
+  <li>
+    <a href="http://sujitpal.blogspot.com/2006/10/maven2-multi-environment-filter-setup.html">
+      A Maven2 multi-environment filter setup
+    </a>
+  </li>
+  <li>
+    <a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
+      Configuring a Seam EJB project for development with Maven and JBoss Tools
+    </a>  
   </li>
 </ul>
 
