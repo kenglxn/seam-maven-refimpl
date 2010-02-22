@@ -28,6 +28,14 @@ body {
   background-color: #002C5C; 
 }
 
+h4 {
+  font-weight: bold;
+}
+
+li pre {
+  font-size: 10px;
+}
+
 img {
   margin: 1em 0;
 }
