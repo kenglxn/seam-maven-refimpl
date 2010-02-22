@@ -33,26 +33,45 @@ function toggle( target ) {
 
 <div id="page">
 
-<p>The getting started tutorial outlines the necessary steps to get a Mavenized Seam project up and 
-running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
-<p>You must have a basic understanding of 
-  <a href="http://docs.jboss.com/seam/latest/reference/en-US/html/Book-Preface.html">
-    JBoss Seam</a> (EJB3, JPA, JSF, EL), the
-  <a href="http://www.jboss.org/jbossas/docs/index.html">JBoss application server</a>,
-  <a href="http://maven.apache.org/guides/getting-started/">Maven</a> and the DBMS of your choice, e.g. 
-  <a href="http://dev.mysql.com/">MySql5</a>, to follow this tutorial.</p>
+<div class="inline-block" style="width:59%;">
+  <p>The Seam Maven Refimpl project is a Maven multi-module multi-environment project template for 
+  Seam using EJB and JSF that is archived in an ear-archive. A 
+  <a href="http://code.google.com/p/seam-maven-refimpl/source/browse/trunk/root/2.2.0/pom.xml">
+  super-POM</a>, (which inherits from the Seam root POM) contains library dependencies and plugin 
+  management.  The parent project manages the EAR, EJB and WAR modules while the Codecaus 
+  <a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties Maven 
+  Plugin</a> is used to manage a multi-environment setup.
+  </p>
+  <p>Due to problems integrating the <a href="http://www.jboss.org/jbossmc">JBoss Micro Container</a> 
+  into Maven, we have choosen to use the <a href="http://openejb.apache.org/">
+  Apache OpenEJB</a> embedded container to unittest Seam (and EJB-3.x) components.
+  </p>
+  <p>This tutorial outlines the necessary steps to get a Mavenized Seam project up and 
+  running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
+  <p>You must have a basic understanding of 
+    <a href="http://docs.jboss.com/seam/latest/reference/en-US/html/Book-Preface.html">
+      JBoss Seam</a> (EJB3, JPA, JSF, EL, SeamTest), <a href="http://testng.org/">TestNG</a>, the
+    <a href="http://www.jboss.org/jbossas/docs/index.html">JBoss application server</a>,
+    <a href="http://maven.apache.org/guides/getting-started/">Maven</a> and a DBMS of your choice, e.g. 
+    <a href="http://dev.mysql.com/">MySql5</a>, to follow this tutorial.
+  </p>
 
-<h2>Shortcuts</h2>
-<p>The shortcuts are listed here so we don't have to type the tedious file 
-  paths over and over again in this document.</p>
-<ul>
-  <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation directory, e.g. C:\servers\jboss-4.2.3.GA</li>
-  <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
-  <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy directory, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
-  <li><code>${TRUNK}</code> - the project root directory, i.e. seam-maven-refimpl</li>
-  <li><code>${SEAM_REFIMPL}</code> - the directory where the reference project, i.e. seam-refimpl, is installed on your computer</li>
-  <li><code>${SEAM_TUTORIAL}</code> - the directory where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
-</ul>
+  <h2>Shortcuts</h2>
+  <p>The shortcuts are listed here so we don't have to type the tedious file 
+    paths over and over again in this document.</p>
+  <ul>
+    <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation directory, e.g. C:\servers\jboss-4.2.3.GA</li>
+    <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
+    <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy directory, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
+    <li><code>${TRUNK}</code> - the project root directory, i.e. seam-maven-refimpl</li>
+    <li><code>${SEAM_REFIMPL}</code> - the directory where the reference project, i.e. seam-refimpl, is installed on your computer</li>
+    <li><code>${SEAM_TUTORIAL}</code> - the directory where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
+  </ul>
+
+</div>
+<div class="inline-block" style="width:32%;padding-left:2%;">
+  <img src="img/maven-project-structure.png" class="inline-block" style="width:100%; display:block; margin-left:1.5em; margin-top:1em; margin-bottom:1em;" />
+</div>
 
 <h2>Download and Install Software</h2>
 <ul>
@@ -129,7 +148,8 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
     <img src="img/trunk-clean-install-success.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
-    Navigate to <code>${SEAM_REFIMPL}</code> and run: <code>mvn clean install</code>.
+    Navigate to <code>${SEAM_REFIMPL}</code> and run: <code>mvn clean install</code> to build the 
+    seam-refimpl project.
     <img src="img/refimpl-clean-install-success.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
@@ -193,15 +213,6 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
 <p>This section explains how to use the <strong>seam-refimpl</strong> project as a template for your
 own project.
 </p>
-<p>The Seam Refimpl project is a Maven multi-module multi-environment project for Seam using 
-EJB and JSF that is archived in an ear-archive. A 
-<a href="http://code.google.com/p/seam-maven-refimpl/source/browse/trunk/root/2.2.0/pom.xml">super-POM</a>,
-(which inherits from the Seam root POM) contains library dependencies and plugin management.  
-The parent project manages the EAR, EJB and WAR modules while the Codecaus 
-<a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties Maven 
-Plugin</a> is used to manage a multi-environment setup.
-</p>
-<img src="img/maven-project-structure.png" style="width:280px; display:block; margin-left:1.5em; margin-top:1em; margin-bottom:1em;" />
 
 <ol class="vspace">
   <li>
