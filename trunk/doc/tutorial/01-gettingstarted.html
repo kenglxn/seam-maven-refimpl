@@ -116,13 +116,13 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
     <a href="http://code.google.com/p/seam-maven-refimpl/source/checkout">http://code.google.com/p/seam-maven-refimpl/source/checkout</a>)
   </li>
   <li><a name="install-and-run">
-    Open a command shell and navigate to your checkout directory, the <code>${TRUNK}</code>.</a>
+    Open a command shell and navigate to your checkout directory.</a>
     <img src="img/trunk-clean-install.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
     Run: <code>mvn clean install</code>
     <ul>
     <li>
-      The maven install command builds the <code>no.knowit.seam:root</code> pom which all projects 
-      in this trunk uses as its root pom.
+      Builds the <code>no.knowit.seam:root</code> pom which all projects in this trunk uses as its 
+      root pom.
     </li>
     <li>Builds the <code>no.knowit.seam:seam-utils</code> modules.</li>
     </ul>
@@ -190,16 +190,22 @@ running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
   Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a>
 </h2>
 <div id="export-template">
-<p>The Seam Refimpl project is a standard Maven multimodule project for Seam using EJB and JSF 
-that is archived in an ear-archive. A parent project pom will manage the EAR, EJB and WAR 
-modules.</p>
-
-<h3>Export from svn</h3>
 <p>This section explains how to use the <strong>seam-refimpl</strong> project as a template for your
-own project.</p>
+own project.
+</p>
+<p>The Seam Refimpl project is a Maven multi-module multi-environment project for Seam using 
+EJB and JSF that is archived in an ear-archive. A 
+<a href="http://code.google.com/p/seam-maven-refimpl/source/browse/trunk/root/2.2.0/pom.xml">super-POM</a>,
+(which inherits from the Seam root POM) contains library dependencies and plugin management.  
+The parent project manages the EAR, EJB and WAR modules while the Codecaus 
+<a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties Maven 
+Plugin</a> is used to manage a multi-environment setup.
+</p>
+<img src="img/maven-project-structure.png" style="width:280px; display:block; margin-left:1.5em; margin-top:1em; margin-bottom:1em;" />
 
 <ol class="vspace">
-  <li> Export from svn.<br/>
+  <li>
+    <strong>Export From SVN</strong><br />
     <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a directory 
     of your choice and <a href="#modfy-the-poms">jump to step 2</a> in this section.
     <ul>
@@ -210,13 +216,16 @@ own project.</p>
        </li>
       <li>
         In repo browser right click the <code>seam-refimpl</code> directory and select 
-        <code>export... </code>
+        <code>export...</code> from the popup menu.
        </li>
-      <li>Select <code>Export directory</code> and click <code><strong>OK</strong></code></li>
+      <li>From the <code><strong>Export</strong></code> dialog window select <code>Export directory</code> 
+        and click <code><strong>OK</strong></code>
+        <img src="img/tortoise-export.png" style="width:800px; display:block; margin-top:1em; margin-bottom:1em;" />
+      </li>
     </ul>
-    <img src="img/tortoise-export.png" style="width:800px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
-  <li><a name="modfy-the-poms">Modify the poms by changing text emphasized in <font color="blue">blue</font>:</a>
+  <li><strong><a name="modfy-the-poms">Modify POMs</a></strong><br />
+    Modify the poms by changing text emphasized in <font color="blue">blue</font>:
     <ul>
     <li>
     The parent pom:
@@ -327,8 +336,8 @@ own project.</p>
   </li>
   <li>
     Rename the datasource file <code>${SEAM_TUTORIAL}/ear/src/main/resources/seam-refimpl-ds.xml</code> 
-    to <code>seam-tutorial-rename-ds.xml</code> (by default the datasource file name starts with the project
-    artifact id).
+    to <code>seam-tutorial-ds.xml</code> (by default the datasource file name starts with the 
+    <code>${app.context}</code> property value).
     <img src="img/seam-tutorial-rename-ds-xml.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
@@ -337,16 +346,32 @@ own project.</p>
   </li>
   </ol>
 
-  <h3>Switch to development profile</h3>
-  <ol>
-  <li>
-<pre>
-This is how you switch to dev mode:
-* Copy the src/main/filters/filter-prod.properties to filter-dev.properties and add the filter-dev.properties file to svn:ignore.
-* Open the filter-dev.properties file and modify property values as needed.
-* The env-prod profile is active by default, so you must open each POM 
-  in the project and set the env-dev profile to active by default.
-* In each pom locate:
+  <h3>Activate Development Profile</h3>
+  <p>A software development lifecycle can consist of several phases that each requires its own project 
+  configurations - which can make moving a project through all the different  phases a challenge. For 
+  instance, your development phase may require you to connect to a local database, but your 
+  integration test environment database won't be local. And your test database  will certainly differ 
+  from your production database. Also, being able to deploy to multiple environments is a standard 
+  requirement for business applications. It is also natural that each developer want to install
+  the project and it's required utilities, like the database server and the application server, 
+  to directories of hers/his personal taste. To achieve this we will use a combination of property
+  files and profiles. 
+  </p>
+  
+  <h4>Development Profile</h4>
+  <ol class="vspace">
+    <li>
+      Copy <code>${SEAM_TUTORIAL}/src/main/filters/filter-prod.properties</code> to 
+      <code>${SEAM_TUTORIAL}/src/main/filters/filter-dev.properties</code> (add the 
+      <code>filter-dev.properties</code> file to svn:ignore if your project is under version control).
+    </li>
+    <li>In <code>seam-refimpl</code> the <code>prod</code> profile is activated by default when you 
+    execute a Maven command. To activate the <code>dev</code> profile you could type 
+    <code>mvn install -Penv-dev</code> or you can activate the <code>dev</code> profile as the 
+    default profile.  To activate the <code>dev</code> profile as the default profile open each pom 
+    in the project and locate:
+    <pre>
+    
 &lt;profile&gt;
   &lt;id&gt;env-dev&lt;/id&gt;
   &lt;activation&gt;
@@ -368,9 +393,12 @@ This is how you switch to dev mode:
   &lt;properties&gt;
     &lt;env&gt;prod&lt;/env&gt;
   &lt;/properties&gt;
-&lt;/profile&gt;
-
-* Move the activeByDefault tag to the env-dev profile:
+&lt;/profile&gt;</pre>
+    </li>
+    <li>
+      Move the activeByDefault tag to the <code>env-dev</code> profile:
+    <pre>
+    
 &lt;profile&gt;
   &lt;id&gt;env-dev&lt;/id&gt;
   &lt;activation&gt;
@@ -391,10 +419,67 @@ This is how you switch to dev mode:
     &lt;env&gt;prod&lt;/env&gt;
   &lt;/properties&gt;
 &lt;/profile&gt;
-</pre>
-  </li>
+     </pre>
+    </li>
   </ol>
   
+  <p>Now <code>mvn install</code> will execute with the <code>dev</code> profile by default and you'll 
+  need to run <code>mvn install -Penv-prod</code> to activate the <code>prod</code> profile - which
+  is more convenient since you spend most of your time in development.
+  
+  <h4>Filters</h4>
+  <p>Filters are Maven's way of externalizing property replacement into easily portable and 
+  configurable properties files. The basic idea of filtering is that you set up a named properties 
+  file and specify one or more filesets to apply the substitutions in the properties file. For example:
+  </p>
+  <pre>
+  
+  &lt;filters&gt;
+    &lt;filter&gt;src/main/filters/filter-${env}.properties&lt;/filter&gt;
+  &lt;/filters&gt;</pre>
+  
+  <h4>The "Problem" with Filters</h4>
+  <p>Maven filter properties are ony visible to resources and can not be accessed from the POM. 
+  This is where the <a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties Maven 
+  Plugin</a> makes our life a little easier when dealing with properties that we need to access
+  inside our POM. It provides goals to read and write properties from and to files, and also to set 
+  system properties. It's main use-case is loading properties	from files instead of declaring them 
+  in pom.xml, something that comes in handy when dealing with different environments. The plugin read 
+  properties during the	"initialize" phase and the properties are then accessible from the pom. 
+  The Properties Maven Plugin is not inheritable from the parent POM and and you must therefore 
+  configure it in each sub POM. For example:
+  </p>
+  <pre>
+  
+  &lt;plugin&gt;
+    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+    &lt;artifactId&gt;properties-maven-plugin&lt;/artifactId&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;configuration&gt;
+          &lt;files&gt;
+            &lt;file&gt;../src/main/filters/filter-${env}.properties&lt;/file&gt;
+          &lt;/files&gt;
+        &lt;/configuration&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+  &lt;/plugin&gt;</pre>
+  
+  <p>The <code><strong>filter.properties</strong></code> file has a variable portion <code>${env}</code>, which in 
+  our case will come from the activated profile. When resources are filtered, the project replaces 
+  all matching property names with their corresponding values, taking the filter list into account. 
+  The resources to be filtered are defined by the "resources" build element. For example: 
+  </p>
+  <pre>
+
+  &lt;resources&gt;
+    &lt;resource&gt;
+      &lt;directory&gt;src/main/resources&lt;/directory&gt;
+      &lt;filtering&gt;true&lt;/filtering&gt;
+    &lt;/resource&gt;
+  &lt;/resources&gt;</pre>
+  
+  <h4>Modify the <code><strong>filter-dev.properties</strong></code> File</h4>
   
   
   <h1>NOTE: The rest of the tutorial is temporary out of sync with the project!</h1>
@@ -548,11 +633,6 @@ This is how you switch to dev mode:
     <a href="#start-jboss">Start JBoss, open browser, etc...</a>
   </li>
 </ol>
-
-
-
-
-
 
 
 
@@ -785,28 +865,6 @@ and the context they are placed in. Validate that your new component is displaye
   Open your browser and point to the following URL to see the debug page.
   <a href="http://localhost:8080/seam-refimpl/debug.seam">http://localhost:8080/seam-refimpl/debug.seam</a>
 </p>
-
-<h2>Maven Project Structure</h2>
-<p>The Seam Refimpl project is a standard Maven multimodule project for Seam using EJB and JSF 
-that is archived in an ear-archive. A parent project pom will manage our EAR, EJB and WAR 
-modules. <a href="http://blog.xebia.com/">Xebia Labs</a> has an excellent blog that explainins the 
-Maven project structure for an enterprise application project using Seam: 
-<a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
-Configuring a Seam EJB project for development with Maven and JBoss Tools</a>.</p>
-
-<h3>The Parent POM</h3>
-<p></p>
-
-<h3>The <code>profiles.xml</code> file</h3>
-<h3>The WAR pom</h3>
-<p>To be done</p>
-
-<h3>The EJB pom</h3>
-<p>To be done</p>
-
-<h3>The EAR pom</h3>
-<p>To be done</p>
-
 
 <h2>Files To Add To Svn Ignore</h2>
 <p>Some files and directories, like user spesific settings and generated files should not be under revision 

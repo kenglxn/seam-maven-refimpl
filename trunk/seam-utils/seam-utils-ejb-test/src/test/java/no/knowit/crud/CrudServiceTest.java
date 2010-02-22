@@ -61,7 +61,7 @@ public class CrudServiceTest extends OpenEjbTest {
 		Assert.assertNotNull(movie, "crudService.persist: movie was null");
 		Assert.assertNotNull(movie.getId(), "movie.getId: movie.id was null");
 		
-		// Keep for read, update and delete test methods
+		// Keep for read, update and delete tests
 		theWall = movie;
 		
 		movie = crudService.persist(new Movie("Joel Coen", "Fargo", 1996));
@@ -99,14 +99,18 @@ public class CrudServiceTest extends OpenEjbTest {
 		CrudService crudService = lookupCrudService();
 		
 		Movie movie = new Movie("Joel Choen", "The Big Leboi", 1998);
-		crudService.store(movie);
+		movie = crudService.store(movie);
+		Assert.assertNotNull(movie.getId(), "movie.getId: movie.id was null");
 		
+		// Modify and update
 		movie.setDirector("Joel Coen");
 		movie.setTitle("The Big Lebowski");
 		crudService.store(movie);
+		Assert.assertNotNull(movie.getId(), "movie.getId: movie.id was null");
 		
-		// Two Movies in list
-		crudService.store(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
+		// Add a second movie
+		movie = crudService.store(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
+		Assert.assertNotNull(movie.getId(), "movie.getId: movie.id was null");
 	}
 	
 	@Test(dependsOnMethods={ "createOrUpdate" })
