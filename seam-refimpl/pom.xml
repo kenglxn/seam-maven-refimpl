@@ -26,7 +26,7 @@
   </modules>
 
   <properties>
-    <env>prod</env>
+    <env>dev</env> <!-- The default setting if no profile is specified -->
     <app.context>seam-refimpl</app.context>  <!-- hint: same value as artifactId -->
     <app.web.context>${app.context}</app.web.context>
     <app.display.name>Seam Reference Implementation</app.display.name>
@@ -363,6 +363,7 @@
     <url>http://code.google.com/p/seam-maven-refimpl/source/browse/#svn/trunk</url>
   </scm>
 
+<!--	
   <organization>
     <name>Know IT Objectnet AS</name>
     <url>http://www.knowit.no/</url>
@@ -393,7 +394,6 @@
     </developer>
   </developers>
 
-<!--	
 	<distributionManagement>
 		<repository>
 			<id></id>
