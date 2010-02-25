@@ -236,7 +236,7 @@ own project.
     </ul>
   </li>
   <li><strong><a name="modfy-the-poms">Modify POMs</a></strong><br />
-    Modify the poms by changing text emphasized in <font color="blue">blue</font>:
+    Modify the poms by changing text emphasized in <font color="blue"><strong>blue</strong></font>:
     <ul>
     <li>
     The parent pom:
@@ -253,11 +253,11 @@ own project.
     &lt;version&gt;2.2.0-SNAPSHOT&lt;/version&gt;
   &lt;/parent&gt;
   
-  &lt;groupId&gt;<font color="blue">com.company.seam</font>&lt;/groupId&gt;
-  &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
-  &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
+  &lt;groupId&gt;<font color="blue"><strong>com.company.seam</strong></font>&lt;/groupId&gt;
+  &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/artifactId&gt;
+  &lt;version&gt;<font color="blue"><strong>0.1-SNAPSHOT</strong></font>&lt;/version&gt;
   &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
-  &lt;description&gt;<font color="blue">The Seam Tutorial parent pom</font>&lt;/description&gt;
+  &lt;description&gt;<font color="blue"><strong>The Seam Tutorial parent pom</strong></font>&lt;/description&gt;
   &lt;packaging&gt;pom&lt;/packaging&gt;
   &lt;modules&gt;
     &lt;module&gt;ejb&lt;/module&gt;
@@ -265,10 +265,11 @@ own project.
     &lt;module&gt;ear&lt;/module&gt;
   &lt;/modules&gt;
   &lt;properties&gt;
-    &lt;app.context&gt;<font color="blue">seam-tutorial</font>&lt;/app.context&gt;
+    &lt;env&gt;dev&lt;/env&gt; &lt;!-- The default setting if no profile is specified --&gt;
+    &lt;app.context&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/app.context&gt; &lt;!-- hint: same value as artifactId --&gt;
     &lt;app.web.context&gt;${app.context}&lt;/app.web.context&gt;
-    &lt;app.display.name&gt;<font color="blue">Seam Tutorial</font>&lt;/app.display.name&gt;
-    &lt;app.description&gt;<font color="blue">The Seam Tutorial uses seam-refimpl as a project template</font>&lt;/app.description&gt;
+    &lt;app.display.name&gt;<font color="blue"><strong>Seam Tutorial</strong></font>&lt;/app.display.name&gt;
+    &lt;app.description&gt;<font color="blue"><strong>The Seam Tutorial uses seam-refimpl as a project template</strong></font>&lt;/app.description&gt;
     &lt;app.distributable&gt;false&lt;/app.distributable&gt;
     &lt;app.jndi.pattern&gt;${app.context}-ear/#{ejbName}/local&lt;/app.jndi.pattern&gt; &lt;!-- JBoss JNDI Pattern --&gt;
     &lt;app.jndi.pattern.test&gt;/#{ejbName}/Local&lt;/app.jndi.pattern.test&gt;         &lt;!-- OpenEJB JNDI Pattern --&gt;
@@ -279,7 +280,15 @@ own project.
       Type e.g "mvn -Penv-dev" to activate the developemnt profile.  
     --&gt;
   &lt;/properties&gt;
-  .
+  .<font color="blue">  
+  &lt;!--
+  &lt;scm&gt;
+    &lt;connection&gt;scm:svn:http://seam-maven-refimpl.googlecode.com/svn/trunk&lt;/connection&gt;
+    &lt;developerConnection&gt;scm:svn:https://seam-maven-refimpl.googlecode.com/svn/trunk&lt;/developerConnection&gt;
+    &lt;url&gt;http://code.google.com/p/seam-maven-refimpl/source/browse/#svn/trunk&lt;/url&gt;
+  &lt;/scm&gt;
+  --&gt;</font>
+ .  
 &lt;/project&gt;
   </pre>
     </li>
@@ -289,15 +298,15 @@ own project.
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">com.company.seam</font>&lt;/groupId&gt;
-    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
-    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
+    &lt;groupId&gt;<font color="blue"><strong>com.company.seam</strong></font>&lt;/groupId&gt;
+    &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue"><strong>0.1-SNAPSHOT</strong></font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
   &lt;/parent&gt;
 
-  &lt;artifactId&gt;<font color="blue">seam-tutorial-ear</font>&lt;/artifactId&gt;
+  &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial-ear</strong></font>&lt;/artifactId&gt;
   &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
-  &lt;description&gt;<font color="blue">The Seam Tutorial EAR module</font>&lt;/description&gt;
+  &lt;description&gt;<font color="blue"><strong>The Seam Tutorial EAR module</strong></font>&lt;/description&gt;
   &lt;packaging&gt;ear&lt;/packaging&gt;
   .
 &lt;/project&gt;
@@ -309,15 +318,15 @@ own project.
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">com.company.seam</font>&lt;/groupId&gt;
-    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
-    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
+    &lt;groupId&gt;<font color="blue"><strong>com.company.seam</strong></font>&lt;/groupId&gt;
+    &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue"><strong>0.1-SNAPSHOT</strong></font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
   &lt;/parent&gt;
 
-  &lt;artifactId&gt;<font color="blue">seam-tutorial-ejb</font>&lt;/artifactId&gt;
+  &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial-ejb</strong></font>&lt;/artifactId&gt;
   &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
-  &lt;description&gt;<font color="blue">The Seam Tutorial EJB module</font>&lt;/description&gt;
+  &lt;description&gt;<font color="blue"><strong>The Seam Tutorial EJB module</strong></font>&lt;/description&gt;
   &lt;packaging&gt;ejb&lt;/packaging&gt;
   .
 &lt;/project&gt;
@@ -329,15 +338,15 @@ own project.
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue">com.company.seam</font>&lt;/groupId&gt;
-    &lt;artifactId&gt;<font color="blue">seam-tutorial</font>&lt;/artifactId&gt;
-    &lt;version&gt;<font color="blue">0.1-SNAPSHOT</font>&lt;/version&gt;
+    &lt;groupId&gt;<font color="blue"><strong>com.company.seam</strong></font>&lt;/groupId&gt;
+    &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/artifactId&gt;
+    &lt;version&gt;<font color="blue"><strong>0.1-SNAPSHOT</strong></font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
   &lt;/parent&gt;
 
-  &lt;artifactId&gt;<font color="blue">seam-tutorial-war</font>&lt;/artifactId&gt;
+  &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial-war</strong></font>&lt;/artifactId&gt;
   &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
-  &lt;description&gt;<font color="blue">The Seam Tutorial WAR module</font>&lt;/description&gt;
+  &lt;description&gt;<font color="blue"><strong>The Seam Tutorial WAR module</strong></font>&lt;/description&gt;
   &lt;packaging&gt;war&lt;/packaging&gt;
   .
 &lt;/project&gt;
@@ -357,7 +366,7 @@ own project.
   </li>
   </ol>
 
-  <h3>Activate Development Profile</h3>
+  <h3>Activate Development Mode</h3>
   <p>A software development lifecycle can consist of several phases that each requires its own project 
   configurations - which can make moving a project through all the different  phases a challenge. For 
   instance, your development phase may require you to connect to a local database, but your 
@@ -369,19 +378,27 @@ own project.
   files and profiles. 
   </p>
   
-  <h4>Development Profile</h4>
+  <h4>Development Mode</h4>
+  <p>In this section we'll configure the development mode.
+  </p>
   <ol class="vspace">
     <li>
+      The filter properties file has a variable portion <code>${env}</code>, which in our case will 
+      come from the activated profile or from the default <code>${env}</code> setting in the parent
+      POM. The <code>${env}</code> property value is <code><strong>dev</strong></code> when we 
+      activate the development profile - so we'll name the property file 
+      <code>filter-dev.properties</code>.
+      <br />
       Copy <code>${SEAM_TUTORIAL}/src/main/filters/filter-prod.properties</code> to 
       <code>${SEAM_TUTORIAL}/src/main/filters/filter-dev.properties</code> (add the 
       <code>filter-dev.properties</code> file to svn:ignore if your project is under version control).
       <img src="img/filter-dev.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
     </li>
-    <li>In <code>seam-refimpl</code> the <code>prod</code> profile is activated by default when you 
+    <li>In the project template the <code>prod</code> profile is activated by default when you 
     execute a Maven command. To activate the <code>dev</code> profile you could type 
-    <code>mvn install -Penv-dev</code> or you can activate the <code>dev</code> profile as the 
-    default profile.  To activate the <code>dev</code> profile as the default profile open each pom 
-    in the project and locate:
+    <code style="white-space:nowrap;">mvn install -Penv-dev</code> or you can remove the 
+    <code>activeByDefault</code> tag from the <code>prod</code> profile. Open each pom in the 
+    project and remove the <code>activeByDefault</code> tag from the <code>prod</code> profile:
     <pre>
     
 &lt;profile&gt;
@@ -408,9 +425,9 @@ own project.
 &lt;/profile&gt;</pre>
     </li>
     <li>
-      Move the activeByDefault tag to the <code>env-dev</code> profile:
+      Remove the activeByDefault tag from the <code>env-prod</code> profile:
     <pre>
-    
+    <font color="blue">    
 &lt;profile&gt;
   &lt;id&gt;env-dev&lt;/id&gt;
   &lt;activation&gt;
@@ -418,7 +435,6 @@ own project.
       &lt;name&gt;env&lt;/name&gt;
       &lt;value&gt;dev&lt;/value&gt;
     &lt;/property&gt;
-    &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
   &lt;/activation&gt;
   &lt;properties&gt;
     &lt;env&gt;dev&lt;/env&gt;
@@ -432,12 +448,19 @@ own project.
   &lt;/properties&gt;
 &lt;/profile&gt;
      </pre>
+     </font>
     </li>
   </ol>
   
-  <p>Now <code>mvn install</code> will execute with the <code>dev</code> profile by default and you'll 
-  need to run <code>mvn install -Penv-prod</code> to activate the <code>prod</code> profile - which
-  is more convenient since you spend most of your time in development.
+  <p>Notice that the profile definition is sparse, the sole purpose of the profile is to set the 
+  value for the <code>${env}</code> variable. Notice also the default setting for <code>${env}</code>
+  in the parent POM, this is used in case a profile is not specified.
+  </p>
+  <p>Now <code>mvn install</code> will execute with the <code>${env}</code> property value 
+  <code>dev</code>. You'll need to run <code>mvn install -Penv-prod</code> to activate the 
+  <code>prod</code> profile - which is more convenient since most of your builds are done in 
+  the development life cycle.
+  </p>
   
   <h4>Filters</h4>
   <p>Filters are Maven's way of externalizing property replacement into easily portable and 
@@ -452,14 +475,14 @@ own project.
   
   <h4>The "Problem" with Filters</h4>
   <p>Maven filter properties are ony visible to resources and can not be accessed from the POM. 
-  This is where the <a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties Maven 
-  Plugin</a> makes our life a little easier when dealing with properties that we need to access
-  inside our POM. It provides goals to read and write properties from and to files, and also to set 
-  system properties. It's main use-case is loading properties	from files instead of declaring them 
-  in pom.xml, something that comes in handy when dealing with different environments. The plugin read 
-  properties during the	"initialize" phase and the properties are then accessible from the pom. 
-  The Properties Maven Plugin is not inheritable from the parent POM and and you must therefore 
-  configure it in each sub POM. For example:
+  This is where the <strong><a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties 
+  Maven Plugin</a></strong> makes our life a little easier when dealing with properties that we need 
+  to access inside our POM. It provides goals to read and write properties from and to files, and 
+  also to set system properties. It's main use-case is loading properties	from files instead of 
+  declaring them in pom.xml, something that comes in handy when dealing with different environments. 
+  The plugin read properties during the	"initialize" phase and the properties are then accessible 
+  from the pom. The Properties Maven Plugin is not inheritable from the parent POM and and you must 
+  therefore configure it in each sub POM. For example:
   </p>
   <pre>
   
@@ -477,7 +500,7 @@ own project.
     &lt;/executions&gt;
   &lt;/plugin&gt;</pre>
   
-  <p>The <code><strong>filter.properties</strong></code> file has a variable portion <code>${env}</code>, which in 
+  <p>The filter properties file has a variable portion <code>${env}</code>, which in 
   our case will come from the activated profile. When resources are filtered, the project replaces 
   all matching property names with their corresponding values, taking the filter list into account. 
   The resources to be filtered are defined by the "resources" build element. For example: 
@@ -492,6 +515,64 @@ own project.
   &lt;/resources&gt;</pre>
   
   <h4>Modify the <code><strong>filter-dev.properties</strong></code> File</h4>
+  <p>Open the <code>filter-dev.properties</code> file in your favourite editor and change text 
+  emphasized in <font color="blue"><strong>blue</strong></font>.
+  </p>
+  
+  <pre>
+  
+  jdk.debug   =true
+  jdk.optimize=false
+  jdk.source  =1.6
+  jdk.target  =1.6
+
+  app.debug            =${jdk.debug}
+  app.unpack.modules   =<font color="blue"><strong>true</strong></font>
+
+  # Applicatin server
+  as        =jboss423
+  as.version=4.2
+  as.home   =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font>
+  as.deploy =${as.home}/server/default/deploy
+
+  # Datasource
+  ds                  =hsqldb
+  ds.jndi.name        =refimplDatabase
+  ds.database.name    =refimpl_db
+  ds.server.name      =
+  ds.driver.class     =org.hsqldb.jdbcDriver
+  ds.connection.url   =jdbc:hsqldb:mem:${ds.database.name}
+  ds.user.name        =sa
+  ds.password         =
+  ds.hibernate.dialect=org.hibernate.dialect.HSQLDialect
+  ds.xml              =${app.context}-ds.xml
+
+  # Persistence unit
+  pu.name                                      =refimpl-unit
+  pu.jta.data.source                           =java:/${ds.jndi.name}
+  pu.hibernate.dialect                         =${ds.hibernate.dialect}
+  pu.hibernate.hbm2ddl.auto                    =create-drop
+  pu.hibernate.show_sql                        =false
+  pu.hibernate.default_batch_fetch_size        =16
+  pu.hibernate.transaction.manager_lookup_class=org.hibernate.transaction.JBossTransactionManagerLookup
+  pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerFactory
+
+  # Properties for running tests
+  ds.test                  =h2
+  ds.database.name.test    =refimpl_db
+  ds.server.name.test      =
+  ds.driver.class.test     =org.h2.Driver
+  ds.connection.url.test   =jdbc:h2:mem:${ds.database.name.test}
+  ds.user.name.test        =sa
+  ds.password.test         =
+  ds.hibernate.dialect.test=org.hibernate.dialect.H2Dialect
+
+  pu.hibernate.dialect.test                         =${ds.hibernate.dialect.test}
+  pu.hibernate.hbm2ddl.auto.test                    =create-drop
+  pu.hibernate.default_batch_fetch_size.test        =16
+  pu.hibernate.show_sql.test                        =true
+  pu.hibernate.transaction.manager_lookup_class.test=org.apache.openejb.hibernate.TransactionManagerLookup
+  </pre>
   
   
   <h1>NOTE: The rest of the tutorial is temporary out of sync with the project!</h1>
