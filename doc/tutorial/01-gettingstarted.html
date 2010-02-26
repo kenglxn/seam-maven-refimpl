@@ -378,8 +378,7 @@ own project.
   files and profiles. 
   </p>
   
-  <h4>Development Mode</h4>
-  <p>In this section we'll configure the development mode.
+  <p>To activate development mode:
   </p>
   <ol class="vspace">
     <li>
@@ -396,9 +395,10 @@ own project.
     </li>
     <li>In the project template the <code>prod</code> profile is activated by default when you 
     execute a Maven command. To activate the <code>dev</code> profile you could type 
-    <code style="white-space:nowrap;">mvn install -Penv-dev</code> or you can remove the 
-    <code>activeByDefault</code> tag from the <code>prod</code> profile. Open each pom in the 
-    project and remove the <code>activeByDefault</code> tag from the <code>prod</code> profile:
+    <code style="white-space:nowrap;">mvn install -Penv-dev</code>, or you can remove the 
+    <code><strong>activeByDefault</strong></code> tag from the <code>prod</code> profile.<br />
+    Open each POM in the project and remove the <code>activeByDefault</code> tag from the 
+    <code>prod</code> profile:
     <pre>
     
 &lt;profile&gt;
@@ -452,14 +452,14 @@ own project.
     </li>
   </ol>
   
-  <p>Notice that the profile definition is sparse, the sole purpose of the profile is to set the 
+  <p>The profile definition is sparse, the sole purpose of the profile is to set the 
   value for the <code>${env}</code> variable. Notice also the default setting for <code>${env}</code>
   in the parent POM, this is used in case a profile is not specified.
   </p>
   <p>Now <code>mvn install</code> will execute with the <code>${env}</code> property value 
   <code>dev</code>. You'll need to run <code>mvn install -Penv-prod</code> to activate the 
-  <code>prod</code> profile - which is more convenient since most of your builds are an "endless"
-  repetition of coding, compiling, unittests and deployment to your local app server.
+  <code>prod</code> profile - which is more convenient since most of your build cycles are connected
+  to coding, compiling, unit tests and deployment to your local app server.
   </p>
   
   <h4>Filters</h4>
@@ -501,7 +501,8 @@ own project.
   &lt;/plugin&gt;</pre>
   
   <p>The filter properties file has a variable portion <code>${env}</code>, which in 
-  our case will come from the activated profile. When resources are filtered, the project replaces 
+  our case will come from the activated profile or from the default setting for ${env} in the parent 
+  POM if no profile is specified. When resources are filtered, the project replaces 
   all matching property names with their corresponding values, taking the filter list into account. 
   The resources to be filtered are defined by the "resources" build element. For example: 
   </p>
@@ -513,6 +514,63 @@ own project.
       &lt;filtering&gt;true&lt;/filtering&gt;
     &lt;/resource&gt;
   &lt;/resources&gt;</pre>
+  
+  <h4>Filtering</h4>
+  <p>The filtering take place during the process-resources phase and the filtered resource is then 
+  copied to the target directory. 
+  </p>
+  
+  <ol>
+    <li>
+      Assume our property file has the following properties: 
+
+      <pre>
+  
+<font color="green">ds.jndi.name        </font>=<font color="blue">refimplDatabase</font>
+<font color="red">ds.database.name    </font>=refimpl_db
+ds.server.name      =
+<font color="green">ds.driver.class     </font>=<font color="blue">org.hsqldb.jdbcDriver</font>
+<font color="green">ds.connection.url   </font>=<font color="blue">jdbc:hsqldb:mem:</font><font color="red">${ds.database.name}</font>
+<font color="green">ds.user.name        </font>=<font color="blue">sa</font>
+<font color="green">ds.password         </font>=
+      </pre>
+    </li>
+    <li>
+      The corresponding placeholders in our datasource file, 
+      <code>ear/src/main/resources/seam-tutorial-ds.xml</code>:
+      <pre>
+  
+&lt;datasources&gt;
+  &lt;local-tx-datasource&gt;
+    &lt;jndi-name&gt;<font color="green">${ds.jndi.name}</font>&lt;/jndi-name&gt;
+    &lt;use-java-context&gt;true&lt;/use-java-context&gt;
+    &lt;connection-url&gt;<font color="green">${ds.connection.url}</font>&lt;/connection-url&gt;
+    &lt;driver-class&gt;<font color="green">${ds.driver.class}</font>&lt;/driver-class&gt;
+    &lt;user-name&gt;<font color="green">${ds.user.name}</font>&lt;/user-name&gt;
+    &lt;password&gt;<font color="green">${ds.password}</font>&lt;/password&gt;
+  &lt;/local-tx-datasource&gt;
+&lt;/datasources&gt;
+      </pre>
+    </li>
+    <li>
+    During the process-resources phase the placeholders are replaced with the property values and 
+    we'll get the following result in 
+    <code>ear/target/seam-tutorial-ear-0.1-SNAPSHOT/seam-refimpl-ds.xml</code>:
+      <pre>
+  
+&lt;datasources&gt;
+  &lt;local-tx-datasource&gt;
+    &lt;jndi-name&gt;<font color="blue">refimplDatabase</font>&lt;/jndi-name&gt;
+    &lt;use-java-context&gt;true&lt;/use-java-context</font>&gt;
+    &lt;connection-url&gt;<font color="blue">jdbc:hsqldb:mem:refimpl_db</font>&lt;/connection-url&gt;
+    &lt;driver-class&gt;<font color="blue">org.hsqldb.jdbcDriver&lt</font>;/driver-class&gt;
+    &lt;user-name&gt;<font color="blue">sa</font>&lt;/user-name&gt;
+    &lt;password&gt;&lt;/password&gt;
+  &lt;/local-tx-datasource&gt;
+&lt;/datasources&gt;
+      </pre>
+    </li>
+  </ol>
   
   <h4>Modify the <code><strong>filter-dev.properties</strong></code> File</h4>
   <p>Open the <code>filter-dev.properties</code> file in your favourite editor and change text 
