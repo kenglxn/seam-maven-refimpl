@@ -67,7 +67,6 @@ function toggle( target ) {
     <li><code>${SEAM_REFIMPL}</code> - the directory where the reference project, i.e. seam-refimpl, is installed on your computer</li>
     <li><code>${SEAM_TUTORIAL}</code> - the directory where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
   </ul>
-
 </div>
 <div class="inline-block" style="width:32%;padding-left:2%;">
   <img src="img/maven-project-structure.png" class="inline-block" style="width:100%; display:block; margin-left:1.5em; margin-top:1em; margin-bottom:1em;" />
@@ -93,10 +92,7 @@ function toggle( target ) {
 </ul>
 <p>Install the required software.</p>
 
-<h2 id="checkout-install"><a href="javascript: toggle('checkout-install-div');">
-  Check Out, Install and Run the Project</a>
-</h2>
-<div id="checkout-install-div">
+<h2 id="checkout-install">Check Out, Install and Run the Project</h2>
 <p>The example uses Tortoise SVN to check out the project.<br/>
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a 
   directory of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
@@ -206,10 +202,7 @@ function toggle( target ) {
 </ol>
 
 
-<h2 id="use-as-template"><a href="javascript: toggle('export-template');">
-  Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</a>
-</h2>
-<div id="export-template">
+<h2 id="use-as-template">Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</h2>
 <p>This section explains how to use the <strong>seam-refimpl</strong> project as a template for your
 own project.
 </p>
@@ -221,14 +214,14 @@ own project.
     of your choice and <a href="#modfy-the-poms">jump to step 2</a> in this section.
     <ul>
       <li>
-        Right click the <code>${TRUNK}/seam-refimpl</code> directory and select 
+        In file manager right click the <code>${TRUNK}/seam-refimpl</code> directory and select 
         <strong style="white-space:nowrap;">TortoiseSVN&nbsp;&gt;&nbsp;Repo-browser</strong> 
         from the menu.
        </li>
       <li>
         In repo browser right click the <code>seam-refimpl</code> directory and select 
         <code>export...</code> from the popup menu.
-       </li>
+      </li>
       <li>From the <code><strong>Export</strong></code> dialog window select <code>Export directory</code> 
         and click <code><strong>OK</strong></code>
         <img src="img/tortoise-export.png" style="width:800px; display:block; margin-top:1em; margin-bottom:1em;" />
@@ -367,15 +360,14 @@ own project.
   </ol>
 
   <h3>Activate Development Mode</h3>
-  <p>A software development lifecycle can consist of several phases that each requires its own project 
+  <p>A software development lifecycle consists of several phases that each requires its own project 
   configurations - which can make moving a project through all the different  phases a challenge. For 
   instance, your development phase may require you to connect to a local database, but your 
   integration test environment database won't be local. And your test database  will certainly differ 
   from your production database. Also, being able to deploy to multiple environments is a standard 
   requirement for business applications. It is also natural that each developer want to install
-  the project and it's required utilities, like the database server and the application server, 
-  to directories of hers/his personal taste. To achieve this we will use a combination of property
-  files and profiles. 
+  the project and it's required utilities, like the application server, to directories of hers/his 
+  personal taste. To achieve this we will use a combination of property files and profiles. 
   </p>
   
   <p>To activate development mode:
@@ -393,12 +385,26 @@ own project.
       <code>filter-dev.properties</code> file to svn:ignore if your project is under version control).
       <img src="img/filter-dev.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
     </li>
-    <li>In the project template the <code>prod</code> profile is activated by default when you 
-    execute a Maven command. To activate the <code>dev</code> profile you could type 
-    <code style="white-space:nowrap;">mvn install -Penv-dev</code>, or you can remove the 
-    <code><strong>activeByDefault</strong></code> tag from the <code>prod</code> profile.<br />
-    Open each POM in the project and remove the <code>activeByDefault</code> tag from the 
-    <code>prod</code> profile:
+    <li>
+      In development mode we want to deploy our application as an 
+      <a href="http://maven.apache.org/plugins/maven-ear-plugin/examples/unpacking-a-module.html">
+      exploded</a> archive; to achieve this you must set the property <code>app.unpack.modules</code> 
+      to <strong>true</strong>. The project template has an <strong>explode</strong> profile which is
+      used to copy the exploded EAR to the application server and to hot deploy code during the Maven
+      compile phase; point the <code>as.home</code> property to the directory where you installed 
+      JBoss AS. Open the <code>filter-dev.properties</code> file in your favourite editor and make 
+      the required changes.
+      <pre>
+
+app.unpack.modules=<font color="blue"><strong>true</strong></font>
+as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
+  
+    </li>
+    <li>The <code>prod</code> profile is activated by default when you execute a Maven command. To 
+    activate the <code>dev</code> profile you could type <code style="white-space:nowrap;">
+    mvn install -Penv-dev</code>, or you can remove the <code><strong>activeByDefault</strong></code> 
+    tag from the <code>prod</code> profile. Open each POM in the project and remove the 
+    <code>activeByDefault</code> tag from the <code>prod</code> profile:
     <pre>
     
 &lt;profile&gt;
@@ -447,22 +453,39 @@ own project.
     &lt;env&gt;prod&lt;/env&gt;
   &lt;/properties&gt;
 &lt;/profile&gt;
-     </pre>
-     </font>
+    </pre>
+    </font>
+    The profile definition is sparse, the sole purpose of the profile is to set the 
+    value for the <code>${env}</code> variable. Notice also the default setting for <code>${env}</code>
+    in the parent POM, this is used in case a profile is not specified. Now Maven commands will 
+    execute with the <code>${env}</code> property value <code><strong>dev</strong></code>. You'll need 
+    to run e.g. <code>mvn install -Penv-prod</code> to activate the <code>prod</code> profile - which 
+    is more convenient since most of your build cycles are connected to coding, compiling, unit tests 
+    and deployment to your local app server.
+    </li>
+    <li>
+      Install and deploy the exploded EAR to the application server.
+      <ul>
+        <li>
+          Run: <code>mvn clean install -Pexplode</code>
+        </li>
+        <li>
+          It is <strong>important</strong> to <strong>clean</strong> the target when you switch from
+          <strong>prod</strong> to <strong>dev</strong> profile and vice versa.
+        </li>
+      </ul>
+      <br/>
+      Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
+      <img src="img/exploded-ear.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
+    </li>
+    <li>
+      Start JBoss AS, open a browser and point the URL to 
+      <a href="http://localhost:8080/seam-tutorial">http://localhost:8080/seam-tutorial/</a>.      
     </li>
   </ol>
   
-  <p>The profile definition is sparse, the sole purpose of the profile is to set the 
-  value for the <code>${env}</code> variable. Notice also the default setting for <code>${env}</code>
-  in the parent POM, this is used in case a profile is not specified.
-  </p>
-  <p>Now <code>mvn install</code> will execute with the <code>${env}</code> property value 
-  <code>dev</code>. You'll need to run <code>mvn install -Penv-prod</code> to activate the 
-  <code>prod</code> profile - which is more convenient since most of your build cycles are connected
-  to coding, compiling, unit tests and deployment to your local app server.
-  </p>
   
-  <h4>Filters</h4>
+  <h2>Filters</h2>
   <p>Filters are Maven's way of externalizing property replacement into easily portable and 
   configurable properties files. The basic idea of filtering is that you set up a named properties 
   file and specify one or more filesets to apply the substitutions in the properties file. For example:
@@ -473,7 +496,7 @@ own project.
     &lt;filter&gt;src/main/filters/filter-${env}.properties&lt;/filter&gt;
   &lt;/filters&gt;</pre>
   
-  <h4>The "Problem" with Filters</h4>
+  <h3>The "Problem" with Filters</h3>
   <p>Maven filter properties are ony visible to resources and can not be accessed from the POM. 
   This is where the <strong><a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties 
   Maven Plugin</a></strong> makes our life a little easier when dealing with properties that we need 
@@ -515,29 +538,28 @@ own project.
     &lt;/resource&gt;
   &lt;/resources&gt;</pre>
   
-  <h4>Filtering</h4>
+  <h3>Filtering</h3>
   <p>The filtering take place during the process-resources phase and the filtered resource is then 
   copied to the target directory. 
   </p>
   
   <ol>
     <li>
-      Assume our property file has the following properties: 
-
+      Given that our property file has the following properties: 
       <pre>
   
-<font color="green">ds.jndi.name        </font>=<font color="blue">refimplDatabase</font>
-<font color="red">ds.database.name    </font>=refimpl_db
-ds.server.name      =
-<font color="green">ds.driver.class     </font>=<font color="blue">org.hsqldb.jdbcDriver</font>
-<font color="green">ds.connection.url   </font>=<font color="blue">jdbc:hsqldb:mem:</font><font color="red">${ds.database.name}</font>
-<font color="green">ds.user.name        </font>=<font color="blue">sa</font>
-<font color="green">ds.password         </font>=
+<font color="green">ds.jndi.name</font>     =<font color="blue">refimplDatabase</font>
+<font color="red">ds.database.name</font> =refimpl_db
+ds.server.name   =
+<font color="green">ds.driver.class  </font>=<font color="blue">org.hsqldb.jdbcDriver</font>
+<font color="green">ds.connection.url</font>=<font color="blue">jdbc:hsqldb:mem:</font><font color="red">${ds.database.name}</font>
+<font color="green">ds.user.name     </font>=<font color="blue">sa</font>
+<font color="green">ds.password      </font>=
       </pre>
     </li>
     <li>
-      The corresponding placeholders in our datasource file, 
-      <code>ear/src/main/resources/seam-tutorial-ds.xml</code>:
+      When the corresponding placeholders in our datasource file, 
+      <code>ear/src/main/resources/seam-tutorial-ds.xml</code>, is:
       <pre>
   
 &lt;datasources&gt;
@@ -553,7 +575,7 @@ ds.server.name      =
       </pre>
     </li>
     <li>
-    During the process-resources phase the placeholders are replaced with the property values and 
+    Then, during the process-resources phase, the placeholders are replaced with the property values and 
     we'll get the following result in 
     <code>ear/target/seam-tutorial-ear-0.1-SNAPSHOT/seam-refimpl-ds.xml</code>:
       <pre>
@@ -572,66 +594,62 @@ ds.server.name      =
     </li>
   </ol>
   
-  <h4>Modify the <code><strong>filter-dev.properties</strong></code> File</h4>
-  <p>Open the <code>filter-dev.properties</code> file in your favourite editor and change text 
-  emphasized in <font color="blue"><strong>blue</strong></font>.
+  <h3>Filters Properties Reference</h3>
+  <p>This is the complete filters properties file with reference to the resource files keeping
+  the  corresponding placeholders.
   </p>
-  
   <pre>
   
-  jdk.debug   =true
-  jdk.optimize=false
-  jdk.source  =1.6
-  jdk.target  =1.6
+  ----------------------------------------------------------------------------------------------------------------------------------------------------
+  ${property}                                      =example value                               [file]
+  ----------------------------------------------------------------------------------------------------------------------------------------------------
+  ${env}                                           =dev                                         [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
-  app.debug            =${jdk.debug}
-  app.unpack.modules   =<font color="blue"><strong>true</strong></font>
+  ${jdk}                                           =                                            []
+  ${jdk.debug}                                     =true                                        [super pom]
+  ${jdk.optimize}                                  =false                                       [super pom]
+  ${jdk.source}                                    =1.6                                         [super pom]
+  ${jdk.target}                                    =1.6                                         [super pom]
 
-  # Applicatin server
-  as        =jboss423
-  as.version=4.2
-  as.home   =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font>
-  as.deploy =${as.home}/server/default/deploy
+  ${as}                                            =jboss423                                    []
+  ${as.version}                                    =4.2                                         [ear/pom.xml]
+  ${as.home}                                       =./target/jboss-4.2.3.GA-jdk6                []
+  ${as.deploy}                                     =${as.home}/server/default/deploy            [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
-  # Datasource
-  ds                  =hsqldb
-  ds.jndi.name        =refimplDatabase
-  ds.database.name    =refimpl_db
-  ds.server.name      =
-  ds.driver.class     =org.hsqldb.jdbcDriver
-  ds.connection.url   =jdbc:hsqldb:mem:${ds.database.name}
-  ds.user.name        =sa
-  ds.password         =
-  ds.hibernate.dialect=org.hibernate.dialect.HSQLDialect
-  ds.xml              =${app.context}-ds.xml
+  ${app}                                           =                                            []
+  ${app.debug}                                     =${jdk.debug}                                [components.xml, web.xml]
+  ${app.unpack.modules}                            =true                                        [ear/pom.xml]
+  ${app.context}                                   =seam-refimpl                                [ear/pom.xml, ejb/pom.xml, war/pom.xml, jboss-web.xml]
+  ${app.web.context}                               =${app.context}                              [ear/pom.xml]
+  ${app.display.name}                              =Seam Reference Implementation               [ear/pom.xml, web.xml]
+  ${app.description}                               =The Seam Refimpl lorem ipsum dolar est...   [ear/pom.xml]
+  ${app.distributable}                             =false                                       [components.xml, web.xml]
+  ${app.jndi.pattern}                              =${app.context}-ear/#{ejbName}/local         [components.xml]
 
-  # Persistence unit
-  pu.name                                      =refimpl-unit
-  pu.jta.data.source                           =java:/${ds.jndi.name}
-  pu.hibernate.dialect                         =${ds.hibernate.dialect}
-  pu.hibernate.hbm2ddl.auto                    =create-drop
-  pu.hibernate.show_sql                        =false
-  pu.hibernate.default_batch_fetch_size        =16
-  pu.hibernate.transaction.manager_lookup_class=org.hibernate.transaction.JBossTransactionManagerLookup
-  pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerFactory
+  ${ds}                                            =mysql5                                      []
+  ${ds.jndi.name}                                  =refimpl-unitDatabase                        [*-ds.xml, jndi.properties]
+  ${ds.database.name}                              =refimpl_db                                  []
+  ${ds.server.name}                                =localhost:3306                              []
+  ${ds.driver.class}                               =com.mysql.jdbc.Driver                       [*-ds.xml, jndi.properties]
+  ${ds.connection.url}                             =jdbc:mysql://${ds.server.name}/
+                                                    ${ds.database.name}?characterEncoding=UTF-8 [*-ds.xml, jndi.properties]
+  ${ds.user.name}                                  =root                                        [*-ds.xml, jndi.properties]
+  ${ds.password}                                   =                                            [*-ds.xml, jndi.properties]
+  ${ds.xml}                                        =${app.context}-ds.xml                       [ear/pom.xml]
+  ${ds.hibernate.dialect}                          =org.hibernate.dialect.MySQL5InnoDBDialect   []
 
-  # Properties for running tests
-  ds.test                  =h2
-  ds.database.name.test    =refimpl_db
-  ds.server.name.test      =
-  ds.driver.class.test     =org.h2.Driver
-  ds.connection.url.test   =jdbc:h2:mem:${ds.database.name.test}
-  ds.user.name.test        =sa
-  ds.password.test         =
-  ds.hibernate.dialect.test=org.hibernate.dialect.H2Dialect
-
-  pu.hibernate.dialect.test                         =${ds.hibernate.dialect.test}
-  pu.hibernate.hbm2ddl.auto.test                    =create-drop
-  pu.hibernate.default_batch_fetch_size.test        =16
-  pu.hibernate.show_sql.test                        =true
-  pu.hibernate.transaction.manager_lookup_class.test=org.apache.openejb.hibernate.TransactionManagerLookup
+  ${pu}                                            =                                            []
+  ${pu.name}                                       =refimpl-unit                                [persistence.xml, components.xml, jndi.properties]
+  ${pu.jta.data.source}                            =java:/${ds.jndi.name}                       [persistence.xml, jndi.properties]
+  ${pu.hibernate.dialect}                          =${ds.hibernate.dialect}                     [persistence.xml, jndi.properties]
+  ${pu.hibernate.hbm2ddl.auto}                     =create-drop                                 [persistence.xml, jndi.properties]
+  ${pu.hibernate.show_sql}                         =false                                       [persistence.xml, jndi.properties]
+  ${pu.hibernate.default_batch_fetch_size}         =16                                          [persistence.xml, jndi.properties]
+  ${pu.jboss.entity.manager.factory.jndi.name}     =java:/${app.context}EntityManagerFactory    [persistence.xml, components.xml, jndi.properties]
+  ${pu.hibernate.transaction.manager_lookup_class} =org.hibernate.transaction.
+                                                    JBossTransactionManagerLookup               [persistence.xml, jndi.properties]
+  ----------------------------------------------------------------------------------------------------------------------------------------------------
   </pre>
-  
   
   <h1>NOTE: The rest of the tutorial is temporary out of sync with the project!</h1>
   <ol>
@@ -996,8 +1014,6 @@ the previous profile do not linger.
   </li>
 </ol>
 
-</div>
-
 
 <h2>Tips for Debugging</h2>
 <p>When your application starts up it will print all components being created (Seam and your own) 
@@ -1107,8 +1123,6 @@ and add it to <strong>svn ignore</strong>!
     </a>  
   </li>
 </ul>
-
-</div>
 
 <br/>
     
