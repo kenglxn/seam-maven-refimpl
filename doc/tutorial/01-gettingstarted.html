@@ -46,8 +46,11 @@ function toggle( target ) {
   with Maven, we have choosen to use the <a href="http://openejb.apache.org/">
   Apache OpenEJB</a> embedded container to test Seam (and EJB-3.x) components. The seam-refimpl 
   project template comes preconfigured with the Apache OpenEJB embedded container for running tests.
-  </p>  
-  
+  The main inspiration for using Apace OpenEJB is the post, 
+  <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">Using OpenEJB for 
+  integration testing</a>, on <a href="http://seamframework.org/">SeamFramework.org</a>. A lot of
+  code is copied from this post, so a zillion thanks to Stephan B :-)
+  </p>
   <p>This tutorial outlines the necessary steps to get a Mavenized Seam project up and 
   running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS) and how to effectively  
   test your Seam components using the Apache OpenEJB embedded container.</p>
@@ -91,7 +94,7 @@ function toggle( target ) {
     <code><strong>jboss-4.2.3.GA.jdk6.zip</strong></code> is the correct build for jdk-6.<br/>
     <strong>Note 2:</strong> JBoss AS 5 does not work with seam-refimpl right now. 
     Please use JBoss AS 4.2.3.GA until we have solved the problem.<br/>
-    <strong>Note 3:</strong> A workaround for JBoss 5 is forund here: 
+    <strong>Note 3:</strong> A workaround for JBoss 5 can be forund here: 
     <a href="https://jira.jboss.org/jira/browse/JBSEAM-3821">https://jira.jboss.org/jira/browse/JBSEAM-3821</a>.
   </li>
 </ul>
@@ -200,7 +203,7 @@ function toggle( target ) {
     </div>
   </li>
   <li>
-    Shutdown JBossAS and delete the <code>seam-refimpl-ear.ear</code> file from the server's 
+    Shutdown JBossAS and delete the <code>seam-refimpl-ear.ear</code> file from the 
     <code>${JBOSS_DEPLOY}</code> directory.
    </li>
   </li>
@@ -391,13 +394,23 @@ own project.
       <img src="img/filter-dev.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
     </li>
     <li>
-      In development mode we want to deploy our application as an 
+      To get some support for incremental hot deployment at developement time, we want to deploy our 
+      application as an 
       <a href="http://maven.apache.org/plugins/maven-ear-plugin/examples/unpacking-a-module.html">
       exploded</a> archive. The project template has an <strong>explode</strong> profile which is 
-      used to copy the exploded EAR to the application server and to hot deploy code during the 
-      Maven compile phase. Open the <code>filter-dev.properties</code> file in your favourite editor 
-      and make the following changes:
+      used to copy the exploded EAR to the application server and to hot deploy code in EJB and WAR
+      modules during the Maven compile phase. Open the <code>filter-dev.properties</code> file in 
+      your favourite editor and make the following changes:
       <ul>
+        <li>
+          Set the property <code>jdk.debug</code> to <strong>true</strong>.
+        </li>
+        <li>
+          Set the property <code>jdk.optimize</code> to <strong>false</strong>.
+        </li>
+        <li>
+          Set the property <code>app.debug</code> to <strong>true</strong>.
+        </li>
         <li>
           Set the property <code>app.unpack.modules</code> to <strong>true</strong>.
         </li>
@@ -407,9 +420,12 @@ own project.
       </ul>
       <pre>
 
-  app.unpack.modules=<font color="blue"><strong>true</strong></font>
-  as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
-  
+jdk.debug         =<font color="blue"><strong>true</strong></font>
+jdk.optimize      =<font color="blue"><strong>false</strong></font>
+app.debug         =<font color="blue"><strong>true</strong></font>
+app.unpack.modules=<font color="blue"><strong>true</strong></font>
+as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
+
     </li>
     <li>
       The <code>prod</code> profile is activated by default when you execute a Maven command. To 
@@ -464,8 +480,7 @@ own project.
     &lt;env&gt;prod&lt;/env&gt;
   &lt;/properties&gt;
 &lt;/profile&gt;
-    </font>
-    </pre>
+    </font></pre>
     The profile definition is sparse, the sole purpose of the profile is to set the 
     value for the <code>${env}</code> variable. Notice also the default setting for <code>${env}</code>
     in the parent POM, this is used in case a profile is not specified and  Maven commands will 
@@ -490,19 +505,57 @@ own project.
       <img src="img/exploded-ear.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
     </li>
     <li>
-      Start JBoss AS in debug mode (see: 
-      <a href="http://docs.jboss.org/seam/2.2.0.GA/reference/en-US/html/gettingstarted.html#d0e2675">
-      Chapter 2.1</a> in the Seam reference documentation),
-      open a browser and point the URL to 
+      Start JBoss AS in debug mode, open a browser and point the URL to 
       <a href="http://localhost:8080/seam-tutorial">http://localhost:8080/seam-tutorial/</a>. 
     </li>
     <li>
-      Make some changes to the code. The structure of a Seam project is well 
+      Make some changes to the code (the structure of a Seam project is well 
       <a href="http://seamframework.org/Documentation"> documented</a> so we will not go into details 
-      here. Compile code with the explode profile, <code><strong style="white-space:nowrap;">mvn compile -Pexplode</strong></code>, 
-      and verify that hot re-deployment of WARs and EARs works. Check the 
-      <a href="http://www.jboss.org/jbossas">application server documentation</a> for hot deployment 
-      issues.
+      here). Compile code with the explode profile, <code><strong style="white-space:nowrap;">
+      mvn compile -Pexplode</strong></code>, and verify that incremental hot deployment of WARs and 
+      EARs works. Check 
+      <a href="http://docs.jboss.org/seam/2.2.0.GA/reference/en-US/html/gettingstarted.html#d0e2675">
+      Chapter 2.1</a> and 
+      <a href="http://docs.jboss.org/seam/2.2.0.GA/reference/en-US/html/gettingstarted.html#gettingstarted-hotdeployment">
+      chapter 2.8</a> in the Seam reference documentation and the <a href="http://www.jboss.org/jbossas"> 
+      application server documentation</a> for hot deployment issues.
+    </li>
+    <li>
+      Remove or refactor example code, eg:
+      <ul>
+        <li>
+          Refactor <code>no.knowit.seam.example.action.Authenticator</code> and
+          <code>no.knowit.seam.example.action.AuthenticatorBean</code>.
+        </li>
+        <li>
+          Delete the <code>ejb/src/main/java/no</code> directory.
+        </li>
+        <li>
+          Remove SQL code from the <code>ejb/src/main/resources/import.sql</code> file.
+        </li>
+        <li>
+          Refactor <code>no.knowit.seam.example.action.AuthenticatorTest</code>.
+        </li>
+        <li>
+          Delete the <code>ejb/src/test/java/no</code> directory.
+        </li>
+        <li>
+          Delete the <code>war/src/main/webapp/view/example</code> directory.
+        </li>
+        <li>
+          From <code>war/src/main/webapp/layout/menu.xhtml</code> remove:
+          <pre>
+          
+&lt;!-- @newMenuItem@ --&gt;
+&lt;s:link view=&quot;/view/example/MovieList.xhtml&quot;
+  value=&quot;Movie List&quot;
+  includePageParams=&quot;false&quot;
+  propagation=&quot;none&quot;/&gt;</pre>
+        </li>
+        <li>
+          Apply your own entities and actions.
+        </li>
+      </ul>
     </li>
   </ol>
   
@@ -559,7 +612,7 @@ own project.
     &lt;/resource&gt;
   &lt;/resources&gt;</pre>
   
-  <h3>Filtering</h3>
+  <h4>Filtering Example</h4>
   <p>The filtering take place during the process-resources phase and the filtered resource is then 
   copied to the target directory. 
   </p>
@@ -616,8 +669,8 @@ ds.server.name   =
   </ol>
   
   <h3>Filters Properties Reference</h3>
-  <p>This is the complete filters properties file with reference to the resource files keeping
-  the  corresponding placeholders.
+  <p>The filters properties file with reference to the resource files keeping the 
+  corresponding placeholders:
   </p>
   <pre>
   
@@ -671,23 +724,27 @@ ds.server.name   =
                                                      JBossTransactionManagerLookup                [persistence.xml, jndi.properties]
   ----------------------------------------------------------------------------------------------------------------------------------------------------</pre>
   
+  <p>The resource files, e.g. <code>persistence.xml</code> is well documented, so we will not go into
+  details about the properties usage here.
+  </p>
+  
   <h2>Testing</h2>
   
-  <p>
-  The main difference between a unit test and a integration test is that unit test runs fast and 
-  integration tests tend to run slowly.
-  </p>
-
   <p>As programmers we want to have good code quality, which means good unit test test coverage.
   EJB 3 and Seam components are just annotated classes - so it is straight forward to unit-test them 
   the "traditional" way. However, you will have to "emulate" the Dependency Injection and boot the 
   EntityManager by yourself, someting that will cost you few additional lines of boilerplate code. 
+  </p>
+  <p>
+  The main difference between a unit test and a integration test is that unit test runs fast and 
+  integration tests tend to run slowly. 
   With <a href="http://openejb.apache.org/">Apache OpenEJB</a>, which boots the entire container in 
   less than one second, we can move a lot of our traditional integration tests to unit tests and 
-  avoid the useless boilerplate code. The <a href="http://openejb.apache.org/3.0/index.html">
-  documentation</a> and the <a href="http://openejb.apache.org/examples.html">examples</a> of 
-  OpenEJB are really neat and enable an easy jump-start. All the Apache OpenEJB examples are 
-  automated tests that run with a simple <code style="white-space:nobreak;">mvn clean install</code>. 
+  avoid the useless boilerplate code. The 
+  <a href="http://openejb.apache.org/3.0/index.html">documentation</a> and the 
+  <a href="http://openejb.apache.org/examples.html">examples</a> of OpenEJB are really neat and 
+  enable an easy jump-start. All the Apache OpenEJB examples are automated tests that run with a 
+  simple <code style="white-space:nobreak;">mvn clean install</code>. 
   </p>
   
   <h3>Bootstrapping the OpenEJB Embedded Container</h3>
@@ -710,10 +767,9 @@ ds.server.name   =
   pu.hibernate.hbm2ddl.auto.test                    =create-drop
   pu.hibernate.default_batch_fetch_size.test        =16
   pu.hibernate.show_sql.test                        =true
-  pu.hibernate.transaction.manager_lookup_class.test=org.apache.openejb.hibernate.TransactionManagerLookup
-  </pre>
+  pu.hibernate.transaction.manager_lookup_class.test=org.apache.openejb.hibernate.TransactionManagerLookup</pre>
   
-  <h4>Embedded Configuration</h4>
+  <h4>OpenEJB Embedded Configuration</h4>
   <p>OpenEJB provide an own JNDI-SPI implementation, and plugs so naturally as JNDI-provider. 
   The settings are factored out into the <code style="white-space:nowrap;">
   ejb/src/test/resources-openejb/jndi.properties</code> file. You will get from the lookup a 
@@ -764,10 +820,39 @@ ds.server.name   =
   </pre>
   
   <h4>Additional Resource Files Needed to Run Seam Tests</h4>
-  <p>OpenEJB need it's own version of <code>components.xml</code> and <code>web.xml</code>. These
-  files are placed in the <code>ejb/src/test/resources-openejb/WEB-INF</code> directory.
+  <p>In addition to the <code>jndi.properties</code> file OpenEJB need it's own version of 
+  <code>components.xml</code> and <code>web.xml</code>. These files are placed in the 
+  <code>ejb/src/test/resources-openejb</code> directory. If you need to share the OpenEJB spesific 
+  resource files between different modules, just move the <code>ejb/src/test/resources-openejb</code> 
+  directory to the parent project and modify POMs accordingly, e.g:
+  </p>
+  <pre>
   
+&lt;testResources&gt;                                                                                                     
+  &lt;testResource&gt;                                                                                                    
+    &lt;directory&gt;src/test/resources&lt;/directory&gt;                                                                 
+    &lt;filtering&gt;true&lt;/filtering&gt;                                                                               
+  &lt;/testResource&gt;
+  &lt;testResource&gt;                                                                                                    
+    <font color="blue">&lt;directory&gt;../src/test/resources-openejb&lt;/directory&gt;</font>
+    &lt;filtering&gt;true&lt;/filtering&gt;                                                                               
+  &lt;/testResource&gt;
+&lt;/testResources&gt;
+  </pre>
   
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   
   <br/><br />
@@ -1253,6 +1338,11 @@ and add it to <strong>svn ignore</strong>!
     </a>  
   </li>
   <li>
+    <a href="http://www.seamframework.org/Documentation/SeamTestCoverageWithCobertura">
+      SeamTest Coverage with Cobertura
+    </a>  
+  </li>
+  <li>
     <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">
       Using OpenEJB for integration testing
     </a>  
@@ -1270,6 +1360,61 @@ and add it to <strong>svn ignore</strong>!
   <li>
     <a href="http://www.adam-bien.com/roller/abien/entry/how_to_unit_test_ejb">
       How To Unit-Test EJB 3 ...in 0.8 Seconds [source code included]
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/">
+      OpenEJB: Home
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/examples.html">
+      OpenEJB: Examples
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/faq.html">
+      OpenEJB: FAQ 
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/injection-of-entitymanager-example.html">
+      OpenEJB: Injection of EntityManager Example
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/unit-testing-transactions.html">
+      OpenEJB: Unit Testing Transactions
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/configuring-logging-in-tests.html">
+      OpenEJB: Configuring Logging in Tests
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/configuring-persistenceunits-in-tests.html">
+      OpenEJB: Configuring PersistenceUnits in Tests 
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/jndi-names.html">
+      OpenEJB: JNDI Names 
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/hibernate.html">
+      OpenEJB: Hibernate 
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/embedded-configuration.html">
+      OpenEJB: Embedded Configuration
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/functional-testing-with-openejb-jetty-and-selenium.html">
+      OpenEJB: Functional testing with OpenEJB, Jetty and Selenium
     </a>  
   </li>
 </ul>
