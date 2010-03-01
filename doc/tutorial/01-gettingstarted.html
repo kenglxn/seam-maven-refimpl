@@ -544,16 +544,21 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
         </li>
         <li>
           From <code>war/src/main/webapp/layout/menu.xhtml</code> remove:
-          <pre>
-          
+          <font color="blue"><pre>
 &lt;!-- @newMenuItem@ --&gt;
 &lt;s:link view=&quot;/view/example/MovieList.xhtml&quot;
   value=&quot;Movie List&quot;
   includePageParams=&quot;false&quot;
-  propagation=&quot;none&quot;/&gt;</pre>
+  propagation=&quot;none&quot;/&gt;</pre></font>
         </li>
         <li>
-          Apply your own entities and actions.
+          Add your own application title in <code>war/src/main/webapp/layout/template.xhtml</code>, 
+          eg:
+          <font color="blue"><pre>
+&lt;title&gt;Seam Torial&lt;/title&gt;</pre></font>
+        </li>
+        <li>
+          Apply your own entities and actions etc.
         </li>
       </ul>
     </li>
@@ -724,8 +729,8 @@ ds.server.name   =
                                                      JBossTransactionManagerLookup                [persistence.xml, jndi.properties]
   ----------------------------------------------------------------------------------------------------------------------------------------------------</pre>
   
-  <p>The resource files, e.g. <code>persistence.xml</code> is well documented, so we will not go into
-  details about the properties usage here.
+  <p>The resource files, e.g. <code>persistence.xml</code>, are well documented, so we will not go 
+  into details about the properties usage here.
   </p>
   
   <h2>Testing</h2>
@@ -840,6 +845,132 @@ ds.server.name   =
 &lt;/testResources&gt;
   </pre>
   
+  <h3>Test Examples</h3>
+  <p>TBD</p>
+
+  <h4>HelloEjbTest</h4>
+  <p>TBD</p>
+
+  <h4>HelloSeamTest</h4>
+  <p>TBD</p>
+
+  <h4>Testing Seam Application User Interactions</h4>
+  <p>TBD</p>
+
+
+<h2>Useful Links</h2>
+<ul>
+  <li>
+    <a href="http://www.maestrodev.com/better-build-maven">
+      Better Builds with Maven
+    </a>
+  </li>
+  <li>
+    <a href="http://sujitpal.blogspot.com/2006/07/maven2-step-by-step.html">
+      Maven2, Step by Step
+    </a>
+  </li>
+  <li>
+    <a href="http://sujitpal.blogspot.com/2006/10/maven2-multi-environment-filter-setup.html">
+      A Maven2 multi-environment filter setup
+    </a>
+  </li>
+  <li>
+    <a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
+      Configuring a Seam EJB project for development with Maven and JBoss Tools
+    </a>  
+  </li>
+  <li>
+    <a href="http://mavenize.blogspot.com/2007/06/integration-testing-in-your-maven.html">
+      Integration Testing in your Maven Application
+    </a>  
+  </li>
+  <li>
+    <a href="http://wakaleo-consulting.com/component/content/article/213">
+      Unit tests are not integration tests
+    </a>  
+  </li>
+  <li>
+    <a href="http://www.seamframework.org/Documentation/SeamTestCoverageWithCobertura">
+      SeamTest Coverage with Cobertura
+    </a>  
+  </li>
+  <li>
+    <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">
+      Using OpenEJB for integration testing
+    </a>  
+  </li>
+  <li>
+    <a href="http://magnus-k-karlsson.blogspot.com/2009_07_01_archive.html">
+      Effective Unit Testing EJB 3.0 with OpenEJB
+    </a>  
+  </li>
+  <li>
+    <a href="http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html">
+      Restarting the embedded OpenEJB container between each test
+    </a>  
+  </li>
+  <li>
+    <a href="http://www.adam-bien.com/roller/abien/entry/how_to_unit_test_ejb">
+      How To Unit-Test EJB 3 ...in 0.8 Seconds [source code included]
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/">
+      OpenEJB: Home
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/examples.html">
+      OpenEJB: Examples
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/faq.html">
+      OpenEJB: FAQ 
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/injection-of-entitymanager-example.html">
+      OpenEJB: Injection of EntityManager Example
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/unit-testing-transactions.html">
+      OpenEJB: Unit Testing Transactions
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/configuring-logging-in-tests.html">
+      OpenEJB: Configuring Logging in Tests
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/configuring-persistenceunits-in-tests.html">
+      OpenEJB: Configuring PersistenceUnits in Tests 
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/jndi-names.html">
+      OpenEJB: JNDI Names 
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/hibernate.html">
+      OpenEJB: Hibernate 
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/3.0/embedded-configuration.html">
+      OpenEJB: Embedded Configuration
+    </a>  
+  </li>
+  <li>
+    <a href="http://openejb.apache.org/functional-testing-with-openejb-jetty-and-selenium.html">
+      OpenEJB: Functional testing with OpenEJB, Jetty and Selenium
+    </a>  
+  </li>
+</ul>
 
 
 
@@ -1305,119 +1436,6 @@ and add it to <strong>svn ignore</strong>!
 </p>
 
 
-<h2>Useful Links</h2>
-<ul>
-  <li>
-    <a href="http://www.maestrodev.com/better-build-maven">
-      Better Builds with Maven
-    </a>
-  </li>
-  <li>
-    <a href="http://sujitpal.blogspot.com/2006/07/maven2-step-by-step.html">
-      Maven2, Step by Step
-    </a>
-  </li>
-  <li>
-    <a href="http://sujitpal.blogspot.com/2006/10/maven2-multi-environment-filter-setup.html">
-      A Maven2 multi-environment filter setup
-    </a>
-  </li>
-  <li>
-    <a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
-      Configuring a Seam EJB project for development with Maven and JBoss Tools
-    </a>  
-  </li>
-  <li>
-    <a href="http://mavenize.blogspot.com/2007/06/integration-testing-in-your-maven.html">
-      Integration Testing in your Maven Application
-    </a>  
-  </li>
-  <li>
-    <a href="http://wakaleo-consulting.com/component/content/article/213">
-      Unit tests are not integration tests
-    </a>  
-  </li>
-  <li>
-    <a href="http://www.seamframework.org/Documentation/SeamTestCoverageWithCobertura">
-      SeamTest Coverage with Cobertura
-    </a>  
-  </li>
-  <li>
-    <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">
-      Using OpenEJB for integration testing
-    </a>  
-  </li>
-  <li>
-    <a href="http://magnus-k-karlsson.blogspot.com/2009_07_01_archive.html">
-      Effective Unit Testing EJB 3.0 with OpenEJB
-    </a>  
-  </li>
-  <li>
-    <a href="http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html">
-      Restarting the embedded OpenEJB container between each test
-    </a>  
-  </li>
-  <li>
-    <a href="http://www.adam-bien.com/roller/abien/entry/how_to_unit_test_ejb">
-      How To Unit-Test EJB 3 ...in 0.8 Seconds [source code included]
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/">
-      OpenEJB: Home
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/3.0/examples.html">
-      OpenEJB: Examples
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/faq.html">
-      OpenEJB: FAQ 
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/3.0/injection-of-entitymanager-example.html">
-      OpenEJB: Injection of EntityManager Example
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/3.0/unit-testing-transactions.html">
-      OpenEJB: Unit Testing Transactions
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/3.0/configuring-logging-in-tests.html">
-      OpenEJB: Configuring Logging in Tests
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/3.0/configuring-persistenceunits-in-tests.html">
-      OpenEJB: Configuring PersistenceUnits in Tests 
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/3.0/jndi-names.html">
-      OpenEJB: JNDI Names 
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/3.0/hibernate.html">
-      OpenEJB: Hibernate 
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/3.0/embedded-configuration.html">
-      OpenEJB: Embedded Configuration
-    </a>  
-  </li>
-  <li>
-    <a href="http://openejb.apache.org/functional-testing-with-openejb-jetty-and-selenium.html">
-      OpenEJB: Functional testing with OpenEJB, Jetty and Selenium
-    </a>  
-  </li>
-</ul>
 
 <br/>
     
