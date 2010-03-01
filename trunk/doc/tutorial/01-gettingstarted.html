@@ -692,7 +692,7 @@ ds.server.name   =
   
   <h3>Bootstrapping the OpenEJB Embedded Container</h3>
   <p>The filter properties file has a section with properties dedicated to bootstrapping the
-  OpenEJB embedded container.
+  OpenEJB embedded container:
   </p>
   <pre>
   
@@ -715,10 +715,10 @@ ds.server.name   =
   
   <h4>Embedded Configuration</h4>
   <p>OpenEJB provide an own JNDI-SPI implementation, and plugs so naturally as JNDI-provider. 
-  The settings are factored out into <code style="white-space:nowrap;">
-  ejb/src/test/resources-openejb/jndi.properties</code>. You will get from the lookup a fully-featured 
-  EJB 3/3.1 container with injected dependencies and persistence. The <code>jndi.properties</code> 
-  file has the corresponding placeholders:
+  The settings are factored out into the <code style="white-space:nowrap;">
+  ejb/src/test/resources-openejb/jndi.properties</code> file. You will get from the lookup a 
+  fully-featured EJB 3/3.1 container with injected dependencies and persistence. The 
+  <code>jndi.properties</code> file has the corresponding placeholders:
   </p>
   <pre>
   
@@ -726,9 +726,7 @@ ds.server.name   =
   <font color="green"># see: http://openejb.apache.org/3.0/embedded-configuration.html</font>
 
   <font color="green"># set the initial context factory</font>
-  <font color="green"># NOTE: It is important that this line is present in the jndi.properties file. </font>
-  <font color="green">#       Seam does not work without this line!</font>
-  <strong>java.naming.factory.initial=org.apache.openejb.client.LocalInitialContextFactory</strong>
+  java.naming.factory.initial=org.apache.openejb.client.LocalInitialContextFactory
 
   <font color="green"># Corresponds to JBoss JNDI lookup format in ${app.jndi.pattern.test} property</font>
   openejb.jndiname.format={deploymentId}/{interfaceType.annotationName}
@@ -765,7 +763,9 @@ ds.server.name   =
   ${pu.name}.hibernate.transaction.manager_lookup_class=${pu.hibernate.transaction.manager_lookup_class.test}
   </pre>
   
-  
+  <h4>Additional Resource Files Needed to Run Seam Tests</h4>
+  <p>OpenEJB need it's own version of <code>components.xml</code> and <code>web.xml</code>. These
+  files are placed in the <code>ejb/src/test/resources-openejb/WEB-INF</code> directory.
   
   
   
