@@ -42,13 +42,16 @@ function toggle( target ) {
   <a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties Maven 
   Plugin</a> is used to manage a multi-environment setup.
   </p>
-  <p>Due to problems integrating the <a href="http://www.jboss.org/jbossmc">JBoss Micro Container</a> 
-  into Maven, we have choosen to use the <a href="http://openejb.apache.org/">
-  Apache OpenEJB</a> embedded container to unittest Seam (and EJB-3.x) components.
-  </p>
+  <p>Due to problems booting the <a href="http://www.jboss.org/jbossmc">JBoss Micro Container</a> 
+  with Maven, we have choosen to use the <a href="http://openejb.apache.org/">
+  Apache OpenEJB</a> embedded container to test Seam (and EJB-3.x) components. The seam-refimpl 
+  project template comes preconfigured with the Apache OpenEJB embedded container for running tests.
+  </p>  
+  
   <p>This tutorial outlines the necessary steps to get a Mavenized Seam project up and 
-  running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS).</p>
-  <p>You must have a basic understanding of 
+  running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS) and how to effectively  
+  test your Seam components using the Apache OpenEJB embedded container.</p>
+  <p>You should have a basic understanding of 
     <a href="http://docs.jboss.com/seam/latest/reference/en-US/html/Book-Preface.html">
       JBoss Seam</a> (EJB3, JPA, JSF, EL, SeamTest), <a href="http://testng.org/">TestNG</a>, the
     <a href="http://www.jboss.org/jbossas/docs/index.html">JBoss application server</a>,
@@ -87,7 +90,9 @@ function toggle( target ) {
     <strong>Note 1:</strong> Download a build that corresponds with your installed jdk, 
     <code><strong>jboss-4.2.3.GA.jdk6.zip</strong></code> is the correct build for jdk-6.<br/>
     <strong>Note 2:</strong> JBoss AS 5 does not work with seam-refimpl right now. 
-    Please use JBoss AS 4.2.3.GA until we have solved the problem.
+    Please use JBoss AS 4.2.3.GA until we have solved the problem.<br/>
+    <strong>Note 3:</strong> A workaround for JBoss 5 is forund here: 
+    <a href="https://jira.jboss.org/jira/browse/JBSEAM-3821">https://jira.jboss.org/jira/browse/JBSEAM-3821</a>.
   </li>
 </ul>
 <p>Install the required software.</p>
@@ -388,24 +393,31 @@ own project.
     <li>
       In development mode we want to deploy our application as an 
       <a href="http://maven.apache.org/plugins/maven-ear-plugin/examples/unpacking-a-module.html">
-      exploded</a> archive; to achieve this you must set the property <code>app.unpack.modules</code> 
-      to <strong>true</strong>. The project template has an <strong>explode</strong> profile which is
-      used to copy the exploded EAR to the application server and to hot deploy code during the Maven
-      compile phase; point the <code>as.home</code> property to the directory where you installed 
-      JBoss AS. Open the <code>filter-dev.properties</code> file in your favourite editor and make 
-      the required changes.
+      exploded</a> archive. The project template has an <strong>explode</strong> profile which is 
+      used to copy the exploded EAR to the application server and to hot deploy code during the 
+      Maven compile phase. Open the <code>filter-dev.properties</code> file in your favourite editor 
+      and make the following changes:
+      <ul>
+        <li>
+          Set the property <code>app.unpack.modules</code> to <strong>true</strong>.
+        </li>
+        <li>
+          Point the <code>as.home</code> property to the directory where you installed JBoss AS.
+        </li>
+      </ul>
       <pre>
 
-app.unpack.modules=<font color="blue"><strong>true</strong></font>
-as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
+  app.unpack.modules=<font color="blue"><strong>true</strong></font>
+  as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
   
     </li>
-    <li>The <code>prod</code> profile is activated by default when you execute a Maven command. To 
-    activate the <code>dev</code> profile you could type <code style="white-space:nowrap;">
-    mvn install -Penv-dev</code>, or you can remove the <code><strong>activeByDefault</strong></code> 
-    tag from the <code>prod</code> profile. Open each POM in the project and remove the 
-    <code>activeByDefault</code> tag from the <code>prod</code> profile:
-    <pre>
+    <li>
+      The <code>prod</code> profile is activated by default when you execute a Maven command. To 
+      activate the <code>dev</code> profile you could type <code style="white-space:nowrap;">
+      mvn install -Penv-dev</code>, or you can remove the <code><strong>activeByDefault</strong></code> 
+      tag from the <code>prod</code> profile. Open each POM in the project and remove the 
+      <code>activeByDefault</code> tag from the <code>prod</code> profile:
+      <pre>
     
 &lt;profile&gt;
   &lt;id&gt;env-dev&lt;/id&gt;
@@ -433,7 +445,6 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
     <li>
       Remove the activeByDefault tag from the <code>env-prod</code> profile:
     <pre>
-    <font color="blue">    
 &lt;profile&gt;
   &lt;id&gt;env-dev&lt;/id&gt;
   &lt;activation&gt;
@@ -446,22 +457,22 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
     &lt;env&gt;dev&lt;/env&gt;
   &lt;/properties&gt;
 &lt;/profile&gt;
-
+    <font color="blue">    
 &lt;profile&gt;
   &lt;id&gt;env-prod&lt;/id&gt;
   &lt;properties&gt;
     &lt;env&gt;prod&lt;/env&gt;
   &lt;/properties&gt;
 &lt;/profile&gt;
-    </pre>
     </font>
+    </pre>
     The profile definition is sparse, the sole purpose of the profile is to set the 
     value for the <code>${env}</code> variable. Notice also the default setting for <code>${env}</code>
-    in the parent POM, this is used in case a profile is not specified. Now Maven commands will 
+    in the parent POM, this is used in case a profile is not specified and  Maven commands will 
     execute with the <code>${env}</code> property value <code><strong>dev</strong></code>. You'll need 
-    to run e.g. <code>mvn install -Penv-prod</code> to activate the <code>prod</code> profile - which 
-    is more convenient since most of your build cycles are connected to coding, compiling, unit tests 
-    and deployment to your local app server.
+    to run e.g. <code style="white-space:nowrap">mvn install -Penv-prod</code> to activate the 
+    <code>prod</code> profile - which is more convenient since most of your build cycles are 
+    connected to coding, compiling, unit tests and deployment to your local app server.
     </li>
     <li>
       Install and deploy the exploded EAR to the application server.
@@ -479,11 +490,21 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
       <img src="img/exploded-ear.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
     </li>
     <li>
-      Start JBoss AS, open a browser and point the URL to 
-      <a href="http://localhost:8080/seam-tutorial">http://localhost:8080/seam-tutorial/</a>.      
+      Start JBoss AS in debug mode (see: 
+      <a href="http://docs.jboss.org/seam/2.2.0.GA/reference/en-US/html/gettingstarted.html#d0e2675">
+      Chapter 2.1</a> in the Seam reference documentation),
+      open a browser and point the URL to 
+      <a href="http://localhost:8080/seam-tutorial">http://localhost:8080/seam-tutorial/</a>. 
+    </li>
+    <li>
+      Make some changes to the code. The structure of a Seam project is well 
+      <a href="http://seamframework.org/Documentation"> documented</a> so we will not go into details 
+      here. Compile code with the explode profile, <code><strong style="white-space:nowrap;">mvn compile -Pexplode</strong></code>, 
+      and verify that hot re-deployment of WARs and EARs works. Check the 
+      <a href="http://www.jboss.org/jbossas">application server documentation</a> for hot deployment 
+      issues.
     </li>
   </ol>
-  
   
   <h2>Filters</h2>
   <p>Filters are Maven's way of externalizing property replacement into easily portable and 
@@ -601,56 +622,155 @@ ds.server.name   =
   <pre>
   
   ----------------------------------------------------------------------------------------------------------------------------------------------------
-  ${property}                                      =example value                               [file]
+  ${property}                                      = example value                                [file]
   ----------------------------------------------------------------------------------------------------------------------------------------------------
-  ${env}                                           =dev                                         [ear/pom.xml, ejb/pom.xml, war/pom.xml]
+  ${env}                                           = dev                                          [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
-  ${jdk}                                           =                                            []
-  ${jdk.debug}                                     =true                                        [super pom]
-  ${jdk.optimize}                                  =false                                       [super pom]
-  ${jdk.source}                                    =1.6                                         [super pom]
-  ${jdk.target}                                    =1.6                                         [super pom]
+  ${jdk}                                           =                                              []
+  ${jdk.debug}                                     = true                                         [super pom]
+  ${jdk.optimize}                                  = false                                        [super pom]
+  ${jdk.source}                                    = 1.6                                          [super pom]
+  ${jdk.target}                                    = 1.6                                          [super pom]
 
-  ${as}                                            =jboss423                                    []
-  ${as.version}                                    =4.2                                         [ear/pom.xml]
-  ${as.home}                                       =./target/jboss-4.2.3.GA-jdk6                []
-  ${as.deploy}                                     =${as.home}/server/default/deploy            [ear/pom.xml, ejb/pom.xml, war/pom.xml]
+  ${as}                                            = jboss423                                     []
+  ${as.version}                                    = 4.2                                          [ear/pom.xml]
+  ${as.home}                                       = ./target/jboss-4.2.3.GA-jdk6                 []
+  ${as.deploy}                                     = ${as.home}/server/default/deploy             [ear/pom.xml, ejb/pom.xml, war/pom.xml]
 
-  ${app}                                           =                                            []
-  ${app.debug}                                     =${jdk.debug}                                [components.xml, web.xml]
-  ${app.unpack.modules}                            =true                                        [ear/pom.xml]
-  ${app.context}                                   =seam-refimpl                                [ear/pom.xml, ejb/pom.xml, war/pom.xml, jboss-web.xml]
-  ${app.web.context}                               =${app.context}                              [ear/pom.xml]
-  ${app.display.name}                              =Seam Reference Implementation               [ear/pom.xml, web.xml]
-  ${app.description}                               =The Seam Refimpl lorem ipsum dolar est...   [ear/pom.xml]
-  ${app.distributable}                             =false                                       [components.xml, web.xml]
-  ${app.jndi.pattern}                              =${app.context}-ear/#{ejbName}/local         [components.xml]
+  ${app}                                           =                                              []
+  ${app.debug}                                     = ${jdk.debug}                                 [components.xml, web.xml]
+  ${app.unpack.modules}                            = true                                         [ear/pom.xml]
+  ${app.context}                                   = seam-refimpl                                 [ear/pom.xml, ejb/pom.xml, war/pom.xml, jboss-web.xml]
+  ${app.web.context}                               = ${app.context}                               [ear/pom.xml]
+  ${app.display.name}                              = Seam Reference Implementation                [ear/pom.xml, web.xml]
+  ${app.description}                               = The Seam Refimpl lorem ipsum dolar est...    [ear/pom.xml]
+  ${app.distributable}                             = false                                        [components.xml, web.xml]
+  ${app.jndi.pattern}                              = ${app.context}-ear/#{ejbName}/local          [components.xml]
 
-  ${ds}                                            =mysql5                                      []
-  ${ds.jndi.name}                                  =refimpl-unitDatabase                        [*-ds.xml, jndi.properties]
-  ${ds.database.name}                              =refimpl_db                                  []
-  ${ds.server.name}                                =localhost:3306                              []
-  ${ds.driver.class}                               =com.mysql.jdbc.Driver                       [*-ds.xml, jndi.properties]
-  ${ds.connection.url}                             =jdbc:mysql://${ds.server.name}/
-                                                    ${ds.database.name}?characterEncoding=UTF-8 [*-ds.xml, jndi.properties]
-  ${ds.user.name}                                  =root                                        [*-ds.xml, jndi.properties]
-  ${ds.password}                                   =                                            [*-ds.xml, jndi.properties]
-  ${ds.xml}                                        =${app.context}-ds.xml                       [ear/pom.xml]
-  ${ds.hibernate.dialect}                          =org.hibernate.dialect.MySQL5InnoDBDialect   []
+  ${ds}                                            = mysql5                                       []
+  ${ds.jndi.name}                                  = refimpl-unitDatabase                         [*-ds.xml, jndi.properties]
+  ${ds.database.name}                              = refimpl_db                                   []
+  ${ds.server.name}                                = localhost:3306                               []
+  ${ds.driver.class}                               = com.mysql.jdbc.Driver                        [*-ds.xml, jndi.properties]
+  ${ds.connection.url}                             = jdbc:mysql://${ds.server.name}/
+                                                     ${ds.database.name}?characterEncoding=UTF-8  [*-ds.xml, jndi.properties]
+  ${ds.user.name}                                  = root                                         [*-ds.xml, jndi.properties]
+  ${ds.password}                                   =                                              [*-ds.xml, jndi.properties]
+  ${ds.xml}                                        = ${app.context}-ds.xml                        [ear/pom.xml]
+  ${ds.hibernate.dialect}                          = org.hibernate.dialect.MySQL5InnoDBDialect    []
 
-  ${pu}                                            =                                            []
-  ${pu.name}                                       =refimpl-unit                                [persistence.xml, components.xml, jndi.properties]
-  ${pu.jta.data.source}                            =java:/${ds.jndi.name}                       [persistence.xml, jndi.properties]
-  ${pu.hibernate.dialect}                          =${ds.hibernate.dialect}                     [persistence.xml, jndi.properties]
-  ${pu.hibernate.hbm2ddl.auto}                     =create-drop                                 [persistence.xml, jndi.properties]
-  ${pu.hibernate.show_sql}                         =false                                       [persistence.xml, jndi.properties]
-  ${pu.hibernate.default_batch_fetch_size}         =16                                          [persistence.xml, jndi.properties]
-  ${pu.jboss.entity.manager.factory.jndi.name}     =java:/${app.context}EntityManagerFactory    [persistence.xml, components.xml, jndi.properties]
-  ${pu.hibernate.transaction.manager_lookup_class} =org.hibernate.transaction.
-                                                    JBossTransactionManagerLookup               [persistence.xml, jndi.properties]
-  ----------------------------------------------------------------------------------------------------------------------------------------------------
+  ${pu}                                            =                                              []
+  ${pu.name}                                       = refimpl-unit                                 [persistence.xml, components.xml, jndi.properties]
+  ${pu.jta.data.source}                            = java:/${ds.jndi.name}                        [persistence.xml, jndi.properties]
+  ${pu.hibernate.dialect}                          = ${ds.hibernate.dialect}                      [persistence.xml, jndi.properties]
+  ${pu.hibernate.hbm2ddl.auto}                     = create-drop                                  [persistence.xml, jndi.properties]
+  ${pu.hibernate.show_sql}                         = false                                        [persistence.xml, jndi.properties]
+  ${pu.hibernate.default_batch_fetch_size}         = 16                                           [persistence.xml, jndi.properties]
+  ${pu.jboss.entity.manager.factory.jndi.name}     = java:/${app.context}EntityManagerFactory     [persistence.xml, components.xml, jndi.properties]
+  ${pu.hibernate.transaction.manager_lookup_class} = org.hibernate.transaction.
+                                                     JBossTransactionManagerLookup                [persistence.xml, jndi.properties]
+  ----------------------------------------------------------------------------------------------------------------------------------------------------</pre>
+  
+  <h2>Testing</h2>
+  
+  <p>
+  The main difference between a unit test and a integration test is that unit test runs fast and 
+  integration tests tend to run slowly.
+  </p>
+
+  <p>As programmers we want to have good code quality, which means good unit test test coverage.
+  EJB 3 and Seam components are just annotated classes - so it is straight forward to unit-test them 
+  the "traditional" way. However, you will have to "emulate" the Dependency Injection and boot the 
+  EntityManager by yourself, someting that will cost you few additional lines of boilerplate code. 
+  With <a href="http://openejb.apache.org/">Apache OpenEJB</a>, which boots the entire container in 
+  less than one second, we can move a lot of our traditional integration tests to unit tests and 
+  avoid the useless boilerplate code. The <a href="http://openejb.apache.org/3.0/index.html">
+  documentation</a> and the <a href="http://openejb.apache.org/examples.html">examples</a> of 
+  OpenEJB are really neat and enable an easy jump-start. All the Apache OpenEJB examples are 
+  automated tests that run with a simple <code style="white-space:nobreak;">mvn clean install</code>. 
+  </p>
+  
+  <h3>Bootstrapping the OpenEJB Embedded Container</h3>
+  <p>The filter properties file has a section with properties dedicated to bootstrapping the
+  OpenEJB embedded container.
+  </p>
+  <pre>
+  
+  <font color="green"># Properties for running tests</font>
+  ds.test                  =h2
+  ds.database.name.test    =refimpl_db
+  ds.server.name.test      =
+  ds.driver.class.test     =org.h2.Driver
+  ds.connection.url.test   =jdbc:h2:mem:${ds.database.name.test}
+  ds.user.name.test        =sa
+  ds.password.test         =
+  ds.hibernate.dialect.test=org.hibernate.dialect.H2Dialect
+
+  pu.hibernate.dialect.test                         =${ds.hibernate.dialect.test}
+  pu.hibernate.hbm2ddl.auto.test                    =create-drop
+  pu.hibernate.default_batch_fetch_size.test        =16
+  pu.hibernate.show_sql.test                        =true
+  pu.hibernate.transaction.manager_lookup_class.test=org.apache.openejb.hibernate.TransactionManagerLookup
   </pre>
   
+  <h4>Embedded Configuration</h4>
+  <p>OpenEJB provide an own JNDI-SPI implementation, and plugs so naturally as JNDI-provider. 
+  The settings are factored out into <code style="white-space:nowrap;">
+  ejb/src/test/resources-openejb/jndi.properties</code>. You will get from the lookup a fully-featured 
+  EJB 3/3.1 container with injected dependencies and persistence. The <code>jndi.properties</code> 
+  file has the corresponding placeholders:
+  </p>
+  <pre>
+  
+  <font color="green"># OpenEJB jndi properties</font>
+  <font color="green"># see: http://openejb.apache.org/3.0/embedded-configuration.html</font>
+
+  <font color="green"># set the initial context factory</font>
+  <font color="green"># NOTE: It is important that this line is present in the jndi.properties file. </font>
+  <font color="green">#       Seam does not work without this line!</font>
+  <strong>java.naming.factory.initial=org.apache.openejb.client.LocalInitialContextFactory</strong>
+
+  <font color="green"># Corresponds to JBoss JNDI lookup format in ${app.jndi.pattern.test} property</font>
+  openejb.jndiname.format={deploymentId}/{interfaceType.annotationName}
+
+  <font color="green"># Multiple ejb's in classpath, </font>
+  <font color="green"># see: http://openejb.apache.org/3.0/system-properties.html</font>
+  openejb.deployments.classpath.ear=true
+
+  <font color="green"># Prefixing configuration files, e.g. persistence.xml ==> openejb.persistence.xml,</font>
+  <font color="green"># see: http://openejb.apache.org/3.0/alternate-descriptors.html</font>
+  openejb.altdd.prefix=openejb
+
+  <font color="green"># Database connection (same as *-ds.xml in JBoss), filtered using properties from POM during build</font>
+  ${ds.jndi.name} = new://Resource?type=DataSource
+  ${ds.jndi.name}.JdbcDriver=${ds.driver.class.test}
+  ${ds.jndi.name}.JdbcUrl=${ds.connection.url.test}
+  ${ds.jndi.name}.username=${ds.user.name.test}
+  ${ds.jndi.name}.password=${ds.password.test}
+  ${ds.jndi.name}.JtaManaged=true
+
+  ${ds.jndi.name}Unmanaged = new://Resource?type=DataSource
+  ${ds.jndi.name}Unmanaged.JdbcDriver=${ds.driver.class.test}
+  ${ds.jndi.name}Unmanaged.JdbcUrl=${ds.connection.url.test}
+  ${ds.jndi.name}Unmanaged.username=${ds.user.name.test}
+  ${ds.jndi.name}Unmanaged.password=${ds.password.test}
+  ${ds.jndi.name}Unmanaged.JtaManaged=false
+
+  <font color="green"># Overriding Persistence Unit (as an alternative to maintaining two persistence units)</font>
+  <font color="green"># see: http://cwiki.apache.org/OPENEJBx30/configuring-persistenceunits-in-tests.html </font>
+  ${pu.name}.hibernate.dialect=${ds.hibernate.dialect.test}
+  ${pu.name}.hibernate.hbm2ddl.auto=${pu.hibernate.hbm2ddl.auto.test}
+  ${pu.name}.hibernate.default_batch_fetch_size=${pu.hibernate.default_batch_fetch_size.test}
+  ${pu.name}.hibernate.show_sql=${pu.hibernate.show_sql.test}
+  ${pu.name}.hibernate.transaction.manager_lookup_class=${pu.hibernate.transaction.manager_lookup_class.test}
+  </pre>
+  
+  
+  
+  
+  
+  
+  <br/><br />
   <h1>NOTE: The rest of the tutorial is temporary out of sync with the project!</h1>
   <ol>
   <li>
@@ -1120,6 +1240,36 @@ and add it to <strong>svn ignore</strong>!
   <li>
     <a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
       Configuring a Seam EJB project for development with Maven and JBoss Tools
+    </a>  
+  </li>
+  <li>
+    <a href="http://mavenize.blogspot.com/2007/06/integration-testing-in-your-maven.html">
+      Integration Testing in your Maven Application
+    </a>  
+  </li>
+  <li>
+    <a href="http://wakaleo-consulting.com/component/content/article/213">
+      Unit tests are not integration tests
+    </a>  
+  </li>
+  <li>
+    <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">
+      Using OpenEJB for integration testing
+    </a>  
+  </li>
+  <li>
+    <a href="http://magnus-k-karlsson.blogspot.com/2009_07_01_archive.html">
+      Effective Unit Testing EJB 3.0 with OpenEJB
+    </a>  
+  </li>
+  <li>
+    <a href="http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html">
+      Restarting the embedded OpenEJB container between each test
+    </a>  
+  </li>
+  <li>
+    <a href="http://www.adam-bien.com/roller/abien/entry/how_to_unit_test_ejb">
+      How To Unit-Test EJB 3 ...in 0.8 Seconds [source code included]
     </a>  
   </li>
 </ul>
