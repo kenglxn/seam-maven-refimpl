@@ -16,6 +16,10 @@ along with this program.  If not, see <http://www.opensource.org/licenses/gpl-2.
 
  * Copyright (c) 22. June 2009 Adam Bien, blog.adam-bien.com
  * http://press.adam-bien.com
+ * 
+ * Modified by Leif Olsen
+ *   Added a lot of code from Crank, the Java Framework for CRUD and Validation: http://code.google.com/p/krank/
+ *   Actually added some code of my own :-)
  */
 package no.knowit.crud;
 
@@ -294,10 +298,10 @@ public class CrudServiceBean implements CrudService {
 		return query;
 	}
 
-	// -------------------------------
+	// ------------------------------------
 	// Utility methods
-	// TODO: move to separate package
-	// -------------------------------
+	// TODO: move to separate package/class
+	// ------------------------------------
 	private static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
 			"java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
 			"java.lang.Character", "java.lang.Double",   "java.lang.Float",
@@ -358,7 +362,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	/**
-	 * Creates a parametrized SELECT or DELETE JPQL query based on non null
+	 * Creates a parameterized SELECT or DELETE JPQL query based on non null
 	 * property values in the <code>fields</code> parameter
 	 * 
 	 * @return The created JPQL string
