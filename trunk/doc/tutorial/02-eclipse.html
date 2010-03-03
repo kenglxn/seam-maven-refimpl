@@ -6,9 +6,37 @@
 <link rel="stylesheet" href="../styles/base/base.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../styles/page-layout/page-layout.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../styles/site/site.css" type="text/css" media="screen" />
+
+<script type="text/javascript">
+function toggle( target ) {
+  if( target ) {
+    target = typeof target === "string" ? document.getElementById( target ) : target;
+    target.style.display = target.style.display.match(/none/i) ? 'block' : 'none';
+  }
+}
+
+function calulateIframeHeight( iframe ) {
+  if (iframe) {
+    if (iframe.contentDocument && iframe.contentDocument.body.scrollHeight) {
+      // W3C DOM iframe document syntax
+      iframe.height = iframe.contentDocument.body.scrollHeight;
+    } else if (iframe.Document && iframe.Document.body.scrollHeight) {
+      // IE DOM syntax
+      iframe.height = iframe.Document.body.scrollHeight;
+    }
+  }
+}
+
+function calulateIframeHeights() {
+  for( var elements = document.getElementsByTagName( 'iframe' ), i=0; i<elements.length; i++) {
+    calulateIframeHeight( elements[i] );
+  }
+}
+</script>
+
 <title>Seam Maven reference Implentation - Eclipse</title>
 </head>
-<body>
+<body onLoad="javascript: calulateIframeHeights();">
 
 <div id="sizer">
 <div id="expander">
@@ -764,7 +792,7 @@ the main source of configuration, so we'll start with the WAR.</p>
   
   <div class="code-frame">
     <code><strong>MyEntityList.java</strong></code>
-    <iframe frameborder="0" style="height:220px;" src="./code-listings/MyEntityList.java.html"></iframe>
+    <iframe frameborder="0" src="./code-listings/MyEntityList.java.html"></iframe>
   </div>
   
   <div class="code-frame">

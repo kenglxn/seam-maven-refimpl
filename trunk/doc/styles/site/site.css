@@ -103,7 +103,8 @@ div.code-frame {
 	margin-top: 1em;
 }
 .code-frame>iframe {
-	height: 300px; 
-	width:98%; 
-	border:1px #99B4D1 solid;
+  min-height: 1em;
+  max-height: 40em;
+	width: 100%;
+	border: 1px #cccccc solid; /*1px #99B4D1 solid;*/
 }
