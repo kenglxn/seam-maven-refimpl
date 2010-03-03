@@ -70,6 +70,8 @@ public class BootStrapOpenEjb {
 	 * @param properties
 	 * @return
 	 */
+	
+	@Deprecated
 	public static Properties getDefaultContextProperties(final Properties properties) {
 		Properties p = new Properties();
 		
