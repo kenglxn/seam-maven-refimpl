@@ -100,11 +100,14 @@ ul.links {
  * i-frame for code listing
  */
 div.code-frame {
-	margin-top: 1em;
+	margin: 1em 0 0 0;
 }
 .code-frame>iframe {
-  min-height: 1em;
-  max-height: 40em;
+  height: 0;
+  min-height: 10em;
+  max-height: 1000em;
 	width: 100%;
+  margin:  0;
+  padding: 0;
 	border: 1px #cccccc solid; /*1px #99B4D1 solid;*/
 }
