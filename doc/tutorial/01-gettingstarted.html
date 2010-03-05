@@ -7,38 +7,21 @@
 <link rel="stylesheet" href="../styles/page-layout/page-layout.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../styles/site/site.css" type="text/css" media="screen" />
 
+<link href="../js/fullsize/fullsize.css" media="screen" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="../js/jquery-min.js"></script>
+<script type="text/javascript" src="../js/fullsize/jquery.fullsize.minified.js"></script>
+<script type="text/javascript" src="../js/site.js"></script>
+
 <script type="text/javascript">
-function toggle( target ) {
-  if( target ) {
-    target = typeof target === "string" ? document.getElementById( target ) : target;
-    target.style.display = target.style.display.match(/none/i) ? 'block' : 'none';
-  }
-}
-
-function calulateIframeHeight( iframe ) {
-  if (iframe) {
-    if (iframe.contentDocument && iframe.contentDocument.body.scrollHeight) {
-      // W3C DOM iframe document syntax
-      iframe.height = iframe.contentDocument.body.scrollHeight;
-    } else if (iframe.Document && iframe.Document.body.scrollHeight) {
-      // IE DOM syntax
-      iframe.height = iframe.Document.body.scrollHeight;
-    }
-  }
-}
-
-function calulateIframeHeights() {
-  for( var elements = document.getElementsByTagName( 'iframe' ), i=0; i<elements.length; i++) {
-    calulateIframeHeight( elements[i] );
-  }
-}
-
+$(document).ready(function() {
+  $('img').fullsize();
+});
 </script>
 
 <title>Seam Maven reference Implentation - Getting Started</title>
 </head>
-<!-- <body onload="javascript: toggle('checkout-install-div'); toggle('export-template');"> -->
-<body onLoad="javascript: calulateIframeHeights();">
+<body>
 
 <div id="sizer">
 <div id="expander">
@@ -124,11 +107,15 @@ function calulateIframeHeights() {
   <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a 
   directory of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
 <ol class="vspace">
-  <li>Create a project directory, e.g. <code>C:/dev/projects/seam-maven-refimpl</code></li>
-  <li>In file explorer right click on the project directory and select 
+  <li>
+    Create a project directory, e.g. <code>C:/dev/projects/seam-maven-refimpl</code>
+  </li>
+  <li>
+    In file explorer right click on the project directory and select 
     <code><strong style="white-space:nowrap;">TortoiseSVN &gt; Repo-browser</strong></code> from the 
     menu.
-    <img src="img/tortoise-menu.png" style="width:450px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/tortoise-menu.png" longdesc="img/tortoise-menu.png" 
+      style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
     Check out the latest project source code from trunk.
@@ -143,8 +130,10 @@ function calulateIframeHeights() {
       <code>http://seam-maven-refimpl.googlecode.com/svn/trunk/</code>
     </li>
     </ul>
-    <img src="img/tortoise-repo-url.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
-    <img src="img/tortoise-checkout.png" style="width:750px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/tortoise-repo-url.png" longdesc="img/tortoise-repo-url.png" 
+      style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/tortoise-checkout.png" longdesc="img/tortoise-checkout.png" 
+      style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
     <ul>
       <li>
         In reposytory broser right click <code><strong>trunk</strong></code> and select 
@@ -159,26 +148,32 @@ function calulateIframeHeights() {
   </li>
   <li><a name="install-and-run">
     Open a command shell and navigate to your checkout directory.</a>
-    <img src="img/trunk-clean-install.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/trunk-clean-install.png" longdesc="img/trunk-clean-install.png" 
+      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
     Run: <code>mvn clean install</code>
     <ul>
     <li>
       Builds the <code>no.knowit.seam:root</code> pom which all projects in this trunk uses as its 
       root pom.
     </li>
-    <li>Builds the <code>no.knowit.seam:seam-utils</code> modules.</li>
+    <li>
+      Builds the <code>no.knowit.seam:seam-utils</code> modules.
+    </li>
     </ul>
-    <img src="img/trunk-clean-install-success.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/trunk-clean-install-success.png" longdesc="img/trunk-clean-install-success.png" 
+      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
     Navigate to <code>${SEAM_REFIMPL}</code> and run: <code>mvn clean install</code> to build the 
     seam-refimpl project.
-    <img src="img/refimpl-clean-install-success.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/refimpl-clean-install-success.png" longdesc="img/refimpl-clean-install-success.png" 
+      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
     Copy the <code>${SEAM_REFIMPL}/ear/target/seam-refimpl-ear.ear</code> file to the 
     <code>${JBOSS_DEPLOY}</code> directory.
-    <img src="img/refimpl-ear-to-as.png" style="width:450px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/refimpl-ear-to-as.png" longdesc="img/refimpl-ear-to-as.png" 
+      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>Start JBossAS<br/>
     JBoss AS runs on port 8080, so first ensure this port isn't already in use (be aware that Apache 
@@ -187,38 +182,39 @@ function calulateIframeHeights() {
     <code><strong>./run.sh</strong></code><br/>
     On Windows, execute the command:<br/>
     <code><strong>run</strong></code>	
-    <img src="img/jboss-run.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/jboss-run.png" longdesc="img/jboss-run.png" 
+      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>Open a browser and point the URL to 
     <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl/</a>.
     <br/>
-    <div class="inline-block" style="width:49%;">
-      <img src="img/seam-refimpl-welcome.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    <div class="inline-block" style="width:33%;">
+      <img src="img/seam-refimpl-welcome.png" longdesc="img/seam-refimpl-welcome.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
       Click on the <code><strong>Movie List</strong></code> menu.
     </div>
     
-    <div class="inline-block" style="width:49%;">
-      <img src="img/seam-refimpl-list.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    <div class="inline-block" style="width:33%;">
+      <img src="img/seam-refimpl-list.png" longdesc="img/seam-refimpl-list.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
       Click the <code><strong>Create movie</strong></code> button to create a new movie.
     </div>
     
-    <div class="inline-block" style="width:49%;">
-    <img src="img/seam-refimpl-login.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    <div class="inline-block" style="width:33%;">
+    <img src="img/seam-refimpl-login.png" longdesc="img/seam-refimpl-login.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
     Login and proceed to the registration form.
     </div>
     
-    <div class="inline-block" style="width:49%;">
-      <img src="img/seam-refimpl-register.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    <div class="inline-block" style="width:33%;">
+      <img src="img/seam-refimpl-register.png" longdesc="img/seam-refimpl-register.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
       Register and click <code><strong>Save</strong></code>.
     </div>
     
-    <div class="inline-block" style="width:49%;">
-      <img src="img/seam-refimpl-register-success.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    <div class="inline-block" style="width:33%;">
+      <img src="img/seam-refimpl-register-success.png" longdesc="img/seam-refimpl-register-success.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
       Click <code><strong>Done</strong></code> to return to the Movie List view.
     </div>
     
-    <div class="inline-block" style="width:49%;">
-      <img src="img/seam-refimpl-register-done.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    <div class="inline-block" style="width:33%;">
+      <img src="img/seam-refimpl-register-done.png" longdesc="img/seam-refimpl-register-done.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
     </div>
   </li>
   <li>
@@ -251,7 +247,8 @@ own project.
       </li>
       <li>From the <code><strong>Export</strong></code> dialog window select <code>Export directory</code> 
         and click <code><strong>OK</strong></code>
-        <img src="img/tortoise-export.png" style="width:800px; display:block; margin-top:1em; margin-bottom:1em;" />
+        <img src="img/tortoise-export.png"  longdesc="img/tortoise-export.png" 
+          style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
       </li>
     </ul>
   </li>
@@ -378,11 +375,13 @@ own project.
     Rename the datasource file <code>${SEAM_TUTORIAL}/ear/src/main/resources/seam-refimpl-ds.xml</code> 
     to <code>seam-tutorial-ds.xml</code> (by default the datasource file name starts with the 
     <code>${app.context}</code> property value).
-    <img src="img/seam-tutorial-rename-ds-xml.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/seam-tutorial-rename-ds-xml.png" longdesc="img/seam-tutorial-rename-ds-xml.png" 
+      style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   <li>
     Run <code>mvn clean install</code> to verify that the project builds.
-    <img src="img/seam-tutorial-clean-install-success.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/seam-tutorial-clean-install-success.png" longdesc="img/seam-tutorial-clean-install-success.png" 
+      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
   </li>
   </ol>
 
@@ -410,7 +409,8 @@ own project.
       Copy <code>${SEAM_TUTORIAL}/src/main/filters/filter-prod.properties</code> to 
       <code>${SEAM_TUTORIAL}/src/main/filters/filter-dev.properties</code> (add the 
       <code>filter-dev.properties</code> file to svn:ignore if your project is under version control).
-      <img src="img/filter-dev.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
+      <img src="img/filter-dev.png" longdesc="img/filter-dev.png" 
+        style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
     </li>
     <li>
       To get some support for incremental hot deployment at developement time, we want to deploy our 
@@ -521,7 +521,8 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
       </ul>
       <br/>
       Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
-      <img src="img/exploded-ear.png" style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
+      <img src="img/exploded-ear.png"  longdesc="img/exploded-ear.png" 
+        style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
     </li>
     <li>
       Start JBoss AS in debug mode, open a browser and point the URL to 
@@ -696,58 +697,10 @@ ds.server.name   =
   <p>The filters properties file with reference to the resource files keeping the 
   corresponding placeholders:
   </p>
-  <pre>
-  
-  ----------------------------------------------------------------------------------------------------------------------------------------------------
-  ${property}                                      = example value                                [file]
-  ----------------------------------------------------------------------------------------------------------------------------------------------------
-  ${env}                                           = dev                                          [ear/pom.xml, ejb/pom.xml, war/pom.xml]
-
-  ${jdk}                                           =                                              []
-  ${jdk.debug}                                     = true                                         [super pom]
-  ${jdk.optimize}                                  = false                                        [super pom]
-  ${jdk.source}                                    = 1.6                                          [super pom]
-  ${jdk.target}                                    = 1.6                                          [super pom]
-
-  ${as}                                            = jboss423                                     []
-  ${as.version}                                    = 4.2                                          [ear/pom.xml]
-  ${as.home}                                       = ./target/jboss-4.2.3.GA-jdk6                 []
-  ${as.deploy}                                     = ${as.home}/server/default/deploy             [ear/pom.xml, ejb/pom.xml, war/pom.xml]
-
-  ${app}                                           =                                              []
-  ${app.debug}                                     = ${jdk.debug}                                 [components.xml, web.xml]
-  ${app.unpack.modules}                            = true                                         [ear/pom.xml]
-  ${app.context}                                   = seam-refimpl                                 [ear/pom.xml, ejb/pom.xml, war/pom.xml, jboss-web.xml]
-  ${app.web.context}                               = ${app.context}                               [ear/pom.xml]
-  ${app.display.name}                              = Seam Reference Implementation                [ear/pom.xml, web.xml]
-  ${app.description}                               = The Seam Refimpl lorem ipsum dolar est...    [ear/pom.xml]
-  ${app.distributable}                             = false                                        [components.xml, web.xml]
-  ${app.jndi.pattern}                              = ${app.context}-ear/#{ejbName}/local          [components.xml]
-
-  ${ds}                                            = mysql5                                       []
-  ${ds.jndi.name}                                  = refimpl-unitDatabase                         [*-ds.xml, jndi.properties]
-  ${ds.database.name}                              = refimpl_db                                   []
-  ${ds.server.name}                                = localhost:3306                               []
-  ${ds.driver.class}                               = com.mysql.jdbc.Driver                        [*-ds.xml, jndi.properties]
-  ${ds.connection.url}                             = jdbc:mysql://${ds.server.name}/
-                                                     ${ds.database.name}?characterEncoding=UTF-8  [*-ds.xml, jndi.properties]
-  ${ds.user.name}                                  = root                                         [*-ds.xml, jndi.properties]
-  ${ds.password}                                   =                                              [*-ds.xml, jndi.properties]
-  ${ds.xml}                                        = ${app.context}-ds.xml                        [ear/pom.xml]
-  ${ds.hibernate.dialect}                          = org.hibernate.dialect.MySQL5InnoDBDialect    []
-
-  ${pu}                                            =                                              []
-  ${pu.name}                                       = refimpl-unit                                 [persistence.xml, components.xml, jndi.properties]
-  ${pu.jta.data.source}                            = java:/${ds.jndi.name}                        [persistence.xml, jndi.properties]
-  ${pu.hibernate.dialect}                          = ${ds.hibernate.dialect}                      [persistence.xml, jndi.properties]
-  ${pu.hibernate.hbm2ddl.auto}                     = create-drop                                  [persistence.xml, jndi.properties]
-  ${pu.hibernate.show_sql}                         = false                                        [persistence.xml, jndi.properties]
-  ${pu.hibernate.default_batch_fetch_size}         = 16                                           [persistence.xml, jndi.properties]
-  ${pu.jboss.entity.manager.factory.jndi.name}     = java:/${app.context}EntityManagerFactory     [persistence.xml, components.xml, jndi.properties]
-  ${pu.hibernate.transaction.manager_lookup_class} = org.hibernate.transaction.
-                                                     JBossTransactionManagerLookup                [persistence.xml, jndi.properties]
-  ----------------------------------------------------------------------------------------------------------------------------------------------------</pre>
-  
+  <div class="code-frame">
+    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <iframe scrolling="auto" frameborder="0" style="min-height:30em;" src="./code-listings/property-reference.html"></iframe>
+  </div>
   <p>The resource files, e.g. <code>persistence.xml</code>, are well documented, so we will not go 
   into details about the properties usage here.
   </p>
@@ -800,49 +753,11 @@ ds.server.name   =
   fully-featured EJB 3/3.1 container with injected dependencies and persistence. The 
   <code>jndi.properties</code> file has the corresponding placeholders:
   </p>
-  <pre>
-  
-  <font color="green"># OpenEJB jndi properties</font>
-  <font color="green"># see: http://openejb.apache.org/3.0/embedded-configuration.html</font>
+  <div class="code-frame">
+    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <iframe scrolling="auto" frameborder="0" style="min-height:30em;" src="./code-listings/openejb-jndi.properties.html"></iframe>
+  </div>
 
-  <font color="green"># set the initial context factory</font>
-  java.naming.factory.initial=org.apache.openejb.client.LocalInitialContextFactory
-
-  <font color="green"># Corresponds to JBoss JNDI lookup format in ${app.jndi.pattern.test} property</font>
-  openejb.jndiname.format={deploymentId}/{interfaceType.annotationName}
-
-  <font color="green"># Multiple ejb's in classpath, </font>
-  <font color="green"># see: http://openejb.apache.org/3.0/system-properties.html</font>
-  openejb.deployments.classpath.ear=true
-
-  <font color="green"># Prefixing configuration files, e.g. persistence.xml ==> openejb.persistence.xml,</font>
-  <font color="green"># see: http://openejb.apache.org/3.0/alternate-descriptors.html</font>
-  openejb.altdd.prefix=openejb
-
-  <font color="green"># Database connection (same as *-ds.xml in JBoss), filtered using properties from POM during build</font>
-  ${ds.jndi.name} = new://Resource?type=DataSource
-  ${ds.jndi.name}.JdbcDriver=${ds.driver.class.test}
-  ${ds.jndi.name}.JdbcUrl=${ds.connection.url.test}
-  ${ds.jndi.name}.username=${ds.user.name.test}
-  ${ds.jndi.name}.password=${ds.password.test}
-  ${ds.jndi.name}.JtaManaged=true
-
-  ${ds.jndi.name}Unmanaged = new://Resource?type=DataSource
-  ${ds.jndi.name}Unmanaged.JdbcDriver=${ds.driver.class.test}
-  ${ds.jndi.name}Unmanaged.JdbcUrl=${ds.connection.url.test}
-  ${ds.jndi.name}Unmanaged.username=${ds.user.name.test}
-  ${ds.jndi.name}Unmanaged.password=${ds.password.test}
-  ${ds.jndi.name}Unmanaged.JtaManaged=false
-
-  <font color="green"># Overriding Persistence Unit (as an alternative to maintaining two persistence units)</font>
-  <font color="green"># see: http://cwiki.apache.org/OPENEJBx30/configuring-persistenceunits-in-tests.html </font>
-  ${pu.name}.hibernate.dialect=${ds.hibernate.dialect.test}
-  ${pu.name}.hibernate.hbm2ddl.auto=${pu.hibernate.hbm2ddl.auto.test}
-  ${pu.name}.hibernate.default_batch_fetch_size=${pu.hibernate.default_batch_fetch_size.test}
-  ${pu.name}.hibernate.show_sql=${pu.hibernate.show_sql.test}
-  ${pu.name}.hibernate.transaction.manager_lookup_class=${pu.hibernate.transaction.manager_lookup_class.test}
-  </pre>
-  
   <h4>Additional Resource Files Needed to Run Seam Tests</h4>
   <p>In addition to the <code>jndi.properties</code> file OpenEJB need it's own version of 
   <code>components.xml</code> and <code>web.xml</code>. These files are placed in the 
@@ -869,29 +784,38 @@ ds.server.name   =
 
   <h4>HelloEjbTest</h4>
   <div class="code-frame">
-    <iframe frameborder="0" src="./code-listings/HelloEjbTest.java.html"></iframe>
+    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <iframe scrolling='no' frameborder="0" src="./code-listings/HelloEjbTest.java.html"></iframe>
   </div>
   <div class="code-frame">
-    <iframe frameborder="0" src="./code-listings/HelloEjb.java.html"></iframe>
+    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <iframe scrolling='no' frameborder="0" src="./code-listings/HelloEjb.java.html"></iframe>
   </div>
   <div class="code-frame">
-    <iframe frameborder="0" src="./code-listings/HelloEjbBean.java.html"></iframe>
+    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <iframe scrolling='no' frameborder="0" src="./code-listings/HelloEjbBean.java.html"></iframe>
   </div>
-  <img src="img/mvn-test.png" style="width:900px; display:block; margin-top:1em; margin-bottom:1em;" />
+
+  <img src="img/mvn-test.png" longdesc="img/mvn-test.png" 
+    style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
 
   <h4>HelloSeamTest</h4>
   <div class="code-frame">
-    <iframe frameborder="0" style="max-height:70em;" src="./code-listings/HelloSeamTest.java.html"></iframe>
+    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <iframe scrolling='no' frameborder="0" style="max-height:70em;" src="./code-listings/HelloSeamTest.java.html"></iframe>
   </div>
   <div class="code-frame">
-    <iframe frameborder="0" src="./code-listings/HelloSeam.java.html"></iframe>
+    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <iframe scrolling='no' frameborder="0" src="./code-listings/HelloSeam.java.html"></iframe>
   </div>
-  <img src="img/mvn-test-helloseamtest.png" style="width:900px; display:block; margin-top:1em; margin-bottom:1em;" />
+  <img src="img/mvn-test-helloseamtest.png"  longdesc="img/mvn-test-helloseamtest.png" 
+    style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
 
   <h4>Testing Seam Application User Interactions</h4>
   <p>TBD</p>
   <div class="code-frame">
-    <iframe frameborder="0" style="max-height:600em;" src="./code-listings/MovieTest.java.html"></iframe>
+    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <iframe scrolling='no' frameborder="0" style="max-height:600em;" src="./code-listings/MovieTest.java.html"></iframe>
   </div>
 
   <h4>Configure TestNG</h4>
@@ -1172,7 +1096,8 @@ ds.server.name   =
       </li>
     </ul><br/>
     Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
-    <img src="img/exploded-ear-tutorial.png" style="width:730px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
+    <img src="img/exploded-ear-tutorial.png" longdesc="img/exploded-ear-tutorial.png" 
+      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
   </li>
   <li>
     <a href="#start-jboss">Start JBoss, open browser, etc...</a>

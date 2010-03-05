@@ -15,7 +15,7 @@ function toggle( target ) {
   }
 }
 
-function calulateIframeHeight( iframe ) {
+function setIframeHeight( iframe ) {
   if (iframe) {
     if (iframe.contentDocument && iframe.contentDocument.body.scrollHeight) {
       // W3C DOM iframe document syntax
@@ -27,16 +27,16 @@ function calulateIframeHeight( iframe ) {
   }
 }
 
-function calulateIframeHeights() {
+function setIframeHeights() {
   for( var elements = document.getElementsByTagName( 'iframe' ), i=0; i<elements.length; i++) {
-    calulateIframeHeight( elements[i] );
+    setIframeHeight( elements[i] );
   }
 }
 </script>
 
 <title>Seam Maven reference Implentation - Eclipse</title>
 </head>
-<body onLoad="javascript: calulateIframeHeights();">
+<body onLoad="javascript: setIframeHeights();">
 
 <div id="sizer">
 <div id="expander">
