@@ -36,8 +36,10 @@ li pre {
   font-size: 10px;
 }
 
-img {
-  margin: 1em 0;
+img.screenshot {
+  display: block;
+  margin-top:1em; 
+  margin-bottom:1em;
 }
 
 ol, ul {
