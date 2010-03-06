@@ -1,8 +1,8 @@
 /* 
  * File        : site.js
  * Version     : 
- * Author      : Leif Olsen, leif.olsen@knowit.no
- * Copyright   : none
+ * Author      : leif.olsen@knowit.no
+ * Copyright   : LGPL
  * Description : 
  * Notes       :
  * Dependencies: 
@@ -10,14 +10,8 @@
  * History     : 
  *               
  */
-var iframeDelta = (document.all && !window.opera) ? 2 : 0; // Correct some pixelstuff in m$ie 6/7/8
-
 function getElement( element ) {
   return element ? (typeof element === "string" ? document.getElementById( element ) : element) : null;
-}
-
-function toEms( px ) {
-  return (px / 10) + 'em';
 }
 
 function toggleElement( target ) {
@@ -28,29 +22,43 @@ function toggleElement( target ) {
   return target;
 }
 
-function getIframeDocumentHeight( target ) {
-  if( target ) {
-    return target.contentDocument && target.contentDocument.body.scrollHeight // W3C DOM document syntax
-         ? target.contentDocument.body.scrollHeight 
-         : target.Document && target.Document.body.scrollHeight               // IE DOM syntax
-         ? target.Document.body.scrollHeight 
-         : 0;
+/**
+ * iframe singleton helper
+ */
+var IframeHelper = ( function() {
+
+  // Private attributes and methods
+  delta = (document.all && !window.opera) ? 6 : 0; // Correct some pixelstuff in m$ie 6/7/8
+
+  toEms = function( px ) {
+    return (px / 10) + 'em';
   }
-  return 0;
-}
 
-function toggleIframe( target ) {
-
-  toggle = function( element ) {
-    var iframeHeight = (parseFloat(element.style.height) || 0) * 10,
-        docHeight    = getIframeDocumentHeight( element );
+  getIframeDocumentHeight = function( iframe ) {
+    if( iframe ) {
+      return iframe.contentDocument && iframe.contentDocument.body.scrollHeight // W3C DOM document syntax
+           ? iframe.contentDocument.body.scrollHeight 
+           : iframe.Document && iframe.Document.body.scrollHeight               // IE DOM syntax
+           ? iframe.Document.body.scrollHeight 
+           : 0;
+    }
+    return 0;
+  };
+  
+  doToggle = function( iframe ) {
+    var iframeHeight = (parseFloat(iframe.style.height) || 0) * 10,
+        docHeight    = getIframeDocumentHeight( iframe );
         
-    element.style.height = toEms( iframeHeight < docHeight ? docHeight + iframeDelta : 0 );
+    iframe.style.height = toEms( iframeHeight < docHeight ? docHeight + delta : 0 );
   }
 
-  var elements = target.parentNode.getElementsByTagName( 'iframe' )
-  for( var i=0; i<elements.length; i++) {
-    toggle( elements[i] );
+return ({
+  // Public attributes and methods
+  toggle: function( target ) {
+    $(target).parent( '.code-frame' ).children( 'iframe' ).each( function() {
+      doToggle( this );
+    });
   }
-  return elements;
-}
+}); //~return
+
+} ) (); //~anonymous function immediately invoked with ()

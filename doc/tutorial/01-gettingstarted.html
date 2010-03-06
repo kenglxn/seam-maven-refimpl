@@ -11,12 +11,18 @@
 
 <script type="text/javascript" src="../js/jquery-min.js"></script>
 <script type="text/javascript" src="../js/fullsize/jquery.fullsize.minified.js"></script>
+
 <script type="text/javascript" src="../js/site.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function() {
-  $('img').fullsize();
-});
+  $(document).ready(function() {
+    $(".code-frame a").click(function( event ) {
+      event.preventDefault(); 
+      IframeHelper.toggle(this);
+    });
+    
+    $('img').fullsize();
+  });
 </script>
 
 <title>Seam Maven reference Implentation - Getting Started</title>
@@ -77,7 +83,7 @@ $(document).ready(function() {
   </ul>
 </div>
 <div class="inline-block" style="width:32%;padding-left:2%;">
-  <img src="img/maven-project-structure.png" class="inline-block" style="width:100%; display:block; margin-left:1.5em; margin-top:1em; margin-bottom:1em;" />
+  <img src="img/maven-project-structure.png" style="width:100%; margin-left:1.5em;" />
 </div>
 
 <h2>Download and Install Software</h2>
@@ -114,8 +120,7 @@ $(document).ready(function() {
     In file explorer right click on the project directory and select 
     <code><strong style="white-space:nowrap;">TortoiseSVN &gt; Repo-browser</strong></code> from the 
     menu.
-    <img src="img/tortoise-menu.png" longdesc="img/tortoise-menu.png" 
-      style="width:400px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/tortoise-menu.png" longdesc="img/tortoise-menu.png" style="width:400px;" />
   </li>
   <li>
     Check out the latest project source code from trunk.
@@ -130,10 +135,8 @@ $(document).ready(function() {
       <code>http://seam-maven-refimpl.googlecode.com/svn/trunk/</code>
     </li>
     </ul>
-    <img src="img/tortoise-repo-url.png" longdesc="img/tortoise-repo-url.png" 
-      style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
-    <img src="img/tortoise-checkout.png" longdesc="img/tortoise-checkout.png" 
-      style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/tortoise-repo-url.png" longdesc="img/tortoise-repo-url.png" class="screenshot" style="width:350px;" />
+    <img src="img/tortoise-checkout.png" longdesc="img/tortoise-checkout.png" class="screenshot" style="width:700px;" />
     <ul>
       <li>
         In reposytory broser right click <code><strong>trunk</strong></code> and select 
@@ -149,7 +152,7 @@ $(document).ready(function() {
   <li><a name="install-and-run">
     Open a command shell and navigate to your checkout directory.</a>
     <img src="img/trunk-clean-install.png" longdesc="img/trunk-clean-install.png" 
-      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+      class="screenshot" style="width:500px;" />
     Run: <code>mvn clean install</code>
     <ul>
     <li>
@@ -161,19 +164,19 @@ $(document).ready(function() {
     </li>
     </ul>
     <img src="img/trunk-clean-install-success.png" longdesc="img/trunk-clean-install-success.png" 
-      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+      class="screenshot" style="width:500px;" />
   </li>
   <li>
     Navigate to <code>${SEAM_REFIMPL}</code> and run: <code>mvn clean install</code> to build the 
     seam-refimpl project.
     <img src="img/refimpl-clean-install-success.png" longdesc="img/refimpl-clean-install-success.png" 
-      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+      class="screenshot" style="width:500px;" />
   </li>
   <li>
     Copy the <code>${SEAM_REFIMPL}/ear/target/seam-refimpl-ear.ear</code> file to the 
     <code>${JBOSS_DEPLOY}</code> directory.
     <img src="img/refimpl-ear-to-as.png" longdesc="img/refimpl-ear-to-as.png" 
-      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+      class="screenshot" style="width:500px;" />
   </li>
   <li>Start JBossAS<br/>
     JBoss AS runs on port 8080, so first ensure this port isn't already in use (be aware that Apache 
@@ -182,39 +185,44 @@ $(document).ready(function() {
     <code><strong>./run.sh</strong></code><br/>
     On Windows, execute the command:<br/>
     <code><strong>run</strong></code>	
-    <img src="img/jboss-run.png" longdesc="img/jboss-run.png" 
-      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/jboss-run.png" longdesc="img/jboss-run.png" class="screenshot" style="width:500px;" />
   </li>
   <li>Open a browser and point the URL to 
     <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl/</a>.
     <br/>
     <div class="inline-block" style="width:33%;">
-      <img src="img/seam-refimpl-welcome.png" longdesc="img/seam-refimpl-welcome.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      <img src="img/seam-refimpl-welcome.png" longdesc="img/seam-refimpl-welcome.png" 
+        class="screenshot" style="width:100%;" />
       Click on the <code><strong>Movie List</strong></code> menu.
     </div>
     
     <div class="inline-block" style="width:33%;">
-      <img src="img/seam-refimpl-list.png" longdesc="img/seam-refimpl-list.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      <img src="img/seam-refimpl-list.png" longdesc="img/seam-refimpl-list.png" 
+        class="screenshot" style="width:100%;" />
       Click the <code><strong>Create movie</strong></code> button to create a new movie.
     </div>
     
     <div class="inline-block" style="width:33%;">
-    <img src="img/seam-refimpl-login.png" longdesc="img/seam-refimpl-login.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+    <img src="img/seam-refimpl-login.png" longdesc="img/seam-refimpl-login.png"
+      class="screenshot" style="width:100%;" />
     Login and proceed to the registration form.
     </div>
     
     <div class="inline-block" style="width:33%;">
-      <img src="img/seam-refimpl-register.png" longdesc="img/seam-refimpl-register.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      <img src="img/seam-refimpl-register.png" longdesc="img/seam-refimpl-register.png" 
+        class="screenshot" style="width:100%;" />
       Register and click <code><strong>Save</strong></code>.
     </div>
     
     <div class="inline-block" style="width:33%;">
-      <img src="img/seam-refimpl-register-success.png" longdesc="img/seam-refimpl-register-success.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      <img src="img/seam-refimpl-register-success.png" longdesc="img/seam-refimpl-register-success.png" 
+        class="screenshot" style="width:100%;" />
       Click <code><strong>Done</strong></code> to return to the Movie List view.
     </div>
     
     <div class="inline-block" style="width:33%;">
-      <img src="img/seam-refimpl-register-done.png" longdesc="img/seam-refimpl-register-done.png" style="width:100%; display:block; margin-top:1em; margin-bottom:1em;" />
+      <img src="img/seam-refimpl-register-done.png" longdesc="img/seam-refimpl-register-done.png" 
+        class="screenshot" style="width:100%;" />
     </div>
   </li>
   <li>
@@ -248,7 +256,7 @@ own project.
       <li>From the <code><strong>Export</strong></code> dialog window select <code>Export directory</code> 
         and click <code><strong>OK</strong></code>
         <img src="img/tortoise-export.png"  longdesc="img/tortoise-export.png" 
-          style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+          class="screenshot" style="width:500px;" />
       </li>
     </ul>
   </li>
@@ -376,12 +384,12 @@ own project.
     to <code>seam-tutorial-ds.xml</code> (by default the datasource file name starts with the 
     <code>${app.context}</code> property value).
     <img src="img/seam-tutorial-rename-ds-xml.png" longdesc="img/seam-tutorial-rename-ds-xml.png" 
-      style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
+      class="screenshot" style="width:350px;" />
   </li>
   <li>
     Run <code>mvn clean install</code> to verify that the project builds.
     <img src="img/seam-tutorial-clean-install-success.png" longdesc="img/seam-tutorial-clean-install-success.png" 
-      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+      class="screenshot" style="width:500px;" />
   </li>
   </ol>
 
@@ -410,7 +418,7 @@ own project.
       <code>${SEAM_TUTORIAL}/src/main/filters/filter-dev.properties</code> (add the 
       <code>filter-dev.properties</code> file to svn:ignore if your project is under version control).
       <img src="img/filter-dev.png" longdesc="img/filter-dev.png" 
-        style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" />
+        class="screenshot" style="width:350px;" />
     </li>
     <li>
       To get some support for incremental hot deployment at developement time, we want to deploy our 
@@ -522,7 +530,7 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
       <br/>
       Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
       <img src="img/exploded-ear.png"  longdesc="img/exploded-ear.png" 
-        style="width:350px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
+        class="screenshot" style="width:350px;" />
     </li>
     <li>
       Start JBoss AS in debug mode, open a browser and point the URL to 
@@ -698,7 +706,7 @@ ds.server.name   =
   corresponding placeholders:
   </p>
   <div class="code-frame">
-    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <a href="">Show or Hide Code</a>
     <iframe scrolling="auto" frameborder="0" style="min-height:30em;" src="./code-listings/property-reference.html"></iframe>
   </div>
   <p>The resource files, e.g. <code>persistence.xml</code>, are well documented, so we will not go 
@@ -754,7 +762,7 @@ ds.server.name   =
   <code>jndi.properties</code> file has the corresponding placeholders:
   </p>
   <div class="code-frame">
-    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <a href="">Show or Hide Code</a>
     <iframe scrolling="auto" frameborder="0" style="min-height:30em;" src="./code-listings/openejb-jndi.properties.html"></iframe>
   </div>
 
@@ -784,37 +792,34 @@ ds.server.name   =
 
   <h4>HelloEjbTest</h4>
   <div class="code-frame">
-    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <a href="">Show or Hide Code</a>
     <iframe scrolling='no' frameborder="0" src="./code-listings/HelloEjbTest.java.html"></iframe>
   </div>
   <div class="code-frame">
-    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
-    <iframe scrolling='no' frameborder="0" src="./code-listings/HelloEjb.java.html"></iframe>
+    <iframe scrolling='no' frameborder="0" style="min-height:11.6em;" src="./code-listings/HelloEjb.java.html"></iframe>
   </div>
   <div class="code-frame">
-    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <a href="">Show or Hide Code</a>
     <iframe scrolling='no' frameborder="0" src="./code-listings/HelloEjbBean.java.html"></iframe>
   </div>
 
-  <img src="img/mvn-test.png" longdesc="img/mvn-test.png" 
-    style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+  <img src="img/mvn-test.png" longdesc="img/mvn-test.png" class="screenshot" style="width:500px;" />
 
   <h4>HelloSeamTest</h4>
   <div class="code-frame">
-    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <a href="">Show or Hide Code</a>
     <iframe scrolling='no' frameborder="0" style="max-height:70em;" src="./code-listings/HelloSeamTest.java.html"></iframe>
   </div>
   <div class="code-frame">
-    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
-    <iframe scrolling='no' frameborder="0" src="./code-listings/HelloSeam.java.html"></iframe>
+    <iframe scrolling='no' frameborder="0" style="min-height:19em;" src="./code-listings/HelloSeam.java.html"></iframe>
   </div>
   <img src="img/mvn-test-helloseamtest.png"  longdesc="img/mvn-test-helloseamtest.png" 
-    style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" />
+    class="screenshot" style="width:500px;" />
 
   <h4>Testing Seam Application User Interactions</h4>
   <p>TBD</p>
   <div class="code-frame">
-    <a href="#" onClick="javascript: toggleIframe(this); return false;">Show or Hide Code</a>
+    <a href="">Show or Hide Code</a>
     <iframe scrolling='no' frameborder="0" style="max-height:600em;" src="./code-listings/MovieTest.java.html"></iframe>
   </div>
 
@@ -934,6 +939,16 @@ ds.server.name   =
         OpenEJB: Functional testing with OpenEJB, Jetty and Selenium
       </a>  
     </li>
+    <li>
+      <a href="http://www.andre-simon.de/doku/highlight/en/highlight.html">
+        Highlight
+      </a>  
+    </li>
+    <li>
+      <a href="http://www.addfullsize.com/">
+        Fullsize
+      </a>  
+    </li>
   </ul>
 
 
@@ -943,6 +958,10 @@ ds.server.name   =
 
 
 
+  
+  
+  
+  
 
 
 
@@ -1097,7 +1116,7 @@ ds.server.name   =
     </ul><br/>
     Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
     <img src="img/exploded-ear-tutorial.png" longdesc="img/exploded-ear-tutorial.png" 
-      style="width:500px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
+      class="screenshot" style="width:500px;" />
   </li>
   <li>
     <a href="#start-jboss">Start JBoss, open browser, etc...</a>
