@@ -949,23 +949,24 @@ from the application server.
       mysql-connector-java-*-bin.jar file if exist).
   </li>
   <li>
-    Start the database server and create schema, e.g. <code>"refimpl_db"</code> using the MySql 
+    Start the database server and create schema, e.g. <code>"tutorial_db"</code> using the MySql 
     Administrator GUI.<br/>
-    Or, if you are a MySql macho, you can type the following SQL DDL by hand: 
-    <code style="white-space:nowrap"><strong>CREATE DATABASE refimpl_db CHARACTER SET utf8 COLLATE utf8_general_ci;
-    </strong></code><br/>
-    <strong>Note:</strong> Allways use UTF8 for i18n.
+    Or, if you are a MySql macho, open a MySql console and type the following SQL DDL by hand:<br/><br/>
+    <code style="white-space:nowrap"><strong>
+      CREATE DATABASE tutorial_db CHARACTER SET utf8 COLLATE utf8_general_ci;
+    </strong></code><br/><br/>
+    Use UTF8 for i18n!
   </li>
   <li>
     Edit the filter properties file, <code>filter-prod.properties</code> or 
     <code>filter-dev.properties</code>, e.g.:
     <pre><font color="green"># MySQL5</font>
 #ds                  =<font color="blue">mysql</font>
-#ds.jndi.name        =<font color="red">refimplDatabase</font>
-#ds.database.name    =<font color="blue">refimpl_db</font>
-#ds.server.name      =<font color="red">localhost:3306</font>
+#ds.jndi.name        =<font color="blue">tutorialDatabase</font>
+#ds.database.name    =<font color="blue">tutorial_db</font>
+#ds.server.name      =<font color="blue">localhost:3306</font>
 #ds.driver.class     =<font color="blue">com.mysql.jdbc.Driver</font>
-#ds.connection.url   =<font color="blue">jdbc:mysql://</font><font color="red">${ds.server.name}</font><font color="blue">/</font><font color="red">${ds.database.name}</font><font color="blue">?characterEncoding=UTF-8</font>
+#ds.connection.url   =<font color="blue">jdbc:mysql://${ds.server.name}/${ds.database.name}?characterEncoding=UTF-8</font>
 #ds.user.name        =<font color="blue">root</font>
 #ds.password         =
 #ds.hibernate.dialect=<font color="blue">org.hibernate.dialect.MySQL5InnoDBDialect</font>
@@ -1100,6 +1101,15 @@ from the application server.
   </li>
 </ol>
 
+<h3>How to Enable Logging in JBoss AS</h3>
+<p>For those who had a hard time configuring "their own" log4j.properties or log4j.xml within their 
+application on JBoss, see: 
+<a href="http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html">
+  How do i use my own log4j properties or xml file in JBoss</a> and 
+<a href="http://www.jboss.org/feeds/post/how_do_i_use_my_own_log4j_properties_or_xml_file_in_jboss">
+  JBoss Community</a>
+</p>
+
 <h3>Tips for Debugging</h3>
 <p>When your application starts up it will print all components being created (Seam and your own) 
 and the context they are placed in. Validate that your new component is displayed as well.
@@ -1119,7 +1129,6 @@ Seam has a debug page showing useful information. To use it, add the following d
   Open your browser and point to the following URL to see the debug page.
   <a href="http://localhost:8080/seam-tutorial/debug.seam">http://localhost:8080/seam-tutorial/debug.seam</a>
 </p>
-
 
 <h3>Files To Add To Svn Ignore</h3>
 <p>Some files and directories, like user spesific settings, generated files and IDE settings should 
