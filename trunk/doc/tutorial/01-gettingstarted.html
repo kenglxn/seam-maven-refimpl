@@ -57,7 +57,7 @@
   The main inspiration for using Apace OpenEJB is the post, 
   <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">Using OpenEJB for 
   integration testing</a>, on <a href="http://seamframework.org/">SeamFramework.org</a>. A lot of
-  code is copied from this post, so a zillion thanks to Stephan B :-)
+  code is copied from this post, so a zillion thanks to Stephan B and Oliver Thierry :-)
   </p>
   <p>This tutorial outlines the necessary steps to get a Mavenized Seam project up and 
   running on a JBoss Application Server (JBoss-4.2.3.AS or Jboss-5.1.x.AS) and how to effectively  
@@ -713,19 +713,50 @@ ds.server.name   =
   into details about the properties usage here.
   </p>
   
+  <p>Alternative ways to organize properties can be found here:
+    <a href="http://maven.apache.org/guides/introduction/introduction-to-profiles.html">
+      Maven: Introduction to Build Profiles
+    </a>, 
+    <a href="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering.html">
+      Sonatype: Chapter 9. Properties and Resource Filtering
+    </a>
+  </p>
+  
   <h2>Testing</h2>
   
-  <p>As programmers we want to have good code quality, which means good unit test test coverage.
-  EJB 3 and Seam components are just annotated classes - so it is straight forward to unit-test them 
-  the "traditional" way. However, you will have to "emulate" the Dependency Injection and boot the 
-  EntityManager by yourself, someting that will cost you few additional lines of boilerplate code. 
+  <p>The area of development that has routinely slowed down Java EE (and Seam) developers most often 
+  is testing.
+  Before the embedded EJB container era you had to write teststs, redeploy your application, restart 
+  the application server and then run your tests inside the application server. It's just slow and 
+  boring to do it that way and as a result projects tend to end up with no automated tests at all. 
+  Now, with the advent of embedded EJB3 containers - which boots super fast, need a minimum of 
+  configuration and integrates nicely with Maven - there are noe excuses for not writing tests. 
+  Writing tests are simply fun again.
+  </p>
+  <p>Due to problems booting the <a href="http://www.jboss.org/jbossmc">JBoss Micro Container</a> 
+  with Maven, we have choosen to use the <a href="http://openejb.apache.org/">
+  Apache OpenEJB</a> embedded container to test Seam (and EJB-3.x) components. The seam-refimpl 
+  project template comes preconfigured with the Apache OpenEJB embedded container for running tests.
+  The main inspiration for using Apace OpenEJB is the post, 
+  <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">Using OpenEJB for 
+  integration testing</a>, on <a href="http://seamframework.org/">SeamFramework.org</a>. A lot of
+  code is copied from this post, so a zillion thanks to Stephan B and Oliver Thierry :-)
   </p>
   <p>
-  The main difference between a unit test and a integration test is that unit test runs fast and 
-  integration tests tend to run slowly. 
-  With <a href="http://openejb.apache.org/">Apache OpenEJB</a>, which boots the entire container in 
-  less than one second, we can move a lot of our traditional integration tests to unit tests and 
-  avoid the useless boilerplate code. The 
+  The classic difference between integration and unit testing is that unit tests run in isolation, 
+  or near-isolation. Integration tests, on the other hand, test the whole stack. With an embedded
+  container at hand, another and maybe better way is to group tests by how fast they execute; 
+  unit test runs fast and integration tests tend to run slowly. Unit tests are normally executed
+  inside our favourite IDE and running as many tests as possible from IDE should definitively 
+  increase our productivity.
+  </p>
+  <p>As programmers we want to have good code quality, which means good unit test test coverage.
+  EJB 3 and Seam components are just annotated classes - so it is straight forward to unit-test them 
+  the "traditional" way. However, you will have to "emulate" the Dependency Injection, boot the 
+  EntityManager and manage transactions by yourself , someting that will cost you few additional 
+  lines of boilerplate code. With <a href="http://openejb.apache.org/">Apache OpenEJB</a>, which 
+  boots the entire container in less than one second, we can move a lot of our traditional 
+  integration tests to unit tests and avoid the useless boilerplate code. The 
   <a href="http://openejb.apache.org/3.0/index.html">documentation</a> and the 
   <a href="http://openejb.apache.org/examples.html">examples</a> of OpenEJB are really neat and 
   enable an easy jump-start. All the Apache OpenEJB examples are automated tests that run with a 
@@ -733,38 +764,42 @@ ds.server.name   =
   </p>
   
   <h3>Bootstrapping the OpenEJB Embedded Container</h3>
+  <p>OpenEJB provide an own JNDI-SPI implementation, and plugs so naturally as JNDI-provider. 
+  The settings are factored out into the <code style="white-space:nowrap;">
+  ejb/src/test/resources-openejb/jndi.properties</code> file. You will get from the lookup a 
+  fully-featured EJB 3/3.1 container with injected dependencies and persistence. 
+  </p>
   <p>The filter properties file has a section with properties dedicated to bootstrapping the
   OpenEJB embedded container:
   </p>
   <pre>
   
   <font color="green"># Properties for running tests</font>
-  ds.test                  =h2
-  ds.database.name.test    =refimpl_db
-  ds.server.name.test      =
-  ds.driver.class.test     =org.h2.Driver
-  ds.connection.url.test   =jdbc:h2:mem:${ds.database.name.test}
-  ds.user.name.test        =sa
-  ds.password.test         =
-  ds.hibernate.dialect.test=org.hibernate.dialect.H2Dialect
-
+  ds.test                                           =h2
+  ds.database.name.test                             =refimpl_db
+  ds.server.name.test                               =
+  ds.driver.class.test                              =org.h2.Driver
+  ds.connection.url.test                            =jdbc:h2:mem:${ds.database.name.test}
+  ds.user.name.test                                 =sa
+  ds.password.test                                  =
+  ds.hibernate.dialect.test                         =org.hibernate.dialect.H2Dialect
   pu.hibernate.dialect.test                         =${ds.hibernate.dialect.test}
   pu.hibernate.hbm2ddl.auto.test                    =create-drop
   pu.hibernate.default_batch_fetch_size.test        =16
   pu.hibernate.show_sql.test                        =true
-  pu.hibernate.transaction.manager_lookup_class.test=org.apache.openejb.hibernate.TransactionManagerLookup</pre>
+  pu.hibernate.transaction.manager_lookup_class.test=org.apache.openejb.hibernate.TransactionManagerLookup
+  </pre>
   
-  <h4>OpenEJB Embedded Configuration</h4>
-  <p>OpenEJB provide an own JNDI-SPI implementation, and plugs so naturally as JNDI-provider. 
-  The settings are factored out into the <code style="white-space:nowrap;">
-  ejb/src/test/resources-openejb/jndi.properties</code> file. You will get from the lookup a 
-  fully-featured EJB 3/3.1 container with injected dependencies and persistence. The 
-  <code>jndi.properties</code> file has the corresponding placeholders:
+  <p>The <code>jndi.properties</code> file has the corresponding placeholders:
   </p>
   <div class="code-frame">
     <a href="">Show or Hide Code</a>
     <iframe scrolling="auto" frameborder="0" style="min-height:30em;" src="./code-listings/openejb-jndi.properties.html"></iframe>
   </div>
+  
+  <p> You can find more information about OpenEJB embedded configuration here:
+    <a href="http://openejb.apache.org/3.0/embedded-configuration.html">OpenEJB: Embedded Configuration</a>
+  </p>
 
   <h4>Additional Resource Files Needed to Run Seam Tests</h4>
   <p>In addition to the <code>jndi.properties</code> file OpenEJB need it's own version of 
@@ -788,9 +823,18 @@ ds.server.name   =
   </pre>
   
   <h3>Test Examples</h3>
-  <p>TBD</p>
-
+  <p>I you haven't done so yet, read trough <a href="http://docs.jboss.org/seam/2.2.0.GA/reference/en-US/html/testing.html">
+  Chapter 37. Testing Seam applications</a> in the Seam reference manual.
+  </p>
+  
   <h4>HelloEjbTest</h4>
+  <p>If you only have EJB components to test you could inherit your test class from 
+  <code>no.knowit.openejb.mock.OpenEjbTest</code> which provides Base OpenEJB test functionality for 
+  TestNG tests. If you don't want to use TestNG then follow e.g. 
+  this tutorial: <a href="http://magnus-k-karlsson.blogspot.com/2009_07_01_archive.html">
+  Effective Unit Testing EJB 3.0 with OpenEJB</a>
+  </p>
+  
   <div class="code-frame">
     <a href="">Show or Hide Code</a>
     <iframe scrolling='no' frameborder="0" src="./code-listings/HelloEjbTest.java.html"></iframe>
@@ -806,6 +850,13 @@ ds.server.name   =
   <img src="img/mvn-test.png" longdesc="img/mvn-test.png" class="screenshot" style="width:500px;" />
 
   <h4>HelloSeamTest</h4>
+  <p>Seam tests should inherit from <code>no.knowit.seam.openejb.mock.SeamOpenEjbTest</code> 
+  which provides base Seam test functionality for TestNG tests running in the OpenEJB embedded 
+  container. The class is a copy of the <code>org.jboss.seam.mock.SeamTest</code> - the only 
+  difference is of cource that the <code>no.knowit.seam.openejb.mock.SeamOpenEjbTest</code> class 
+  set up the fixture needed to boot the OpenEJB embedded container.
+  </p>
+  
   <div class="code-frame">
     <a href="">Show or Hide Code</a>
     <iframe scrolling='no' frameborder="0" style="max-height:70em;" src="./code-listings/HelloSeamTest.java.html"></iframe>
@@ -817,18 +868,44 @@ ds.server.name   =
     class="screenshot" style="width:500px;" />
 
   <h4>Testing Seam Application User Interactions</h4>
-  <p>TBD</p>
+  <p>The <code>SeamOpenEjbTest</code> (equivalent to <code>SeamTest</code>) class lets you write 
+  scripted tests, in a simulated JSF environment. The role of a scripted test is to reproduce the 
+  interaction between the view and the Seam components. In other words, you get to pretend you are 
+  the JSF implementation! This approach tests everything except the view.
+  </p>
+  
   <div class="code-frame">
     <a href="">Show or Hide Code</a>
     <iframe scrolling='no' frameborder="0" style="max-height:600em;" src="./code-listings/MovieTest.java.html"></iframe>
   </div>
 
+  <p>You'll find plenty of tests for the Seam example applications which demonstrate more complex 
+  cases.
+  </p>
+  
   <h4>Configure TestNG</h4>
-  <p>TBD</p>
+  <p>To configure TestNG refer to e.g.:</p>
+  <ul>
+    <li>
+      <a href="http://wiki.cantara.no/display/smidigtonull/Maven+Test+FAQ">Maven Test FAQ</a>
+    </li>
+    <li>
+      <a href="http://in.relation.to/Bloggers/TestingEJB3AppsWithTestNG">Testing EJB3 apps with TestNG</a>
+    </li>
+    <li>
+      <a href="http://testng.org/doc/index.html">TestNG home</a>
+    </li>
+  </ul>
+  
 
 
   <h2>Useful Links</h2>
   <ul>
+    <li>
+      <a href="http://www.sonatype.com/books/mvnref-book/reference/public-book.html">
+        Maven: The Complete Reference
+      </a>
+    </li>
     <li>
       <a href="http://www.maestrodev.com/better-build-maven">
         Better Builds with Maven
@@ -840,14 +917,35 @@ ds.server.name   =
       </a>
     </li>
     <li>
-      <a href="http://sujitpal.blogspot.com/2006/10/maven2-multi-environment-filter-setup.html">
-        A Maven2 multi-environment filter setup
+      <a href="http://docs.codehaus.org/display/MAVENUSER/Mini+Guides">
+        Codehaus: Maven Mini Guides
       </a>
     </li>
     <li>
-      <a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
-        Configuring a Seam EJB project for development with Maven and JBoss Tools
-      </a>  
+      <a href="http://www.javaworld.com/javaworld/jw-12-2005/jw-1205-maven.html">
+        JavaWorld: An introduction to Maven 2
+      </a>
+    </li>
+    <li>
+      <a href="http://www.javaworld.com/javaworld/jw-02-2006/jw-0227-maven.html">
+        JavaWorld: Get the most out of Maven 2 site generation
+      </a>
+    </li>
+    <li>
+      <a href="http://www.javaworld.com/javaworld/jw-11-2008/jw-11-checkstyle1.html">
+        JavaWorld: Automated code reviews with Checkstyle. Part 1
+      </a>,
+      <a href="http://www.javaworld.com/javaworld/jw-11-2008/jw-11-checkstyle2.html">Part 2</a>
+    </li>
+    <li>
+      <a href="http://i-proving.ca/space/Technologies/Maven/Maven+Recipes">
+        Maven Recipes
+      </a>
+    </li>
+    <li>
+      <a href="http://sujitpal.blogspot.com/2006/10/maven2-multi-environment-filter-setup.html">
+        A Maven2 multi-environment filter setup
+      </a>
     </li>
     <li>
       <a href="http://mavenize.blogspot.com/2007/06/integration-testing-in-your-maven.html">
@@ -855,13 +953,33 @@ ds.server.name   =
       </a>  
     </li>
     <li>
+      <a href="http://wiki.cantara.no/display/smidigtonull/Maven+Test+FAQ">
+        Maven Test FAQ
+      </a>  
+    </li>
+    <li>
       <a href="http://wakaleo-consulting.com/component/content/article/213">
-        Unit tests are not integration tests
+        Wakaleo Consulting: Unit tests are not integration tests
+      </a>  
+    </li>
+    <li>
+      <a href="http://wakaleo-consulting.com/component/content/article/213">
+        Wakaleo Consulting: Automated deployment with Cargo and Maven - a short primer
       </a>  
     </li>
     <li>
       <a href="http://www.seamframework.org/Documentation/SeamTestCoverageWithCobertura">
         SeamTest Coverage with Cobertura
+      </a>  
+    </li>
+    <li>
+      <a href="http://in.relation.to/Bloggers/TestingEJB3AppsWithTestNG">
+        Testing EJB3 apps with TestNG
+      </a>  
+    </li>
+    <li>
+      <a href="http://blog.xebia.com/2009/06/06/configuring-a-seam-ejb-project-for-development-with-maven-and-jboss-tools/">
+        Configuring a Seam EJB project for development with Maven and JBoss Tools
       </a>  
     </li>
     <li>
@@ -971,21 +1089,17 @@ ds.server.name   =
   
   <br/><br />
   <h1>NOTE: The rest of the tutorial is temporary out of sync with the project!</h1>
-  <ol>
-  <li>
-    <a href="#switch-to-development-mode">Switch to development mode</a>
-  </li>
-  <li>
-    <a href="#activate-a-database-profile">Activate a Database Profile.</a>
-  </li>
-  <li>
-    How to deploy the data source.<br/>
+
+
+  <h2>How to deploy the data source.</h2>
+  <p>
     You can deploy the <code>*-ds.xml</code> data source file in two ways: <strong>embedded</strong> 
     in the ear project or as  a <strong>separate</strong> service deployed to the 
     <code>${JBOSS_DEPLOY}</code> directory. The default for this build is to embed the 
     <code>*-ds.xml</code> data source in the ear project.<br/>
     If you want to deploy the <code>*-ds.xml</code> data source as a separate service then open the 
-    ear pom and make the changes <font color="blue">emphasized in blue</font>.<br/><br/>
+    ear pom and make the changes <font color="blue">emphasized in blue</font>.
+  </p>
     <ol>
     <li>
       Locate the explode and unexplode profiles:
@@ -1103,142 +1217,6 @@ ds.server.name   =
     </li>
     </ol>
   </li>
-  <li>
-    Open a command shell and navigate to the <code>${SEAM_TUTORIAL}</code> directory.
-    <ul>
-      <li>
-        Run: <code>mvn clean package -Pexplode</code> (or <code>mvn clean install -Pexplode</code>)
-      </li>
-      <li>
-        It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
-        development mode. 
-      </li>
-    </ul><br/>
-    Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
-    <img src="img/exploded-ear-tutorial.png" longdesc="img/exploded-ear-tutorial.png" 
-      class="screenshot" style="width:500px;" />
-  </li>
-  <li>
-    <a href="#start-jboss">Start JBoss, open browser, etc...</a>
-  </li>
-</ol>
-
-
-
-<h2><a name="switch-to-development-mode">Switch to Development Mode</a></h2>
-<p>The application will be deployed as an exploded EAR archive when you switch to development mode.</p>
-<ol class="vspace">
-  <li>
-    Activate <code>profiles.xml</code>
-    <ul>
-      <li>Copy <code>${SEAM_REFIMPL}/config/profiles/profiles.xml</code> to <code>${SEAM_REFIMPL}</code>.</li>
-      <li>Cd to to <code>${SEAM_REFIMPL}</code> and edit <code>profiles.xml</code>.</li>
-      <li>
-      JBoss profile<br/>
-      Locate the <code>as-jboss423</code> profile and point the <code>as.home </code> property to your
-      <code>${JBOSS_HOME}</code> directory.
-      <pre>
-&lt;!-- jboss-4.2.3 --&gt;
-&lt;profile&gt;
-  &lt;id&gt;as-jboss423&lt;/id&gt;
-  &lt;activation&gt;
-    &lt;property&gt;
-      &lt;name&gt;as&lt;/name&gt;
-      &lt;value&gt;jboss423&lt;/value&gt;
-    &lt;/property&gt;
-  &lt;/activation&gt;
-  &lt;properties&gt;
-    <strong style="color:blue;">&lt;as.home&gt;C:/jboss-4.2.3.GA&lt;/as.home&gt;</strong>
-    &lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;
-  &lt;/properties&gt;
-&lt;/profile&gt;</pre>
-      </li>
-      
-      <li>
-    Locate the <code>&lt;activeProfiles&gt;</code> tag and check that the following profiles are active:
-  <pre>
-&lt;activeProfiles&gt;
-  &lt;activeProfile&gt;ds-hsqldb&lt;/activeProfile&gt;
-  &lt;activeProfile&gt;as-jboss423&lt;/activeProfile&gt;
-  &lt;activeProfile&gt;env-dev&lt;/activeProfile&gt;
-&lt;/activeProfiles&gt;</pre>
-      </li>
-      
-      <li>
-        Use a command shell and run: <code>mvn help:active-profiles</code> and verify that profiles 
-          are active in your parent pom.
-        <pre>
-C:\ide\projects\ok\seam-refimpl>mvn help:active-profiles
-[INFO] Scanning for projects...
-[INFO] Reactor build order:
-[INFO]   seam-refimpl-parent
-[INFO]   seam-refimpl-ejb 1.0-SNAPSHOT
-[INFO]   seam-refimpl-war 1.0-SNAPSHOT
-[INFO]   seam-refimpl-ear 1.0-SNAPSHOT
-[INFO] Searching repository for plugin with prefix: 'help'.
-[INFO] ------------------------------------------------------------------------
-[INFO] Building seam-refimpl-parent
-[INFO]    task-segment: [help:active-profiles] (aggregator-style)
-[INFO] ------------------------------------------------------------------------
-[INFO] [help:active-profiles]
-[INFO]
-Active Profiles for Project 'no.knowit.seam:seam-refimpl:pom:1.0-SNAPSHOT':
-
-The following profiles are active:
-
- - <strong style="color:blue;">ds-hsqldb</strong> (source: profiles.xml)
- - <strong style="color:blue;">as-jboss423</strong> (source: profiles.xml)
- - <strong style="color:blue;">env-dev</strong> (source: profiles.xml)</pre>
-      </li>
-      <li>
-        Run: <code>mvn help:effective-pom</code> and verify that the following properties reflects
-        the active profiles.
-        <pre>
-  .
-  .
-  &lt;properties&gt;
-    .
-    .
-    &lt;as.home&gt;C:/jboss-4.2.3.GA&lt;/as.home&gt;
-    &lt;ds&gt;hsqldb&lt;/ds&gt;
-    &lt;as.deploy&gt;C:/ide/server/jboss-4.2.3.GA/server/default/deploy&lt;/as.deploy&gt;
-    &lt;env&gt;dev&lt;/env&gt;
-    &lt;jdk.optimize&gt;false&lt;/jdk.optimize&gt;
-    &lt;jdk.debug&gt;true&lt;/jdk.debug&gt;
-    &lt;env.unpack.modules&gt;true&lt;/env.unpack.modules&gt;
-    &lt;app.context&gt;seam-refimpl&lt;/app.context&gt;
-    .
-    .
-  &lt;/properties&gt;
-&lt;/project&gt;</pre>
-      </li>
-    </ul>
-  </li>
-  <li>
-    Deploy the exploded EAR to the application server.
-    <ul>
-      <li>Run: <code>mvn clean install -Pexplode</code></li>
-      <li>
-        It is <strong>important</strong> to <strong>clean</strong> the target after switching to 
-        development mode.
-      </li>
-    </ul>
-    <br/>
-    Your <code>${JBOSS_DEPLOY}</code> directory should now contain the exploded EAR project:
-    <img src="img/exploded-ear.png" style="width:700px; display:block; margin-top:1em; margin-bottom:1em;" /><br/>
-  </li>
-  <li>
-    <a name="start-jboss">Start JBossAS</a><br/>
-      Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>run</code> 
-  </li>
-  <li>Open a browser and point the URL to 
-    <a href="http://localhost:8080/seam-refimpl">http://localhost:8080/seam-refimpl</a>
-    After logging in, your welcome screen should again look like this:
-    <img src="img/seam-refimpl-welcome.png" style="width:650px; display:block; margin-top:1em; margin-bottom:1em;" />
-    The User Registration page should look something like this:
-    <img src="img/seam-refimpl-userreg.png" style="width:590px; display:block; margin-top:1em; margin-bottom:1em;" />
-  </li>  
-</ol>
 
 <h2><a name="activate-a-database-profile">Activate a Database Profile</a></h2>
 <p>At some point in time you will want to access data in a database other than the default Hypersonic
