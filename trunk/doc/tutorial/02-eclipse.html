@@ -7,36 +7,27 @@
 <link rel="stylesheet" href="../styles/page-layout/page-layout.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../styles/site/site.css" type="text/css" media="screen" />
 
+<link href="../js/fullsize/fullsize.css" media="screen" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="../js/jquery-min.js"></script>
+<script type="text/javascript" src="../js/fullsize/jquery.fullsize.minified.js"></script>
+
+<script type="text/javascript" src="../js/site.js"></script>
+
 <script type="text/javascript">
-function toggle( target ) {
-  if( target ) {
-    target = typeof target === "string" ? document.getElementById( target ) : target;
-    target.style.display = target.style.display.match(/none/i) ? 'block' : 'none';
-  }
-}
-
-function setIframeHeight( iframe ) {
-  if (iframe) {
-    if (iframe.contentDocument && iframe.contentDocument.body.scrollHeight) {
-      // W3C DOM iframe document syntax
-      iframe.height = iframe.contentDocument.body.scrollHeight;
-    } else if (iframe.Document && iframe.Document.body.scrollHeight) {
-      // IE DOM syntax
-      iframe.height = iframe.Document.body.scrollHeight;
-    }
-  }
-}
-
-function setIframeHeights() {
-  for( var elements = document.getElementsByTagName( 'iframe' ), i=0; i<elements.length; i++) {
-    setIframeHeight( elements[i] );
-  }
-}
+  $(document).ready(function() {
+    $(".code-frame a").click(function( event ) {
+      event.preventDefault(); 
+      IframeHelper.toggle(this);
+    });
+    
+    $('img').fullsize();
+  });
 </script>
 
 <title>Seam Maven reference Implentation - Eclipse</title>
 </head>
-<body onLoad="javascript: setIframeHeights();">
+<body>
 
 <div id="sizer">
 <div id="expander">
@@ -106,7 +97,8 @@ function setIframeHeights() {
   </li>
   <li>
     Start Eclipse and select the newly created workspace folder.
-    <img src="img/eclipse-workspace-launcher.png" style="width:560px; display:block;" />
+    <img src="img/eclipse-workspace-launcher.png" longdesc="img/eclipse-workspace-launcher.png"  
+      class="screenshot" style="width:400px;" />
   </li>
   <!--
   <li>
@@ -120,8 +112,10 @@ function setIframeHeights() {
   <li>
     Select <code><strong>Window>Preferences</strong></code> and browse to the 
     <code><strong>Java>Installed JREs</strong></code> section. 
-    <img src="img/eclipse-installed-jres.png" style="width:640px; display:block;" />
-    <img src="img/eclipse-compiler.png" style="width:640px; display:block;" />
+    <img src="img/eclipse-installed-jres.png" longdesc="img/eclipse-installed-jres.png" 
+      class="screenshot" style="width:500px;" />
+    <img src="img/eclipse-compiler.png" longdesc="img/eclipse-compiler.png" 
+      class="screenshot" style="width:500px;" />
   </li>
 </ol>
 
@@ -130,7 +124,8 @@ function setIframeHeights() {
   <li>Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.</li>
   <li>
     Configure the Maven Eclipse plugin.
-    <img src="img/eclipse-maven-plugin.png" style="width:640px; display:block;" />
+    <img src="img/eclipse-maven-plugin.png" longdesc="img/eclipse-maven-plugin.png" 
+      class="screenshot" style="width:500px;" />
   </li>
   <li>
     Configure Eclipse to use an <strong>external</strong> Maven installation.<br/>
@@ -143,7 +138,8 @@ function setIframeHeights() {
     there are some issues when running embedded Maven from Eclipse, so we need to configure Eclipse to 
     use an external Maven installation. In Preferences, navigate to 
     <code><strong>Maven>Installations</strong></code> and edit details as outlined in the image below.
-    <img src="img/eclipse-maven-installations.png" style="width:640px; display:block;" />
+    <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
+      class="screenshot" style="width:500px;" />
   </li>
 </ol>
 
@@ -169,39 +165,47 @@ screenshots below outlines the steps needed to configure a WTP server reference 
     In Preferences, navigate to <strong>Server>Runtime Environments</strong>. Click 
     <strong>Add...</strong>. Browse to the folder named <strong>JBoss Community</strong> 
     and select <strong>JBoss 4.2 Runtime</strong>.
-    <img src="img/eclipse-server-runtime-01.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-server-runtime-01.png" longdesc="img/eclipse-server-runtime-01.png"
+      class="screenshot" style="width:500px;" />
   </li>
   <li>
     Click <strong>Next</strong>, name the server runtime, e.g. JBoss 4.2.3-jdk6 Runtime, and point the 
     <strong>Home Directory</strong> to the folder where you installed the	server. Select the 
     <strong>default</strong> configuration. 
-    <img src="img/eclipse-server-runtime-02.png" style="width:400px; display:block;" />
+    <img src="img/eclipse-server-runtime-02.png" longdesc="img/eclipse-server-runtime-02.png" 
+      class="screenshot" style="width:300px;" />
   </li>
   <li>
     Click <strong>Next</strong>, name the server, e.g. JBoss 4.2.3-jdk6 Server, and click 
     <strong>Finish</strong>.
-    <img src="img/eclipse-server-runtime-03.png" style="width:400px; display:block;" />
+    <img src="img/eclipse-server-runtime-03.png" longdesc="img/eclipse-server-runtime-03.png"
+      class="screenshot" style="width:300px;" />
   </li>
   <li>
     Exit Preferences and switch to the JBoss perspective.
-    <img src="img/eclipse-jboss-perspective.png" style="width:300px; display:block;" />
+    <img src="img/eclipse-jboss-perspective.png" longdesc="img/eclipse-jboss-perspective.png" 
+      class="screenshot" style="width:250px;" />
   </li>
   <li>
     Doubleclick on the newly created server, JBoss 4.2.3-jdk6 Server, to open the Server Overview 
     editor.
-    <img src="img/eclipse-jboss-server-view.png" style="width:240px; display:block;" />
+    <img src="img/eclipse-jboss-server-view.png" longdesc="img/eclipse-jboss-server-view.png"
+      class="screenshot" style="width:200px;" />
   </li>
   <li>
     Verify that the <code><strong>Use the JBoss deploy folder</strong></code> radio button is checked.
-    <img src="img/eclipse-jboss-server-overview.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-jboss-server-overview.png" longdesc="img/eclipse-jboss-server-overview.png"
+      class="screenshot" style="width:550px;" />
   </li>
   <li>
     Start the server to check that everyting is configured correctly.
-    <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+    <img src="img/eclipse-server-view-start-server-01.png" longdesc="img/eclipse-server-view-start-server-01.png"
+      class="screenshot" style="width:200px;" />
   </li>
   <li>
     The console output should look something like the screeshot below.
-    <img src="img/eclipse-jboss-server-view-started.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-jboss-server-view-started.png" longdesc="img/eclipse-jboss-server-view-started.png"
+      class="screenshot " style="width:500px;" />
   </li>
   <li>
     Stop the server.
@@ -212,14 +216,30 @@ screenshots below outlines the steps needed to configure a WTP server reference 
 <ol>
   <li>Make shure that all files are saved with UTF-8 encoding. This is only essential if you are 
   working	with i18n.<br/>
-    <img src="img/eclipse-utf8-01.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-02.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-03.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-04.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-05.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-06.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-07.png" style="width:700px; display:block;" />
-    <img src="img/eclipse-utf8-08.png" style="width:700px; display:block;" />
+    <div class="inline-block" style="width:33%;">
+      <img src="img/eclipse-utf8-01.png" longdesc="img/eclipse-utf8-01.png" class="screenshot" style="width:100%;" />
+    </div>
+    <div class="inline-block" style="width:33%;">
+      <img src="img/eclipse-utf8-02.png" longdesc="img/eclipse-utf8-02.png" class="screenshot" style="width:100%;" />
+    </div>
+    <div class="inline-block" style="width:33%;">
+      <img src="img/eclipse-utf8-03.png" longdesc="img/eclipse-utf8-03.png" class="screenshot" style="width:100%;" />
+    </div>
+    <div class="inline-block" style="width:33%;">
+      <img src="img/eclipse-utf8-04.png" longdesc="img/eclipse-utf8-04.png" class="screenshot" style="width:100%;" />
+    </div>
+    <div class="inline-block" style="width:33%;">
+      <img src="img/eclipse-utf8-05.png" longdesc="img/eclipse-utf8-05.png" class="screenshot" style="width:100%;" />
+    </div>
+    <div class="inline-block" style="width:33%;">
+      <img src="img/eclipse-utf8-06.png" longdesc="img/eclipse-utf8-06.png" class="screenshot" style="width:100%;" />
+    </div>
+    <div class="inline-block" style="width:33%;">
+      <img src="img/eclipse-utf8-07.png" longdesc="img/eclipse-utf8-07.png" class="screenshot" style="width:100%;" />
+    </div>
+    <div class="inline-block" style="width:33%;">
+      <img src="img/eclipse-utf8-08.png" longdesc="img/eclipse-utf8-08.png" class="screenshot" style="width:100%;" />
+    </div>
   </li>
 </ol>
 
@@ -266,20 +286,20 @@ in the project and provides a hierarchical list of them.</p>
   </li>
   <li>
     Import the project: In Eclipse select <code><strong>File>Import</strong></code> to import the project:
-    <img src="img/eclipse-import.png" style="width:250px; display:block;" />
+    <img class="screenshot" src="img/eclipse-import.png" style="width:250px; display:block;" />
   </li>
   <li>
     Select <code><strong>General&gt;Maven Projects</strong></code> and click <strong>Next</strong>.
-    <img src="img/eclipse-import-maven-01.png" style="width:340px; display:block;" />
+    <img class="screenshot" src="img/eclipse-import-maven-01.png" style="width:340px; display:block;" />
   </li>
   <li>
     Browse to the folder where the project is located, select it, verify that all modules are checked 
     and click <strong>Finish</strong>.
-    <img src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
+    <img class="screenshot" src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
   </li>
   <li>
     You will notice a build error in the Maven console after the import:
-    <img src="img/eclipse-import-maven-08.png" style="width:750px; display:block;" />
+    <img class="screenshot" src="img/eclipse-import-maven-08.png" style="width:750px; display:block;" />
     <code><font color="red">
     Build errors for seam-tutorial-ear; org.apache.maven.lifecycle.LifecycleExecutionException: 
     Invalid or missing parameters: [Mojo parameter [name: 'outputDirectory'; alias: 'null'], Mojo 
@@ -292,8 +312,8 @@ in the project and provides a hierarchical list of them.</p>
   </li>
   <li>
     Modify Maven properties for the parent project, seam-tutotrial.<br/>
-    <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
-    <img src="img/eclipse-project-properties-maven-01.png" style="width:580px; display:block;" />
+    <img class="screenshot" src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
+    <img class="screenshot" src="img/eclipse-project-properties-maven-01.png" style="width:580px; display:block;" />
     <strong>NOTE: <font color="red">DO NOT CHECK THE INCLUDE MODULES CHECKBOX - EVER!</font></strong>  
     Doing so will effectly block the possibility to use WTP to deploy your project. The selection is
     irreversible and you will have to remove the project from Eclipse, delete all Eclipse spesific
@@ -304,11 +324,11 @@ in the project and provides a hierarchical list of them.</p>
   <li>
     Modify Maven properties for ear module; seam-tutotrial-ear. Uncheck the  <code>Skip Maven
     compiler plugin</code> checkbox:
-    <img src="img/eclipse-project-properties-maven-02.png" style="width:580px; display:block;" />
+    <img class="screenshot" src="img/eclipse-project-properties-maven-02.png" style="width:580px; display:block;" />
   </li>
   <li>
     Modify Maven properties for ejb and war modules; seam-tutotrial-ejb and seam-tutotrial-war:
-    <img src="img/eclipse-project-properties-maven-03.png" style="width:580px; display:block;" />
+    <img class="screenshot" src="img/eclipse-project-properties-maven-03.png" style="width:580px; display:block;" />
   </li>
 </ol>
 <p>Now we have fixed and the build errors should be gone :-))</p>
@@ -321,9 +341,9 @@ then you should delete the project from Eclipse,
 and then import the project all over again.
 </p>
 <ol>
-  <li>EAR.<img src="img/eclipse-ear-facets.png" style="width:750px; display:block;" /></li>
-  <li>EJB.<img src="img/eclipse-ejb-facets.png" style="width:750px; display:block;" /></li>
-  <li>WAR.<img src="img/eclipse-war-facets.png" style="width:750px; display:block;" /></li>
+  <li>EAR.<img class="screenshot" src="img/eclipse-ear-facets.png" style="width:750px; display:block;" /></li>
+  <li>EJB.<img class="screenshot" src="img/eclipse-ejb-facets.png" style="width:750px; display:block;" /></li>
+  <li>WAR.<img class="screenshot" src="img/eclipse-war-facets.png" style="width:750px; display:block;" /></li>
 </ol>
 
 
@@ -339,11 +359,11 @@ and then import the project all over again.
     this blog</a> and follow the screenshots 
     <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
     there</a> and here to fix the problem.
-    <img src="img/eclipse-run-configurations-01.png" style="width:640px; display:block;" />
+    <img class="screenshot" src="img/eclipse-run-configurations-01.png" style="width:640px; display:block;" />
     Below is the screenshot for the Maven <code>install -Pexplode</code> run configuration. Also 
     create a run configuration for the Maven <code>clean -Punexplode</code> goal. Remenber to use the
     external Maven Runtime you configured for the workspace.
-    <img src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
+    <img class="screenshot" src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
     Running the goal should give the following output:<br/><br/>
     
     <div style="width:100%; overflow:hidden;">
@@ -376,13 +396,13 @@ and then import the project all over again.
     </div>
     You can run the goal(s) as needed by right clicking on the <strong>parent</strong> project and 
     select <code><strong>Run As &gt; Maven build</strong> </code> from the menu.
-    <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+    <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
   </li>
   <li>
     Start the server and verify that the deployment works:
-    <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+    <img class="screenshot" src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
     A successful deploy should look like this in the Console log:
-    <img src="img/eclipse-server-view-start-server-02.png" style="width:750px; display:block;" />
+    <img class="screenshot" src="img/eclipse-server-view-start-server-02.png" style="width:750px; display:block;" />
   </li>
   <li>
     Open a browser and point the URL to <a href="http://localhost:8080/seam-tutorial">
@@ -406,17 +426,17 @@ deploy your project.</p>
 <ol>
   <li>
     Open the <strong>JBoss Server View</strong> and add project to server.<br/>
-    <img src="img/eclipse-wtp-01.png" style="width:280px; display:block;" />
+    <img class="screenshot" src="img/eclipse-wtp-01.png" style="width:280px; display:block;" />
     Ad the <code>seam-tutorial.ear</code> project and click <strong>Finish</strong>.
-    <img src="img/eclipse-wtp-02.png" style="width:400px; display:block;" />
+    <img class="screenshot" src="img/eclipse-wtp-02.png" style="width:400px; display:block;" />
   </li>
   <li>
     Publish.<br/>
-    <img src="img/eclipse-wtp-03.png" style="width:400px; display:block;" />
+    <img class="screenshot" src="img/eclipse-wtp-03.png" style="width:400px; display:block;" />
   </li>
   <li>
     Start the server and check the console output. 
-    <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+    <img class="screenshot" src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
     <font color="red">You will notice that the application failed to deploy</font>:
     <pre style="font-size:10px;">
 
@@ -449,21 +469,21 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
     Also the <code>*-ds.xml</code> file is missing. The problem is caused by this Eclipse bug:
     <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=247090">
     Bug 247090 -  User)libraries incorrectly deployed within EARs</a>
-    <img src="img/eclipse-wtp-04.png" style="width:400px; display:block;" />
+    <img class="screenshot" src="img/eclipse-wtp-04.png" style="width:400px; display:block;" />
   </li>
   <li>
     Select the parent project and run <code>mvn install -Pexplode</code> to fix the incorrect deploy.</br>
-    <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-    <img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+    <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+    <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
   </li>
   <li>
     Inspect the deploy folder and verify the the incorrectly deployed files are gone and that the 
     <code>*-ds.xml</code> file is present.
-    <img src="img/eclipse-wtp-06.png" style="width:400px; display:block;" />
+    <img class="screenshot" src="img/eclipse-wtp-06.png" style="width:400px; display:block;" />
   </li>
   <li>
     Start the server (in debug mode) and check the console output.
-    <img src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+    <img class="screenshot" src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
     <pre style="font-size:10px;">
 ....
 13:54:43,514 INFO  [EARDeployer] Started J2EE application: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
@@ -512,18 +532,18 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
     The Maven builder executes the <code>explode</code> profile on the <code>process-classes</code> 
     goal. The child poms will "inherit" this builder, so you only need to define the builder on the
     parent project.
-    <img src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
-    <img src="img/eclipse-maven-builder-01.png" style="width:500px; display:block;" />
-    <img src="img/eclipse-maven-builder-02.png" style="width:400px; display:block;" />
+    <img class="screenshot" src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
+    <img class="screenshot" src="img/eclipse-maven-builder-01.png" style="width:500px; display:block;" />
+    <img class="screenshot" src="img/eclipse-maven-builder-02.png" style="width:400px; display:block;" />
     <strong>Note</strong>: Experiment with the <code>Base directory</code> variable. If you use the 
     <code>${project_loc}</code> variable then the builder will run only on the sub project that 
     contains the modified file - resulting in a faster build cycle.
-    <img src="img/eclipse-maven-builder-03.png" style="width:500px; display:block;" />
+    <img class="screenshot" src="img/eclipse-maven-builder-03.png" style="width:500px; display:block;" />
   </li>
   <li>
     Run <code>mvn install -Pexplode</code> to do an initial deploy.</br>
-    <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-    <img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+    <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+    <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
   </li>
   <li>
     Test the Builder:<br/>
@@ -627,12 +647,12 @@ choice, e.g. <code>C:/ide/libs/jboss-seam-2.2.0.GA</code>. Open <code><strong>Pr
 <ol class="vspace">
   <li>
     JSF:
-    <img src="img/eclipse-jboss-tools-01.png" style="width:650px; display:block;" />
+    <img class="screenshot" src="img/eclipse-jboss-tools-01.png" style="width:650px; display:block;" />
   </li>
   <li>
     Seam runtime:
-    <img src="img/eclipse-jboss-tools-02.png" style="width:650px; display:block;" />
-    <img src="img/eclipse-jboss-tools-03.png" style="width:650px; display:block;" />
+    <img class="screenshot" src="img/eclipse-jboss-tools-02.png" style="width:650px; display:block;" />
+    <img class="screenshot" src="img/eclipse-jboss-tools-03.png" style="width:650px; display:block;" />
   </li>
 </ol>
 
@@ -660,20 +680,20 @@ a datasource. The screenshots below outlines one possible way to accomplish this
   <li>
     In Preferences, navigate to <code><strong>Data Management>Connectivity>Driver Definitions</strong></code>.
     Click <strong>Add...</strong> to add a new driver.
-    <img src="img/eclipse-data-management-01.png" style="width:750px; display:block;" />
-    <img src="img/eclipse-data-management-02.png" style="width:490px; display:block;" />
-    <img src="img/eclipse-data-management-03.png" style="width:490px; display:block;" />
-    <img src="img/eclipse-data-management-04.png" style="width:490px; display:block;" />
+    <img class="screenshot" src="img/eclipse-data-management-01.png" style="width:750px; display:block;" />
+    <img class="screenshot" src="img/eclipse-data-management-02.png" style="width:490px; display:block;" />
+    <img class="screenshot" src="img/eclipse-data-management-03.png" style="width:490px; display:block;" />
+    <img class="screenshot" src="img/eclipse-data-management-04.png" style="width:490px; display:block;" />
   </li>
   <li>
     Open the <code><strong>Database Development</strong></code> perspective. In 
     <code><strong>Data Source Explorer</strong></code> 
     right click the <code><strong>Databases</strong></code> folder and select 
     <code><strong>New...</strong></code>
-    <img src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
-    <img src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
-    <img src="img/eclipse-connection-profile-02.png" style="width:420px; display:block;" />
-    <img src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
+    <img class="screenshot" src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
+    <img class="screenshot" src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
+    <img class="screenshot" src="img/eclipse-connection-profile-02.png" style="width:420px; display:block;" />
+    <img class="screenshot" src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
   </li>
 </ol>
 -->
@@ -687,13 +707,13 @@ the main source of configuration, so we'll start with the WAR.</p>
 <ol class="vspace">
   <li>
     The WAR module:
-    <img src="img/eclipse-war-properties-07.png" style="width:650px; display:block;" />
-    <img src="img/eclipse-war-properties-08.png" style="width:650px; display:block;" />
-    <img src="img/eclipse-war-properties-09.png" style="width:650px; display:block;" />
+    <img class="screenshot" src="img/eclipse-war-properties-07.png" style="width:650px; display:block;" />
+    <img class="screenshot" src="img/eclipse-war-properties-08.png" style="width:650px; display:block;" />
+    <img class="screenshot" src="img/eclipse-war-properties-09.png" style="width:650px; display:block;" />
   </li>
   <li>
     The EJB module:
-    <img src="img/eclipse-ejb-properties-01.png" style="width:650px; display:block;" />
+    <img class="screenshot" src="img/eclipse-ejb-properties-01.png" style="width:650px; display:block;" />
   </li>
   <li>
     The EAR module:<br/>
@@ -761,22 +781,22 @@ the main source of configuration, so we'll start with the WAR.</p>
 </li>
 <li>
   Open Seam perspective.
-  <img src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
+  <img class="screenshot" src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
 </li>
 <li>
   In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
   select <code><strong>New>Seam Entity</strong></code>
-  <img src="img/eclipse-seam-entity-01.png" style="width:500px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-entity-01.png" style="width:500px; display:block;" />
 </li>
 <li>
   Fill in the <strong>Seam entity class name</strong>, e.g. <code>MyEntity</code>, and click 
-  <strong>Finish</strong><br/>.
+  <strong>Finish</strong>.<br/>
   <img src="img/eclipse-seam-entity-02.png" style="width:400px;" class="inline-block" />
   <img src="img/eclipse-seam-entity-03.png" style="width:400px;" class="inline-block" />
 </li>
 <li>
   Generated code:
-  <img src="img/eclipse-seam-entity-04.png" style="width:350px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-entity-04.png" style="width:350px; display:block;" />
 
   All this code in less than ten seconds! :-))<br/>
 
@@ -956,9 +976,9 @@ the main source of configuration, so we'll start with the WAR.</p>
     That's it! Run <code>mvn install -Pexplode</code> to do an initial deploy, start server and 
     point your browser to 
     <a href="http://localhost:8080/seam-tutorial/">http://localhost:8080/seam-tutorial/</a>
-    <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-    <img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
-    <img src="img/eclipse-seam-entity-05.png" style="width:600px; display:block;" />
+    <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+    <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+    <img class="screenshot" src="img/eclipse-seam-entity-05.png" style="width:600px; display:block;" />
   </li>
 </ol>
 
@@ -976,17 +996,17 @@ complete that tutorial first.</p>
 </li>
 <li>
   Open e.g. MySQL Query Browser and create schema <code>refimpl_db</code>.
-  <img src="img/eclipse-seam-db-entity-01.png" style="width:700px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-01.png" style="width:700px; display:block;" />
 </li>
 <li>
   Open script, <code>open18-initial-schema-mysql.sql</code> and click <strong>execute</strong>.
-  <img src="img/eclipse-seam-db-entity-02.png" style="width:700px; display:block;" />
-  <img src="img/eclipse-seam-db-entity-05.png" style="width:500px; display:block;" />
-  <img src="img/eclipse-seam-db-entity-03.png" style="width:700px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-02.png" style="width:700px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-05.png" style="width:500px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-03.png" style="width:700px; display:block;" />
 </li>
 <li>
   Open script, <code>open18-initial-seed-data-mysql.sql</code> and click <strong>execute</strong>.
-  <img src="img/eclipse-seam-db-entity-04.png" style="width:700px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-04.png" style="width:700px; display:block;" />
 </li>
 </ol>
 
@@ -994,22 +1014,27 @@ complete that tutorial first.</p>
 <ol class="vspace">
 <li>
   Open the <strong>Database Development</strong> perspective.
-  <img src="img/eclipse-seam-db-entity-07.png" style="width:300px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-07.png" style="width:300px; display:block;" />
 </li>
 <li>
   Create a new Database Connection.
   <img src="img/eclipse-seam-db-entity-16.png" style="width:300px; display:block;" />
+  <br/>
   <img src="img/eclipse-seam-db-entity-09.png" style="width:400px;" class="inline-block" />
   <img src="img/eclipse-seam-db-entity-10.png" style="width:460px;" class="inline-block" />
+  <br/>
   <br/>
   <img src="img/eclipse-seam-db-entity-11.png" style="width:400px;" class="inline-block" />
   <img src="img/eclipse-seam-db-entity-12.png" style="width:400px;" class="inline-block" />
   <br/>
+  <br/>
   <img src="img/eclipse-seam-db-entity-13.png" style="width:400px;" class="inline-block" />
   <img src="img/eclipse-seam-db-entity-14.png" style="width:400px;" class="inline-block" />
   <br/>
+  <br/>
   <img src="img/eclipse-seam-db-entity-15.png" style="width:400px;"  class="inline-block" />
-  <img src="img/eclipse-seam-db-entity-17.png" style="width:400px; vertical-align:bottom"  class="inline-block" />
+  <img src="img/eclipse-seam-db-entity-17.png" style="width:400px; vertical-align:top"  class="inline-block" />
+  <br/>
   <br/>
   <img src="img/eclipse-seam-db-entity-19.png" style="width:350px; display:block;" />
 </li>
@@ -1019,16 +1044,17 @@ complete that tutorial first.</p>
 <ol class="vspace">
 <li>
   Open the <strong>Hibernate</strong> perspective.
-  <img src="img/eclipse-seam-db-entity-21.png" style="width:300px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-21.png" style="width:300px; display:block;" />
 </li>
 <li>
   Right click inside explorer and select <code><strong>Add Configuration...</strong></code>
-  <img src="img/eclipse-seam-db-entity-22.png" style="width:300px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-22.png" style="width:300px; display:block;" />
 </li>
 <li>
-  Add the newly created connection and define a Database dialect.<br/>
+  Add the newly created connection and define a Database dialect.<br/><br/>
   <img src="img/eclipse-seam-db-entity-23.png" style="width:350px;" class="inline-block" />
   <img src="img/eclipse-seam-db-entity-24.png" style="width:350px;" class="inline-block" />
+  <br/>
   <br/>
   <img src="img/eclipse-seam-db-entity-25.png" style="width:300px; display:block;" />
 </li>
@@ -1038,7 +1064,7 @@ complete that tutorial first.</p>
 <ol class="vspace">
 <li>
   Open the <strong>Seam</strong> perspective.
-  <img src="img/eclipse-perspective-seam.png" style="width:300px; display:block;" />
+  <img class="screenshot" src="img/eclipse-perspective-seam.png" style="width:300px; display:block;" />
 </li>
 <li>
   Modify the <code>seam-tutorial</code> project.
@@ -1051,7 +1077,7 @@ complete that tutorial first.</p>
     In <code>seam-tutorial-war</code>; delete the <code><strong>view</strong></code> folder. 
   </li>
   </ul>
-  <img src="img/eclipse-seam-db-entity-06.png" style="width:300px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-06.png" style="width:300px; display:block;" />
 </li>
 <li>
   Modify <code><strong>menu.xhtml</strong></code>.
@@ -1095,16 +1121,16 @@ complete that tutorial first.</p>
   Modify Seam settings for WAR: Select the newly created connection and point the View folder to 
   <strong>/seam-tutorial-war/src/main/webapp</strong> so that xhtml files are generated to the
   webapp folder.
-  <img src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
 </li>
 <li>
   Modify Seam settings for EJB.
-  <img src="img/eclipse-seam-db-entity-18.png" style="width:650px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-18.png" style="width:650px; display:block;" />
 </li>
 <li>
   For some reason the reverse engineering tool need a clean compiled project to do the reverse
   engineering, so run e.g. <code><strong>mvn clean package</strong></code> on the parent project.
-  <img src="img/eclipse-seam-db-entity-20.png" style="width:600px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-20.png" style="width:600px; display:block;" />
 </li>
 </ol>
 
@@ -1112,11 +1138,11 @@ complete that tutorial first.</p>
 <ol class="vspace">
 <li>
   Open the <strong>Seam</strong> perspective.
-  <img src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
+  <img class="screenshot" src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
 </li>
   In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
   select <code><strong>New>Seam Generate Entities</strong></code>
-  <img src="img/eclipse-seam-db-entity-31.png" style="width:650px; display:block;" />
+  <img class="screenshot" src="img/eclipse-seam-db-entity-31.png" style="width:650px; display:block;" />
   <br/>
   <img src="img/eclipse-seam-db-entity-32.png" style="width:450px;" class="inline-block" />
   <img src="img/eclipse-seam-db-entity-33.png" style="width:450px;" class="inline-block" />
@@ -1129,8 +1155,8 @@ complete that tutorial first.</p>
 <li>
   Run <code>mvn install -Pexplode</code>, start server and point your browser to 
   <a href="http://localhost:8080/seam-tutorial/">http://localhost:8080/seam-tutorial/</a>
-  <img src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-  <img src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+  <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+  <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
   <img src="img/eclipse-seam-db-entity-36.png" style="width:700px;" class="inline-block" />
 </li>
 <li>
@@ -1154,35 +1180,35 @@ complete that tutorial first.</p>
 <ol>
   <li>
     In Eclipse select <code><strong>File>Import</strong></code> to import the trunk:
-    <img src="img/eclipse-import.png" style="width:250px; display:block;" />
+    <img class="screenshot" src="img/eclipse-import.png" style="width:250px; display:block;" />
   </li>
   <li>
     Select <code><strong>Checkout Projects from SVN</strong></code> and click <strong>Next</strong>.
-    <img src="img/eclipse-checkout-projects-from-svn.png" style="width:450px; display:block;" />
+    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn.png" style="width:450px; display:block;" />
   </li>
   <li>
     Select an existing repository location and click <strong>Next</strong>.
-    <img src="img/eclipse-checkout-projects-from-svn-select-location.png" style="width:450px; display:block;" />
+    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-select-location.png" style="width:450px; display:block;" />
   </li>
   <li>
     Select the folder to be checked out from SVN and click <strong>Next</strong>.
-    <img src="img/eclipse-checkout-projects-from-svn-select-folder.png" style="width:450px; display:block;" />
+    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-select-folder.png" style="width:450px; display:block;" />
   </li>
   <li>
     Select <code><strong>Check out as a project in the workspace</strong></code>  and click 
     <strong>Next</strong>.
-    <img src="img/eclipse-checkout-projects-from-svn-check-out-as.png" style="width:450px; display:block;" />
+    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-check-out-as.png" style="width:450px; display:block;" />
   </li>
   <li>
     Uncheck the <code><strong>Use default workspace location</strong></code> checkbox and
     browse to the folder where you want to check out the trunk. <br/><strong>Note:</strong> 
     <a href="#configure-the-workspace">Do not add Maven projects under your workspace folder</a>.<br/><br/>
     Click <strong>Finish</strong>.<br/>
-    <img src="img/eclipse-checkout-projects-from-svn-checkout-as.png" style="width:450px; display:block;" />
+    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-checkout-as.png" style="width:450px; display:block;" />
   </li>
   <li>
     You should now have access to the complete trunk from Eclipse.
-    <img src="img/eclipse-checkout-projects-from-svn-completed.png		" style="width:250px; display:block;" />
+    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-completed.png		" style="width:250px; display:block;" />
   </li>
   
 </ol>
@@ -1247,7 +1273,7 @@ caused by Eclipse (and you?).
 <ol>
   <li>
     Delete the project from Eclipse. 
-    <img src="img/eclipse-delete-project.png" style="width:450px; display:block;" />
+    <img class="screenshot" src="img/eclipse-delete-project.png" style="width:450px; display:block;" />
   </li>
   <li>
     Exit Eclipse, navigate to the projct folder, e.g. the <code>${SEAM_TUTORIAL}</code> folder using 
