@@ -670,7 +670,7 @@ ds.server.name   =
   </li>
   <li>
     When the corresponding placeholders in our datasource file, 
-    <code>ear/src/main/resources/seam-tutorial-ds.xml</code>, is:
+    <code>ear/src/main/resources/seam-tutorial-ds.xml</code>, are:
     <pre>
   
 &lt;datasources&gt;
@@ -926,7 +926,7 @@ from the application server.
     <code>as.deploy</code> property is defined in the filter properties file.
   </li>
   <li>
-    This completes the basic steps of the tutorial!
+    This completes the getting started tutorial.
   </li>
 </ol>
 
@@ -974,16 +974,12 @@ from the application server.
   </li>
   <li>
     Run: <code>mvn clean install -Pexplode</code><br/>
-    The properties defined in the active database profile will be filtered into the 
-    <code>*-ds.xml</code> file during packaging of the project.
+    The new properties will be filtered into the <code>*-ds.xml</code> file during packaging of the 
+    project.
   </li>  
-  <li>
-    Restart the server and point your browser to 
-    <a href="http://localhost:8080/seam-tutorial">http://localhost:8080/seam-tutorial</a>
-  </li>
 </ol>
 
-<h3 id="deploy-ds-as-separate-service">How to Deploy *-ds.xml Datasource File as a Separate Service</h3>
+<h3 id="deploy-ds-as-separate-service">How to Deploy the *-ds.xml Datasource File as a Separate Service</h3>
 <p>
   You can deploy the <code>*-ds.xml</code> data source file in two ways: <strong>embedded</strong> 
   in the ear project or as  a <strong>separate</strong> service deployed to the 
@@ -1246,6 +1242,11 @@ IDE spesific files should be added to the global <strong>svn ignore</strong>!
   <li>
     <a href="http://mavenize.blogspot.com/2007/06/integration-testing-in-your-maven.html">
       Integration Testing in your Maven Application
+    </a>  
+  </li>
+  <li>
+    <a href="http://docs.codehaus.org/display/MAVENUSER/Maven+and+Integration+Testing">
+      Codehaus: Maven and Integration Testing   
     </a>  
   </li>
   <li>
