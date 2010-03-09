@@ -862,7 +862,7 @@
       <dependency>
         <groupId>org.apache.openejb</groupId>
         <artifactId>openejb-core</artifactId>
-        <version>3.1.2</version>
+        <version>3.1.3-SNAPSHOT</version> <!-- 3.1.2 issues w. jdk1.6.0_18: http://issues.apache.org/jira/browse/OPENEJB-1131 -->
         <exclusions>
           <exclusion>
             <groupId>org.apache.openjpa</groupId>
