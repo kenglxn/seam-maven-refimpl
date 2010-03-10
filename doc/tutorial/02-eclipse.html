@@ -54,41 +54,62 @@
 
 <h2>Download and install software:</h2>
 <ul class="vspace">
-  <li><a href="http://java.sun.com/javase/downloads/index.jsp">jdk-6</a>.</li>
-  <li><a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.</li>
   <li>
-    <a href="http://www.eclipse.org/ganymede/">
-    Eclipse Ganymede 3.4 (with WTP installed)</a>
+    <a href="http://java.sun.com/javase/downloads/index.jsp">jdk-6</a>.
   </li>
-  <li><a href="http://m2eclipse.sonatype.org/">Maven Eclipse plugin</a> (0.9.8 or later).</li>
+  <li>
+    <a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.
+  </li>
+  <li>
+    <a href="http://www.eclipse.org/downloads/">
+    Eclipse 3.5 Galileo</a> 
+    (<a href="http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/galileor">Eclipse 
+    IDE for Java EE Developers with WTP</a>).
+  </li>
   <li>
     <a href="http://subclipse.tigris.org/">
-    SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE
-    </a>.
+    SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE.
+    </a>
   </li>
-  <li><a href="http://www.seamframework.org/Download">JBoss Seam 2.2.0.GA</a> source code (for JBoss Tools)</li>
-  <li><a href="http://www.jboss.org/tools">JBoss Tools 3</a>.</li>
-  <li><a href="http://testng.org/doc/eclipse.html">TestNG Eclipse plug-in</a>.</li>
+  <li>
+    <a href="http://m2eclipse.sonatype.org/">m2eclipse 0.10.0</a> (this require you to uninstall 
+    m2eclipse 0.9.x). Also make shure that you are familiar with the 
+    <a href="http://maven.apache.org/plugins/maven-eclipse-plugin/">Apache Maven Eclipse</a> plugin.
+  </li>
+  <li>
+    <a href="http://www.seamframework.org/Download">JBoss Seam 2.2.0.GA</a> source code (for JBoss Tools).
+  </li>
+  <li>
+    <a href="http://www.jboss.org/tools">JBoss Tools 3</a>.
+  </li>
+  <li>
+    <a href="http://testng.org/doc/eclipse.html">TestNG Eclipse plug-in</a>.
+  </li>
   <li>
     <a href="http://www.jboss.org/jbossas/">Jboss 4.2.3.GA Application Server</a> or later.<br/>
     <strong>Note 1:</strong> Download a build that corresponds with your installed jdk, 
     <code><strong>jboss-4.2.3.GA.jdk6.zip</strong></code> is the correct build for jdk-6.<br/>
-    <strong>Note 2:</strong> JBoss AS 5 does not work with seam-refimpl right now. 
-    Please use JBoss AS 4.2.3.GA until we have solved the problem.
+    <strong>Note 2:</strong> JBoss AS 5 does not work with seam-refimpl right now.<br/>
+    <strong>Note 3:</strong> A workaround for JBoss 5 can be forund here: 
+    <a href="https://jira.jboss.org/jira/browse/JBSEAM-3821">https://jira.jboss.org/jira/browse/JBSEAM-3821</a>.
   </li>
 </ul>
 
-<h2 id="configure-the-workspace">Configure the Workspace</h2>
+<h1>The tutorial is temporary out of sync with the project!</h1>
+
+<h2 id="configure-the-workspace">Configure Workspace</h2>
+
+<h3>Create Workspace</h3>
 <ol class="vspace">
   <li>
     Create an empty workspace folder, e.g. 
-    <code style="white-space:nowrap">C:/dev/ide/workspaces/eclipse-3.4</code><br/>
+    <code style="white-space:nowrap">C:/dev/ide/workspaces/seam-tutorial</code><br/>
     <font color="red"><strong>Note:</strong> Do not add Maven projects under your workspace 
     folder.</font> There are some issues regarding use of the m2eclipse plugin when projects are 
     placed under the workspace folder, e.g. <code style="white-space:nowrap">
     C:/dev/ide/workspaces/eclipse-3.4/myproject</code>: You will not be able to run Maven Eclipse 
     goals from a command shell if your project is placed under the workspace folder; the 
-    <code>mvn eclipse:eclipse, mvn eclipse:clean and mvn eclipse:m2eclipse</code> goals will fail to 
+    <code>mvn eclipse:eclipse and mvn eclipse:clean</code> goals will fail to 
     execute. The issues are reported here: <a href="http://jira.codehaus.org/browse/MECLIPSE-571">
     http://jira.codehaus.org/browse/MECLIPSE-571</a>, and here:	
     <a href="http://jira.codehaus.org/browse/MNG-2057">http://jira.codehaus.org/browse/MNG-2057</a>.
@@ -98,27 +119,56 @@
   <li>
     Start Eclipse and select the newly created workspace folder.
     <img src="img/eclipse-workspace-launcher.png" longdesc="img/eclipse-workspace-launcher.png"  
-      class="screenshot" style="width:400px;" />
+      class="screenshot" style="width:500px;" />
   </li>
-  <!--
+ </ol>
+ 
+ <h3>JDK and Encoding</h3>
+ <ol class="vspace">
   <li>
-    <strong>Import code styles - To be done!</strong>
-  </li>
-  -->
-</ol>
-
-<h3 id="jdk-not-jre">Make sure that Eclipse is running on a JDK and not a JRE.</h3>
-<ol class="vspace">
-  <li>
+    Make sure that Eclipse is running on a JDK and not a JRE.<br/>
     Select <code><strong>Window>Preferences</strong></code> and browse to the 
     <code><strong>Java>Installed JREs</strong></code> section. 
-    <img src="img/eclipse-installed-jres.png" longdesc="img/eclipse-installed-jres.png" 
-      class="screenshot" style="width:500px;" />
-    <img src="img/eclipse-compiler.png" longdesc="img/eclipse-compiler.png" 
-      class="screenshot" style="width:500px;" />
+    <div style="width:102%;overflow:hidden;">
+      <img src="img/eclipse-installed-jres.png" longdesc="img/eclipse-installed-jres.png" 
+        class="inline-block" style="width:49%;" />
+      <img src="img/eclipse-compiler.png" longdesc="img/eclipse-compiler.png" 
+        class="inline-block" style="width:49%;" />
+    </div>
+  </li>
+  <li>
+    Set editors to UTF-8 (optional)<br/>
+    <p>Make shure that all files are saved with UTF-8 encoding. This is only essential if you are 
+    working	with i18n.
+    <div style="width:103%;overflow:hidden;">
+      <div class="inline-block" style="width:24%;">
+        <img src="img/eclipse-utf8-02.png" longdesc="img/eclipse-utf8-02.png" class="screenshot" style="width:100%;" />
+      </div>
+      <div class="inline-block" style="width:24%;">
+        <img src="img/eclipse-utf8-01.png" longdesc="img/eclipse-utf8-01.png" class="screenshot" style="width:100%;" />
+      </div>
+      <div class="inline-block" style="width:24%;">
+        <img src="img/eclipse-utf8-03.png" longdesc="img/eclipse-utf8-03.png" class="screenshot" style="width:100%;" />
+      </div>
+      <div class="inline-block" style="width:24%;">
+        <img src="img/eclipse-utf8-04.png" longdesc="img/eclipse-utf8-04.png" class="screenshot" style="width:100%;" />
+      </div>
+      <div class="inline-block" style="width:24%;">
+        <img src="img/eclipse-utf8-05.png" longdesc="img/eclipse-utf8-05.png" class="screenshot" style="width:100%;" />
+      </div>
+      <div class="inline-block" style="width:24%;">
+        <img src="img/eclipse-utf8-06.png" longdesc="img/eclipse-utf8-06.png" class="screenshot" style="width:100%;" />
+      </div>
+      <div class="inline-block" style="width:24%;">
+        <img src="img/eclipse-utf8-07.png" longdesc="img/eclipse-utf8-07.png" class="screenshot" style="width:100%;" />
+      </div>
+      <div class="inline-block" style="width:24%;">
+        <img src="img/eclipse-utf8-08.png" longdesc="img/eclipse-utf8-08.png" class="screenshot" style="width:100%;" />
+      </div>
+    </div>
   </li>
 </ol>
-
+  
 <h3 id="configure-the-maven-eclipse-plugin">Configure The Maven Eclipse Plugin</h3>
 <ol class="vspace">
   <li>Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.</li>
@@ -212,36 +262,6 @@ screenshots below outlines the steps needed to configure a WTP server reference 
   </li>
 </ol>
 
-<h3>Set editors to UTF-8 (optional)</h3>
-<ol>
-  <li>Make shure that all files are saved with UTF-8 encoding. This is only essential if you are 
-  working	with i18n.<br/>
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-utf8-01.png" longdesc="img/eclipse-utf8-01.png" class="screenshot" style="width:100%;" />
-    </div>
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-utf8-02.png" longdesc="img/eclipse-utf8-02.png" class="screenshot" style="width:100%;" />
-    </div>
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-utf8-03.png" longdesc="img/eclipse-utf8-03.png" class="screenshot" style="width:100%;" />
-    </div>
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-utf8-04.png" longdesc="img/eclipse-utf8-04.png" class="screenshot" style="width:100%;" />
-    </div>
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-utf8-05.png" longdesc="img/eclipse-utf8-05.png" class="screenshot" style="width:100%;" />
-    </div>
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-utf8-06.png" longdesc="img/eclipse-utf8-06.png" class="screenshot" style="width:100%;" />
-    </div>
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-utf8-07.png" longdesc="img/eclipse-utf8-07.png" class="screenshot" style="width:100%;" />
-    </div>
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-utf8-08.png" longdesc="img/eclipse-utf8-08.png" class="screenshot" style="width:100%;" />
-    </div>
-  </li>
-</ol>
 
 <p>This ends the steps needed to prepare the Eclipse workspace for Maven and JBoss Tools. You need to 
 go trough this steps every time you create a new workspace.</p>
@@ -1216,10 +1236,11 @@ complete that tutorial first.</p>
 <h3 id="how-to-configure-maven-eclipse-plugin-correctly">
   How To Configure the <code>maven-eclipse</code> Plugin "Correctly" For An Existing Project
 </h3>
-<p>Configure the maven-eclipse plugin so that no extra code is generated during the import. 
-Open the pom that contains your <code>&lt;pluginManagement&gt;</code> section (your root pom or 
-parent pom) and locate the <code>maven-eclipse-plugin</code>. The configuration should be like the 
-listing below:
+<p>Configure the 
+<a href="http://maven.apache.org/plugins/maven-eclipse-plugin/">maven-eclipse plugin</a> so that no 
+extra code is generated during the import. Open the pom that contains your 
+<code>&lt;pluginManagement&gt;</code> section (your root pom or parent pom) and locate the 
+<code>maven-eclipse-plugin</code>. The configuration should be:
 <pre>
 
   &lt;pluginManagement&gt;
@@ -1229,7 +1250,7 @@ listing below:
       &lt;plugin&gt;
         &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
         &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
-        &lt;version&gt;2.7&lt;/version&gt;
+        &lt;version&gt;2.8&lt;/version&gt;
         &lt;configuration&gt;
           &lt;downloadSources&gt;true&lt;/downloadSources&gt;
           &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;
