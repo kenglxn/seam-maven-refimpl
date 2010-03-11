@@ -55,7 +55,9 @@
 <h2>Download and install software:</h2>
 <ul class="vspace">
   <li>
-    <a href="http://java.sun.com/javase/downloads/index.jsp">jdk-6</a>.
+    <a href="http://java.sun.com/javase/downloads/index.jsp">jdk-6</a>.<br/>
+    <strong>Note:</strong> Do not use jdk1.6.0 update18 
+    <a href="http://issues.apache.org/jira/browse/OPENEJB-1131">due to problems with OpenEJB-3.1.2</a>!
   </li>
   <li>
     <a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.
@@ -103,7 +105,7 @@
   Your <code>eclipse.ini</code> should look something like this:
   <pre>
 -vm
-C:/Program Files (x86)/Java/jdk1.6.0/bin
+C:/Program Files (x86)/Java/jdk1.6.0_17/bin/javaw.exe
 --launcher.library
 plugins/org.eclipse.equinox.launcher.win32.win32.x86_1.0.200.v20090519
 -startup
