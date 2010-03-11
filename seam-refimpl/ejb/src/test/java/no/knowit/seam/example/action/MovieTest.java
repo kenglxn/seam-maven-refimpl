@@ -213,7 +213,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();
 	}
 
-	@Test(dependsOnMethods={ "editMovie" })
+	@Test(dependsOnMethods={ "unauthorizedAccess" })
 	public void persistWithMissingRequiredFieldValue() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
@@ -243,7 +243,7 @@ public class MovieTest extends SeamOpenEjbTest {
 	}
 	
 	
-	@Test(dependsOnMethods={ "editMovie" })
+	@Test(dependsOnMethods={ "persistWithMissingRequiredFieldValue" })
 	public void duplicateUniqueSecondaryIndex() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
