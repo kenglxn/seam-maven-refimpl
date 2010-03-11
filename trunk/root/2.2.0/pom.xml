@@ -965,7 +965,7 @@
               </manifest>
               <manifestEntries>
                 <Build-Machine>${env.COMPUTERNAME}</Build-Machine>
-                <Url>${pom.url}</Url>
+                <Url>${project.url}</Url>
               </manifestEntries>
             </archive>
           </configuration>
@@ -985,7 +985,7 @@
               </manifest>
               <manifestEntries>
                 <Build-Machine>${env.COMPUTERNAME}</Build-Machine>
-                <Url>${pom.url}</Url>
+                <Url>${project.url}</Url>
               </manifestEntries>
             </archive>
           </configuration>
@@ -1003,7 +1003,7 @@
               </manifest>
               <manifestEntries>
                 <Build-Machine>${env.COMPUTERNAME}</Build-Machine>
-                <Url>${pom.url}</Url>
+                <Url>${project.url}</Url>
               </manifestEntries>
             </archive>
           </configuration>
@@ -1021,7 +1021,7 @@
               </manifest>
               <manifestEntries>
                 <Build-Machine>${env.COMPUTERNAME}</Build-Machine>
-                <Url>${pom.url}</Url>
+                <Url>${project.url}</Url>
               </manifestEntries>
             </archive>
           </configuration>
