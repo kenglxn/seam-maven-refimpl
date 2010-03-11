@@ -338,6 +338,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${jdk.source}</source>
+          <target>${jdk.target}</target>
+          <encoding>utf-8</encoding>
+          <debug>${jdk.debug}</debug>
+          <optimize>${jdk.optimize}</optimize>
+        </configuration>
       </plugin>
       
       <plugin>
