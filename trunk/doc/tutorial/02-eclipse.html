@@ -44,12 +44,12 @@
 <p>The shortcuts are listed here so we don't have to type the tedious file 
   paths over and over again in this document.</p>
 <ul>
-  <li><code>${JBOSS_HOME}</code> - refers to Jboss installation folder, e.g. C:\servers\jboss-4.2.3.GA</li>
+  <li><code>${JBOSS_HOME}</code> - refers to Jboss installation directory, e.g. C:\servers\jboss-4.2.3.GA</li>
   <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
-  <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy folder, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
-  <li><code>${PROJECT}</code> - the project root folder, i.e. seam-maven-refimpl</li>
-  <li><code>${SEAM_REFIMPL}</code> - the folder where the reference project, i.e. seam-refimpl, is installed on your computer</li>
-  <li><code>${SEAM_TUTORIAL}</code> - the folder where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
+  <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy directory, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
+  <li><code>${PROJECT}</code> - the project root directory, i.e. seam-maven-refimpl</li>
+  <li><code>${SEAM_REFIMPL}</code> - the directory where the reference project, i.e. seam-refimpl, is installed on your computer</li>
+  <li><code>${SEAM_TUTORIAL}</code> - the directory where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
 </ul>
 
 <h2>Download and install software:</h2>
@@ -95,38 +95,59 @@
   </li>
 </ul>
 
-<h1>The tutorial is temporary out of sync with the project!</h1>
+<h2 id="configure-eclipse">Configure Eclipse and Create Workspace</h2>
 
-<h2 id="configure-the-workspace">Configure Workspace</h2>
-
-<h3>Create Workspace</h3>
 <ol class="vspace">
   <li>
-    Create an empty workspace folder, e.g. 
-    <code style="white-space:nowrap">C:/dev/ide/workspaces/seam-tutorial</code><br/>
+  Specify JVM in <code>eclipse.ini</code>, see <a href="http://wiki.eclipse.org/Eclipse.ini">Eclipsepedia: Eclipse.ini</a>.
+  Your <code>eclipse.ini</code> should look something like this:
+  <pre>
+-vm
+C:/Program Files (x86)/Java/jdk1.6.0/bin
+--launcher.library
+plugins/org.eclipse.equinox.launcher.win32.win32.x86_1.0.200.v20090519
+-startup
+plugins/org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar
+-product
+org.eclipse.epp.package.reporting.product
+--launcher.XXMaxPermSize
+256M
+-showsplash
+org.eclipse.platform
+--launcher.XXMaxPermSize
+256m
+-vmargs
+-Dosgi.requiredJavaVersion=1.5
+-Xms128m
+-Xmx512m</pre>
+  </li>
+  <li>
+    Create an empty workspace directory, e.g. 
+    <code style="white-space:nowrap">C:/dev/workspaces/seam</code><br/>
     <font color="red"><strong>Note:</strong> Do not add Maven projects under your workspace 
-    folder.</font> There are some issues regarding use of the m2eclipse plugin when projects are 
-    placed under the workspace folder, e.g. <code style="white-space:nowrap">
-    C:/dev/ide/workspaces/eclipse-3.4/myproject</code>: You will not be able to run Maven Eclipse 
-    goals from a command shell if your project is placed under the workspace folder; the 
+    directory.</font> There are some issues regarding use of the m2eclipse plugin when projects are 
+    placed under the workspace directory, e.g. <code style="white-space:nowrap">
+    C:/dev/workspaces/seam/myproject</code>: You will not be able to run Maven Eclipse 
+    goals from a command shell if your project is placed under the workspace directory; the 
     <code>mvn eclipse:eclipse and mvn eclipse:clean</code> goals will fail to 
     execute. The issues are reported here: <a href="http://jira.codehaus.org/browse/MECLIPSE-571">
     http://jira.codehaus.org/browse/MECLIPSE-571</a>, and here:	
     <a href="http://jira.codehaus.org/browse/MNG-2057">http://jira.codehaus.org/browse/MNG-2057</a>.
-    So, be kind to yourself and create a project folder that is not on the same file path as the 
-    workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
+    So, be kind to yourself and create a project directory that is not on the same file path as your 
+    workspace directory.<br/> 
+    Your directory structure should look something like this:
+    <img src="img/eclipse-workspace-launcher2.png" class="screenshot" style="width:223px;" />
   </li>
   <li>
-    Start Eclipse and select the newly created workspace folder.
+    Start Eclipse and select the newly created workspace directory.
     <img src="img/eclipse-workspace-launcher.png" longdesc="img/eclipse-workspace-launcher.png"  
       class="screenshot" style="width:500px;" />
   </li>
- </ol>
- 
- <h3>JDK and Encoding</h3>
- <ol class="vspace">
-  <li>
-    Make sure that Eclipse is running on a JDK and not a JRE.<br/>
+</ol>
+
+<h2  id="configure-workspace">Configure Workspace</h2>
+<ol = class="vspace">  
+  <li>JDK: Make sure that Eclipse is running on a JDK and not a JRE.<br/>
     Select <code><strong>Window>Preferences</strong></code> and browse to the 
     <code><strong>Java>Installed JREs</strong></code> section. 
     <div style="width:102%;overflow:hidden;">
@@ -136,9 +157,112 @@
         class="inline-block" style="width:49%;" />
     </div>
   </li>
-  <li>
-    Set encoding UTF-8 (optional)<br/>
-    Make shure that all files are saved with UTF-8 encoding. This is only essential if you are 
+  <li id="m2eclipse">
+    m2eclipse:
+    <ul class="vspace">
+      <li>Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.</li>
+      <li>
+        Configure the Maven Eclipse plugin.
+        <img src="img/eclipse-maven-plugin.png" longdesc="img/eclipse-maven-plugin.png" 
+          class="screenshot" style="width:500px;" />
+      </li>
+      <li>
+        Configure Eclipse to use an <strong>external</strong> Maven installation.<br/>
+        According to this blogs:
+        <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
+        ECLIPSE: MAVEN INSTALL FROM RUN AS MENU FAILS</a> and 
+        <a href="http://www.innovationontherun.com/common-issues-and-workarounds-while-building-ear-files-in-eclipse/"
+          style="white-space:nowrap">
+        Common Issues and Workarounds While Building EAR files in Eclipse</a>, 
+        there are some issues when running embedded Maven from Eclipse, so we need to configure Eclipse to 
+        use an external Maven installation. In Preferences, navigate to 
+        <code><strong>Maven>Installations</strong></code> and edit details as outlined in the image below.
+        <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
+          class="screenshot" style="width:500px;" />
+      </li>
+    </ul>
+  </li>
+  <li id="as-and-tools">
+    Install the JBoss Application Server and JBoss Tools:
+    <ul class="vspace">	
+      <li>
+        Install the <a href="http://www.jboss.org/jbossas/">Jboss Application Server</a>
+      </li>
+      <li>
+        Install <a href="http://www.jboss.org/tools">JBoss Tools 3</a>
+      </li>
+      <li>
+        The <a href="http://seamframework.org/Documentation">
+        JBoss Seam documentation</a> explains these steps in detail.
+      </li>
+    </ul>
+  </li>
+  <li id="create-a-wtp-server-reference">
+    Create a WTP Server Reference:<br/>
+    After the Server and the tools are installed you need to define a WTP server reference. The 
+    screenshots below outlines the steps needed to configure a WTP server reference for JBoss 4.2.3.
+    <ul class="vspace">	
+      <li>
+        In Preferences, navigate to <strong>Server>Runtime Environments</strong>. Click 
+        <strong>Add...</strong>. Browse to the directory named <strong>JBoss Community</strong> 
+        and select <strong>JBoss 4.2 Runtime</strong>.
+        <img src="img/eclipse-server-runtime-01.png" longdesc="img/eclipse-server-runtime-01.png"
+          class="screenshot" style="width:500px;" />
+      </li>
+      <li>
+        Click <strong>Next</strong>, name the server runtime, e.g. JBoss 4.2.3-jdk6 Runtime, and point the 
+        <strong>Home Directory</strong> to the directory where you installed the	server. Select the 
+        <strong>default</strong> configuration. 
+        <img src="img/eclipse-server-runtime-02.png" longdesc="img/eclipse-server-runtime-02.png" 
+          class="screenshot" style="width:300px;" />
+      </li>
+      <li>
+        Click <strong>Next</strong>, verify configuration, and click <strong>Finish</strong>.
+        <img src="img/eclipse-server-runtime-03.png" longdesc="img/eclipse-server-runtime-03.png"
+          class="screenshot" style="width:300px;" />
+      </li>
+      <li>
+        Exit preferences.
+        <img src="img/eclipse-server-runtime-04.png" longdesc="img/eclipse-server-runtime-04.png"
+          class="screenshot" style="width:500px;" />
+      </li>
+      <li>
+        Open the JBoss perspective.
+        <img src="img/eclipse-jboss-perspective.png" longdesc="img/eclipse-jboss-perspective.png" 
+          class="screenshot" style="width:250px;" />
+      </li>
+      <li>
+        Doubleclick on the newly created server, JBoss 4.2.3-jdk6 Server, to open the Server Overview 
+        editor.
+        <img src="img/eclipse-jboss-server-view.png" longdesc="img/eclipse-jboss-server-view.png"
+          class="screenshot" style="width:250px;" />
+      </li>
+      <li>
+        Verify that the <code><strong>Use the JBoss deploy directory</strong></code> radio button is checked.
+        <div style="width:102%; overflow:hidden">
+          <img src="img/eclipse-jboss-server-overview-02.png" longdesc="img/eclipse-jboss-server-overview-02.png"
+            class="inline--block" style="width:49%;" />
+          <img src="img/eclipse-jboss-server-overview.png" longdesc="img/eclipse-jboss-server-overview.png"
+            class="inline-block" style="width:49%;" />
+        </div>
+      </li>
+      <li>
+        Start the server to check that everyting is configured correctly.
+        <img src="img/eclipse-server-view-start-server-01.png" longdesc="img/eclipse-server-view-start-server-01.png"
+          class="screenshot" style="width:300px;" />
+      </li>
+      <li>
+        The console output should look something like the screeshot below.
+        <img src="img/eclipse-jboss-server-view-started.png" longdesc="img/eclipse-jboss-server-view-started.png"
+          class="screenshot " style="width:700px;" />
+      </li>
+      <li>
+        Stop the server.
+      </li>
+    </ul>
+  </li>
+  <li>Encoding: Set encoding to UTF-8 (optional).<br/>
+    Make shure that all files are saved with UTF-8 encoding. This is only essential if you're 
     working	with i18n.
     <div style="width:103%;overflow:hidden;">
       <div class="inline-block" style="width:24%;">
@@ -168,110 +292,20 @@
     </div>
   </li>
 </ol>
-  
-<h3 id="configure-the-maven-eclipse-plugin">Configure The Maven Eclipse Plugin</h3>
-<ol class="vspace">
-  <li>Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.</li>
-  <li>
-    Configure the Maven Eclipse plugin.
-    <img src="img/eclipse-maven-plugin.png" longdesc="img/eclipse-maven-plugin.png" 
-      class="screenshot" style="width:500px;" />
-  </li>
-  <li>
-    Configure Eclipse to use an <strong>external</strong> Maven installation.<br/>
-    According to this blogs:
-    <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-    ECLIPSE: MAVEN INSTALL FROM RUN AS MENU FAILS</a> and 
-    <a href="http://www.innovationontherun.com/common-issues-and-workarounds-while-building-ear-files-in-eclipse/"
-      style="white-space:nowrap">
-    Common Issues and Workarounds While Building EAR files in Eclipse</a>, 
-    there are some issues when running embedded Maven from Eclipse, so we need to configure Eclipse to 
-    use an external Maven installation. In Preferences, navigate to 
-    <code><strong>Maven>Installations</strong></code> and edit details as outlined in the image below.
-    <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
-      class="screenshot" style="width:500px;" />
-  </li>
-</ol>
-
-<h3>Install the JBoss Application Server and JBoss Tools</h3>
-<ol class="vspace">	
-  <li>
-    Install the <a href="http://www.jboss.org/jbossas/">Jboss Application Server</a>
-  </li>
-  <li>
-    Install <a href="http://www.jboss.org/tools">JBoss Tools 3</a>
-  </li>
-  <li>
-    The <a href="http://seamframework.org/Documentation">
-    JBoss Seam documentation</a> explains these steps in detail.
-  </li>
-</ol>
-
-<h3 id="create-a-wtp-server-reference">Create a WTP Server Reference</h3>
-<p>After the Server and the tools are installed you need to define a WTP server reference. The 
-screenshots below outlines the steps needed to configure a WTP server reference for JBoss 4.2.3.</p>
-<ol class="vspace">	
-  <li>
-    In Preferences, navigate to <strong>Server>Runtime Environments</strong>. Click 
-    <strong>Add...</strong>. Browse to the folder named <strong>JBoss Community</strong> 
-    and select <strong>JBoss 4.2 Runtime</strong>.
-    <img src="img/eclipse-server-runtime-01.png" longdesc="img/eclipse-server-runtime-01.png"
-      class="screenshot" style="width:500px;" />
-  </li>
-  <li>
-    Click <strong>Next</strong>, name the server runtime, e.g. JBoss 4.2.3-jdk6 Runtime, and point the 
-    <strong>Home Directory</strong> to the folder where you installed the	server. Select the 
-    <strong>default</strong> configuration. 
-    <img src="img/eclipse-server-runtime-02.png" longdesc="img/eclipse-server-runtime-02.png" 
-      class="screenshot" style="width:300px;" />
-  </li>
-  <li>
-    Click <strong>Next</strong>, name the server, e.g. JBoss 4.2.3-jdk6 Server, and click 
-    <strong>Finish</strong>.
-    <img src="img/eclipse-server-runtime-03.png" longdesc="img/eclipse-server-runtime-03.png"
-      class="screenshot" style="width:300px;" />
-  </li>
-  <li>
-    Exit Preferences and switch to the JBoss perspective.
-    <img src="img/eclipse-jboss-perspective.png" longdesc="img/eclipse-jboss-perspective.png" 
-      class="screenshot" style="width:250px;" />
-  </li>
-  <li>
-    Doubleclick on the newly created server, JBoss 4.2.3-jdk6 Server, to open the Server Overview 
-    editor.
-    <img src="img/eclipse-jboss-server-view.png" longdesc="img/eclipse-jboss-server-view.png"
-      class="screenshot" style="width:200px;" />
-  </li>
-  <li>
-    Verify that the <code><strong>Use the JBoss deploy folder</strong></code> radio button is checked.
-    <img src="img/eclipse-jboss-server-overview.png" longdesc="img/eclipse-jboss-server-overview.png"
-      class="screenshot" style="width:550px;" />
-  </li>
-  <li>
-    Start the server to check that everyting is configured correctly.
-    <img src="img/eclipse-server-view-start-server-01.png" longdesc="img/eclipse-server-view-start-server-01.png"
-      class="screenshot" style="width:200px;" />
-  </li>
-  <li>
-    The console output should look something like the screeshot below.
-    <img src="img/eclipse-jboss-server-view-started.png" longdesc="img/eclipse-jboss-server-view-started.png"
-      class="screenshot " style="width:500px;" />
-  </li>
-  <li>
-    Stop the server.
-  </li>
-</ol>
-
 
 <p>This ends the steps needed to prepare the Eclipse workspace for Maven and JBoss Tools. You need to 
-go trough this steps every time you create a new workspace.</p>
+go trough this steps every time you create a new workspace.
+</p>
+
+<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
+
 
 <h2 id="import-project-into-eclipse">Import a Mavenized Seam Project into Eclipse</h2>
 <p>m2eclipse provides three options for importing a Maven project into Eclipse including:</p>
 <ul>
   <li>Import an existing Maven project from the local file system</li>
   <li>Check out a Maven project from SCM</li>
-  <li> Materialize a Maven project</li>
+  <li>Materialize a Maven project</li>
 </ul>
 <p>The options are described in detail in 
 <a href="http://www.sonatype.com/products/maven/documentation/book-defguide">
@@ -287,7 +321,7 @@ in the project and provides a hierarchical list of them.</p>
 <ol class="vspace">
   <li>
     <a href="01-gettingstarted.html#use-as-template">Export</a> the <code>seam-refimpl</code> project 
-    from svn to a folder of your choice, the <code>${SEAM_TUTORIAL}</code> folder. <br/>
+    from svn to a directory of your choice, the <code>${SEAM_TUTORIAL}</code> directory. <br/>
   </li>
   <li>
     <a href="01-gettingstarted.html#modfy-the-poms">Modify the POMs</a> as needed.
@@ -295,9 +329,9 @@ in the project and provides a hierarchical list of them.</p>
   <li>
     <a href="01-gettingstarted.html#switch-to-development-mode">Switch to development mode</a>.<br/>
     <strong>Remember</strong> to copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to 
-    the  project folder, <code>${SEAM_TUTORIAL}</code>. Modify the copy as needed; configure database 
-    connection, point the server to the correct deploy folder (the <code>as.deploy</code> property
-    in <code>profiles.xml</code> should correspond with the <code>configuration</code> folder you
+    the  project directory, <code>${SEAM_TUTORIAL}</code>. Modify the copy as needed; configure database 
+    connection, point the server to the correct deploy directory (the <code>as.deploy</code> property
+    in <code>profiles.xml</code> should correspond with the <code>configuration</code> directory you
     selected for the WTP server), etc.
   </li>
   <li>
@@ -313,7 +347,7 @@ in the project and provides a hierarchical list of them.</p>
     <img class="screenshot" src="img/eclipse-import-maven-01.png" style="width:340px; display:block;" />
   </li>
   <li>
-    Browse to the folder where the project is located, select it, verify that all modules are checked 
+    Browse to the directory where the project is located, select it, verify that all modules are checked 
     and click <strong>Finish</strong>.
     <img class="screenshot" src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
   </li>
@@ -484,8 +518,8 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
     </pre>
   </li>
   <li>
-    Stop the server and inspect the deploy folder. As you can see, the deploy folder contains a copy 
-    of the WEB-INF folder from the WAR module and a couple of jar files that shouldn't be there. 
+    Stop the server and inspect the deploy directory. As you can see, the deploy directory contains a copy 
+    of the WEB-INF directory from the WAR module and a couple of jar files that shouldn't be there. 
     Also the <code>*-ds.xml</code> file is missing. The problem is caused by this Eclipse bug:
     <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=247090">
     Bug 247090 -  User)libraries incorrectly deployed within EARs</a>
@@ -497,7 +531,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
     <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
   </li>
   <li>
-    Inspect the deploy folder and verify the the incorrectly deployed files are gone and that the 
+    Inspect the deploy directory and verify the the incorrectly deployed files are gone and that the 
     <code>*-ds.xml</code> file is present.
     <img class="screenshot" src="img/eclipse-wtp-06.png" style="width:400px; display:block;" />
   </li>
@@ -520,7 +554,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
     <a href="http://www.zeroturnaround.com/jrebel/">ZERO TURNAROUND</a>.
   </li>
   <li>
-    You need to keep an eye on the deploy folder as WTP will do a full deploy from time to time, in
+    You need to keep an eye on the deploy directory as WTP will do a full deploy from time to time, in
     particular when you make modifications to the EAR module. Then the fix is to stop the server and
     run <code>mvn install -Pexplode</code> again.
   </li>
@@ -661,7 +695,7 @@ setting up the tools. Play with the tools and study the code that the various to
 </p>
 
 <h3>Configure JBoss Tools For The Workspace</h3>
-<p>Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a folder of your 
+<p>Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a directory of your 
 choice, e.g. <code>C:/ide/libs/jboss-seam-2.2.0.GA</code>. Open <code><strong>Prefereneces
 </strong></code> and follow the screenshots.</p>
 <ol class="vspace">
@@ -708,7 +742,7 @@ a datasource. The screenshots below outlines one possible way to accomplish this
   <li>
     Open the <code><strong>Database Development</strong></code> perspective. In 
     <code><strong>Data Source Explorer</strong></code> 
-    right click the <code><strong>Databases</strong></code> folder and select 
+    right click the <code><strong>Databases</strong></code> directory and select 
     <code><strong>New...</strong></code>
     <img class="screenshot" src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
     <img class="screenshot" src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
@@ -847,9 +881,9 @@ the main source of configuration, so we'll start with the WAR.</p>
 </li>
 <li>
   We're almost there. We configured <strong>Seam Settings</strong> to generate <code>xhtml</code> 
-  files to the <code>webapp/view</code> folder, but the code generator does not take this into 
+  files to the <code>webapp/view</code> directory, but the code generator does not take this into 
   account. The links in the generated <code>xhtml</code> code "assumes" that the code is generated
-  to the <code>webapp</code> folder. So, to finish up, we fix this flaw by making some small changes 
+  to the <code>webapp</code> directory. So, to finish up, we fix this flaw by making some small changes 
   to the genereated <code>xhtml</code> code. Also add a link to <code>myEntityList.xhtml</code> in 
   <code>menu.xhtml</code> (<font color="blue">see the blue text</font>).
   <ul>
@@ -1094,7 +1128,7 @@ complete that tutorial first.</p>
     <code><strong>org.jboss.seam.example.action</strong></code> package.
   </li>
   <li>
-    In <code>seam-tutorial-war</code>; delete the <code><strong>view</strong></code> folder. 
+    In <code>seam-tutorial-war</code>; delete the <code><strong>view</strong></code> directory. 
   </li>
   </ul>
   <img class="screenshot" src="img/eclipse-seam-db-entity-06.png" style="width:300px; display:block;" />
@@ -1138,9 +1172,9 @@ complete that tutorial first.</p>
   </pre>	
 </li>
 <li>
-  Modify Seam settings for WAR: Select the newly created connection and point the View folder to 
+  Modify Seam settings for WAR: Select the newly created connection and point the View directory to 
   <strong>/seam-tutorial-war/src/main/webapp</strong> so that xhtml files are generated to the
-  webapp folder.
+  webapp directory.
   <img class="screenshot" src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
 </li>
 <li>
@@ -1211,8 +1245,8 @@ complete that tutorial first.</p>
     <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-select-location.png" style="width:450px; display:block;" />
   </li>
   <li>
-    Select the folder to be checked out from SVN and click <strong>Next</strong>.
-    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-select-folder.png" style="width:450px; display:block;" />
+    Select the directory to be checked out from SVN and click <strong>Next</strong>.
+    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-select-directory.png" style="width:450px; display:block;" />
   </li>
   <li>
     Select <code><strong>Check out as a project in the workspace</strong></code>  and click 
@@ -1221,8 +1255,8 @@ complete that tutorial first.</p>
   </li>
   <li>
     Uncheck the <code><strong>Use default workspace location</strong></code> checkbox and
-    browse to the folder where you want to check out the trunk. <br/><strong>Note:</strong> 
-    <a href="#configure-the-workspace">Do not add Maven projects under your workspace folder</a>.<br/><br/>
+    browse to the directory where you want to check out the trunk. <br/><strong>Note:</strong> 
+    <a href="#configure-eclipse">Do not add Maven projects under your workspace directory</a>.<br/><br/>
     Click <strong>Finish</strong>.<br/>
     <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-checkout-as.png" style="width:450px; display:block;" />
   </li>
@@ -1276,7 +1310,7 @@ missing for some dependencies, then try this:
 </p>
 <ul>
   <li>
-    Navigate to the project folder, e.g. <code>${SEAM_TUTORIAL}</code>, using a command shell and 
+    Navigate to the project directory, e.g. <code>${SEAM_TUTORIAL}</code>, using a command shell and 
     execute:
   </li>
   <li>
@@ -1297,7 +1331,7 @@ caused by Eclipse (and you?).
     <img class="screenshot" src="img/eclipse-delete-project.png" style="width:450px; display:block;" />
   </li>
   <li>
-    Exit Eclipse, navigate to the projct folder, e.g. the <code>${SEAM_TUTORIAL}</code> folder using 
+    Exit Eclipse, navigate to the projct directory, e.g. the <code>${SEAM_TUTORIAL}</code> directory using 
     a command shell and execute maven commands:
     <ul>
       <li><code>mvn clean -Punexplode</code></li>
@@ -1357,16 +1391,16 @@ caused by Eclipse (and you?).
   byte-order mark
 </h3>
 <p>
-Do not add Maven projects under your workspace folder. There are some issues regarding use of the 
-m2eclipse plugin when projects are placed under the workspace folder, e.g. 
+Do not add Maven projects under your workspace directory. There are some issues regarding use of the 
+m2eclipse plugin when projects are placed under the workspace directory, e.g. 
 <code style="white-space:nowrap">C:/dev/ide/workspaces/eclipse-3.4/myproject</code>: You will not be 
 able to run Maven Eclipse goals from a command shell if your project is placed under the workspace 
-folder; the <code>mvn eclipse:eclipse, mvn eclipse:clean and mvn eclipse:m2eclipse</code> goals will 
+directory; the <code>mvn eclipse:eclipse, mvn eclipse:clean and mvn eclipse:m2eclipse</code> goals will 
 fail to execute. The issues are reported here: <a href="http://jira.codehaus.org/browse/MECLIPSE-571">
 http://jira.codehaus.org/browse/MECLIPSE-571</a>, and here:	
 <a href="http://jira.codehaus.org/browse/MNG-2057">http://jira.codehaus.org/browse/MNG-2057</a>.
-So, be kind to yourself and create a project folder that is not on the same file path as the 
-workspace folder, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
+So, be kind to yourself and create a project directory that is not on the same file path as the 
+workspace directory, e.g. <code style="white-space:nowrap">C:/dev/projects</code>
 </p>
 
 <h3>How To Browse (ctrl+clik) Into Java Code From a Visual Editor</h3>
