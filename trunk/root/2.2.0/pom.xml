@@ -1086,6 +1086,8 @@
         <!--
           see:   http://mojo.codehaus.org/maven-hibernate3/hibernate3-maven-plugin/
           see:   http://unmaintainable.wordpress.com/2008/04/12/hibernate3-schema-creation/
+          requires: 
+          * ${app.persistence.unit.name}
           usage: 
           * cd  to parent project
           * mvn install
@@ -1162,7 +1164,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>buildnumber-maven-plugin</artifactId>
-          <version>1.0-beta-4</version>
+          <version>1.0-beta-3</version>
           <dependencies>
             <dependency>
               <groupId>org.tmatesoft.svnkit</groupId>
