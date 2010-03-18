@@ -96,10 +96,6 @@
       <!--
         Unexplode ear. Remove project from appserver deploy folder. 
         Execute e.g. "mvn clean -Punexplode"
-        
-        Note: Unexplode does not work in combination with the Properties Maven Plugin. 
-        The plugin does not	read properties during the clean phases. An alternative is  
-        to make the "as" properties global by moving them to e.g. ./.m2/settings.xml
       -->
       <id>unexplode</id>
       <build>
@@ -300,9 +296,21 @@
               <files>
                 <file>../src/main/filters/filter-${env}.properties</file>
                 <!-- 
-                  does not work with mvn eclipse:m2eclipse
-                  <file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file> 
+                <file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file> 
                 -->
+              </files>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- Read properties needed by unexplode profile -->
+            <id>pre-clean</id>
+            <phase>pre-clean</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+            </goals>
+            <configuration>
+              <files>
+                <file>../src/main/filters/filter-${env}.properties</file>
               </files>
             </configuration>
           </execution>
