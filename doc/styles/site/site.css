@@ -50,7 +50,10 @@ li {
 }
 
 ul.vspace>li, ol.vspace>li {
-  padding-top: .8em;
+  padding-top: .5em;
+}
+ul.vspace li:last-child, ol.vspace li:last-child {
+  padding-bottom: .5em;
 }
 /**
  * Override page-layout.css

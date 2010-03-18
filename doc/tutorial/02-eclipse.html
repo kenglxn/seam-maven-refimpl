@@ -34,7 +34,7 @@
 <div id="page-wrapper">
 <div id="header">
 <div class="header">
-  <h1>Using Maven, Eclipse and JBoss Tools</h1>
+  <h1>Maven, Eclipse and JBoss Tools</h1>
 </div>
 </div> 
 <div id="page">
@@ -149,7 +149,8 @@ org.eclipse.platform
 
 <h2  id="configure-workspace">Configure Workspace</h2>
 <ol = class="vspace">  
-  <li>JDK: Make sure that Eclipse is running on a JDK and not a JRE.<br/>
+  <li><strong>JDK:</strong><br/>
+    Make sure that Eclipse is running on a JDK and not a JRE.<br/>
     Select <code><strong>Window>Preferences</strong></code> and browse to the 
     <code><strong>Java>Installed JREs</strong></code> section. 
     <div style="width:102%;overflow:hidden;">
@@ -159,10 +160,12 @@ org.eclipse.platform
         class="inline-block" style="width:49%;" />
     </div>
   </li>
-  <li id="m2eclipse">
-    m2eclipse:
+  <li id="m2eclipse"><strong>m2eclipse:</strong>
     <ul class="vspace">
-      <li>Install the <a href="http://m2eclipse.codehaus.org/">Maven Eclipse plugin</a>.</li>
+      <li>
+        Install the <a href="http://m2eclipse.sonatype.org/installing-m2eclipse.html">
+        m2eclipse Core and m2eclipse Extas plugin</a>.
+      </li>
       <li>
         Configure the Maven Eclipse plugin.
         <img src="img/eclipse-maven-plugin.png" longdesc="img/eclipse-maven-plugin.png" 
@@ -184,14 +187,25 @@ org.eclipse.platform
       </li>
     </ul>
   </li>
-  <li id="as-and-tools">
-    Install the JBoss Application Server and JBoss Tools:
+  <li><strong>TestNG:</strong>
+    <ul class="vspace">
+      <li>
+        Install the <a href="http://testng.org/doc/eclipse.html">TestNG Eclipse plug-in</a>.
+      </li>
+      <li>
+        Configure the TestNG Eclipse plug-in. 
+        <img src="img/eclipse-testng-plugin.png" longdesc="img/eclipse-testng-plugin.png"
+          class="screenshot" style="width:500px;" />
+      </li>
+    </ul>
+  </li>
+  <li id="as-and-tools"><strong>JBoss Application Server and JBoss Tools 3:</strong>
     <ul class="vspace">	
       <li>
         Install the <a href="http://www.jboss.org/jbossas/">Jboss Application Server</a>
       </li>
       <li>
-        Install <a href="http://www.jboss.org/tools">JBoss Tools 3</a>
+        Install <a href="http://www.jboss.org/tools">Eclipse Plugins for JBoss and related Technology</a>
       </li>
       <li>
         The <a href="http://seamframework.org/Documentation">
@@ -199,8 +213,7 @@ org.eclipse.platform
       </li>
     </ul>
   </li>
-  <li id="create-a-wtp-server-reference">
-    Create a WTP Server Reference:<br/>
+  <li id="create-a-wtp-server-reference"><strong>WTP Server Reference:</strong><br/>
     After the Server and the tools are installed you need to define a WTP server reference. The 
     screenshots below outlines the steps needed to configure a WTP server reference for JBoss 4.2.3.
     <ul class="vspace">	
@@ -229,7 +242,7 @@ org.eclipse.platform
           class="screenshot" style="width:500px;" />
       </li>
       <li>
-        Open the JBoss perspective.
+        Open the JBoss AS perspective.
         <img src="img/eclipse-jboss-perspective.png" longdesc="img/eclipse-jboss-perspective.png" 
           class="screenshot" style="width:250px;" />
       </li>
@@ -263,7 +276,8 @@ org.eclipse.platform
       </li>
     </ul>
   </li>
-  <li>Encoding: Set encoding to UTF-8 (optional).<br/>
+  <li><strong>Encoding:</strong><br/>
+    Set encoding to UTF-8 (optional).<br/>
     Make shure that all files are saved with UTF-8 encoding. This is only essential if you're 
     working	with i18n.
     <div style="width:103%;overflow:hidden;">
@@ -311,7 +325,7 @@ go trough this steps every time you create a new workspace.
 </ul>
 <p>The options are described in detail in 
 <a href="http://www.sonatype.com/products/maven/documentation/book-defguide">
-Maven: The Definitive Guide</a>. This tutorial shows how to use the first option.</p>
+Maven: The Definitive Guide</a>. In this tutorial we'll show how to use the first option.</p>
 
 <h3 id="import-an-existing-maven-project">
   Import An Existing Maven Project From the Local File System Into Eclipse
@@ -342,16 +356,19 @@ in the project and provides a hierarchical list of them.</p>
   </li>
   <li>
     Import the project: In Eclipse select <code><strong>File>Import</strong></code> to import the project:
-    <img class="screenshot" src="img/eclipse-import.png" style="width:250px; display:block;" />
+    <img class="screenshot" src="img/eclipse-import.png" longdesc="img/eclipse-import.png" 
+      style="width:300px" />
   </li>
   <li>
-    Select <code><strong>General&gt;Maven Projects</strong></code> and click <strong>Next</strong>.
-    <img class="screenshot" src="img/eclipse-import-maven-01.png" style="width:340px; display:block;" />
+    Select <code><strong>Maven&gt;Existing Maven Projects</strong></code> and click <strong>Next</strong>.
+    <img class="screenshot" src="img/eclipse-import-maven-01.png" longdesc="img/eclipse-import-maven-01.png" 
+      style="width:500px;" />
   </li>
   <li>
     Browse to the directory where the project is located, select it, verify that all modules are checked 
     and click <strong>Finish</strong>.
-    <img class="screenshot" src="img/eclipse-import-maven-02.png" style="width:500px; display:block;" />
+    <img src="img/eclipse-import-maven-02.png" longdesc="img/eclipse-import-maven-02.png" 
+      class="screenshot" style="width:500px" />
   </li>
   <li>
     You will notice a build error in the Maven console after the import:
