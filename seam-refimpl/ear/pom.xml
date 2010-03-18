@@ -302,7 +302,7 @@
             </configuration>
           </execution>
           <execution>
-            <!-- Read properties needed by unexplode profile -->
+            <!-- Properties needed by unexplode profile -->
             <id>pre-clean</id>
             <phase>pre-clean</phase>
             <goals>
