@@ -285,11 +285,14 @@ own project.
     &lt;version&gt;2.2.0-SNAPSHOT&lt;/version&gt;
   &lt;/parent&gt;
   
-  &lt;groupId&gt;<font color="blue"><strong>com.company.seam</strong></font>&lt;/groupId&gt;
+  &lt;groupId&gt;<font color="blue"><strong>com.yourcompany.seam</strong></font>&lt;/groupId&gt;
   &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/artifactId&gt;
   &lt;version&gt;<font color="blue"><strong>0.1-SNAPSHOT</strong></font>&lt;/version&gt;
   &lt;name&gt;${project.artifactId} : ${project.version}&lt;/name&gt;
-  &lt;description&gt;<font color="blue"><strong>The Seam Tutorial parent pom</strong></font>&lt;/description&gt;
+  &lt;description&gt;<font color="blue"><strong>The Seam Tutorial parent POM</strong></font>&lt;/description&gt;
+  <font color="blue">&lt;!--
+  &lt;url&gt;http://code.google.com/p/seam-maven-refimpl/&lt;/url&gt;
+  --&gt;</font>
   &lt;packaging&gt;pom&lt;/packaging&gt;
   &lt;modules&gt;
     &lt;module&gt;ejb&lt;/module&gt;
@@ -298,6 +301,7 @@ own project.
   &lt;/modules&gt;
   &lt;properties&gt;
     &lt;env&gt;dev&lt;/env&gt; &lt;!-- The default setting if no profile is specified --&gt;
+    &lt;app&gt;<font color="blue"><strong>tutorial</strong></font>&lt;/app&gt;
     &lt;app.context&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/app.context&gt; &lt;!-- hint: same value as artifactId --&gt;
     &lt;app.web.context&gt;${app.context}&lt;/app.web.context&gt;
     &lt;app.display.name&gt;<font color="blue"><strong>Seam Tutorial</strong></font>&lt;/app.display.name&gt;
@@ -330,7 +334,7 @@ own project.
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue"><strong>com.company.seam</strong></font>&lt;/groupId&gt;
+    &lt;groupId&gt;<font color="blue"><strong>com.yourcompany.seam</strong></font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/artifactId&gt;
     &lt;version&gt;<font color="blue"><strong>0.1-SNAPSHOT</strong></font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
@@ -350,7 +354,7 @@ own project.
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue"><strong>com.company.seam</strong></font>&lt;/groupId&gt;
+    &lt;groupId&gt;<font color="blue"><strong>com.yourcompany.seam</strong></font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/artifactId&gt;
     &lt;version&gt;<font color="blue"><strong>0.1-SNAPSHOT</strong></font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
@@ -370,7 +374,7 @@ own project.
 &lt;project
   .
   &lt;parent&gt;
-    &lt;groupId&gt;<font color="blue"><strong>com.company.seam</strong></font>&lt;/groupId&gt;
+    &lt;groupId&gt;<font color="blue"><strong>com.yourcompany.seam</strong></font>&lt;/groupId&gt;
     &lt;artifactId&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/artifactId&gt;
     &lt;version&gt;<font color="blue"><strong>0.1-SNAPSHOT</strong></font>&lt;/version&gt;
     &lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;
@@ -906,32 +910,42 @@ cases.
   </li>
 </ul>
 
-<h2>Remove Project From the Application Server</h2>
+<h2>Remove the Project From the Application Server</h2>
 <p>To finish the basic steps of this tutorial we will clean the project and completly removed it 
 from the application server.
 </p>
+
+<h3>Use the <code>unexplode</code> Profile</h3>
 <ol class="vspace">
-  <li>Shutdown JBossAS before cleaning the project:<br/>
+  <li>Shutdown JBossAS:<br/>
     Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>shutdown -S</code>
     or press Ctrl+C from the command shell that started the server.
   </li>
   <li>
-    In the projects command shell run: <code>mvn clean</code>
+    Open a command shell, navigate to your project directory and run: 
+    <code><strong>mvn clean -Punexplode</strong></code>
+  </li>
+</ol>
+
+<h3>Remove the Project Manually</h3>
+<ol class="vspace">
+  <li>Shutdown JBossAS:<br/>
+    Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>shutdown -S</code>
+    or press Ctrl+C from the command shell that started the server.
   </li>
   <li>
-    Delete the exploded directry, <code>seam-tutorial-ear.ear</code>, from <code>${JBOSS_DEPLOY}</code>. 
+    In the projects command shell run: <code><strong>mvn clean</strong></code>
+  </li>
+  <li>
+    Delete the <code>seam-tutorial-ear.ear</code> directory (or file), from <code>${JBOSS_DEPLOY}</code>. 
     Also delete the corresponding datasource file,<code>seam-tutorial-ds.xml</code>, form 
     <code>${JBOSS_DEPLOY}</code> if you have deployed the datasource file as a
     <a href="#deploy-ds-as-separate-service">separate service</a>.<br/>
-    <strong>Note:</strong> Earlier in the project we had an <code>unexplode</code> profile that 
-    automated this task. The <code>maven-properties</code> plugin does not read properties files 
-    during the Maven clean phase, so the <code>unexplode</code> profile does not work as long as the
-    <code>as.deploy</code> property is defined in the filter properties file.
-  </li>
-  <li>
-    This completes the getting started tutorial.
   </li>
 </ol>
+
+<p>This completes the getting started tutorial.
+</p>
 
 <h2>How To's</h2>
 <h3><a name="configure-database-connection">How to Configure Database Connection</a></h3>
