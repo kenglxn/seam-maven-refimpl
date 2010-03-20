@@ -841,7 +841,7 @@
       <dependency>
         <groupId>commons-lang</groupId>
         <artifactId>commons-lang</artifactId>
-        <version>2.3</version>
+        <version>2.4</version>
       </dependency>			
 
       <!-- h2 database -->
@@ -955,9 +955,26 @@
           <artifactId>maven-ear-plugin</artifactId>
           <version>2.4.1</version>
           <configuration>
+            <!-- 
+              MNGECLIPSE-1541:
+              During the import of a mavenized ear project (File > Import... > General > Maven Projects) 
+              an application.xml file is generated in src/main/application/META-INF/application.xml.
+              https://issues.sonatype.org/browse/MNGECLIPSE-1541
+              
+              MNGECLIPSE-2145: 
+              Generated application.xml doesn't contain final names
+              https://issues.sonatype.org/browse/MNGECLIPSE-2145
+              
+              To fix this we excludes the eclipse generated application.xml during mvn package
+            -->
+            <earSourceExcludes>**/application.xml</earSourceExcludes>
+            
+            <!-- Use maven generated application.xml -->
             <generateApplicationXml>true</generateApplicationXml>
+            
             <version>5</version>
             <defaultLibBundleDir>lib</defaultLibBundleDir>
+            <encoding>UTF-8</encoding>
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
@@ -977,6 +994,7 @@
           <version>2.2</version>
           <configuration>
             <ejbVersion>3.0</ejbVersion>
+            <encoding>UTF-8</encoding>
             <generateClient>false</generateClient>
             <archive>
               <manifest>
@@ -996,6 +1014,7 @@
           <artifactId>maven-jar-plugin</artifactId>
           <version>2.3</version>
           <configuration>
+            <encoding>UTF-8</encoding>
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
@@ -1014,6 +1033,7 @@
           <artifactId>maven-war-plugin</artifactId>
           <version>2.1-beta-1</version>
           <configuration>
+            <encoding>UTF-8</encoding>
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
