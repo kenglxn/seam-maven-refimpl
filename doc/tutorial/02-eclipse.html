@@ -164,7 +164,7 @@ org.eclipse.platform
     <ul class="vspace">
       <li>
         Install the <a href="http://m2eclipse.sonatype.org/installing-m2eclipse.html">
-        m2eclipse Core and m2eclipse Extas plugin</a>.
+        m2eclipse Core and m2eclipse Extas plugins</a>.
       </li>
       <li>
         Configure the Maven Eclipse plugin.
@@ -179,7 +179,8 @@ org.eclipse.platform
         The <code>org.codehaus.mojo:properties-maven-plugin</code> does not yet work with Maven3; 
         there is a problem building the EAR. It works fine with Maven 2.2.1, so we need to configure 
         Eclipse to use an external Maven installation. In Preferences, navigate to 
-        <code><strong>Maven>Installations</strong></code> and edit details as outlined in the image below.
+        <code><strong>Maven>Installations</strong></code>. Click <code><strong>Add...</strong></code> 
+        and select your Maven-2.2.1 home directory.
         <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
           class="screenshot" style="width:500px;" />
       </li>
@@ -223,9 +224,8 @@ org.eclipse.platform
           class="screenshot" style="width:500px;" />
       </li>
       <li>
-        Click <strong>Next</strong>, name the server runtime, e.g. JBoss 4.2.3-jdk6 Runtime, and point the 
-        <strong>Home Directory</strong> to the directory where you installed the	server. Select the 
-        <strong>default</strong> configuration. 
+        Click <strong>Next</strong> and point the <strong>Home Directory</strong> to the directory 
+        where you installed the	server. Select the <strong>default</strong> configuration. 
         <img src="img/eclipse-server-runtime-02.png" longdesc="img/eclipse-server-runtime-02.png" 
           class="screenshot" style="width:300px;" />
       </li>
@@ -311,9 +311,6 @@ org.eclipse.platform
 go trough this steps every time you create a new workspace.
 </p>
 
-<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
-
-
 <h2 id="import-project-into-eclipse">Import a Mavenized Seam Project into Eclipse</h2>
 <p>m2eclipse provides three options for importing a Maven project into Eclipse including:</p>
 <ul>
@@ -368,39 +365,54 @@ in the project and provides a hierarchical list of them.</p>
   </li>
   <li>
     You will notice a build error in the Maven console after the import:
-    <img class="screenshot" src="img/eclipse-import-maven-08.png" style="width:750px; display:block;" />
+    <img src="img/eclipse-import-maven-08.png" longdesc="img/eclipse-import-maven-08.png" 
+      class="screenshot" style="width:700px;" />
     <code><font color="red">
     Build errors for seam-tutorial-ear; org.apache.maven.lifecycle.LifecycleExecutionException: 
-    Invalid or missing parameters: [Mojo parameter [name: 'outputDirectory'; alias: 'null'], Mojo 
-    parameter [name: 'resources'; alias: 'null']] for mojo: 
-    org.apache.maven.plugins:maven-resources-plugin:2.3:copy-resources</font></code><br/><br/>
-    The build fail is caused by a conflict in Maven resolution and Workspace resolution as reported 
-    here: <a href="http://jira.codehaus.org/browse/MNGECLIPSE-1136">
-    Execution goals bound to the process-resources phase cause error</a><br/><br/>
-    We fix :-)
+    Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.1:generate-application-xml 
+    (default-generate-application-xml) on project seam-tutorial-ear: Failed to initialize JBoss 
+    configuration</font></code><br/><br/>
+    This is an m2eclipse bug that is fixed by excluding the eclipse generated application.xml during 
+    mvn package. The <code>maven-ear-plugin</code> is preconfigured with the actual configuration in 
+    the project templates "root" POM. For further details see: 
+    <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a> and 
+    <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>.
   </li>
   <li>
-    Modify Maven properties for the parent project, seam-tutotrial.<br/>
-    <img class="screenshot" src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
-    <img class="screenshot" src="img/eclipse-project-properties-maven-01.png" style="width:580px; display:block;" />
-    <strong>NOTE: <font color="red">DO NOT CHECK THE INCLUDE MODULES CHECKBOX - EVER!</font></strong>  
-    Doing so will effectly block the possibility to use WTP to deploy your project. The selection is
-    irreversible and you will have to remove the project from Eclipse, delete all Eclipse spesific
-    settings in the project folders and set up the project from scratch. See the section 
-    <a href="#remove-eclipse-settings">How To Completly Remove Eclipse Spesific Settings From a 
-    Project</a> for how to completly remove Eclipse spesific settings from a project.
-  </li>
-  <li>
-    Modify Maven properties for ear module; seam-tutotrial-ear. Uncheck the  <code>Skip Maven
-    compiler plugin</code> checkbox:
-    <img class="screenshot" src="img/eclipse-project-properties-maven-02.png" style="width:580px; display:block;" />
-  </li>
-  <li>
-    Modify Maven properties for ejb and war modules; seam-tutotrial-ejb and seam-tutotrial-war:
-    <img class="screenshot" src="img/eclipse-project-properties-maven-03.png" style="width:580px; display:block;" />
+    Fix annoyances.<br/><br/>
+    <div class="inline-block" style="width:31%;">
+      <img src="img/eclipse-annoyance-01.png" longdesc="img/eclipse-annoyance-01.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1752">MNGECLIPSE-1752</a>
+    </div>
+    <div class="inline-block" style="width:40.4%;">
+      <img src="img/eclipse-annoyance-02.png" longdesc="img/eclipse-annoyance-02.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      Select Workspace default JRE
+    </div>
+    <div class="inline-block" style="width:27.6%;">
+      <img src="img/eclipse-annoyance-03.png" longdesc="img/eclipse-annoyance-03.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      Delete Eclipse generated <code>application.xml</code>
+      <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a>, 
+      <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>
+    </div>
+    <div class="inline-block" style="width:31%;">
+      <img src="img/eclipse-annoyance-04.png" longdesc="img/eclipse-annoyance-04.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      <code>src/main/application</code> should be source folder.
+    </div>
+    <div class="inline-block" style="width:68.5%;">
+      <img src="img/eclipse-annoyance-05.png" longdesc="img/eclipse-annoyance-05.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      Schema validation fails due to use of filtered property values. The target resource files
+      should be correct, so you can safely delete cvc erros.
+    </div>
   </li>
 </ol>
-<p>Now we have fixed and the build errors should be gone :-))</p>
+
+<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
+
 
 <h3>Project Facets for EAR, EJB and WAR Modules</h3>
 <p>It should not be necessary to make any changes to the Project Facets, just verify that the 
