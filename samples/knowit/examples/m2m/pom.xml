@@ -233,6 +233,13 @@
 					</items>
 				</configuration>
 				-->
+        
+				<configuration>
+            <providerImplementations>
+              <svn>javasvn</svn>
+            </providerImplementations>
+        </configuration>
+        
 			</plugin>
 		</plugins>
 	</build>

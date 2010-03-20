@@ -374,7 +374,6 @@
           <finalName>${app.context}-ear</finalName>
           <displayName>${app.display.name}</displayName>
           <description>${app.description}</description>
-
           <jboss>
             <!--
               To trigger the generation of the jboss-app.xml file you need to

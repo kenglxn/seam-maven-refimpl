@@ -1184,7 +1184,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>buildnumber-maven-plugin</artifactId>
-          <version>1.0-beta-3</version>
+          <version>1.0-beta-4</version>
           <dependencies>
             <dependency>
               <groupId>org.tmatesoft.svnkit</groupId>
@@ -1196,9 +1196,17 @@
             <timestampFormat>{0,date,yyyy-MM-dd HH:mm:ss}</timestampFormat>
             <doCheck>false</doCheck>
             <doUpdate>false</doUpdate>
+            <revisionOnScmFailure>false</revisionOnScmFailure>
+            <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+            
+            <!-- 
+              Add this to projects parent pom if you want build number from svn, 
+              see e.g. m2m example
+              
             <providerImplementations>
               <svn>javasvn</svn>
             </providerImplementations>
+            -->
           </configuration>
           <executions>
             <execution>
