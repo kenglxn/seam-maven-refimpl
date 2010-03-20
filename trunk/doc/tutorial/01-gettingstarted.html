@@ -93,7 +93,11 @@
     <strong>Note:</strong> Do not use jdk1.6.0 update18 
     <a href="http://issues.apache.org/jira/browse/OPENEJB-1131">due to problems with OpenEJB-3.1.2</a>!
   </li>
-  <li><a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.<br/>
+  <li>
+    <a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.<br/>
+    <strong>Note:</strong> The <a href="http://mojo.codehaus.org/properties-maven-plugin/">
+    org.codehaus.mojo:properties-maven-plugin</a> does not yet work with Maven3; there is a problem 
+    building the EAR. It works fine with Maven 2.2.1.
   </li>
   <li>
     <a href="http://tortoisesvn.tigris.org/">Tortoise SVN</a> or a SVN client of your choice.<br/> 
@@ -404,7 +408,7 @@ own project.
   </li>
 </ol>
 
-<h3>Activate Development Mode</h3>
+<h3 id="activate-development-mode">Activate Development Mode</h3>
 <p>A software development lifecycle consists of several phases that each requires its own project 
 configurations - which can make moving a project through all the different  phases a challenge. For 
 instance, your development phase may require you to connect to a local database, but your 
@@ -603,7 +607,7 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
   </li>
 </ol>
 
-<h2>Filters</h2>
+<h2 id="filters">Filters</h2>
 <p>Filters are Maven's way of externalizing property replacement into easily portable and 
 configurable properties files. The basic idea of filtering is that you set up a named properties 
 file and specify one or more filesets to apply the substitutions in the properties file. For example:
@@ -655,6 +659,11 @@ The resources to be filtered are defined by the "resources" build element. For e
       &lt;filtering&gt;true&lt;/filtering&gt;
     &lt;/resource&gt;
   &lt;/resources&gt;</pre>
+  
+<p><strong>Note:</strong> The <a href="http://mojo.codehaus.org/properties-maven-plugin/">
+org.codehaus.mojo:properties-maven-plugin</a> does not yet work with Maven3; there is a problem 
+building the EAR. It works fine with Maven 2.2.1.
+</p>
   
 <h4>Filtering Example</h4>
 <p>The filtering take place during the process-resources phase and the filtered resource is then 
@@ -739,8 +748,8 @@ into details about the properties usage here.
 is testing.
 Before the embedded EJB container era you had to write teststs, redeploy your application, restart 
 the application server and then run your tests inside the application server. It's just slow and 
-boring to do it that way and as a result projects tend to end up with no automated tests at all. 
-Now, with the advent of embedded EJB3 containers - which boots super fast, need a minimum of 
+boring to do it that way and as a result projects tend to end up with no automated (integration)tests 
+at all. Now, with the advent of embedded EJB3 containers - which boots super fast, need a minimum of 
 configuration and integrates nicely with Maven - there are noe excuses for not writing tests. 
 Writing tests are simply fun again.
 </p>
@@ -916,6 +925,9 @@ from the application server.
 </p>
 
 <h3>Use the <code>unexplode</code> Profile</h3>
+<p>The <code>unexplode</code> profile only works if you have activated the <code><strong>dev</strong>
+</code> profile.
+</p>
 <ol class="vspace">
   <li>Shutdown JBossAS:<br/>
     Navigate to <code>${JBOSS_HOME}/bin</code> using a command shell and type: <code>shutdown -S</code>
@@ -923,7 +935,7 @@ from the application server.
   </li>
   <li>
     Open a command shell, navigate to your project directory and run: 
-    <code><strong>mvn clean -Punexplode</strong></code>
+    <code><strong>mvn clean -Penv-dev,unexplode</strong></code>
   </li>
 </ol>
 
@@ -1136,14 +1148,22 @@ Seam has a debug page showing useful information. To use it, add the following d
   &lt;artifactId&gt;jboss-seam-debug&lt;/artifactId&gt;
   &lt;version&gt;${jboss.seam.version}&lt;/version&gt;
 &lt;/dependency&gt;</pre>
-<p>In <code>profiles.xml</code> make shure that the <code>jdk.debug</code> property value is 
-<code>true</code>:</p>  
+<p>In <code>filter-dev.properties</code> make shure that the <code>jdk.debug</code> and 
+<code>jdk.debug</code> property values are <code>true</code>:</p>
+<pre>
+jdk.debug         =<font color="blue">true</font>
+jdk.optimize      =false
+jdk.source        =1.6
+jdk.target        =1.6
+app.debug         =<font color="blue">${jdk.debug}</font>
+app.unpack.modules=true
+</pre>
 <p>
   Open your browser and point to the following URL to see the debug page.
   <a href="http://localhost:8080/seam-tutorial/debug.seam">http://localhost:8080/seam-tutorial/debug.seam</a>
 </p>
 
-<h3>Files To Add To Svn Ignore</h3>
+<h2>Files To Add To Svn Ignore</h2>
 <p>Some files and directories, like user spesific settings, generated files and IDE settings should 
 not be under revision control. This are the files found so far using Eclipse with the m2eclipse and 
 JBoss Tools plugin. There will be more IDE spesific files to add as other IDEs are put to use. 
@@ -1169,6 +1189,9 @@ IDE spesific files should be added to the global <strong>svn ignore</strong>!
   <li>
     In <strong>ear</strong> directory
     <ul>
+      <li>src/main/application/META-INF/application.xml 
+      (see: <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a> and
+      <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>)</li>
       <li>.externalToolBuilders/</li>
       <li>.settings/</li>
       <li>target/</li>
@@ -1249,6 +1272,11 @@ IDE spesific files should be added to the global <strong>svn ignore</strong>!
   <li>
     <a href="http://i-proving.ca/space/Technologies/Maven/Maven+Recipes">
       Maven Recipes
+    </a>
+  </li>
+  <li>
+    <a href="http://apollo.ucalgary.ca/tlcprojectswiki/index.php/Public/Project_Versioning_-_Best_Practices">
+      Versioning - Best Practices
     </a>
   </li>
   <li>
