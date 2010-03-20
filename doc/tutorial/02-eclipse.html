@@ -405,14 +405,11 @@ in the project and provides a hierarchical list of them.</p>
     <div class="inline-block" style="width:68.5%;">
       <img src="img/eclipse-annoyance-05.png" longdesc="img/eclipse-annoyance-05.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
-      Schema validation fails due to use of filtered property values. The target resource files
-      should be correct, so you can safely delete cvc erros.
+      Schema validation for some resource files fails due to use of filtered property values. The 
+      target resource files should be correct, so you can safely delete cvc erros.
     </div>
   </li>
 </ol>
-
-<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
-
 
 <h3>Project Facets for EAR, EJB and WAR Modules</h3>
 <p>It should not be necessary to make any changes to the Project Facets, just verify that the 
@@ -421,12 +418,29 @@ then you should delete the project from Eclipse,
 <a href="#remove-eclipse-settings">Completly Remove Eclipse Spesific Settings From the Project</a>
 and then import the project all over again.
 </p>
-<ol>
-  <li>EAR.<img class="screenshot" src="img/eclipse-ear-facets.png" style="width:750px; display:block;" /></li>
-  <li>EJB.<img class="screenshot" src="img/eclipse-ejb-facets.png" style="width:750px; display:block;" /></li>
-  <li>WAR.<img class="screenshot" src="img/eclipse-war-facets.png" style="width:750px; display:block;" /></li>
-</ol>
 
+<div style="width:101%;overflow:hidden;">
+  <div class="inline-block" style="width:24%;">
+    <img class="screenshot" style="width:100%; margin-bottom:0;"
+      src="img/eclipse-parent-facets.png" longdesc="img/eclipse-parent-facets.png" />
+    <p>Parent</p>
+  </div>
+  <div class="inline-block" style="width:24%;">
+    <img class="screenshot" style="width:100%; margin-bottom:0;"
+      src="img/eclipse-ear-facets.png" longdesc="img/eclipse-ear-facets.png" />
+    <p>EAR</p>
+  </div>
+  <div class="inline-block" style="width:24%;">
+    <img class="screenshot" style="width:100%; margin-bottom:0;"
+      src="img/eclipse-ejb-facets.png" longdesc="img/eclipse-ejb-facets.png" />
+    <p>EJB</p>
+  </div>
+  <div class="inline-block" style="width:24%;">
+    <img class="screenshot" style="width:100%; margin-bottom:0;"
+      src="img/eclipse-war-facets.png" longdesc="img/eclipse-war-facets.png" />
+    <p>WAR</p>
+  </div>
+</div>
 
 <h3>Create Maven Run Configurations</h3>
 <ol class="vspace">
@@ -434,17 +448,20 @@ and then import the project all over again.
     Create Maven <code>install -Pexplode</code> and a Maven <code>clean -Punexplode</code> 
     run configurations:<br/>
     The <code>install</code> goal with the <code>explode</code> profile is needed to do an initial 
-    deploy to	the server and also to fix some WTP issues (more on that later). It is also reported 
-    that the Maven install goal does not work properly from Eclipse. You should read 
-    <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-    this blog</a> and follow the screenshots 
-    <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-    there</a> and here to fix the problem.
-    <img class="screenshot" src="img/eclipse-run-configurations-01.png" style="width:640px; display:block;" />
+    deploy to	the server and also to fix some WTP issues (more on that later).
     Below is the screenshot for the Maven <code>install -Pexplode</code> run configuration. Also 
     create a run configuration for the Maven <code>clean -Punexplode</code> goal. Remenber to use the
-    external Maven Runtime you configured for the workspace.
-    <img class="screenshot" src="img/eclipse-run-configurations-02.png" style="width:640px; display:block;" />
+    external Maven Runtime you configured for the workspace.<br/>
+    
+    <div class="inline-block" style="width:48%;margin-right:4%;">
+      <img class="screenshot" style="width:100%;" 
+        src="img/eclipse-run-configurations-01.png" longdesc="img/eclipse-run-configurations-01.png" />
+    </div>
+    <div class="inline-block" style="width:45%;">
+      <img class="screenshot" style="width:100%;" 
+        src="img/eclipse-run-configurations-02.png" longdesc="img/eclipse-run-configurations-02.png" />
+    </div>
+    <br/>  
     Running the goal should give the following output:<br/><br/>
     
     <div style="width:100%; overflow:hidden;">
@@ -493,6 +510,9 @@ and then import the project all over again.
     Stop the server.
   </li>
 </ol>
+
+<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
+
 
 <h2 id="edit-compile-deploy-cycle">The Edit Compile Deploy Cycle</h2>
 <p>To have an effective development environment we need to automate the edit compile deploy cycle.
