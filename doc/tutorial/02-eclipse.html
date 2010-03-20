@@ -172,15 +172,13 @@ org.eclipse.platform
           class="screenshot" style="width:500px;" />
       </li>
       <li>
-        Configure Eclipse to use an <strong>external</strong> Maven installation.<br/>
-        According to this blogs:
-        <a href="http://www-02.imixs.com:8081/roller/ralphsjavablog/entry/eclipse_maven_install_from_runas">
-        ECLIPSE: MAVEN INSTALL FROM RUN AS MENU FAILS</a> and 
-        <a href="http://www.innovationontherun.com/common-issues-and-workarounds-while-building-ear-files-in-eclipse/"
-          style="white-space:nowrap">
-        Common Issues and Workarounds While Building EAR files in Eclipse</a>, 
-        there are some issues when running embedded Maven from Eclipse, so we need to configure Eclipse to 
-        use an external Maven installation. In Preferences, navigate to 
+        Configure Eclipse to use an <strong>external</strong> Maven-2.2.1 installation.<br/>
+        The seam-refimpl project template uses the <a href="http://mojo.codehaus.org/properties-maven-plugin/">
+        <code>org.codehaus.mojo:properties-maven-plugin</code></a> to 
+        <a href="01-gettingstarted.html#filters">read properties from an external file</a>.
+        The <code>org.codehaus.mojo:properties-maven-plugin</code> does not yet work with Maven3; 
+        there is a problem building the EAR. It works fine with Maven 2.2.1, so we need to configure 
+        Eclipse to use an external Maven installation. In Preferences, navigate to 
         <code><strong>Maven>Installations</strong></code> and edit details as outlined in the image below.
         <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
           class="screenshot" style="width:500px;" />
@@ -278,8 +276,8 @@ org.eclipse.platform
   </li>
   <li><strong>Encoding:</strong><br/>
     Set encoding to UTF-8 (optional).<br/>
-    Make shure that all files are saved with UTF-8 encoding. This is only essential if you're 
-    working	with i18n.
+    Make shure that all files are saved with UTF-8 encoding. This is essential if you're working	
+    with i18n.
     <div style="width:103%;overflow:hidden;">
       <div class="inline-block" style="width:24%;">
         <img src="img/eclipse-utf8-02.png" longdesc="img/eclipse-utf8-02.png" class="screenshot" style="width:100%;" />
@@ -343,12 +341,10 @@ in the project and provides a hierarchical list of them.</p>
     <a href="01-gettingstarted.html#modfy-the-poms">Modify the POMs</a> as needed.
   </li>
   <li>
-    <a href="01-gettingstarted.html#switch-to-development-mode">Switch to development mode</a>.<br/>
-    <strong>Remember</strong> to copy <code>${SEAM_TUTORIAL}/config/profiles/profiles.xml</code> to 
-    the  project directory, <code>${SEAM_TUTORIAL}</code>. Modify the copy as needed; configure database 
-    connection, point the server to the correct deploy directory (the <code>as.deploy</code> property
-    in <code>profiles.xml</code> should correspond with the <code>configuration</code> directory you
-    selected for the WTP server), etc.
+    <a href="01-gettingstarted.html#activate-development-mode">Activate development mode</a>.<br/>
+    Remember to point the server to the correct deploy directory (the <code>as.deploy</code> property
+    value should correspond with the <code>configuration</code> directory you selected for the WTP 
+    server).
   </li>
   <li>
     <a href="#how-to-configure-maven-eclipse-plugin-correctly">Make shure that the maven-eclipse 
