@@ -583,8 +583,9 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
   </li>
   <li>
     Stop the server and inspect the deploy directory. As you can see, the deploy directory contains 
-    3 lib directories and the META-INF directory is empty! Also the <code>*-ds.xml</code> file is 
-    missing. The problem is caused by this Eclipse bug: 
+    3 lib directories and the META-INF directory is empty! The deployed <code>seam-tutorial-ds.xml</code> 
+    file is the unfiltered version - not the one from <code>ear/target/seam-tutorial-ear-0.1-SNAPSHOT</code>.
+    The problem is caused by this Eclipse bug: 
     <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=247090">Bug 247090 -  Userlibraries 
     incorrectly deployed within EARs</a> (and probably some m2eclipse/wtp/JBossTools bugs as vell :)
     <img class="screenshot" style="width:600px;" 
@@ -659,14 +660,12 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
       src="img/eclipse-maven-builder-03.png" longdesc="img/eclipse-maven-builder-03.png" />
   </li>
   <li>
-    Run <code>mvn install -Pexplode</code> to do an initial deploy.</br>
-    <img class="screenshot" style="width:550px;" 
-      src="img/eclipse-run-configurations-03.png" longdesc="img/eclipse-run-configurations-03.png" />
-    <img class="screenshot" style="width:330px;" 
-      src="img/eclipse-wtp-05.png" longdesc="img/eclipse-wtp-05.png" />
+    Select the parent project and run <code>mvn install -Pexplode</code> to do an initial deploy.</br>
+    <img class="screenshot" style="width:350px;" 
+      src="img/eclipse-run-configurations-04.png" longdesc="img/eclipse-run-configurations-04.png" />
   </li>
   <li>
-    Test the Builder:<br/>
+    Start server i debug mode an test the Builder:<br/>
     Open a java class, e.g. <code>Authenticator.java</code>. Modify the source, save and check
     the console output:
     <div style="width:100%;overflow:hidden;">
@@ -704,8 +703,9 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
     </div>
   </li>
   <li>
-    As you probably know; not all changes to Java code are hot deployable even in debug mode. If hot 
-    code replacement is important to you (and it	should be) then get a copy of <strong>JRebel</strong> 
+    The changes should be reflected immediately on the server, but as you probably know; not all 
+    changes to Java code are hot deployable even in debug mode. If hot code replacement is important 
+    to you (and it	should be) then get a copy of <strong>JRebel</strong> 
     from <a href="http://www.zeroturnaround.com/jrebel/">ZERO TURNAROUND</a>.
   </li>	
 </ol>
@@ -723,8 +723,6 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
   src="img/eclipse-testng-02.png" longdesc="img/eclipse-testng-02.png" />
 <p>The tests should go "green".
 </p>
-
-<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
 
 <h2>JBoss Tools</h2>
 <p>JBoss Tools is a perfect match for Seam devolpers using Maven and the Elipse IDE. It helps you 
@@ -758,21 +756,28 @@ written in the EJB projects, as required (source:
 setting up the tools. Play with the tools and study the code that the various tools generates.
 </p>
 
-<h3>Configure JBoss Tools For The Workspace</h3>
+<h3>Configure Workspace</h3>
 <p>Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a directory of your 
 choice, e.g. <code>C:/ide/libs/jboss-seam-2.2.0.GA</code>. Select <code><strong>Window > Prefereneces
-</strong></code> and follow the screenshots.</p>
-<ol class="vspace">
-  <li>
-    JSF:
-    <img class="screenshot" src="img/eclipse-jboss-tools-01.png" style="width:650px; display:block;" />
-  </li>
-  <li>
-    Seam runtime:
-    <img class="screenshot" src="img/eclipse-jboss-tools-02.png" style="width:650px; display:block;" />
-    <img class="screenshot" src="img/eclipse-jboss-tools-03.png" style="width:650px; display:block;" />
-  </li>
-</ol>
+</strong></code> and follow the screenshots.
+</p>
+<div style="width:99%;overflow:hidden;">
+  <div class="inline-block" style="width:33%;">
+    <img class="screenshot" style="width:100%; margin-bottom:.1em;" 
+      src="img/eclipse-jboss-tools-01.png" longdesc="img/eclipse-jboss-tools-01.png" />
+    <p>JSF</p>
+  </div>
+  <div class="inline-block" style="width:33%;">
+    <img class="screenshot" style="width:100%; margin-bottom:.1em;" 
+      src="img/eclipse-jboss-tools-02.png" longdesc="img/eclipse-jboss-tools-02.png" />
+    <p>Seam runtime</p>
+  </div>
+  <div class="inline-block" style="width:33%;">
+    <img class="screenshot" style="width:100%; margin-bottom:.1em;" 
+      src="img/eclipse-jboss-tools-03.png" longdesc="img/eclipse-jboss-tools-03.png" />
+    <p>Seam runtime</p>
+  </div>
+</div>
 
 <!--
 <h3> Define a Data Source</h3>
@@ -815,6 +820,8 @@ a datasource. The screenshots below outlines one possible way to accomplish this
   </li>
 </ol>
 -->
+
+<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
 
 
 <h3 id="configure-jboss-tools-for-a-project">Configure JBoss Tools For a Project</h3>
