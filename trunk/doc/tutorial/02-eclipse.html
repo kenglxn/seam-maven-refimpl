@@ -377,6 +377,10 @@ in the project and provides a hierarchical list of them.</p>
     the project templates "root" POM. For further details see: 
     <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a> and 
     <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>.
+    <br/><br/>
+    Run Maven install to fix.
+    <img src="img/eclipse-import-maven-09.png" longdesc="img/eclipse-import-maven-09.png" 
+      class="screenshot" style="width:500px;" />
   </li>
   <li>
     Fix annoyances.<br/><br/>
@@ -630,7 +634,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
 </ol>
 
 <h3>Maven Builder</h3>
-<p>As an alternative to WTP you can create a Maven builder that hooks in to the 
+<p>As an alternative to WTP you can create a Maven builder that hooks into the 
 <code>process-classes</code> goal. The Maven builder will then take care of the incremental 
 deployment. In combination with the <code style="white-space:nowrap">mvn install -Pexplode</code>
 goal you will have a complete <strong>compile- build- deploy</strong> environment without WTP.</p>
@@ -655,9 +659,9 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
   </li>
   <li>
     Run <code>mvn install -Pexplode</code> to do an initial deploy.</br>
-    <img class="screenshot" style="width:550px; display:block;" 
+    <img class="screenshot" style="width:550px;" 
       src="img/eclipse-run-configurations-03.png" longdesc="img/eclipse-run-configurations-03.png" />
-    <img class="screenshot" style="width:330px; display:block;" 
+    <img class="screenshot" style="width:330px;" 
       src="img/eclipse-wtp-05.png" longdesc="img/eclipse-wtp-05.png" />
   </li>
   <li>
@@ -708,8 +712,18 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
 <h3>Don't Kill One Bird with Two Stones</h3>
 <p>Choose either to add the project to the WTP server or define a Maven builder.</p>
 
-<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
+<h2>Running Tests</h2>
+<p>Running tests are trivial. Open a test class, right click in the editor and select 
+<code><strong>Run As > TestNG Test</strong></code>.
+</p>
+<img class="inline-block" style="width:49%;" 
+  src="img/eclipse-testng-01.png" longdesc="img/eclipse-testng-01.png" />
+<img class="inline-block" style="width:49%;" 
+  src="img/eclipse-testng-02.png" longdesc="img/eclipse-testng-02.png" />
+<p>The tests should go "green".
+</p>
 
+<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
 
 <h2>JBoss Tools</h2>
 <p>JBoss Tools is a perfect match for Seam devolpers using Maven and the Elipse IDE. It helps you 
@@ -1295,7 +1309,7 @@ complete that tutorial first.</p>
   </li>
   <li>
     Select the directory to be checked out from SVN and click <strong>Next</strong>.
-    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-select-directory.png" style="width:450px; display:block;" />
+    <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-select-folder.png" style="width:450px; display:block;" />
   </li>
   <li>
     Select <code><strong>Check out as a project in the workspace</strong></code>  and click 
