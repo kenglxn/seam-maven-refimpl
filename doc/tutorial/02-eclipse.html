@@ -713,17 +713,6 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
 <h3>Don't Kill One Bird with Two Stones</h3>
 <p>Choose either to add the project to the WTP server or define a Maven builder.</p>
 
-<h2>Running Tests</h2>
-<p>Running tests are trivial. Open a test class, right click in the editor and select 
-<code><strong>Run As > TestNG Test</strong></code>.
-</p>
-<img class="inline-block" style="width:49%;" 
-  src="img/eclipse-testng-01.png" longdesc="img/eclipse-testng-01.png" />
-<img class="inline-block" style="width:49%;" 
-  src="img/eclipse-testng-02.png" longdesc="img/eclipse-testng-02.png" />
-<p>The tests should go "green".
-</p>
-
 <h2>JBoss Tools</h2>
 <p>JBoss Tools is a perfect match for Seam devolpers using Maven and the Elipse IDE. It helps you 
 with a a lot of tasks you otherwise would have used hours and days to complete.
@@ -821,9 +810,6 @@ a datasource. The screenshots below outlines one possible way to accomplish this
 </ol>
 -->
 
-<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
-
-
 <h3 id="configure-jboss-tools-for-a-project">Configure JBoss Tools For a Project</h3>
 <p>JBoss Tools will manage two projects: the WAR and the EJB project. The WAR project will be 
 the main source of configuration, so we'll start with the WAR.</p>
@@ -832,13 +818,17 @@ the main source of configuration, so we'll start with the WAR.</p>
 <ol class="vspace">
   <li>
     The WAR module:
-    <img class="screenshot" src="img/eclipse-war-properties-07.png" style="width:650px; display:block;" />
-    <img class="screenshot" src="img/eclipse-war-properties-08.png" style="width:650px; display:block;" />
-    <img class="screenshot" src="img/eclipse-war-properties-09.png" style="width:650px; display:block;" />
+    <img class="screenshot" style="width:500px;" 
+      src="img/eclipse-war-properties-07.png" longdesc="img/eclipse-war-properties-07.png" />
+    <img class="screenshot" style="width:500px;" 
+      src="img/eclipse-war-properties-08.png" longdesc="img/eclipse-war-properties-08.png" />
+    <img class="screenshot" style="width:500px;" 
+      src="img/eclipse-war-properties-09.png" longdesc="img/eclipse-war-properties-09.png" />
   </li>
   <li>
     The EJB module:
-    <img class="screenshot" src="img/eclipse-ejb-properties-01.png" style="width:650px; display:block;" />
+    <img class="screenshot" style="width:500px;" 
+      src="img/eclipse-ejb-properties-01.png" longdesc="img/eclipse-ejb-properties-01.png" />
   </li>
   <li>
     The EAR module:<br/>
@@ -849,13 +839,34 @@ the main source of configuration, so we'll start with the WAR.</p>
     Should not be necessary to do anything here in connection with the Tools. Use default values.
   </li>
   <li>
-    Verify that no files has changed during configuring the tools. If you find any changes then 
-    revert files to it's origianl state.
+    The Missing Natures dialog:<br/> 
+    Open a view file, e.g. <code>war/src/main/webapp/home.xhtml</code> and ignore the waring about 
+    Missing Natures. Do not use the Add JSF Capabilities wizard sa suggested in yhe dialog - it 
+    generates code and a lot of jar files in WEB-INF/lib which is not needed by a Maven project. 
+    <img class="screenshot"  style="width:400px;" 
+      src="img/eclipse-vpe-missing-natures.png" longdesc="img/eclipse-vpe-missing-natures.png" />
   </li>
   <li>
-    That's it. You're now ready to play with the tools :-)
+    Verify that none of the original source files has changed during configuring the tools. If you 
+    find any changes then revert these files to it's origianl state. Hint: Add your project to svn, 
+    then a svn:commit will list any touched files.
   </li>
 </ol>
+
+<h2 id="running-tests">Running Tests</h2>
+<p>Running tests are trivial. Open a test class, right click in the editor and select 
+<code><strong>Run As > TestNG Test</strong></code>.
+</p>
+<img class="inline-block" style="width:49%;" 
+  src="img/eclipse-testng-01.png" longdesc="img/eclipse-testng-01.png" />
+<img class="inline-block" style="width:49%;" 
+  src="img/eclipse-testng-02.png" longdesc="img/eclipse-testng-02.png" />
+<p>The tests should go "green".
+</p>
+
+
+<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
+
 
 <h2 id="play-with-the-jboss-tools">Play With The JBoss Tools</h2>
 <p>In this section we'll play with the tools.</p>
