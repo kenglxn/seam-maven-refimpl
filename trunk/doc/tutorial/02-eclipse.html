@@ -494,13 +494,16 @@ and then import the project all over again.
     </div>
     You can run the goal(s) as needed by right clicking on the <strong>parent</strong> project and 
     select <code><strong>Run As &gt; Maven build</strong> </code> from the menu.
-    <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
+    <img class="screenshot" style="width:500px;" 
+      src="img/eclipse-run-configurations-03.png" longdesc="img/eclipse-run-configurations-03.png" />
   </li>
   <li>
     Start the server and verify that the deployment works:
-    <img class="screenshot" src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+    <img class="screenshot" style="width:300px;" 
+      src="img/eclipse-server-view-start-server-01.png" longdesc="img/eclipse-server-view-start-server-01.png"/>
     A successful deploy should look like this in the Console log:
-    <img class="screenshot" src="img/eclipse-server-view-start-server-02.png" style="width:750px; display:block;" />
+    <img class="screenshot" style="width:700px;" 
+      src="img/eclipse-server-view-start-server-02.png" longdesc="img/eclipse-server-view-start-server-02.png" />
   </li>
   <li>
     Open a browser and point the URL to <a href="http://localhost:8080/seam-tutorial">
@@ -510,9 +513,6 @@ and then import the project all over again.
     Stop the server.
   </li>
 </ol>
-
-<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
-
 
 <h2 id="edit-compile-deploy-cycle">The Edit Compile Deploy Cycle</h2>
 <p>To have an effective development environment we need to automate the edit compile deploy cycle.
@@ -527,71 +527,93 @@ deploy your project.</p>
 <ol>
   <li>
     Open the <strong>JBoss Server View</strong> and add project to server.<br/>
-    <img class="screenshot" src="img/eclipse-wtp-01.png" style="width:280px; display:block;" />
-    Ad the <code>seam-tutorial.ear</code> project and click <strong>Finish</strong>.
-    <img class="screenshot" src="img/eclipse-wtp-02.png" style="width:400px; display:block;" />
+    <img class="screenshot" style="width:280px;" 
+      src="img/eclipse-wtp-01.png" longdesc="img/eclipse-wtp-01.png" />
+   </li>
+   <li>
+    Add the <code>seam-tutorial-ear</code> project and click <strong>Finish</strong>.
+    <img class="screenshot" style="width:400px;" 
+      src="img/eclipse-wtp-02.png" longdesc="img/eclipse-wtp-02.png" />
   </li>
   <li>
     Publish.<br/>
-    <img class="screenshot" src="img/eclipse-wtp-03.png" style="width:400px; display:block;" />
+    <img class="screenshot" style="width:280px;" 
+      src="img/eclipse-wtp-03.png" longdesc="img/eclipse-wtp-03.png" />
   </li>
   <li>
     Start the server and check the console output. 
-    <img class="screenshot" src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+    <img class="screenshot" style="width:300px;" 
+      src="img/eclipse-wtp-07.png" longdesc="img/eclipse-wtp-07.png" />
+      
     <font color="red">You will notice that the application failed to deploy</font>:
+    <div style="width:100%; overflow:hidden;">
     <pre style="font-size:10px;">
 
-12:48:30,813 INFO  [EARDeployer] Init J2EE application: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
-12:48:30,814 ERROR [MainDeployer] Could not initialise deployment: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
+00:21:28,504 INFO  [EARDeployer] Init J2EE application: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
+00:21:28,506 ERROR [MainDeployer] Could not initialise deployment: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
 org.jboss.deployment.DeploymentException: No META-INF/application.xml found
-  at org.jboss.deployment.EARDeployer.init(EARDeployer.java:146)
-  at org.jboss.deployment.MainDeployer.init(MainDeployer.java:872)
-  at org.jboss.deployment.MainDeployer.deploy(MainDeployer.java:809)
-  ....
-  at org.jboss.Main$1.run(Main.java:508)
-  at java.lang.Thread.run(Thread.java:619)
-12:48:30,818 ERROR [URLDeploymentScanner] Incomplete Deployment listing:
+	at org.jboss.deployment.EARDeployer.init(EARDeployer.java:146)
+	at org.jboss.deployment.MainDeployer.init(MainDeployer.java:872)
+  ...
+	at $Proxy5.deploy(Unknown Source)
+	at org.jboss.system.server.ServerImpl.doStart(ServerImpl.java:482)
+	at org.jboss.system.server.ServerImpl.start(ServerImpl.java:362)
+	at org.jboss.Main.boot(Main.java:200)
+	at org.jboss.Main$1.run(Main.java:508)
+	at java.lang.Thread.run(Thread.java:619)
+00:21:28,508 ERROR [URLDeploymentScanner] Incomplete Deployment listing:
 
 --- Incompletely deployed packages ---
 org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/ }
-  deployer: org.jboss.deployment.EARDeployer@1b7edd3
+  deployer: org.jboss.deployment.EARDeployer@1cefde4
   status: null
   state: FAILED
   watch: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
   altDD: null
-  lastDeployed: 1253443710814
-  lastModified: 1253443587024
+  lastDeployed: 1269127288505
+  lastModified: 1269127256769
   mbeans:
+
     </pre>
+    </div>
   </li>
   <li>
-    Stop the server and inspect the deploy directory. As you can see, the deploy directory contains a copy 
-    of the WEB-INF directory from the WAR module and a couple of jar files that shouldn't be there. 
-    Also the <code>*-ds.xml</code> file is missing. The problem is caused by this Eclipse bug:
-    <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=247090">
-    Bug 247090 -  User)libraries incorrectly deployed within EARs</a>
-    <img class="screenshot" src="img/eclipse-wtp-04.png" style="width:400px; display:block;" />
+    Stop the server and inspect the deploy directory. As you can see, the deploy directory contains 
+    3 lib directories and the META-INF directory is empty! Also the <code>*-ds.xml</code> file is 
+    missing. The problem is caused by this Eclipse bug: 
+    <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=247090">Bug 247090 -  Userlibraries 
+    incorrectly deployed within EARs</a> (and probably some m2eclipse/wtp/JBossTools bugs as vell :)
+    <img class="screenshot" style="width:600px;" 
+      src="img/eclipse-wtp-04.png" longdesc="img/eclipse-wtp-04.png" />
   </li>
   <li>
     Select the parent project and run <code>mvn install -Pexplode</code> to fix the incorrect deploy.</br>
-    <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-    <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+    <img class="screenshot" style="width:550px;" 
+      src="img/eclipse-run-configurations-03.png" longdesc="img/eclipse-run-configurations-03.png" />
+    <img class="screenshot" style="width:330px;" 
+      src="img/eclipse-wtp-05.png" longdesc="img/eclipse-wtp-05.png" />
   </li>
   <li>
-    Inspect the deploy directory and verify the the incorrectly deployed files are gone and that the 
-    <code>*-ds.xml</code> file is present.
-    <img class="screenshot" src="img/eclipse-wtp-06.png" style="width:400px; display:block;" />
+    Inspect the deploy directory and verify the the incorrectly deployed files are gone and that 
+    <code>seam-tutorial-ds.xml, META-INF/application.xml, META-INF/jboss-app.xml and 
+    META-INF/MANIFEST.MF</code> is present.
+    <img class="screenshot" src="img/eclipse-wtp-06.png" style="width:600px; display:block;" />
   </li>
   <li>
-    Start the server (in debug mode) and check the console output.
-    <img class="screenshot" src="img/eclipse-server-view-start-server-01.png" style="width:250px; display:block;" />
+    Start the server in <strong>debug</strong> mode and check the console output.
+    <img class="screenshot" style="width:350px; display:block;" 
+      src="img/eclipse-wtp-08.png" longdesc="img/eclipse-wtp-08.png" />
+      
+    <div style="width:100%; overflow:hidden;">
     <pre style="font-size:10px;">
 ....
-13:54:43,514 INFO  [EARDeployer] Started J2EE application: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
-13:54:43,562 INFO  [Http11Protocol] Starting Coyote HTTP/1.1 on http-localhost%2F127.0.0.1-8080
-13:54:43,571 INFO  [AjpProtocol] Starting Coyote AJP/1.3 on ajp-localhost%2F127.0.0.1-8009
-13:54:43,576 INFO  [Server] JBoss (MX MicroKernel) [4.2.3.GA (build: SVNTag=JBoss_4_2_3_GA date=200807181439)] Started in 14s:340ms
+04:00:17,120 INFO  [EARDeployer] Started J2EE application: file:/C:/dev/server/jboss-4.2.3.GA-jdk6/server/default/deploy/seam-tutorial-ear.ear/
+04:00:17,215 INFO  [Http11Protocol] Starting Coyote HTTP/1.1 on http-localhost%2F127.0.0.1-8080
+04:00:17,237 INFO  [Http11Protocol] Starting Coyote HTTP/1.1 on http-localhost%2F127.0.0.1-8443
+04:00:17,262 INFO  [AjpProtocol] Starting Coyote AJP/1.3 on ajp-localhost%2F127.0.0.1-8009
+04:00:17,276 INFO  [Server] JBoss (MX MicroKernel) [4.2.3.GA (build: SVNTag=JBoss_4_2_3_GA date=200807181439)] Started in 26s:622ms
     </pre>
+    </div>
   </li>
   <li>
     You can check that the WTP works by changing some xhtml and java files. The changes should be 
@@ -601,24 +623,9 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
     <a href="http://www.zeroturnaround.com/jrebel/">ZERO TURNAROUND</a>.
   </li>
   <li>
-    You need to keep an eye on the deploy directory as WTP will do a full deploy from time to time, in
-    particular when you make modifications to the EAR module. Then the fix is to stop the server and
-    run <code>mvn install -Pexplode</code> again.
-  </li>
-  <li>
-    <strong>Important:</strong> The child pom's <code>&lt;relativePath&gt;</code> tag must point to 
-    the parent pom. If it don't, the child pom will pick up the parent pom from your local .m2 repo 
-    and will be missing profiles and property values activated trough the parent pom's 
-    <code>profiles.xml</code>.
-    <pre style="font-size:9px;">
-    
-&lt;parent&gt;
-  &lt;groupId&gt;no.knowit.seam&lt;/groupId&gt;
-  &lt;artifactId&gt;seam-refimpl&lt;/artifactId&gt;
-  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-  <strong><font color="blue">&lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;</font></strong>
-&lt;/parent&gt;
-    </pre>
+    You need to keep an eye on the deploy directory as WTP will do a full (and incorrect) deploy 
+    from time to time, in particular when you make modifications to the EAR module. Then the fix is 
+    to stop the server and run <code>mvn install -Pexplode</code> again.
   </li>
 </ol>
 
@@ -633,24 +640,31 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
     The Maven builder executes the <code>explode</code> profile on the <code>process-classes</code> 
     goal. The child poms will "inherit" this builder, so you only need to define the builder on the
     parent project.
-    <img class="screenshot" src="img/eclipse-import-maven-07.png" style="width:350px; display:block;" />
-    <img class="screenshot" src="img/eclipse-maven-builder-01.png" style="width:500px; display:block;" />
-    <img class="screenshot" src="img/eclipse-maven-builder-02.png" style="width:400px; display:block;" />
+    <img class="screenshot" style="width:350px;" 
+      src="img/eclipse-import-maven-07.png" longdesc="img/eclipse-import-maven-07.png" />
+    <img class="screenshot" style="width:500px;" 
+      src="img/eclipse-maven-builder-01.png" longdesc="img/eclipse-maven-builder-01.png" />
+    <img class="screenshot" style="width:400px;" 
+      src="img/eclipse-maven-builder-02.png" longdesc="img/eclipse-maven-builder-02.png" />
+      
     <strong>Note</strong>: Experiment with the <code>Base directory</code> variable. If you use the 
     <code>${project_loc}</code> variable then the builder will run only on the sub project that 
     contains the modified file - resulting in a faster build cycle.
-    <img class="screenshot" src="img/eclipse-maven-builder-03.png" style="width:500px; display:block;" />
+    <img class="screenshot" style="width:500px;" 
+      src="img/eclipse-maven-builder-03.png" longdesc="img/eclipse-maven-builder-03.png" />
   </li>
   <li>
     Run <code>mvn install -Pexplode</code> to do an initial deploy.</br>
-    <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-    <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
+    <img class="screenshot" style="width:550px; display:block;" 
+      src="img/eclipse-run-configurations-03.png" longdesc="img/eclipse-run-configurations-03.png" />
+    <img class="screenshot" style="width:330px; display:block;" 
+      src="img/eclipse-wtp-05.png" longdesc="img/eclipse-wtp-05.png" />
   </li>
   <li>
     Test the Builder:<br/>
     Open a java class, e.g. <code>Authenticator.java</code>. Modify the source, save and check
     the console output:
-    <div style="overflow:hidden;">
+    <div style="width:100%;overflow:hidden;">
     <pre style="font-size:9px">
 ...
 [INFO] [antrun:run {execution: ejb-process-classes}]
@@ -689,25 +703,13 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
     code replacement is important to you (and it	should be) then get a copy of <strong>JRebel</strong> 
     from <a href="http://www.zeroturnaround.com/jrebel/">ZERO TURNAROUND</a>.
   </li>	
-  <li>
-    <strong>Important:</strong> The child pom's <code>&lt;relativePath&gt;</code> tag must point to 
-    the parent pom. If it don't, the child pom will pick up the parent pom from your local .m2 repo 
-    and will be missing profiles and property values activated trough the parent pom's 
-    <code>profiles.xml</code>.
-    <pre style="font-size:9px;">
-    
-&lt;parent&gt;
-  &lt;groupId&gt;no.knowit.seam&lt;/groupId&gt;
-  &lt;artifactId&gt;seam-refimpl&lt;/artifactId&gt;
-  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-  <strong>&lt;relativePath&gt;../pom.xml&lt;/relativePath&gt;</strong>
-&lt;/parent&gt;
-    </pre>
-  </li>
 </ol>
 
 <h3>Don't Kill One Bird with Two Stones</h3>
 <p>Choose either to add the project to the WTP server or define a Maven builder.</p>
+
+<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
+
 
 <h2>JBoss Tools</h2>
 <p>JBoss Tools is a perfect match for Seam devolpers using Maven and the Elipse IDE. It helps you 
