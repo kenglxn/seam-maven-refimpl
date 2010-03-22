@@ -60,7 +60,10 @@
     <a href="http://issues.apache.org/jira/browse/OPENEJB-1131">due to problems with OpenEJB-3.1.2</a>!
   </li>
   <li>
-    <a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.
+    <a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.<br/>
+    <strong>Note:</strong> The <a href="http://mojo.codehaus.org/properties-maven-plugin/">
+    org.codehaus.mojo:properties-maven-plugin</a> does not yet work with Maven3; there is a problem 
+    building the EAR. It works fine with Maven 2.2.1.
   </li>
   <li>
     <a href="http://www.eclipse.org/downloads/">
@@ -907,7 +910,7 @@ the main source of configuration, so we'll start with the WAR.</p>
 </li>
 <li>
   Generated code:
-  <img class="screenshot" style="width:350px;" 
+  <img class="screenshot" style="width:550px;" 
     src="img/eclipse-seam-entity-04.png" longdesc="img/eclipse-seam-entity-04.png" />
 
   All this code in less than ten seconds! :-))<br/>
