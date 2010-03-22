@@ -1100,11 +1100,6 @@ the main source of configuration, so we'll start with the WAR.</p>
   </li>
 </ol>
 
-
-
-<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
-
-
 <h3 id="done-in-60-seconds">Reverse engineering - Done in 60 Seconds!</h3>
 <p>Well, the tutorial is not done in 60 seconds, but the revrese engineering is.</p>
 <p>We will re-use the project from the <a href="#entity-bean-the-seam-way">previous section</a>, so
@@ -1184,23 +1179,51 @@ complete that tutorial first.</p>
 <ol class="vspace">
 <li>
   Open the <strong>Seam</strong> perspective.
-  <img class="screenshot" src="img/eclipse-perspective-seam.png" style="width:300px; display:block;" />
+  <img class="screenshot" style="width:300px;" src="img/eclipse-perspective-seam.png" longdesc="img/eclipse-perspective-seam.png" />
+</li>
+<li>
+  Modify <code>filter-dev.properties</code>.
+  <pre style="font-size:10px;">
+...
+# Datasource
+ds                  =<font color="blue">mysql</font>
+ds.jndi.name        =${app}Database
+ds.database.name    =<font color="blue">open18initial_db</font>
+ds.server.name      =<font color="blue">localhost:3306</font>
+ds.driver.class     =<font color="blue">com.mysql.jdbc.Driver</font>
+ds.connection.url   =<font color="blue">jdbc:mysql://${ds.server.name}/${ds.database.name}?characterEncoding=UTF-8</font>
+ds.user.name        =<font color="blue">root</font>
+ds.password         =
+ds.hibernate.dialect=<font color="blue">org.hibernate.dialect.MySQL5InnoDBDialect</font>
+ds.xml              =${app.context}-ds.xml
+
+# Persistence unit
+pu.name                                      =${app}-unit
+pu.jta.data.source                           =java:/${ds.jndi.name}
+pu.hibernate.dialect                         =${ds.hibernate.dialect}
+pu.hibernate.hbm2ddl.auto                    =<font color="blue">update</font>
+pu.hibernate.show_sql                        =false
+pu.hibernate.default_batch_fetch_size        =16
+pu.hibernate.transaction.manager_lookup_class=org.hibernate.transaction.JBossTransactionManagerLookup
+pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerFactory
+...
+</pre>  
 </li>
 <li>
   Modify the <code>seam-tutorial</code> project.
   <ul>
   <li>
-    In <code>seam-tutorial-ejb</code>; delete all packages except for the 
-    <code><strong>org.jboss.seam.example.action</strong></code> package.
+    In <code>seam-tutorial-ejb</code>; delete packages <code>org.domain.seamtutorial.session</code> 
+    and <code>org.domain.seamtutorial.entity</code>.
   </li>
   <li>
-    In <code>seam-tutorial-war</code>; delete the <code><strong>view</strong></code> directory. 
+    In <code>seam-tutorial-war</code>; delete the <code>webapp/view/myEntityList.xhtml</code> 
+    and <code>webapp/view/myEntity.xhtml</code>.
   </li>
   </ul>
-  <img class="screenshot" src="img/eclipse-seam-db-entity-06.png" style="width:300px; display:block;" />
 </li>
 <li>
-  Modify <code><strong>menu.xhtml</strong></code>.
+  Modify <code><strong>webapp/layout/menu.xhtml</strong></code>.
   <pre>
 &lt;rich:toolBar
   xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
@@ -1218,6 +1241,7 @@ complete that tutorial first.</p>
   &lt;/rich:toolBarGroup&gt;
 
   &lt;!-- @newMenuItem@ --&gt;
+  
   &lt;rich:toolBarGroup location=&quot;right&quot;&gt;
     &lt;h:outputText id=&quot;menuWelcomeId&quot;
       value=&quot;signed in as: #{credentials.username}&quot;
@@ -1238,19 +1262,18 @@ complete that tutorial first.</p>
   </pre>	
 </li>
 <li>
-  Modify Seam settings for WAR: Select the newly created connection and point the View directory to 
-  <strong>/seam-tutorial-war/src/main/webapp</strong> so that xhtml files are generated to the
-  webapp directory.
-  <img class="screenshot" src="img/eclipse-seam-db-entity-08.png" style="width:650px; display:block;" />
+  Modify Seam settings for WAR: Point the View directory to <code>/seam-tutorial-war/src/main/webapp</code> 
+  so that xhtml files are generated to the webapp directory.
+  <img class="screenshot" style="width:500px;" src="img/eclipse-seam-db-entity-08.png" longdesc="img/eclipse-seam-db-entity-08.png" />
 </li>
 <li>
   Modify Seam settings for EJB.
-  <img class="screenshot" src="img/eclipse-seam-db-entity-18.png" style="width:650px; display:block;" />
+  <img class="screenshot" style="width:500px;" src="img/eclipse-seam-db-entity-18.png" longdesc="img/eclipse-seam-db-entity-18.png" />
 </li>
 <li>
   For some reason the reverse engineering tool need a clean compiled project to do the reverse
   engineering, so run e.g. <code><strong>mvn clean package</strong></code> on the parent project.
-  <img class="screenshot" src="img/eclipse-seam-db-entity-20.png" style="width:600px; display:block;" />
+  <img class="screenshot" style="width:600px;" src="img/eclipse-seam-db-entity-20.png" longdesc="img/eclipse-seam-db-entity-20.png" />
 </li>
 </ol>
 
@@ -1258,26 +1281,25 @@ complete that tutorial first.</p>
 <ol class="vspace">
 <li>
   Open the <strong>Seam</strong> perspective.
-  <img class="screenshot" src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
+  <img class="screenshot" style="width:250px;" src="img/eclipse-perspective-seam.png" longdesc="img/eclipse-perspective-seam.png" />
 </li>
   In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
   select <code><strong>New>Seam Generate Entities</strong></code>
-  <img class="screenshot" src="img/eclipse-seam-db-entity-31.png" style="width:650px; display:block;" />
+  <img class="screenshot" style="width:650px;" src="img/eclipse-seam-db-entity-31.png" longdesc="img/eclipse-seam-db-entity-31.png" />
   <br/>
-  <img src="img/eclipse-seam-db-entity-32.png" style="width:450px;" class="inline-block" />
-  <img src="img/eclipse-seam-db-entity-33.png" style="width:450px;" class="inline-block" />
+  <img src="img/eclipse-seam-db-entity-32.png" longdesc="img/eclipse-seam-db-entity-32.png" style="width:450px;" class="inline-block" />
+  <img src="img/eclipse-seam-db-entity-33.png" longdesc="img/eclipse-seam-db-entity-33.png" style="width:450px;" class="inline-block" />
 </li>
 <li>
   Now, sit back and watch the magic happen.<br/>
-  <img src="img/eclipse-seam-db-entity-34.png" style="width:300px;" class="inline-block" />
-  <img src="img/eclipse-seam-db-entity-35.png" style="width:300px;" class="inline-block" />
+  <img src="img/eclipse-seam-db-entity-35.png" longdesc="img/eclipse-seam-db-entity-34.png" style="width:700px;" class="screenshot" />
 </li>
 <li>
   Run <code>mvn install -Pexplode</code>, start server and point your browser to 
   <a href="http://localhost:8080/seam-tutorial/">http://localhost:8080/seam-tutorial/</a>
-  <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-  <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
-  <img src="img/eclipse-seam-db-entity-36.png" style="width:700px;" class="inline-block" />
+  <img class="screenshot" style="width:550px;" src="img/eclipse-run-configurations-03.png" longdesc="img/eclipse-run-configurations-03.png" />
+  <img class="screenshot" style="width:330px;" src="img/eclipse-wtp-05.png" longdesc="img/eclipse-wtp-05.png" />
+  <img class="screenshot" style="width:700px;" src="img/eclipse-seam-db-entity-36.png" longdesc="img/eclipse-seam-db-entity-36.png" />
 </li>
 <li>
   A full enterprise CRUD application with basic security generated, deployed and up an running in 
