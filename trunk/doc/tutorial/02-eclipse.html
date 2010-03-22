@@ -383,7 +383,7 @@ in the project and provides a hierarchical list of them.</p>
       class="screenshot" style="width:500px;" />
   </li>
   <li>
-    Fix annoyances.<br/><br/>
+    Fix annoyances.<br/>
     <div class="inline-block" style="width:31%;">
       <img src="img/eclipse-annoyance-01.png" longdesc="img/eclipse-annoyance-01.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
@@ -404,7 +404,7 @@ in the project and provides a hierarchical list of them.</p>
     <div class="inline-block" style="width:31%;">
       <img src="img/eclipse-annoyance-04.png" longdesc="img/eclipse-annoyance-04.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
-      <code>src/main/application</code> should be source folder.
+      <code>ear/src/main/application</code> should be source folder.
     </div>
     <div class="inline-block" style="width:68.5%;">
       <img src="img/eclipse-annoyance-05.png" longdesc="img/eclipse-annoyance-05.png" 
@@ -412,6 +412,23 @@ in the project and provides a hierarchical list of them.</p>
       Schema validation for some resource files fails due to use of filtered property values. The 
       target resource files should be correct, so you can safely delete cvc erros.
     </div>
+    
+    <div class="inline-block" style="width:19.7%;">
+      <img src="img/eclipse-annoyance-08.png" longdesc="img/eclipse-annoyance-08.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+        Wrong EAR Module Assembly
+    </div>
+    <div class="inline-block" style="width:39.6%;">
+      <img src="img/eclipse-annoyance-06.png" longdesc="img/eclipse-annoyance-06.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      References seam-tutorial-ejb.<strong>ejb</strong>
+    </div>
+    <div class="inline-block" style="width:39.6%;">
+      <img src="img/eclipse-annoyance-07.png" longdesc="img/eclipse-annoyance-07.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      Must reference seam-tutorial-ejb.<strong>jar</strong>
+    </div>
+
   </li>
 </ol>
 
@@ -427,22 +444,22 @@ and then import the project all over again.
   <div class="inline-block" style="width:24%;">
     <img class="screenshot" style="width:100%; margin-bottom:0;"
       src="img/eclipse-parent-facets.png" longdesc="img/eclipse-parent-facets.png" />
-    <p>Parent POM</p>
+    <p>Parent Project</p>
   </div>
   <div class="inline-block" style="width:24%;">
     <img class="screenshot" style="width:100%; margin-bottom:0;"
       src="img/eclipse-ear-facets.png" longdesc="img/eclipse-ear-facets.png" />
-    <p>EAR POM</p>
+    <p>EAR Project</p>
   </div>
   <div class="inline-block" style="width:24%;">
     <img class="screenshot" style="width:100%; margin-bottom:0;"
       src="img/eclipse-ejb-facets.png" longdesc="img/eclipse-ejb-facets.png" />
-    <p>EJB POM</p>
+    <p>EJB Project</p>
   </div>
   <div class="inline-block" style="width:24%;">
     <img class="screenshot" style="width:100%; margin-bottom:0;"
       src="img/eclipse-war-facets.png" longdesc="img/eclipse-war-facets.png" />
-    <p>WAR POM</p>
+    <p>WAR Project</p>
   </div>
 </div>
 
@@ -864,75 +881,34 @@ the main source of configuration, so we'll start with the WAR.</p>
 <p>The tests should go "green".
 </p>
 
-
-<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
-
-
-<h2 id="play-with-the-jboss-tools">Play With The JBoss Tools</h2>
+<h2 id="play-with-jboss-tools">Play With JBoss Tools</h2>
 <p>In this section we'll play with the tools.</p>
 
 <h3 id="entity-bean-the-seam-way">Create an Entity Bean the Seam Way</h3>
 <ol class="vspace">
 <li>
-  Configure <code>profiles.xml</code>:
-  <pre>
-
-&lt;profilesXml&gt;
-  &lt;profiles&gt;
-  .
-  .
-  &lt;!-- MySql5 --&gt;
-  &lt;profile&gt;
-    &lt;id&gt;ds-mysql5&lt;/id&gt;
-    .
-      <font color="blue">&lt;ds.database.name&gt;refimpl_db&lt;/ds.database.name&gt;</font>
-    .
-  &lt;/profile&gt;
-  .
-  &lt;!-- jboss-4.2.3 --&gt;
-  &lt;profile&gt;
-    &lt;id&gt;as-jboss423&lt;/id&gt;
-    .
-      <font color="blue">&lt;as.home&gt;C:/dev/server/jboss-4.2.3.GA-jdk6&lt;/as.home&gt;</font>
-      <font color="blue">&lt;as.deploy&gt;${as.home}/server/default/deploy&lt;/as.deploy&gt;</font>
-    .
-  &lt;/profile&gt;
-  .
-  &lt;!-- development environment --&gt;
-  &lt;profile&gt;
-    &lt;id&gt;env-dev&lt;/id&gt;
-    .
-      <font color="blue">&lt;env.hibernate.hbm2ddl.auto&gt;update&lt;/env.hibernate.hbm2ddl.auto&gt;</font>
-    .
-  &lt;/profile&gt;
-  &lt;/profiles&gt;
-
-  <font color="blue">&lt;activeProfiles&gt;
-    &lt;activeProfile&gt;env-dev&lt;/activeProfile&gt;
-    &lt;activeProfile&gt;ds-mysql5&lt;/activeProfile&gt;  
-    &lt;activeProfile&gt;as-jboss423&lt;/activeProfile&gt;
-  &lt;/activeProfiles&gt;</font>
-&lt;/profilesXml&gt;
-  </pre>	
-</li>
-<li>
   Open Seam perspective.
-  <img class="screenshot" src="img/eclipse-perspective-seam.png" style="width:250px; display:block;" />
+  <img class="screenshot" style="width:250px;" 
+    src="img/eclipse-perspective-seam.png" longdesc="img/eclipse-perspective-seam.png" />
 </li>
 <li>
   In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
   select <code><strong>New>Seam Entity</strong></code>
-  <img class="screenshot" src="img/eclipse-seam-entity-01.png" style="width:500px; display:block;" />
+  <img class="screenshot" style="width:500px;" 
+    src="img/eclipse-seam-entity-01.png" longdesc="img/eclipse-seam-entity-01.png" />
 </li>
 <li>
   Fill in the <strong>Seam entity class name</strong>, e.g. <code>MyEntity</code>, and click 
   <strong>Finish</strong>.<br/>
-  <img src="img/eclipse-seam-entity-02.png" style="width:400px;" class="inline-block" />
-  <img src="img/eclipse-seam-entity-03.png" style="width:400px;" class="inline-block" />
+  <img style="width:400px;" class="inline-block" 
+    src="img/eclipse-seam-entity-02.png" longdesc="img/eclipse-seam-entity-02.png" />
+  <img style="width:400px;" class="inline-block" 
+    src="img/eclipse-seam-entity-03.png" longdesc="img/eclipse-seam-entity-03.png" />
 </li>
 <li>
   Generated code:
-  <img class="screenshot" src="img/eclipse-seam-entity-04.png" style="width:350px; display:block;" />
+  <img class="screenshot" style="width:350px;" 
+    src="img/eclipse-seam-entity-04.png" longdesc="img/eclipse-seam-entity-04.png" />
 
   All this code in less than ten seconds! :-))<br/>
 
@@ -1109,14 +1085,22 @@ the main source of configuration, so we'll start with the WAR.</p>
   </ul>
   </li>
   <li>
-    That's it! Run <code>mvn install -Pexplode</code> to do an initial deploy, start server and 
-    point your browser to 
+    That's it! Select the parent project and run <code>mvn install -Pexplode</code> to do an initial 
+    deploy. Start server and point your browser to 
     <a href="http://localhost:8080/seam-tutorial/">http://localhost:8080/seam-tutorial/</a>
-    <img class="screenshot" src="img/eclipse-run-configurations-03.png" style="width:550px; display:block;" />
-    <img class="screenshot" src="img/eclipse-wtp-05.png" style="width:330px; display:block;" />
-    <img class="screenshot" src="img/eclipse-seam-entity-05.png" style="width:600px; display:block;" />
+
+    <img class="screenshot" style="width:350px;" 
+      src="img/eclipse-run-configurations-04.png" longdesc="img/eclipse-run-configurations-04.png" />
+    
+    <img class="screenshot" style="width:700px;" 
+      src="img/eclipse-seam-entity-05.png" longdesc="img/eclipse-seam-entity-05.png" />
   </li>
 </ol>
+
+
+
+<h1>The rest of the tutorial is temporary out of sync with the project!</h1>
+
 
 <h3 id="done-in-60-seconds">Reverse engineering - Done in 60 Seconds!</h3>
 <p>Well, the tutorial is not done in 60 seconds, but the revrese engineering is.</p>
