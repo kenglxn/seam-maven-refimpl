@@ -648,10 +648,11 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
     is important to you (and it	should be) then get a copy of <strong>JRebel</strong> from 
     <a href="http://www.zeroturnaround.com/jrebel/">ZERO TURNAROUND</a>.
   </li>
-  <li>
+  <li><strong>Important:</strong><br/>
     You need to keep an eye on the deploy directory as WTP will do a full (and incorrect) deploy 
-    from time to time, in particular when you make modifications to the EAR module. Then the fix is 
-    to stop the server and run <code>mvn install -Pexplode</code> again.
+    from time to time, in particular when you start Eclipse and then starts the server the first
+    time (or selecting Publish from ther server menu). The fix is to stop the server and run 
+    <code>mvn install -Pexplode</code> again. 
   </li>
 </ol>
 
