@@ -146,14 +146,14 @@
 
     <dependency>
       <groupId>org.richfaces.samples</groupId>
-      <artifactId>darkX</artifactId>
+      <artifactId>glassX</artifactId>
     </dependency>
       
     <dependency>
       <groupId>org.richfaces.samples</groupId>
       <artifactId>darkX</artifactId>
     </dependency>
-      
+    
     <!--  jee -->
     <dependency>
       <groupId>com.sun.facelets</groupId>
