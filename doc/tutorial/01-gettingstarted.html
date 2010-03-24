@@ -567,23 +567,22 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
     Remove or refactor example code, eg:
     <ul>
       <li>
-        Refactor <code>no.knowit.seam.example.action.Authenticator</code> and
-        <code>no.knowit.seam.example.action.AuthenticatorBean</code>.
+        Delete package <code>no.knowit.seam.example.action</code> from <code>ejb/src/test/java/no</code>. 
       </li>
       <li>
-        Delete the <code>ejb/src/main/java/no</code> directory.
+        Delete package <code>no.knowit.seam.example.action</code> and <code>no.knowit.seam.example.model</code> 
+        from <code>ejb/src/main/java/no</code>. 
       </li>
       <li>
-        Remove SQL code from the <code>ejb/src/main/resources/import.sql</code> file.
+        Refactor <code>no.knowit.seam.example.security.Authenticator</code>,
+        <code>no.knowit.seam.example.security.AuthenticatorBean</code> and
+        <code>no.knowit.seam.example.action.AuthenticatorTest</code>.
       </li>
       <li>
-        Refactor <code>no.knowit.seam.example.action.AuthenticatorTest</code>.
+        Remove or modify SQL code in <code>ejb/src/main/resources/import.sql</code>.
       </li>
       <li>
-        Delete the <code>ejb/src/test/java/no</code> directory.
-      </li>
-      <li>
-        Delete the <code>war/src/main/webapp/view/example</code> directory.
+        Delete <code>war/src/main/webapp/view/example</code>.
       </li>
       <li>
         From <code>war/src/main/webapp/layout/menu.xhtml</code> remove:
