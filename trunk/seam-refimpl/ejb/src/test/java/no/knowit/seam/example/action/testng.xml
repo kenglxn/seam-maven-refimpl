@@ -4,7 +4,7 @@
 
    <test name="SeamRefimpl: Authenticator">
      <classes>
-       <class name="no.knowit.seam.example.action.AuthenticatorTest"/>
+       <class name="no.knowit.seam.example.security.AuthenticatorTest"/>
      </classes>
    </test>
    

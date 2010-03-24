@@ -1,4 +1,4 @@
-package no.knowit.seam.example.action;
+package no.knowit.seam.example.security;
 
 import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
