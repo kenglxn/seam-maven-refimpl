@@ -26,7 +26,8 @@
   </modules>
   
   <properties>
-    <env>dev</env>
+    <env>dev</env> <!-- The default setting if no profile is specified -->
+    <app>utils</app>
     <app.context>seam-utils</app.context>  <!-- hint: same value as artifactId -->
     <app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern>
     <app.jndi.pattern.test>/#{ejbName}/Local</app.jndi.pattern.test>
