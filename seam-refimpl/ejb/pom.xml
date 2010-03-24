@@ -165,7 +165,7 @@
         <configuration>
           <suiteXmlFiles>
             <suiteXmlFile>
-              src/test/java/no/knowit/seam/example/action/testng.xml
+              src/test/resources/testng.xml
             </suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
