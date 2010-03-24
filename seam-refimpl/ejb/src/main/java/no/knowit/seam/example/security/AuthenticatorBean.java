@@ -1,6 +1,8 @@
-package no.knowit.seam.example.action;
+package no.knowit.seam.example.security;
 
 import javax.ejb.Stateless;
+
+
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;

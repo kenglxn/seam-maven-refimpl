@@ -80,7 +80,10 @@
       </dependency>
       -->
 
-      <!-- "Useful" utilities. If you find anything of interest in this module just refactor it into your own project. -->
+      <!-- 
+        "Useful" utilities. If you find anything of interest 
+        in this module just refactor it into your own project. 
+      -->
       <dependency>
         <groupId>no.knowit.seam</groupId>
         <artifactId>seam-utils-ejb</artifactId>
