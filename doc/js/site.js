@@ -5,7 +5,7 @@
  * Copyright   : LGPL
  * Description : 
  * Notes       :
- * Dependencies: 
+ * Dependencies: jquery.js
  * Created     : 20100305
  * History     : 
  *               
