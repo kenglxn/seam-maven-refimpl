@@ -4,7 +4,7 @@
    xsi:schemaLocation="
       http://jboss.com/products/seam/pages
       http://jboss.com/products/seam/pages-2.2.xsd"
-   login-required="true">
+   login-required="true" >
 
-	<rewrite pattern="/useradmin" />
+	<rewrite pattern="/useradmin/home.seam"  />
 </page>
