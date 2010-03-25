@@ -23,15 +23,12 @@
 		
 		
     <rich:toolBarGroup location="right">
-			<ui:remove>
-				<!-- temporarily disabled for all -->
-		    <s:link 
-					id="identityManagement" 
-					view="/useradmin" 
-					value="Identity Management" 
-					propagation="none" 
-					rendered="#{identity.hasRole('admin')}"/>
-			</ui:remove>
+	    <s:link 
+				id="identityManagement" 
+				view="/useradmin/home.xhtml" 
+				value="Identity Management" 
+				propagation="none" 
+				rendered="#{identity.hasRole('admin')}"/>
 			
 			<h:outputText 
 				id="menuWelcomeId" 

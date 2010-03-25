@@ -140,28 +140,28 @@
   -->
 
 
+  <!-- 
   <security:identity 
-	  authenticate-method="#{authenticator.authenticate}" 
-	  remember-me="true" />
-	
+    authenticate-method="#{authenticator.authenticate}" 
+    remember-me="true" />
+  -->
+  
 	<!-- 
 		Seam Identity Management.
 		see: seam_reference-15.0 
 		see: http://blog.hibernate.org/10904.lace
 	-->
- 
-	<!-- 
 	<security:identity />
 
 	<security:remember-me 
 		enabled="true" />
 	
 	<security:jpa-identity-store
-		user-class="no.knowit.example.security.model.UserAccount"
-		role-class="no.knowit.example.security.model.UserRole" />
+		user-class="no.knowit.seam.example.security.model.UserAccount"
+		role-class="no.knowit.seam.example.security.model.UserRole" />
 
 	<security:jpa-permission-store 
-		user-permission-class="no.knowit.example.security.model.UserPermission" />
+		user-permission-class="no.knowit.seam.example.security.model.UserPermission" />
 
   <drools:rule-base name="securityRules">
     <drools:rule-files>
@@ -171,7 +171,7 @@
 
   <security:rule-based-permission-resolver 
   	security-rules="#{securityRules}" />
-	--> 
+
 
   <event type="org.jboss.seam.security.notLoggedIn">
     <action execute="#{redirect.captureCurrentView}" />
