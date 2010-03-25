@@ -21,15 +21,14 @@
 			includePageParams="false"
 			propagation="none"/>
 		
-		
+    <s:link 
+      id="identityManagement" 
+      view="/useradmin/home.seam" 
+      value="Identity Management" 
+      propagation="none" 
+      rendered="#{identity.hasRole('admin')}"/>
+      
     <rich:toolBarGroup location="right">
-	    <s:link 
-				id="identityManagement" 
-				view="/useradmin/home.xhtml" 
-				value="Identity Management" 
-				propagation="none" 
-				rendered="#{identity.hasRole('admin')}"/>
-			
 			<h:outputText 
 				id="menuWelcomeId" 
 				value="signed in as: #{credentials.username}" 
