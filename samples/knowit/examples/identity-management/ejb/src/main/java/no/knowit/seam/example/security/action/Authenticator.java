@@ -1,4 +1,4 @@
-package no.knowit.seam.example.security;
+package no.knowit.seam.example.security.action;
 
 import javax.ejb.Local;
 
