@@ -12,8 +12,8 @@
     <!-- <non-jta-data-source>${pu.jta.data.source}Unmanaged</non-jta-data-source>  -->
     
     <!--
-      If the persistence.xml file is not under the same root directory or jar than your domain model 
-      then the <jar-file> element is used to point to the jar containing your domain model.
+      If the persistence.xml file is not under the same root directory or jar than your domain 
+      model then use the <jar-file> element to point to the jar containing your domain model.
       <jar-file>../../vehicles.jar</jar-file>
     -->
     
