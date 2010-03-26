@@ -11,6 +11,12 @@
     <jta-data-source>${pu.jta.data.source}</jta-data-source>
     <!-- <non-jta-data-source>${pu.jta.data.source}Unmanaged</non-jta-data-source>  -->
     
+    <!--
+      If the persistence.xml file is not under the same root directory or jar than your domain model 
+      then the <jar-file> element is used to point to the jar containing your domain model.
+      <jar-file>../../vehicles.jar</jar-file>
+    -->
+    
     <properties>
       <property name="hibernate.dialect" value="${pu.hibernate.dialect}" />
       <property name="hibernate.hbm2ddl.auto" value="${pu.hibernate.hbm2ddl.auto}" />
