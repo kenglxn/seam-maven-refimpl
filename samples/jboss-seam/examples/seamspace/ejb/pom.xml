@@ -101,6 +101,7 @@
       <type>ejb</type>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <build>
@@ -150,19 +151,17 @@
         </executions>
       </plugin>
 
-			<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <suiteXmlFiles>
             <suiteXmlFile>
-              src/test/resources/testng.xml
+              src/test/java/org/jboss/seam/example/seamspace/test/testng.xml
             </suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>
-			-->
 			      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
