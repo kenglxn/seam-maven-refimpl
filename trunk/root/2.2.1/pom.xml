@@ -26,9 +26,9 @@
     <!-- jar versions, for dependency management -->
     <version.seam>2.2.1.CR1</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
     <version.richfaces>3.3.3.CR1</version.richfaces>
-    <version.drools>5.0.1</version.drools>
-    <version.resteasy>1.2.1.GA</version.resteasy>
-    <version.jboss.embedded>beta3.SP9</version.jboss.embedded>
+    <!-- <version.drools>5.0.1</version.drools> -->
+    <!-- <version.resteasy>1.2.1.GA</version.resteasy> -->
+    <!-- <version.jboss.embedded>beta3.SP9</version.jboss.embedded> -->
     <version.junit>4.7</version.junit>
     <version.testng>5.9</version.testng>
 
