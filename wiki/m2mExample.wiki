@@ -28,7 +28,7 @@ The steps required to get the project up and running:
   * [ http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn and build required mudules]. 
   * Copy m2m/src/main/filters/filter-prod.properties to m2m/src/main/filters/filter-dev.properties and modify the filter-dev.properties file as described in the getting started tutorial.
   * Open a command shell and cd to project folder, m2m 
-  * Execute *mvn install -Pexplode*
+  * Execute *mvn install -Penv-dev,explode*
   * Start the server and access the application at [http://localhost:8080/m2m]
 
 In addition, this example shows:
