@@ -364,7 +364,8 @@ in the project and provides a hierarchical list of them.</p>
       style="width:500px;" />
   </li>
   <li>
-    Browse to the directory where the project is located, select it, verify that all modules are checked 
+    Browse to the directory where the project is located, select it, verify that all modules are checked,
+    add <code><strong>env-dev</strong></code> to the <strong>Profiles</strong> field
     and click <strong>Finish</strong>.
     <img src="img/eclipse-import-maven-02.png" longdesc="img/eclipse-import-maven-02.png" 
       class="screenshot" style="width:500px" />
@@ -383,24 +384,6 @@ in the project and provides a hierarchical list of them.</p>
     the project templates "root" POM - so you don't need to worry about this error. For further details see: 
     <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a> and 
     <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>.
-   </li>
-  <li>
-    If du haven't activated development mode (<code>env-prod</code> is active by default) then set 
-    the <code>env-dev</code> profile on the parent project:<br/>
-    
-    <div class="inline-block" style="width:33%;">
-      <img src="img/eclipse-import-10.png" longdesc="img/eclipse-import-10.png" 
-        class="screenshot" style="width:100%;" />
-    </div>
-    <div class="inline-block" style="width:43.4%;">
-      <img src="img/eclipse-import-11.png" longdesc="img/eclipse-import-11.png" 
-        class="screenshot" style="width:100%; margin-bottom:.3em;" />
-    </div>
-  </li>
-   <li>
-    Run Maven install.
-    <img src="img/eclipse-import-maven-09.png" longdesc="img/eclipse-import-maven-09.png" 
-      class="screenshot" style="width:500px;" />
   </li>
   <li>
     Fix annoyances.<br/>
@@ -448,7 +431,11 @@ in the project and provides a hierarchical list of them.</p>
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       Must reference seam-tutorial-ejb.<strong>jar</strong>
     </div>
-
+  </li>
+  <li>
+    Run Maven install.
+    <img src="img/eclipse-import-maven-09.png" longdesc="img/eclipse-import-maven-09.png" 
+      class="screenshot" style="width:500px;" />
   </li>
 </ol>
 
