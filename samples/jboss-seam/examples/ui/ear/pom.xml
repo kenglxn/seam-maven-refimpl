@@ -165,15 +165,6 @@
       <type>jar</type>
     </dependency>
 
-    <!-- hibernate -->
-    <!--
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-commons-annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    -->
-    
     <!-- commons -->
     <dependency>
       <groupId>commons-beanutils</groupId>
@@ -359,15 +350,6 @@
               <unpack>${app.unpack.modules}</unpack>
             </ejbModule>
 
-            <!--
-            <jarModule> 
-              <groupId>${project.groupId}</groupId>
-              <artifactId>${app.context}-jar</artifactId>
-              <unpack>${app.unpack.modules}</unpack>
-              <includeInApplicationXml>true</includeInApplicationXml>
-            </jarModule>
-            -->
-            
             <ejbModule>
               <groupId>org.jboss.seam</groupId>
               <artifactId>jboss-seam</artifactId>

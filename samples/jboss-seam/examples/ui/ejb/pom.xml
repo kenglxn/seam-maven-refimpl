@@ -89,18 +89,6 @@
   </profiles>
 
   <dependencies>
-    <dependency>
-      <groupId>no.knowit.seam</groupId>
-      <artifactId>seam-utils-ejb</artifactId>
-      <type>ejb</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>no.knowit.seam</groupId>
-      <artifactId>seam-utils-openejb</artifactId>
-      <type>ejb</type>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -110,17 +98,6 @@
         <filtering>true</filtering> <!-- filtering persistence.xml -->
       </resource>
     </resources>
-    
-    <testResources>                                                                                                     
-      <testResource>                                                                                                    
-        <directory>src/test/resources</directory>                                                                 
-        <filtering>true</filtering>                                                                               
-      </testResource>
-      <testResource>                                                                                                    
-        <directory>src/test/resources-openejb</directory>                                                                 
-        <filtering>true</filtering>                                                                               
-      </testResource>
-    </testResources>
     
     <plugins>
       <!--
