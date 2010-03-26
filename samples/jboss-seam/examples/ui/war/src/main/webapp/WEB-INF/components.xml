@@ -15,17 +15,17 @@
   				transaction-management-enabled="true", SiA-9.4.1-p370
   -->
 	<core:init
-		debug="true"
+		debug="${app.debug}"
 		transaction-management-enabled="true"
 		jndi-pattern="${app.jndi.pattern}" />
 
 	<core:manager conversation-timeout="120000"/>
 
   <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-9.3.1-p362 -->
-	<persistence:entity-manager-factory
-		name="entityManagerFactory"
-		persistence-unit-name="${app.persistence.unit.name}"
-		installed="false"
+  <persistence:entity-manager-factory
+    name="entityManagerFactory"
+    persistence-unit-name="${pu.name}"
+    installed="false"
 		startup="false" />
 
 	<!--
@@ -34,11 +34,11 @@
 		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-9.3.1-p362.
 	-->
-	<persistence:managed-persistence-context
-		name="entityManager"
-		auto-create="true"
-		entity-manager-factory="#{entityManagerFactory}"
-		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
+  <persistence:managed-persistence-context
+    name="entityManager"
+    auto-create="true"
+    entity-manager-factory="#{entityManagerFactory}"
+    persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name}" />
 
 	<framework:entity-query name="countries" ejbql="select c from Country c" />
 
