@@ -206,6 +206,67 @@
       <scope>provided</scope>
     </dependency>
 
+
+    <!-- 
+      JBoss Rules. JBoss Rules. Needed to be listed here if you have seam identity integration tests,
+      see  samples/jboss-seam/examlpes/seamspace 
+    -->
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-compiler</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-decisiontables</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-templates</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>xpp3</groupId>
+      <artifactId>xpp3_min</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+    <!-- rules + groovy -->
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr-runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+    <!-- JBoss jBPM -->
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-jpdl</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
     <!-- log4j -->
     <dependency>
       <groupId>log4j</groupId>
