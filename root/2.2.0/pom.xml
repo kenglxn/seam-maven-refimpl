@@ -606,7 +606,7 @@
       </dependency>
 
       <!-- 
-        groovy-all-1.5.4 provided by the Seam-2.1.2 and seam-2.2.0
+        groovy-all-1.5.4 provided by the Seam-2.1.2, seam-2.2.0 and seam-2.2.1
         root POM does not work with the gmaven plugin.
       -->
       <dependency>
