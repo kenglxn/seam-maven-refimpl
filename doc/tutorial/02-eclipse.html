@@ -348,6 +348,12 @@ in the project and provides a hierarchical list of them.</p>
     plugin is configured so that no extra code is generated during the import</a>.
   </li>
   <li>
+    Open a command shell, navigate to your project directory and run: 
+    <code><strong>mvn eclipse:eclipse</strong></code><br/>
+    If you omit this step you will from time to time get a lot of null pointer exceptions while 
+    importing the project into Eclipse!
+  </li>
+  <li>
     Import the project: In Eclipse select <code><strong>File>Import</strong></code> to import the project:
     <img class="screenshot" src="img/eclipse-import.png" longdesc="img/eclipse-import.png" 
       style="width:300px" />
