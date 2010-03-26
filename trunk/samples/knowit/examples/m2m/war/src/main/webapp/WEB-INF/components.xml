@@ -15,13 +15,8 @@
 		http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
 		http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd
 		http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
-		http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.2.xsd
-		http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.2.xsd
-		http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
-		http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
 		http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
 		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd
-		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/jms-2.2.xsd
 ">
      
   <!-- 
@@ -125,61 +120,4 @@
 		override-client="true"  
 		url-pattern="*.seam" />
 					  
-	<!-- 
-  <mail:mail-session 
-  	host="localhost" 
-  	port="25" 
-  	username="user" 
-  	password="test" />
-	-->
-
-  <!-- For use with jBPM pageflow or process management
-  <bpm:jbpm>
-    <bpm:process-definitions></bpm:process-definitions>
-    <bpm:pageflow-definitions></bpm:pageflow-definitions>
-  </bpm:jbpm>
-  -->
-
-
-  <security:identity 
-	  authenticate-method="#{authenticator.authenticate}" 
-	  remember-me="true" />
-	
-	<!-- 
-		Seam Identity Management.
-		see: seam_reference-15.0 
-		see: http://blog.hibernate.org/10904.lace
-	-->
- 
-	<!-- 
-	<security:identity />
-
-	<security:remember-me 
-		enabled="true" />
-	
-	<security:jpa-identity-store
-		user-class="no.knowit.example.security.model.UserAccount"
-		role-class="no.knowit.example.security.model.UserRole" />
-
-	<security:jpa-permission-store 
-		user-permission-class="no.knowit.example.security.model.UserPermission" />
-
-  <drools:rule-base name="securityRules">
-    <drools:rule-files>
-       <value>/META-INF/security.drl</value>
-    </drools:rule-files>
-  </drools:rule-base>
-
-  <security:rule-based-permission-resolver 
-  	security-rules="#{securityRules}" />
-	--> 
-
-  <event type="org.jboss.seam.security.notLoggedIn">
-    <action execute="#{redirect.captureCurrentView}" />
-  </event>
-
-  <event type="org.jboss.seam.security.loginSuccessful">
-    <action execute="#{redirect.returnToCapturedView}" />
-  </event>
-
 </components>
