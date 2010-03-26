@@ -26,7 +26,11 @@
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
       <property name="hibernate.transaction.manager_lookup_class" value="${pu.hibernate.transaction.manager_lookup_class}" />
       
-      <!--  -->
+      <!-- 
+        Binds the EntityManagerFactory to JNDI where Seam can look it up. 
+        This is only relevant when the container automatically loads the persistence unit, 
+        as is the case in JBoss AS 5. 
+      -->       
       <property name="jboss.entity.manager.factory.jndi.name" value="${pu.jboss.entity.manager.factory.jndi.name}" />
     </properties>
   </persistence-unit>
