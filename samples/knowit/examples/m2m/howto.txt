@@ -20,22 +20,17 @@ Language*<------*Person*<----->*Company
 Interest*<----------
 }}}
 
-Person `*<->*` Company is a "bi-directional" association where Person holds the inverse side of the association and Company is the owning side. The important thing to remember when working with many to many bi-directional associations is to remember to update the collection at the owning side `(Company.java)` before the inverse side is persisted `(PersonHome.java)`. Also  note that a  `HashSet` is used on the owning side, which makes it easy to avoid redundant associations. 
+Person `*<->*` Company is a "bi-directional" association where Person holds the inverse side of the association and Company is the owning side. The important thing to remember when working with many to many bi-directional associations is to update the collection at the owning side `(Company.java)` before the inverse side is persisted `(PersonHome.java)`. Also  note that a  `HashSet` is used on the owning side, which makes it easy to avoid redundant associations. 
 
 == Howto ==
 The steps required to get the project up and running:
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps.]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the examples "root" POM from the samples folder and install it to your local .m2 repo]. 
-    * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.	
-    * Execute *mvn install* to install the pom.
-    * This is the "root" POM for all the example applications, so you need to install it to your local m2 repo.
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/knowit/examples/m2m Export project from svn.]
-    * Copy m2m/config/profiles.xml to m2m/. Modify profiles.xml as needed.
-    * Open a command shell and cd to project folder, m2m 
-    * Execute *mvn install -Pexplode*
+  * [ http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn and build required mudules]. 
+  * Copy m2m/src/main/filters/filter-prod.properties to m2m/src/main/filters/filter-dev.properties and modify the filter-dev.properties file as described in the getting started tutorial.
+  * Open a command shell and cd to project folder, m2m 
+  * Execute *mvn install -Pexplode*
   * Start the server and access the application at [http://localhost:8080/m2m]
 
 In addition, this example shows:
-  * How to use the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ].<br/> The example uses the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate a unique build number for the projects EAR, EJB and WAR modules. Open e.g. the m2m/ear/target/m2m-ear-`*`/m2m-war-`*`/META-INF/MANIFEST.MF to see the result.<br/>Maven will not generate a manifest file for the target/m2m-ear-`*`/META-INF folder, so the only way to inspect the manifest file for the EAR is to open the packaged ear.
-  * How to read properties from the war/META-INF/MANIFEST.MF file.<br/>Shows the code needed to read properties from manifest file.
-  * How to use logging.<br/> JBoss uses its own version of log4j.xml and log4j.jar, making it cumbersome to configure logging for your application. This example also shows how to to configure application spesific logging as desctibed in this blog: [http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html How do i use my own log4j properties or xml file in JBoss]
+  * How to use the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ].<br/> The example uses the [http://mojo.codehaus.org/buildnumber-maven-plugin/ Build Number Maven Plugin ] to generate a unique build number for the projects EAR, EJB and WAR modules. Open e.g. the m2m/ear/target/m2m-ear-`*`/m2m-war-`*`/META-INF/MANIFEST.MF to see the result.<br/>Maven does not generate a manifest file for the target/m2m-ear-`*`/META-INF folder, so the only way to inspect the manifest file for the EAR is to open the packaged ear.
+  * How to read properties from the war/META-INF/MANIFEST.MF file.<br/>Code needed to read properties from manifest file is provided.
