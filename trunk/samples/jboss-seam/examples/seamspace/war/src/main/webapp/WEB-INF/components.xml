@@ -29,62 +29,65 @@
 		For cluster: distributable="true". Also uncomment the distributable tag in web.xml
   -->
 	<core:init
-		debug="${env.debug}"
+		debug="${app.debug}"
 		transaction-management-enabled="true"
 		jndi-pattern="${app.jndi.pattern}" 
 		distributable="${app.distributable}"/>
 		
-    <core:manager conversation-timeout="120000" 
-                  concurrent-request-timeout="500"
-                  conversation-id-parameter="cid"/>
-    
-    <security:rule-based-permission-resolver security-rules="#{securityRules}"/>
-    
-    <security:jpa-identity-store 
-       user-class="org.jboss.seam.example.seamspace.MemberAccount"
-       role-class="org.jboss.seam.example.seamspace.MemberRole"
-       />
-    
-    <!--security:identity-manager identity-store="#{ldapIdentityStore}"/-->
-    
-    <security:ldap-identity-store name="ldapIdentityStore"
-      server-address="localhost"
-      bind-DN="cn=Manager,dc=bryzak,dc=com"
-      bind-credentials="secret"
-      user-DN-prefix="uid="
-      user-DN-suffix=",ou=Person,dc=bryzak,dc=com"
-      role-DN-prefix="cn="
-      role-DN-suffix=",ou=Roles,dc=bryzak,dc=com"
-      user-context-DN="ou=Person,dc=bryzak,dc=com"
-      role-context-DN="ou=Roles,dc=bryzak,dc=com"
-      user-role-attribute="roles"
-      role-name-attribute="cn"
-      user-object-classes="person,uidObject"
-      />
+  <core:manager 
+    conversation-timeout="120000" 
+    concurrent-request-timeout="500"
+    conversation-id-parameter="cid"/>
+  
+  <security:rule-based-permission-resolver security-rules="#{securityRules}"/>
+  
+  <security:jpa-identity-store 
+     user-class="org.jboss.seam.example.seamspace.MemberAccount"
+     role-class="org.jboss.seam.example.seamspace.MemberRole" />
+  
+  <!--security:identity-manager identity-store="#{ldapIdentityStore}"/-->
+  
+  <security:ldap-identity-store name="ldapIdentityStore"
+    server-address="localhost"
+    bind-DN="cn=Manager,dc=bryzak,dc=com"
+    bind-credentials="secret"
+    user-DN-prefix="uid="
+    user-DN-suffix=",ou=Person,dc=bryzak,dc=com"
+    role-DN-prefix="cn="
+    role-DN-suffix=",ou=Roles,dc=bryzak,dc=com"
+    user-context-DN="ou=Person,dc=bryzak,dc=com"
+    role-context-DN="ou=Roles,dc=bryzak,dc=com"
+    user-role-attribute="roles"
+    role-name-attribute="cn"
+    user-object-classes="person,uidObject" />
       
-    <security:jpa-permission-store user-permission-class="org.jboss.seam.example.seamspace.AccountPermission"/>
-       
-    <drools:rule-base name="securityRules">
-       <drools:rule-files>
-           <value>/META-INF/security-rules.drl</value>
-       </drools:rule-files>
-    </drools:rule-base>
-    
-    <web:multipart-filter create-temp-files="true" 
-                          max-request-size="5000000" 
-                          url-pattern="*.seam"/>   
-                          
-    <web:context-filter url-pattern="/content/*"/>
+  <security:jpa-permission-store 
+    user-permission-class="org.jboss.seam.example.seamspace.AccountPermission" />
+     
+  <drools:rule-base name="securityRules">
+     <drools:rule-files>
+         <value>/META-INF/security-rules.drl</value>
+     </drools:rule-files>
+  </drools:rule-base>
+  
+  <web:multipart-filter 
+    create-temp-files="true" 
+    max-request-size="5000000" 
+    url-pattern="*.seam" />   
+                        
+  <web:context-filter url-pattern="/content/*" />
 
-    <persistence:managed-persistence-context name="entityManager" auto-create="true"
-                persistence-unit-jndi-name="java:/seamspaceEntityManagerFactory"/>
-    
-    <event type="org.jboss.seam.security.notLoggedIn">
-        <action execute="#{redirect.captureCurrentView}"/>
-    </event>
-    
-    <event type="org.jboss.seam.security.loginSuccessful">
-        <action execute="#{redirect.returnToCapturedView}"/>
-    </event>    
+  <persistence:managed-persistence-context 
+    name="entityManager" 
+    auto-create="true"
+    persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name}" />
+  
+  <event type="org.jboss.seam.security.notLoggedIn">
+    <action execute="#{redirect.captureCurrentView}" />
+  </event>
+  
+  <event type="org.jboss.seam.security.loginSuccessful">
+    <action execute="#{redirect.returnToCapturedView}" />
+  </event>    
             
 </components>
