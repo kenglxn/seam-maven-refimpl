@@ -1,18 +1,14 @@
-#summary A Mavenized Version of the jboss-seam-2.1.2/examples/ui project
+#summary A Mavenized Version of the jboss-seam-2.2.0/examples/ui project
 
-= A Mavenized Version of the jboss-seam-2.1.2/examples/ui project =
+= A Mavenized Version of the jboss-seam-2.2.0/examples/ui project =
 
-This is a Mavenized version of the jboss-seam-2.1.2/examples/ui project.
+This is a Mavenized version of the jboss-seam-2.2.0/examples/ui project.
 
 == Howto ==
 The steps required to get the project up and running:
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps].
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the examples "root" POM from the samples folder and install it to your local .m2 repo]. 
-    * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.	
-    * Execute *mvn install* to install the pom.
-    * This is the "root" POM for all the example applications, so you need to install it to your local m2 repo.
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/jboss-seam/examples/ui Export project from svn].
-    * Copy ui/config/profiles.xml to ui/. Modify profiles.xml as needed.
-    * Open a command shell and cd to project folder, ui 
-    * Execute *mvn install -Pexplode*
+  * [ http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn and build required mudules]. 
+  * Copy jboss-seam-ui/src/main/filters/filter-prod.properties to jboss-seam-ui/src/main/filters/filter-dev.properties and modify the filter-dev.properties file as described in the getting started tutorial.
+  * Open a command shell and cd to project folder, jboss-seam-ui 
+  * Execute *mvn install -Penv-dev,explode*
   * Start the server and access the application at [http://localhost:8080/seam-ui]
