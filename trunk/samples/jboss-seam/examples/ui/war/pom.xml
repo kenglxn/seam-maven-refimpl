@@ -152,9 +152,6 @@
             <configuration>
               <files>
                 <file>../src/main/filters/filter-${env}.properties</file>
-                <!-- 
-                <file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file> 
-                -->
               </files>
             </configuration>
           </execution>
