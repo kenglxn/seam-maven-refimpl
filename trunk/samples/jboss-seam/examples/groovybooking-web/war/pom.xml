@@ -25,7 +25,7 @@
 		    <configuration>
 	        <debug>${jdk.debug}</debug>
 	        <stacktrace>${jdk.debug}</stacktrace>
-	        <targetBytecode>1.6</targetBytecode>
+	        <targetBytecode>1.7</targetBytecode> <!-- 1.5, 1.6 or 1.7 -->
 	        <verbose>true</verbose>
 					<sourceEncoding>utf-8</sourceEncoding>
 		    </configuration>
@@ -112,7 +112,6 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.3.0.ga</version>
 			<scope>provided</scope>
 		</dependency>
 		

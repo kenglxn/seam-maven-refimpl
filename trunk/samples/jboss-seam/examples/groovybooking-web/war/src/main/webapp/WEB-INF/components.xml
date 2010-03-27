@@ -23,12 +23,11 @@
 		conversation-timeout="120000" 
 		conversation-id-parameter="cid" />
     
-  <!-- see: persistence.xml, persistence-unit name="${app.persistence.unit.name}" ..., SiA-9.3.1-p362 -->
-	<!-- note: installed=true for JBoss 4.2.3 or newer -->
+  <!-- see: persistence.xml, see: SiA-9.3.1-p362, see: http://code.google.com/p/seaminaction/wiki/DeployingToJBossAS5 -->
 	<persistence:entity-manager-factory 
 		name="groovyEntityManagerFactory"
-		persistence-unit-name="groovy" 
-		installed="${app.persistence.emf.installed}" />
+		persistence-unit-name="groovy"
+		installed="true" />
 
 	<!-- If Seam loads the persistence unit (JBoss 4.x), the EntityManagerFactory will be resolved from #{groovyEntityManagerFactory}.
 			On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the binding occurs during application deployment). -->
