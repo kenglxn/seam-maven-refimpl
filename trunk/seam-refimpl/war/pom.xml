@@ -177,7 +177,8 @@
     
     <!-- 
       For Eclipse and JBoss Tools:
-      List all modules you are interested to browse (ctrl+click) into from xhtml pages 
+      List all other modules you are interested to browse  
+      into (ctrl+click) from xhtml pages with scope provided 
     -->
     <dependency>
       <groupId>${project.groupId}</groupId>
