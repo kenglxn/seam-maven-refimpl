@@ -194,7 +194,10 @@
       <type>jar</type>
     </dependency>
 
-    <!-- JBoss Rules. Needed if you implement Seam Idendity -->
+    <!-- 
+      JBoss Rules. Needed if you implement drools functionality, e.g. Seam Idendity 
+      see: samples/jboss-seam/examlpes/seamspace 
+    -->
     <!-- 
     <dependency>
       <groupId>org.drools</groupId>

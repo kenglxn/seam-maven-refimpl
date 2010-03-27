@@ -208,8 +208,8 @@
 
 
     <!-- 
-      JBoss Rules. JBoss Rules. Needed to be listed here if you have seam identity integration tests,
-      see  samples/jboss-seam/examlpes/seamspace 
+      JBoss Rules. Needed to be listed here if you have drools integration tests, e.g. Seam Identity 
+      see: samples/jboss-seam/examlpes/seamspace 
     -->
     <dependency>
       <groupId>org.drools</groupId>
