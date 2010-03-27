@@ -10,4 +10,4 @@ This is a Mavenized version of the jboss-seam-2.2.0/examples/booking project.
   * Copy *booking/src/main/filters/filter-prod.properties* to booking/src/main/filters/*filter-dev.properties* and modify the filter-dev.properties file as described in the getting started tutorial
   * Open a command shell and cd to project folder; *booking* 
   * Execute *mvn install -Penv-dev,explode*
-  * Start the server and access the application at [http://localhost:8080/seam-booking]
+  * Start the server and access the application at [http://localhost:8080/seam-booking] 
