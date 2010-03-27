@@ -25,7 +25,7 @@
 		<app.description>The JBoss Seam Groovy Booking WEB Example</app.description>
 		<app.ds.xml>${app.context}-ds.xml</app.ds.xml>
 		<app.jndi.pattern>#{ejbName}/local</app.jndi.pattern>
-		<env.debug>true</env.debug>
+		<app.debug>true</app.debug>
 	</properties>
 
 	<repositories>
