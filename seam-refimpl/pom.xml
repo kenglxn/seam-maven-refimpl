@@ -144,6 +144,12 @@
       <scope>provided</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-commons-annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- jee -->
     <dependency>
       <groupId>javax.ejb</groupId>
