@@ -91,7 +91,7 @@ public class HotelSearchingAction implements HotelSearching
    
    public boolean isNextPageAvailable()
    {
-      return hotels!=null && hotels.size()==pageSize;
+      return hotels!=null &amp;&amp; hotels.size()==pageSize;
    }
    
    public int getPageSize() {
