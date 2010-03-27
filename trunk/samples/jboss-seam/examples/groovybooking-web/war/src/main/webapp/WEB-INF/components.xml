@@ -15,7 +15,7 @@
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd">
 
 	<core:init
-		debug="${env.debug}"
+		debug="${app.debug}"
 		jndi-pattern="${app.jndi.pattern}" />
 
 	<core:manager 
