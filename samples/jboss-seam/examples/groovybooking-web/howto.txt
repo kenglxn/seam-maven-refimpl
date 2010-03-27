@@ -13,7 +13,7 @@ Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of 
   <configuration>
     <debug>true</debug>
     <stacktrace>true</stacktrace>
-    <targetBytecode>1.6</targetBytecode>
+    <targetBytecode>1.5</targetBytecode> <!-- is the value to compile for a JDK 1.5 or later JVM. -->
     <verbose>true</verbose>
     <sourceEncoding>utf-8</sourceEncoding>
   </configuration>
@@ -29,9 +29,8 @@ Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of 
   </executions>
 </plugin>		
 }}}
-Note that `<targetBytecode>1.6</targetBytecode>` relates to groovy-all version 1.6.x
 
-== Differences from the original application ==
+== Differences from the original example application ==
   * The datasource file, `seam-groovybooking-web-ds.xml`, is moved to the project root folder
   * Uses standard Maven directory layout
   * Groovy files are located in the `war/src/groovy` directory
