@@ -1,6 +1,6 @@
 #summary A Mavenized Version of the jboss-seam-2.2.0/examples/booking project
 
-= A Mavenized Version of the jboss-seam-v/examples/booking project =
+= A Mavenized Version of the jboss-seam-2.2.0/examples/booking project =
 
 This is a Mavenized version of the jboss-seam-2.2.0/examples/booking project.
 
