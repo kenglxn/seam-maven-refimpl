@@ -34,10 +34,10 @@
 		For cluster: distributable="true". Also uncomment the distributable tag in web.xml
   -->
 	<core:init
-		debug="${env.debug}"
 		transaction-management-enabled="true"
+		debug="${app.debug}"
 		jndi-pattern="${app.jndi.pattern}" 
-		distributable="${app.distributable}"/>
+		distributable="${app.distributable}" />
 
 	<core:manager
 		concurrent-request-timeout="500"
@@ -54,26 +54,27 @@
 	</core:resource-loader>
 
   <!-- 
-		BOOTSTRAPPING A JPA ENTITYMANAGERFACTORY, SiA-9.3.1-p362
-		installed=true for JBoss 4.2.3 or newer
-	  To have Seam defer loading of the persistence unit until it's needed, perhaps for a quicker 
-		deployment turnaround, you can  disable the startup behavior of this component, SiA-9.3.1-p363
-		
-		entity-manager-factory name is also referenced in in persistence.xml: 
-		persistence-unit name="${app.persistence.unit.name}"
-	-->
-
-	<persistence:entity-manager-factory 
-		name="${app.entity.manager.factory.name}"
-		persistence-unit-name="${app.persistence.unit.name}" 
-		installed="${app.persistence.emf.installed}"
-		startup="${app.persistence.emf.startup}" />
+    BOOTSTRAPPING A JPA ENTITYMANAGERFACTORY, SiA-9.3.1-p362
+    installed=true for JBoss 4.2.3 or newer
+    To have Seam defer loading of the persistence unit until it's needed, perhaps for a quicker 
+    deployment turnaround, you can  disable the startup behavior of this component, SiA-9.3.1-p363
+    
+    persistrence:entity-manager-factory.persistence-unit-name is also referenced in in persistence.xml:
+    
+    installed=true does not work on JBoss5, see: https://jira.jboss.org/jira/browse/JBSEAM-3821
+  -->
+  <persistence:entity-manager-factory
+    name="entityManagerFactory"
+    persistence-unit-name="${pu.name}"
+    installed="false"
+    startup="true" />
 
 	<!--
 		If Seam loads the persistence unit (JBoss 4.x), the
-		EntityManagerFactory will be resolved from #{${app.entity.manager.factory.name}}. 
+		EntityManagerFactory will be resolved from #{entityManagerFactory}. 
 		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-9.3.1-p362.
+    see also: see: http://code.google.com/p/seaminaction/wiki/DeployingToJBossAS5
 		
 		By default, the Seam-managed persistence context components are defined with the autocreate 
 		feature disabled. By enabling this feature, you can inject these components using an 
@@ -81,9 +82,9 @@
 	-->
 	<persistence:managed-persistence-context 
 		name="em" 
-		auto-create="${app.persistence.mpc.auto.create}"
-		entity-manager-factory="#{${app.entity.manager.factory.name}}"
-		persistence-unit-jndi-name="${app.persistence.unit.jndi.name}" />
+		auto-create="true"
+		entity-manager-factory="#{entityManagerFactory}"
+		persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name}" />
 
                
 	<security:identity 
@@ -107,11 +108,13 @@
 		 <action execute="#{redirect.returnToCapturedView}"/>
 	</event>
 
+	<!--
 	<mail:mail-session 
 		host="localhost" 
 		port="2525" 
 		username="test" 
 		password="test" />
+	-->
 			
 	<!-- For use with jBPM pageflow or process management -->
 	<!--  
