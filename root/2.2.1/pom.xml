@@ -608,7 +608,7 @@
       <dependency>
         <groupId>org.codehaus.groovy</groupId>
         <artifactId>groovy-all</artifactId>
-        <version>1.6.3</version>
+        <version>1.7.1</version>
         <exclusions>
           <exclusion>
             <groupId>bsf</groupId>
@@ -1153,6 +1153,9 @@
           <version>1.5</version>
         </plugin>
 
+        <!--
+          see: http://docs.codehaus.org/display/GMAVEN/Home
+        -->
         <plugin>
           <groupId>org.codehaus.groovy.maven</groupId>
           <artifactId>gmaven-plugin</artifactId>
@@ -1160,7 +1163,7 @@
           <configuration>
             <debug>${jdk.debug}</debug>
             <stacktrace>${jdk.debug}</stacktrace>
-            <targetBytecode>1.6</targetBytecode>
+            <targetBytecode>1.5</targetBytecode> <!-- is the value to compile for a JDK 1.5 or later JVM. -->
             <verbose>true</verbose>
             <sourceEncoding>utf-8</sourceEncoding>
           </configuration>
