@@ -78,6 +78,7 @@
 		EntityManagerFactory will be resolved from #{entityManagerFactory}. 
 		On JBoss AS 5, the EntityManagerFactory is retrieved from JNDI (the
 		binding occurs during application deployment), SiA-9.3.1-p362.
+    see also: see: http://code.google.com/p/seaminaction/wiki/DeployingToJBossAS5
 		
 		By default, the Seam-managed persistence context components are defined with the autocreate 
 		feature disabled. By enabling this feature, you can inject these components using an 
