@@ -50,5 +50,6 @@ Differences from the original app:
 == Import project to Eclipe 3.5 ==
   * Install the [http://groovy.codehaus.org/Eclipse+Plugin groovy-eclipse plugin]
   * Import the project as explained in the [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/02-eclipse.html Eclipse tutorial]
+  * Right click on the *jboss-seam-groovybooking-jee-ejb/src/main/groovy* folder and select *Build Path > Use as Source Folder*
   * Right click on the *jboss-seam-groovybooking-jee-ejb* project and select *Configure > Convert to Groovy Project*
   
