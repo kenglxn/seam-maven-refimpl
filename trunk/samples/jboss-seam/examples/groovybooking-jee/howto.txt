@@ -40,8 +40,8 @@ Differences from the original app:
   * "groovy-all" is upgraded to version 1.7.1 in the refimpl root POM. Version 1.5.4 provided by the seam-2.2.0 root POM, does not work.
 
 == How to install and run the application ==
-  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial explains the basic steps]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn and build required mudules]
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial] explains the basic steps
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn] and build required modules
   * Copy *groovybooking-jee/src/main/filters/filter-prod.properties* to groovybooking-jee/src/main/filters/*filter-dev.properties* and modify the filter-dev.properties file as described in the getting started tutorial
   * Open a command shell and cd to project folder; *groovybooking-jee* 
   * Execute *mvn install -Penv-dev,explode*
