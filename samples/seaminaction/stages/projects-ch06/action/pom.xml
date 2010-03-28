@@ -1,96 +1,150 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <project
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>no.knowit.seam.examples</groupId> 
-		<artifactId>open18-stages-ch06</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+		<groupId>org.open18.seaminaction</groupId> 
+		<artifactId>open18-stages-ch05</artifactId>
 		<version>2.2.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-	<artifactId>open18-stages-ch06-action</artifactId>  <!-- m2eclipse does not like: ${app.context}-ear -->
+	<artifactId>open18-stages-ch05-action</artifactId>  <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${project.artifactId} : ${project.version}</name>
-	<description>Open18 stages ch06 ACTION module</description>
-	<packaging>ejb</packaging>
+	<description>Open18 stages ch05 ACTION module</description>
+  <packaging>ejb</packaging>
 
-	<profiles>
-		<profile>
-			<id>explode</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>dev</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>ejb-process-classes</id>
-								<phase>process-classes</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<tasks>
-										<property
-											name="deploy-path"
-											value="${as.deploy}/${app.context}-ear.ear" />
-										<copy
-											todir="${deploy-path}/${project.build.finalName}.jar"
-											verbose="true">
-											<fileset dir="${project.build.outputDirectory}"	>
-												<include name="**/*.class" />
-											</fileset>
-										</copy>
-									</tasks>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+  <profiles>
+    <!--
+      More than one profile can be active at once. Since profiles can contain the same 
+      types of configuration there can be clashes. If two profiles clash the last to be activated 
+      will override those activated earlier. 
+      Note: "mvn install -Penv-dev" deactivates activeByDefault prpofiles
+     -->
+    <profile>
+      <id>env-dev</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>dev</value>
+        </property>
+      </activation>
+      <properties>
+        <env>dev</env>
+      </properties>
+    </profile>
 
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering> <!-- filtering persistence.xml -->
-			</resource>
-		</resources>
+    <profile>
+      <id>env-prod</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <env>prod</env>
+      </properties>
+    </profile>
+      
+    <profile>
+      <id>explode</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>dev</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>ejb-process-classes</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <property
+                      name="deploy-path"
+                      value="${as.deploy}/${app.context}-ear.ear" />
+                    <copy
+                      todir="${deploy-path}/${project.build.finalName}.jar"
+                      verbose="true">
+                      <fileset dir="${project.build.outputDirectory}"	>
+                        <include name="**/*.class" />
+                      </fileset>
+                    </copy>
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-ejb-plugin</artifactId>
-				<configuration>
-					<ejbVersion>3.0</ejbVersion>
-					<generateClient>false</generateClient>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<dependencies>
+  <dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>${app.context}-model</artifactId>
-			<type>ejb</type>
+			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
-	</dependencies>
+  </dependencies>
 
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering> <!-- filtering persistence.xml -->
+      </resource>
+    </resources>
+    
+    <plugins>
+      <!--
+        The Properties Maven Plugin is here to make life a little easier when 
+        dealing with properties. It provides goals to read and write properties 
+        from and to	files, and also to set system properties. It's main use-case 
+        is loading properties	from files instead of declaring them in pom.xml, 
+        something that comes in handy when dealing with different environments. 
+        The plugin read properties during the	"validate" phase and the 
+        properties are then accessible from the pom.
+         
+        The "filters" tag read properties after the "generate-resources" phase 
+        but you can not	access the property values from the pom - they are only 
+        visible to filters (filtering=true).
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <configuration>
+              <files>
+                <file>../src/main/filters/filter-${env}.properties</file>
+              </files>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ejb-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Build-Date>${timestamp}</Build-Date>
+              <Mode>${env}</Mode>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
