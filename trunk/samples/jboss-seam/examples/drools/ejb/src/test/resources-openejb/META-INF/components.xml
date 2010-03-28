@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components 
+  xmlns:core="http://jboss.com/products/seam/core"
+	xmlns="http://jboss.com/products/seam/components"
+  xmlns:persistence="http://jboss.com/products/seam/persistence"
+  xmlns:drools="http://jboss.com/products/seam/drools"
+  xmlns:bpm="http://jboss.com/products/seam/bpm"
+  xmlns:security="http://jboss.com/products/seam/security"
+  xmlns:mail="http://jboss.com/products/seam/mail"
+  xmlns:web="http://jboss.com/products/seam/web"
+  xmlns:transaction="http://jboss.com/products/seam/transaction"
+  xmlns:jms="http://jboss.com/products/seam/jms"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+		http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
+		http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd
+		http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
+		http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.2.xsd
+		http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.2.xsd
+		http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
+		http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
+		http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
+		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd
+		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/jms-2.2.xsd
+">
+  <!--  
+    *** Need persistence-unit in test due to seam-utils-openejb module ***
+    *** No database in this project but seam-utils-openejb requires    ***
+    *** core, transaction and persistence components                   ***
+  -->
+
+	<core:init 
+		jndi-pattern="${app.jndi.pattern.test}" 
+		debug="${app.debug}"
+		transaction-management-enabled="true" />
+
+	<!-- JPA -->
+  <transaction:ejb-transaction />
+
+	<!-- TODO: How do we define OpenEjb entity manager factory here??? 
+	<persistence:entity-manager-factory
+		name="entityManagerFactory"
+		class="no.knowit.seam.openejb.mock.SeamManagedEntityManagerFactoryBean"
+		persistence-unit-name="${pu.name}"
+		installed="true"
+		startup="true" />
+	-->
+	
+	<persistence:managed-persistence-context
+		name="entityManager" 
+		auto-create="true"
+		scope="conversation" 
+		entity-manager-factory="#{entityManagerFactory}" 
+		persistence-unit-jndi-name="${pu.jboss.entity.manager.factory.jndi.name}" />
+		
+  <drools:rule-base name="ruleBase" rule-files="numberguess.drl"/>
+  <!-- use this in order to load from decision table instead -->        
+  <!-- <drools:rule-base name="ruleBase" rule-files="numberguess.xls"/> -->
+  <!--  use this in order to load from a drl and also add a ruleflow -->
+  <!-- <drools:rule-base name="ruleBase" rule-files="numberguessforflow.drl, numberguess.rf"/>  -->
+  <!--  use this in order to load from a xls and also add a ruleflow -->
+  <!-- <drools:rule-base name="ruleBase" rule-files="numberguessforflow.xls, numberguess.rf"/> -->     
+  <!--  use this if you want to register a custom consequence exception handler -->
+  <!--  <drools:rule-base name="ruleBase" rule-files="numberguess.xls" consequence-exception-handler="#{gameConsequenceExceptionHandler}"/>  -->
+  
+  <drools:managed-working-memory name="workingMemory" rule-base="#{ruleBase}">
+    <!--  add WM event listeners -->
+    <!-- 
+    <drools:event-listeners>
+       <value>org.drools.event.DebugWorkingMemoryEventListener</value>
+       <value>org.drools.event.DebugAgendaEventListener</value>
+    </drools:event-listeners>  
+    -->
+  </drools:managed-working-memory>
+  
+  <!-- For use with jBPM pageflow or process management -->
+  <bpm:jbpm>
+    <bpm:pageflow-definitions>
+      <value>pageflow.jpdl.xml</value>
+    </bpm:pageflow-definitions>
+  </bpm:jbpm>
+		
+</components>
