@@ -7,8 +7,8 @@ demonstrating Seam Security.
 
 == Howto ==
 The steps required to get the project up and running:
-  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn and build required mudules] 
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial] explains the basic steps
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn] and build required modules
   * Copy seamspace/src/main/filters/filter-prod.properties to seamspace/src/main/filters/filter-dev.properties and modify the filter-dev.properties file as described in the getting started tutorial
   * Open a command shell and cd to project folder, seamspace 
   * Execute *mvn install -Penv-dev,explode*
