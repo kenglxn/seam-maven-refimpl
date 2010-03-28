@@ -6,8 +6,8 @@ We have made a Mavenized version of the source code from chapter two in the exce
 You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 
 == How to install and run the application ==
-  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial explains the basic steps]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn and build required mudules]
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial] explains the basic steps
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn] and build required modules
   * In MYSQL.
     * Create database "*open18initial_db*"
     * Execute ./samples/seaminaction/etc/schema/open18-initial-schema-mysql.sql

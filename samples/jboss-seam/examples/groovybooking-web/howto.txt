@@ -47,8 +47,8 @@ Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of 
   * No hot code replacement, all compiled code deployed to `WEB-INF/classes`. It should be realtivly easy to make a Maven hot code replacement version but this was not the goal for this excercise :-)
 
 == How to install and run the application ==
-  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps.]
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn and build required mudules]. 
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial] explains the basic steps
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn] and build required modules
   * Open a command shell and cd to project folder: groovybooking-web
   * Execute mvn install
   * Copy `groovybooking-web/jboss-seam-groovybooking-web-ds.xml` to your appserver's deploy folder, e.g. `C:\dev\server\jboss-4.2.3.GA-jdk6\server\default\deploy`
