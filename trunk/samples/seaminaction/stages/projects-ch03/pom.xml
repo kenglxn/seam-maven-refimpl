@@ -28,6 +28,7 @@
 
   <properties>
     <env>dev</env> <!-- The default setting if no profile is specified -->
+    <app>open18-stages-ch03</app>
 		<app.context>open18-stages-ch03</app.context>  <!-- hint: same value as artifactId -->
 		<app.web.context>open18-ch03</app.web.context>
 		<app.display.name>Seam In Action open18-ch03</app.display.name>
