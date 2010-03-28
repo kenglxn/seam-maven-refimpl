@@ -40,8 +40,8 @@
 	
 	<!-- -->
 	<outbound-rule>
-		<from>^/${app.context}/home.seam$</from>
-		<to>/${app.context}/</to>
+		<from>^/${app.web.context}/home.seam$</from>
+		<to>/${app.web.context}/</to>
 	</outbound-rule>
 	
 	<!--
