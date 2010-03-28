@@ -13,7 +13,7 @@ You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
     * Execute ./samples/seaminaction/etc/schema/open18-schema-mysql-ch04.sql
     * Execute ./samples/seaminaction/etc/schema/open18-seed-data-mysql-ch04.sql
   * Copy *projects-ch05/src/main/filters/filter-prod.properties* to projects-ch05/src/main/filters/*filter-dev.properties* and modify the filter-dev.properties file as described in the getting started tutorial
-  * Open a command shell and cd to project folder; *projects-ch04* 
+  * Open a command shell and cd to project folder; *projects-ch05* 
   * Execute *mvn install -Penv-dev,explode*
   * Start the server and access the application at [http://localhost:8080/open18-ch05]
 
