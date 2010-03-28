@@ -15,7 +15,7 @@ You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
   * Copy *projects-ch03/src/main/filters/filter-prod.properties* to projects-ch03/src/main/filters/*filter-dev.properties* and modify the filter-dev.properties file as described in the getting started tutorial
   * Open a command shell and cd to project folder; *projects-ch03* 
   * Execute *mvn install -Penv-dev,explode*
-  * Start the server and access the application at [http://localhost:8080/open18-baseline]
+  * Start the server and access the application at [http://localhost:8080/open18-ch03]
 
 === Modifications to original code ===
 see: [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch03/chapter-developments.txt chapter-developments.txt]
