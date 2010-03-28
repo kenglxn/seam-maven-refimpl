@@ -1,32 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" 
+<persistence version="1.0"
+  xmlns="http://java.sun.com/xml/ns/persistence" 
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" 
-  version="1.0">
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+    http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" 
+>
   
-  <persistence-unit name="${app.persistence.unit.name}" transaction-type="JTA">  
+  <persistence-unit name="${pu.name}" transaction-type="JTA">  
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <jta-data-source>${app.jta.data.source}</jta-data-source>
+    <jta-data-source>${pu.jta.data.source}</jta-data-source>
+    <!-- <non-jta-data-source>${pu.jta.data.source}Unmanaged</non-jta-data-source>  -->
+    
     <properties>
-      <property name="hibernate.dialect" value="${ds.hibernate.dialect}"/>
-      <property name="hibernate.hbm2ddl.auto" value="${env.hibernate.hbm2ddl.auto}"/>
-      <property name="hibernate.show_sql" value="${env.hibernate.show_sql}"/>
-      <property name="hibernate.format_sql" value="${env.hibernate.format_sql}"/>
-      
-      <property name="jboss.entity.manager.factory.jndi.name" value="${app.persistence.unit.jndi.name}"/>
+      <property name="hibernate.dialect" value="${pu.hibernate.dialect}" />
+      <property name="hibernate.hbm2ddl.auto" value="${pu.hibernate.hbm2ddl.auto}" />
+      <property name="hibernate.default_batch_fetch_size" value="${pu.hibernate.default_batch_fetch_size}" />
+      <property name="hibernate.show_sql" value="${pu.hibernate.show_sql}" />
+      <property name="hibernate.format_sql" value="true" />
+
+      <!-- Encoding -->      
+      <property name="hibernate.connection.useUnicode" value="true" />
+      <property name="hibernate.connection.characterEncoding" value="UTF-8" />
       
       <!-- These are the default for JBoss EJB3, but not for HEM: -->
-      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/>
-      <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
+      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+      <property name="hibernate.transaction.manager_lookup_class" value="${pu.hibernate.transaction.manager_lookup_class}" />
+      
+      <!-- 
+        Binds the EntityManagerFactory to JNDI where Seam can look it up. 
+        This is only relevant when the container automatically loads the persistence unit, 
+        as is the case in JBoss AS 5. 
+      -->       
+      <property name="jboss.entity.manager.factory.jndi.name" value="${pu.jboss.entity.manager.factory.jndi.name}" />
     </properties>
+    
+    <!--
+      If the persistence.xml file is not under the same root directory or jar than your domain 
+      model then use the <jar-file> element to point to the jar containing your domain model.
+      <jar-file>../../vehicles.jar</jar-file>
+    -->
   </persistence-unit>
    
 </persistence>
 
 <!--
-The persistence.xml file configures the back-end database source for the EntityManager and is the 
-standard deployment descriptor used to configure a JPA persistence context.
-see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configuration.html
+  The persistence.xml file configures the back-end database source for the EntityManager and is the 
+  standard deployment descriptor used to configure a JPA persistence context.
+  see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configuration.html
+  see: http://docs.jboss.org/hibernate/core/3.3/reference/en/html/session-configuration.html
 
   persistence-unit    :
     name              : Every entity manager must have a name.
@@ -90,10 +111,10 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
                               of the other properties listed here, saving you the effort of 
                               specifying them manually. 
                               For MySql use one of the following:
-                                MySQL  	            org.hibernate.dialect.MySQLDialect
-                                MySQL5 	            org.hibernate.dialect.MySQL5Dialect
-                                MySQL with InnoDB 	org.hibernate.dialect.MySQLInnoDBDialect
-                                MySQL with MyISAM 	org.hibernate.dialect.MySQLMyISAMDialect
+                                MySQL               org.hibernate.dialect.MySQLDialect
+                                MySQL5              org.hibernate.dialect.MySQL5Dialect
+                                MySQL with InnoDB   org.hibernate.dialect.MySQLInnoDBDialect
+                                MySQL with MyISAM   org.hibernate.dialect.MySQLMyISAMDialect
                                 
     hibernate.show_sql      : Write all SQL statements to console. This is an alternative to setting 
                               the log category org.hibernate.SQL  to debug. eg. true | false 
@@ -103,14 +124,14 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
     hibernate.default_schema: Qualify unqualified table names with the given schema/tablespace in 
                               generated SQL. eg. SCHEMA_NAME 
     hibernate.
-    default_catalog   	    : Qualify unqualified table names with the given catalog in generated 
+    default_catalog         : Qualify unqualified table names with the given catalog in generated 
                               SQL. eg. CATALOG_NAME 
     hibernate.
     generate_statistics     : If enabled, Hibernate will collect statistics useful for performance 
                               tuning. eg. true | false 
                               
     hibernate.
-    use_sql_comments   	    : If turned on, Hibernate will generate comments inside the SQL, for 
+    use_sql_comments        : If turned on, Hibernate will generate comments inside the SQL, for 
                               easier debugging, defaults to false. eg. true | false 
     hibernate.archive.
     autodetection           : Scan for annotated classes and Hibernate mapping XML files, 
@@ -119,16 +140,22 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
                               
     Hibernate JDBC and Connection Properties:
     =========================================
+    hibernate.
+    default_batch_fetch_size: Sets a default size for Hibernate batch fetching of associations. 
+                              e.g. recommended values 4, 8, 16 (SiA-p417).
+    
     hibernate.jdbc.charSet  : e.g. utf-8
     
     hibernate.jdbc.
-    fetch_size   	          : A non-zero value determines the JDBC fetch size 
+    fetch_size              : A non-zero value determines the JDBC fetch size 
                               (calls Statement.setFetchSize()). 
     hibernate.jdbc.
     batch_size              : A non-zero value enables use of JDBC2 batch updates by Hibernate. 
                               eg. recommended values between 5 and 30 
+                              
+
     hibernate.jdbc.
-    batch_versioned_data   	: Set this property to true if your JDBC driver returns correct row 
+    batch_versioned_data    : Set this property to true if your JDBC driver returns correct row 
                               counts from executeBatch() (it is usually safe to turn this option on). 
                               Hibernate will then use batched DML for automatically versioned data. 
                               Defaults to false. eg. true | false 
@@ -145,22 +172,22 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
                               org.hibernate.cache.HashtableCacheProvider
                               The property needs to be set for running outside of JBoss for testing
     hibernate.cache.
-    use_minimal_puts   	    : Optimize second-level cache operation to minimize writes, at the cost 
+    use_minimal_puts        : Optimize second-level cache operation to minimize writes, at the cost 
                               of more frequent reads. This setting is most useful for clustered 
                               caches and, in Hibernate3, is enabled by default for clustered cache 
                               implementations. eg. true|false 
     hibernate.cache.
-    use_query_cache   	    : Enable the query cache, individual queries still have to be set 
+    use_query_cache         : Enable the query cache, individual queries still have to be set 
                               cachable. eg. true|false 
     hibernate.cache.
     use_second_level_cache  : May be used to completely disable the second level cache, which is 
                               enabled by default for classes which specify a <cache>  mapping.
                               eg. true|false 
     hibernate.cache.
-    query_cache_factory   	: The classname of a custom QueryCache interface, defaults to the 
+    query_cache_factory     : The classname of a custom QueryCache interface, defaults to the 
                               built-in StandardQueryCache. eg. classname.of.QueryCache 
     hibernate.cache.
-    region_prefix   	      : A prefix to use for second-level cache region names. eg. prefix 
+    region_prefix           : A prefix to use for second-level cache region names. eg. prefix 
     
     hibernate.cache.
     use_structured_entries  : Forces Hibernate to store data in the second-level cache in a more 
@@ -173,7 +200,7 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
     Hibernate Transaction Properties:
     =================================
     hibernate.transaction.
-    factory_class   	      : The classname of a TransactionFactory  to use with Hibernate 
+    factory_class           : The classname of a TransactionFactory  to use with Hibernate 
                               Transaction API (defaults to JDBCTransactionFactory). 
                               eg. classname.of.TransactionFactory 
     hibernate.transaction.
@@ -189,7 +216,7 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
                               session context management is preferred, see: 
                               http://www.hibernate.org/hib_docs/reference/en/html/architecture-current-session.html
     hibernate.transaction.
-    auto_close_session   	  : If enabled, the session will be automatically closed during the after 
+    auto_close_session      : If enabled, the session will be automatically closed during the after 
                               completion phase of the transaction. Built-in and utomatic session 
                               context management is preferred, see:
                               http://www.hibernate.org/hib_docs/reference/en/html/architecture-current-session.html
@@ -216,9 +243,12 @@ see: http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configura
   JBoss Configuration Properties:
   ===============================
     jboss.entity.manager.
-    factory.jndi.name       : Put the EntityManagerFactory into JNDI so we can use it manually in 
+    factory.jndi.name       : Binds the EntityManagerFactory to JNDI where Seam can look it up. 
+                              This is only relevant when the container automatically loads the 
+                              persistence unit, as is the case in JBoss AS 5. 
+
+                              Put the EntityManagerFactory into JNDI so we can use it manually in 
                               tests, eg. java:/jpaBookingEntityManagerFactory.
-                              
                               
                               (This is an alternative to using the property 
                               hibernate.transaction.manager_lookup_class )

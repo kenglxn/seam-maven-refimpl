@@ -5,19 +5,15 @@
 We have made a Mavenized version of the source code from chapter two in the excellent Seam In Action book using the *seam-refimpl* as a project template. For those who prefers Maven as a build management system this should be a suitable starting point to play with the example code while reading the book. 
 You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 
-== Howto ==
-Here are the steps required to get the project up and running.
-  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps].
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the examples "root" POM from the samples folder and install it to your local .m2 repo]. 
-    * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.	
-    * Execute *mvn install* to install the pom.
-    * This is the "root" POM for all the example applications, so you need to install it to your local m2 repo.
+== How to install and run the application ==
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial explains the basic steps]
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn and build required mudules]
   * In MYSQL.
     * Create database "*open18initial_db*"
     * Execute ./samples/seaminaction/etc/schema/open18-initial-schema-mysql.sql
     * Execute ./samples/seaminaction/etc/schema/open18-initial-seed-data-mysql.sql
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-baseline/open18ee Export project from svn].
-    * Copy open18ee/config/profiles.xml to open18ee. Modify profiles.xml as explained in the getting started tutorial.
-    * Open a command shell and cd to project folder, open18ee.
-    * Execute *mvn install -Pexplode*.
-  * Start the server and access the application at [http://localhost:8080/open18-baseline].
+  * Copy *open18ee/src/main/filters/filter-prod.properties* to open18ee-jee/src/main/filters/*filter-dev.properties* and modify the filter-dev.properties file as described in the getting started tutorial
+  * Open a command shell and cd to project folder; *open18ee* 
+  * Execute *mvn install -Penv-dev,explode*
+  * Start the server and access the application at [http://localhost:8080/open18-baseline]
+  
