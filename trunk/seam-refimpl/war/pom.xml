@@ -236,11 +236,6 @@
               <directory>${basedir}/src/main/webapp/WEB-INF</directory>
               <targetPath>WEB-INF</targetPath>
               <filtering>true</filtering>
-              <includes>
-                <include>components.xml</include>
-                <include>jboss-web.xml</include>
-                <include>web.xml</include>
-              </includes>
             </webResource>
           </webResources>
           <archive>
