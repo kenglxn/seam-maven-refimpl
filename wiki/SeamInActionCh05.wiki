@@ -5,22 +5,17 @@
 This is a Mavenized version of the source code from chapter five in the excellent Seam In Action book using the *seam-refimpl* project as a template. 
 You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 
-== Howto ==
-Here are the steps required to get the project up and running.
-  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/  The Getting Started tutorial explains the basic steps].
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples Export the examples "root" POM from the samples folder and install it to your local .m2 repo]. 
-    * Open a command shell and cd to the folder where you exported the pom, e.g ./seam-refimpl/samples/.	
-    * Execute *mvn install* to install the pom.
-    * This is the "root" POM for all the example applications, so you need to install it to your local m2 repo.
+== How to install and run the application ==
+  * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial] explains the basic steps
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn] and build required modules
   * In MYSQL.
     * Create database "*open18ch04_db*"
     * Execute ./samples/seaminaction/etc/schema/open18-schema-mysql-ch04.sql
     * Execute ./samples/seaminaction/etc/schema/open18-seed-data-mysql-ch04.sql
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch05 Export project from svn]
-    * Copy ./projects-ch05/config/profiles.xml to the project root folder, ./projects-ch05. Modify profiles.xml as explained in the getting started tutorial.
-    * Open a command shell and cd to the project folder.
-    * Execute *mvn install -Pexplode*.
-  * Start the server and access the application at [http://localhost:8080/open18-ch05].
+  * Copy *projects-ch05/src/main/filters/filter-prod.properties* to projects-ch05/src/main/filters/*filter-dev.properties* and modify the filter-dev.properties file as described in the getting started tutorial
+  * Open a command shell and cd to project folder; *projects-ch05* 
+  * Execute *mvn install -Penv-dev,explode*
+  * Start the server and access the application at [http://localhost:8080/open18-ch05]
 
 === Modifications to original code ===
 see: [http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch05/chapter-developments.txt chapter-developments.txt]
