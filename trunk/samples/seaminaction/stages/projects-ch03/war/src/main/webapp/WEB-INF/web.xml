@@ -6,17 +6,6 @@
   
   <display-name>${app.display.name} Web</display-name>
 
-<!--  
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
--->
-
 	<!-- Ajax4jsf -->
 	<context-param>
 		<param-name>org.richfaces.SKIN</param-name>
@@ -43,7 +32,7 @@
 	<!-- Facelets development mode (disable in production) --> 
 	<context-param>
 		<param-name>facelets.DEVELOPMENT</param-name>
-		<param-value>false</param-value>
+		<param-value>${app.debug}</param-value>
 	</context-param>
 
 	<!-- 
