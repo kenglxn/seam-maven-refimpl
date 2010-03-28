@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+		http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+>    
+
+  <!--  
+    *** Need persistence-unit in test due to seam-utils-openejb module ***
+    *** No database in this project but seam-utils-openejb requires persistence.xml
+  -->
+  <persistence-unit name="${pu.name}" transaction-type="JTA">  
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>${pu.jta.data.source}</jta-data-source>
+    <non-jta-data-source>${pu.jta.data.source}Unmanaged</non-jta-data-source>
+  </persistence-unit>
+</persistence>
