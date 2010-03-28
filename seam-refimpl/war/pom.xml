@@ -190,6 +190,12 @@
   </dependencies>
 
   <build>
+    <!-- 
+    <filters>
+      <filter>../src/main/filters/filter-${env}.properties</filter>
+    </filters>
+    -->
+    
     <plugins>
       <!--
         The Properties Maven Plugin is here to make life a little easier when 
