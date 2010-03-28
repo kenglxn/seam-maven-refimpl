@@ -7,14 +7,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
 		<groupId>org.open18.seaminaction</groupId> 
-		<artifactId>open18-stages-ch05</artifactId>
+		<artifactId>open18-stages-ch06</artifactId>
 		<version>2.2.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-	<artifactId>open18-stages-ch05-model</artifactId>  <!-- m2eclipse does not like: ${app.context}-ear -->
+	<artifactId>open18-stages-ch06-model</artifactId>  <!-- m2eclipse does not like: ${app.context}-ear -->
 	<name>${project.artifactId} : ${project.version}</name>
-	<description>Open18 stages ch05 MODEL module</description>
+	<description>Open18 stages ch06 MODEL module</description>
   <packaging>jar</packaging>
 
   <profiles>
