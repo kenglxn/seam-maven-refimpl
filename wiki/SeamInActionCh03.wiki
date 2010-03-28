@@ -7,12 +7,12 @@ You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
 
 == How to install and run the application ==
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial] explains the basic steps
-  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn] and build required mudules
+  * [http://seam-maven-refimpl.googlecode.com/svn/trunk/ Checkout from svn] and build required modules
   * In MYSQL.
     * Create database "*open18initial_db*"
     * Execute ./samples/seaminaction/etc/schema/open18-initial-schema-mysql.sql
     * Execute ./samples/seaminaction/etc/schema/open18-initial-seed-data-mysql.sql
-  * Copy *projects-ch03/src/main/filters/filter-prod.properties* to projects-ch03-jee/src/main/filters/*filter-dev.properties* and modify the filter-dev.properties file as described in the getting started tutorial
+  * Copy *projects-ch03/src/main/filters/filter-prod.properties* to projects-ch03/src/main/filters/*filter-dev.properties* and modify the filter-dev.properties file as described in the getting started tutorial
   * Open a command shell and cd to project folder; *projects-ch03* 
   * Execute *mvn install -Penv-dev,explode*
   * Start the server and access the application at [http://localhost:8080/open18-baseline]
