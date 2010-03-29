@@ -339,9 +339,10 @@ in the project and provides a hierarchical list of them.</p>
   </li>
   <li>
     <a href="01-gettingstarted.html#activate-development-mode">Activate development mode</a>.<br/>
-    Remember to point the server to the correct deploy directory (the <code>as.deploy</code> property
-    value should correspond with the <code>configuration</code> directory you selected for the WTP 
-    server).
+    Remember to copy <code>src/main/filters/filter-prod.properties</code> to 
+    <code>filter-dev.properties</code> and point the server to the correct deploy directory 
+    (the <code>as.deploy</code> property value should correspond with the <code>configuration</code> 
+    directory you selected for the WTP server).
   </li>
   <li>
     <a href="#how-to-configure-maven-eclipse-plugin-correctly">Make shure that the maven-eclipse 
@@ -351,7 +352,8 @@ in the project and provides a hierarchical list of them.</p>
     Open a command shell, navigate to your project directory and run: 
     <code><strong>mvn eclipse:eclipse</strong></code><br/>
     If you omit this step you will from time to time get a lot of null pointer exceptions while 
-    importing the project into Eclipse!
+    importing the project into Eclipse! You can also delete the modules that caused the null pointer 
+    exceptions and import them again.
   </li>
   <li>
     Import the project: In Eclipse select <code><strong>File>Import</strong></code> to import the project:
