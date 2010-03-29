@@ -85,7 +85,7 @@
     <a href="http://www.seamframework.org/Download">JBoss Seam 2.2.0.GA</a> source code (for JBoss Tools).
   </li>
   <li>
-    <a href="http://www.jboss.org/tools">JBoss Tools 3</a>.
+    <a href="http://www.jboss.org/tools">JBoss Tools 3.1</a>.
   </li>
   <li>
     <a href="http://testng.org/doc/eclipse.html">TestNG Eclipse plug-in</a>.
@@ -806,48 +806,6 @@ choice, e.g. <code>C:/ide/libs/jboss-seam-2.2.0.GA</code>. Select <code><strong>
   </div>
 </div>
 
-<!--
-<h3> Define a Data Source</h3>
-<p>If you plan to use JBoss Tools to do reverse engineering , then you need to define and connect to
-a datasource. The screenshots below outlines one possible way to accomplish this.</p>
-<ol class="vspace">
-  <li>Download and install necessary software: 
-  <ul>
-    <li><a href="http://dev.mysql.com/downloads/">MySql5+</a></li>
-    <li><a href="http://dev.mysql.com/downloads/connector/j/5.0.html">MySql connector</a></li>
-  </ul>
-  </li>
-  <li>Copy mysql-connector-java-*-bin.jar to <code>${JBOSS_CONFIG}/lib</code> (delete any other 
-      mysql-connector-java-*-bin.jar file if exist).
-  </li>
-  <li>
-    Start the database server and create schema <code>"refimpl_db"</code>, use e.g. the MySql Administrator GUI.<br/>
-    Or, if you are a MySql macho, you can type the following SQL DDL by hand:<br style="margin-bottom:.6em;" />
-    <code><strong>CREATE DATABASE refimpl_db CHARACTER SET utf8 COLLATE utf8_general_ci;</strong></code><br/>
-    <strong>Note:</strong> Allways use UTF8 for i18n.
-  </li>
-  
-  <li>
-    In Preferences, navigate to <code><strong>Data Management>Connectivity>Driver Definitions</strong></code>.
-    Click <strong>Add...</strong> to add a new driver.
-    <img class="screenshot" src="img/eclipse-data-management-01.png" style="width:750px; display:block;" />
-    <img class="screenshot" src="img/eclipse-data-management-02.png" style="width:490px; display:block;" />
-    <img class="screenshot" src="img/eclipse-data-management-03.png" style="width:490px; display:block;" />
-    <img class="screenshot" src="img/eclipse-data-management-04.png" style="width:490px; display:block;" />
-  </li>
-  <li>
-    Open the <code><strong>Database Development</strong></code> perspective. In 
-    <code><strong>Data Source Explorer</strong></code> 
-    right click the <code><strong>Databases</strong></code> directory and select 
-    <code><strong>New...</strong></code>
-    <img class="screenshot" src="img/eclipse-data-source-explorer-01.png" style="width:190px; display:block;" />
-    <img class="screenshot" src="img/eclipse-connection-profile-01.png" style="width:420px; display:block;" />
-    <img class="screenshot" src="img/eclipse-connection-profile-02.png" style="width:420px; display:block;" />
-    <img class="screenshot" src="img/eclipse-data-source-explorer-02.png" style="width:300px; display:block;" />
-  </li>
-</ol>
--->
-
 <h3 id="configure-jboss-tools-for-a-project">Configure JBoss Tools For a Project</h3>
 <p>JBoss Tools will manage two projects: the WAR and the EJB project. The WAR project will be 
 the main source of configuration, so we'll start with the WAR.</p>
@@ -879,15 +837,15 @@ the main source of configuration, so we'll start with the WAR.</p>
   <li>
     The Missing Natures dialog:<br/> 
     Open a view file, e.g. <code>war/src/main/webapp/home.xhtml</code> and ignore the waring about 
-    Missing Natures. Do not use the Add JSF Capabilities wizard sa suggested in yhe dialog - it 
+    Missing Natures. Do not use the Add JSF Capabilities wizard as suggested in the dialog - it 
     generates code and a lot of jar files in WEB-INF/lib which is not needed by a Maven project. 
     <img class="screenshot"  style="width:400px;" 
       src="img/eclipse-vpe-missing-natures.png" longdesc="img/eclipse-vpe-missing-natures.png" />
   </li>
   <li>
     Verify that none of the original source files has changed during configuring the tools. If you 
-    find any changes then revert these files to it's origianl state. Hint: Add your project to svn, 
-    then a svn:commit will list any touched files.
+    find any changes then revert these files to it's origianl state. Hint: Add your project to svn 
+    before configuring JBoss tools, then a svn:commit will list any touched and unversioned files.
   </li>
 </ol>
 
@@ -1120,7 +1078,7 @@ complete that tutorial first.</p>
     http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/etc/schema/</a>.
 </li>
 <li>
-  Open e.g. MySQL Query Browser and create schema <code>refimpl_db</code>.
+  Open e.g. MySQL Query Browser and create schema <code><strong>open18initial_db</strong></code>.
   <img class="screenshot" style="width:500px;" 
     src="img/eclipse-seam-db-entity-01.png" longdesc="img/eclipse-seam-db-entity-01.png" />
 </li>
@@ -1220,17 +1178,36 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
   Modify the <code>seam-tutorial</code> project.
   <ul>
   <li>
-    In <code>seam-tutorial-ejb</code>; delete packages <code>org.domain.seamtutorial.session</code> 
-    and <code>org.domain.seamtutorial.entity</code>.
+    In <code>seam-tutorial-ejb/src/test/java</code>; delete package <code>no.knowit.seam.example.action</code>
   </li>
   <li>
-    In <code>seam-tutorial-war</code>; delete the <code>webapp/view/myEntityList.xhtml</code> 
-    and <code>webapp/view/myEntity.xhtml</code>.
+    In <code>seam-tutorial-ejb/src/main/java</code>; delete packages <code>org.domain.seamtutorial.session</code>,
+    <code>org.domain.seamtutorial.entity</code>, <code>no.knowit.seam.example.action</code> and 
+    <code>no.knowit.seam.example.model</code> 
+  </li>
+  <li>
+    In <code>seam-tutorial-war</code>; delete the <code>webapp/view</code> directory
+  </li>
+  <li>
+    Modify Shurefire plugin in ejb module:
+    <pre>
+        
+&lt;plugin&gt;
+  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+  &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+  <font color="blue" style=""><s>&lt;configuration&gt;</s>
+    <s>&lt;suiteXmlFiles&gt;</s>
+      <s>&lt;suiteXmlFile&gt;</s>
+        <s>src/test/resources/testng.xml</s>
+      <s>&lt;/suiteXmlFile&gt;</s>
+    <s>&lt;/suiteXmlFiles&gt;</s>
+  <s>&lt;/configuration&gt;</s></font>
+&lt;/plugin&gt;</pre>
   </li>
   </ul>
 </li>
 <li>
-  Modify <code><strong>webapp/layout/menu.xhtml</strong></code>.
+  Modify <code><strong>webapp/layout/menu.xhtml</strong></code> to:
   <pre>
 &lt;rich:toolBar
   xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
@@ -1270,7 +1247,8 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
 </li>
 <li>
   Modify Seam settings for WAR: Point the View directory to <code>/seam-tutorial-war/src/main/webapp</code> 
-  so that xhtml files are generated to the webapp directory.
+  so that xhtml files are generated to the webapp directory (so we don't need to modify generated 
+  xhtml code as we did in the previous tutorial).
   <img class="screenshot" style="width:500px;" src="img/eclipse-seam-db-entity-08.png" longdesc="img/eclipse-seam-db-entity-08.png" />
 </li>
 <li>
@@ -1278,8 +1256,8 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
   <img class="screenshot" style="width:500px;" src="img/eclipse-seam-db-entity-18.png" longdesc="img/eclipse-seam-db-entity-18.png" />
 </li>
 <li>
-  For some reason the reverse engineering tool need a clean compiled project to do the reverse
-  engineering, so run e.g. <code><strong>mvn clean package</strong></code> on the parent project.
+  Run <code><strong>mvn clean</strong></code> and <code><strong>mvn install</strong></code> on the 
+  parent project.
   <img class="screenshot" style="width:600px;" src="img/eclipse-seam-db-entity-20.png" longdesc="img/eclipse-seam-db-entity-20.png" />
 </li>
 </ol>
@@ -1416,8 +1394,8 @@ missing for some dependencies, then try this:
 
 <h3 id="remove-eclipse-settings">How To Completly Remove Eclipse Spesific Settings From a Project</h3>
 <p>If you find yourself in a situation where your Eclipse project has reached a limbo, then you are 
-faced with two options: Delete the project from your local file system or try to clean up the mess 
-caused by Eclipse (and you?).
+faced with two options: Delete the project from your local file system (and then svn:update), or you
+could try to clean up the mess caused by Eclipse (and you?).
 </p>
 <p>Steps required to clean up Eclipse mess:</p>
 <ol>
@@ -1429,7 +1407,7 @@ caused by Eclipse (and you?).
     Exit Eclipse, navigate to the projct directory, e.g. the <code>${SEAM_TUTORIAL}</code> directory using 
     a command shell and execute maven commands:
     <ul>
-      <li><code>mvn clean -Punexplode</code></li>
+      <li><code>mvn clean -Penv-dev,unexplode</code></li>
       <li><code>mvn eclipse:clean</code></li>
     </ul>
   </li>
@@ -1451,7 +1429,7 @@ caused by Eclipse (and you?).
   <li>
     Execute maven commands:
     <ul>
-      <li><code>mvn install -Pexplode</code></li>
+      <li><code>mvn install -Penv-dev</code></li>
       <li><code>mvn eclipse:eclipse</code></li>
     </ul>
     The last Maven command will generate the Eclipse <code>.project</code>, <code>.classpath</code> 
