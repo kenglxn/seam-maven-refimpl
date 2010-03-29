@@ -303,7 +303,7 @@ own project.
   &lt;properties&gt;
     &lt;env&gt;dev&lt;/env&gt; &lt;!-- The default setting if no profile is specified --&gt;
     &lt;app&gt;<font color="blue"><strong>tutorial</strong></font>&lt;/app&gt;
-    &lt;app.context&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/app.context&gt; &lt;!-- hint: same value as artifactId --&gt;
+    &lt;app.context&gt;<font color="blue"><strong>seam-tutorial</strong></font>&lt;/app.context&gt; <font color="green">&lt;!-- hint: same value as artifactId --&gt;</font>
     &lt;app.web.context&gt;${app.context}&lt;/app.web.context&gt;
     &lt;app.display.name&gt;<font color="blue"><strong>Seam Tutorial</strong></font>&lt;/app.display.name&gt;
     &lt;app.description&gt;<font color="blue"><strong>The Seam Tutorial uses seam-refimpl as a project template</strong></font>&lt;/app.description&gt;
@@ -582,22 +582,43 @@ as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6<
         Delete or modify <code>ejb/src/test/resources/testng.xml</code>.
       </li>
       <li>
+        Modify Shurefire plugin in ejb module accordingly, e.g:
+        <pre>
+        
+&lt;plugin&gt;
+  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+  &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+  <font color="blue" style=""><s>&lt;configuration&gt;</s>
+    <s>&lt;suiteXmlFiles&gt;</s>
+      <s>&lt;suiteXmlFile&gt;</s>
+        <s>src/test/resources/testng.xml</s>
+      <s>&lt;/suiteXmlFile&gt;</s>
+    <s>&lt;/suiteXmlFiles&gt;</s>
+  <s>&lt;/configuration&gt;</s></font>
+&lt;/plugin&gt;
+        </pre>
+      </li>
+      <li>
         Delete <code>war/src/main/webapp/view/example</code> directory.
       </li>
       <li>
         From <code>war/src/main/webapp/layout/menu.xhtml</code> remove:
         <font color="blue"><pre>
+        
 &lt;!-- @newMenuItem@ --&gt;
 &lt;s:link view=&quot;/view/example/MovieList.xhtml&quot;
   value=&quot;Movie List&quot;
   includePageParams=&quot;false&quot;
-  propagation=&quot;none&quot;/&gt;</pre></font>
+  propagation=&quot;none&quot;/&gt;
+        </pre></font>
       </li>
       <li>
         Add your own application title in <code>war/src/main/webapp/layout/template.xhtml</code>, 
         eg:
         <font color="blue"><pre>
-&lt;title&gt;Seam Torial&lt;/title&gt;</pre></font>
+        
+&lt;title&gt;Seam Torial&lt;/title&gt;
+        </pre></font>
       </li>
       <li>
         Apply your own entities and actions etc.
