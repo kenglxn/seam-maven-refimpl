@@ -21,8 +21,7 @@
   <modules>
     <module>seam-utils-ejb</module>
     <module>seam-utils-openejb</module>
-    <module>seam-utils-ejb-test</module>
-    <module>seam-utils-openejb-test</module>
+    <module>seam-utils-test</module>
   </modules>
   
   <properties>
@@ -90,13 +89,6 @@
       
       <dependency>
         <groupId>no.knowit.seam</groupId>
-        <artifactId>seam-utils-ejb-test</artifactId>
-        <version>${project.version}</version>
-        <type>ejb</type>
-      </dependency>
-      
-      <dependency>
-        <groupId>no.knowit.seam</groupId>
         <artifactId>seam-utils-openejb</artifactId>
         <version>${project.version}</version>
         <type>ejb</type>
@@ -104,7 +96,7 @@
 
       <dependency>
         <groupId>no.knowit.seam</groupId>
-        <artifactId>seam-utils-openejb-test</artifactId>
+        <artifactId>seam-utils-test</artifactId>
         <version>${project.version}</version>
         <type>ejb</type>
       </dependency>

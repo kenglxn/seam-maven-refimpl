@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Local;
+import javax.persistence.EntityExistsException;
+import javax.persistence.PersistenceException;
+import javax.persistence.TransactionRequiredException;
 
 @Local
 public interface CrudService {
@@ -13,6 +16,18 @@ public interface CrudService {
 	 * Make an entity instance managed and persistent. 
 	 * After persist this method will call flush and refresh to make shure the entity is in sync.
 	 * 
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws EntityExistsException if the entity already exists.
+   *         (The EntityExistsException may be thrown when the persist
+   *         operation is invoked, or the EntityExistsException or
+   *         another PersistenceException may be thrown at flush or commit
+   *         time.)
+   * @throws IllegalArgumentException if not an entity
+   * @throws TransactionRequiredException if invoked on a
+   *         container-managed entity manager of type
+   *         PersistenceContextType.TRANSACTION and there is
+   *         no transaction.
+   * @throws PersistenceException if the flush fails
 	 * @param entity the entity to persist
    * @see javax.persistence.EntityManager#persist(Object)
 	 */
@@ -22,7 +37,19 @@ public interface CrudService {
 	 * Make a collection of entities managed and persistent. 
 	 * Basics - persist will take the entity and put it into the db.
 	 * 
-	 * @param entities
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws EntityExistsException if an entity in the collection already exists.
+   *         (The EntityExistsException may be thrown when the persist
+   *         operation is invoked, or the EntityExistsException or
+   *         another PersistenceException may be thrown at flush or commit
+   *         time.)
+   * @throws IllegalArgumentException if an element in the collection is not an entity
+   * @throws TransactionRequiredException if invoked on a
+   *         container-managed entity manager of type
+   *         PersistenceContextType.TRANSACTION and there is
+   *         no transaction.
+   * @throws PersistenceException if the flush fails
+	 * @param entities A collection of entities to persist
    * @see javax.persistence.EntityManager#persist(Object)
 	 */
 	public <T> Collection<T> persist(Collection<T> entities);
@@ -30,13 +57,14 @@ public interface CrudService {
   /**
    * Finds an entity by the entitys primary key.<br/>
    *
-   * @param entityClass 
-   * @param id The primary key to find the entity by
+   * @param entityClass the entity class to find an instance of 
+   * @param id the primary key to find the entity by
    * @return The entity instance or null if the entity does not exist
-   * @throws IllegalStateException if this EntityManager has been closed
-   * @throws IllegalArgumentException if the first argument does not denote an entity type or the second
-   *         argument is not a valid type for that entity’s primary key
-   * @throws EntityNotFoundException  if the entity state cannot be accessed
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if the first argument does
+   *         not denote an entity type or the second
+   *         argument is not a valid type for that
+   *         entity's primary key
    * @see javax.persistence.EntityManager#find
    */
 	public <T> T find(Class<T> entityClass, Object id);
@@ -44,9 +72,11 @@ public interface CrudService {
   /**
    * Find all entities of a particular type. 
    * This is similar to the JPQL statement: <br/>
-   * <code>select e from entity e as e</code>
+   * <code>select e from Entity e as e</code>
+   * @param entityClass
    * @return A list of populated entities
-   * @throws IllegalStateException if this EntityManager has been closed
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if produced query string is not valid
    */
   public <T> List<T> find(Class<T> entityClass);
   
@@ -272,14 +302,18 @@ public interface CrudService {
   public boolean isManaged(Object entity);
   
   
-	public List findWithNamedQuery(String namedQueryName);
+	@SuppressWarnings("unchecked")
+  public List findWithNamedQuery(String namedQueryName);
 
+  @SuppressWarnings("unchecked")
 	public List findWithNamedQuery(String namedQueryName, Map<String, Object> parameters);
 
+  @SuppressWarnings("unchecked")
 	public List findWithNamedQuery(String queryName, int resultLimit);
 
 	public <T> List<T> findByNativeQuery(String sql, Class<T> type);
 
+  @SuppressWarnings("unchecked")
 	public List findWithNamedQuery(String namedQueryName,	Map<String, Object> parameters, int resultLimit);
 
 }
