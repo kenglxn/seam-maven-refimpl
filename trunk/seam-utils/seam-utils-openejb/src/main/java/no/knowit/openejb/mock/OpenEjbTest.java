@@ -2,10 +2,17 @@ package no.knowit.openejb.mock;
 
 import java.util.Properties;
 
+import javax.ejb.Stateful;
+import javax.ejb.Stateless;
+import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.Entity;
 
 import no.knowit.openejb.BootStrapOpenEjb;
 
+import org.apache.log4j.Logger;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -19,9 +26,11 @@ import org.testng.annotations.BeforeSuite;
  * Use the <code>no.knowit.seam.openejb.mock.SeamOpenEjbTest</code> class to run Seam specific tests in OpenEJB.
  */
 public class OpenEjbTest {
+  private static Logger log = Logger.getLogger(OpenEjbTest.class);
+  protected static final String JNDI_PATTERN = "%s/Local";
 	
 	protected static InitialContext initialContext = null;
-	protected static Properties contextProperties = BootStrapOpenEjb.getDefaultContextProperties(null);
+	protected static Properties contextProperties = new Properties();
 
 	
 	@BeforeMethod
@@ -78,5 +87,43 @@ public class OpenEjbTest {
 	 */
 	protected void closeInitialContext() {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
+	}
+
+	protected Object lookup(final String name) throws Exception {
+    try {
+      Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
+      Assert.assertNotNull(instance, String.format("initialContext.lookup(%s): returned null", name));
+      return instance;
+    }
+    catch (NamingException e) {
+      log.error(e);
+      throw(e);
+    }
+	}
+	
+	@SuppressWarnings("unchecked")
+  protected <T> T lookup(final Class<?> clazz) throws Exception {
+
+	  String name = null;
+	  Stateless slsb = clazz.getAnnotation(Stateless.class);
+	  if(slsb != null) {
+	    name = slsb.name();
+	  }
+	  if(name == null) {
+	    Stateful sfsb =  clazz.getAnnotation(Stateful.class);
+      name = sfsb.name();
+	  }
+	  if(name == null) {
+	    name = clazz.getSimpleName();
+	  }
+    try {
+      T instance = (T)initialContext.lookup(String.format(JNDI_PATTERN, name));
+      Assert.assertNotNull(instance, String.format("initialContext.lookup(%s): returned null", name));
+      return instance;
+    }
+    catch (NamingException e) {
+      log.error(e);
+      throw(e);
+    }
 	}
 }

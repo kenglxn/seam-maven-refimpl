@@ -25,9 +25,11 @@ package no.knowit.crud;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +40,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.Transient;
 
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
@@ -66,12 +69,14 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> persist(Collection<T> entities) {
-		assert entities != null : "The 'entities' parameter can not be null";
-		Collection<T> persistedResults = new ArrayList<T>(entities.size());
-		for (T entity : entities) {
-			persistedResults.add(persist(entity));
+		if(entities != null) {
+	    Collection<T> persistedResults = new ArrayList<T>(entities.size());
+  		for (T entity : entities) {
+  			persistedResults.add(persist(entity));
+  		}
+      return persistedResults;
 		}
-		return persistedResults;
+		return null;
 	}
 
 	// 'R'
@@ -81,13 +86,13 @@ public class CrudServiceBean implements CrudService {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass) {
-		assert entityClass != null : "The 'entityClass' parameter can not be null";
+		assert entityClass != null : "The 'entityClass' parameter can not be null"; //TODO: throw IllegalArgumentException
 		return getEntityManager().createQuery("from " + entityClass.getName()).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult) {
-		assert entityClass != null : "The 'entityClass' parameter can not be null";
+		assert entityClass != null : "The 'entityClass' parameter can not be null"; //TODO: throw IllegalArgumentException
 		return getEntityManager().createQuery("from " + entityClass.getName())
 			.setFirstResult(startPosition).setMaxResults(maxResult).getResultList();
 	}
@@ -110,7 +115,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> merge(Collection<T> entities) {
-		assert entities != null : "The 'entities' parameter can not be null";
+		assert entities != null : "The 'entities' parameter can not be null"; //TODO: throw IllegalArgumentException 
 		Collection<T> mergedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			mergedResults.add(merge(entity));
@@ -131,7 +136,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public void remove(Collection<Object> entities) {
-		assert entities != null : "The 'entities' parameter can not be null";
+		assert entities != null : "The 'entities' parameter can not be null"; //TODO: throw IllegalArgumentException
 		for (Object entity : entities) {
 			remove(entity);
 		}
@@ -144,7 +149,7 @@ public class CrudServiceBean implements CrudService {
 
 	// C or U :-)
 	public <T> T store(T entity) {
-		assert entity != null : "The 'entity' parameter can not be null";
+		assert entity != null : "The 'entity' parameter can not be null"; //TODO: throw IllegalArgumentException
 
 		Object id = getIdentity(entity);
 		if (!log.isDebugEnabled()) {
@@ -175,7 +180,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> store(Collection<T> entities) {
-		assert entities != null : "The 'entities' parameter can not be null";
+		assert entities != null : "The 'entities' parameter can not be null"; //TODO: throw IllegalArgumentException
 		Collection<T> storedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			storedResults.add(store(entity));
@@ -198,7 +203,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> refresh(Collection<T> entities) {
-		assert entities != null : "The 'entities' parameter can not be null";
+		assert entities != null : "The 'entities' parameter can not be null"; //TODO: throw IllegalArgumentException
 		Collection<T> refreshedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			refreshedResults.add(refresh(entity));
@@ -224,19 +229,23 @@ public class CrudServiceBean implements CrudService {
 		em.clear();
 	}
 
-	public List findWithNamedQuery(String namedQueryName) {
+	@SuppressWarnings("unchecked")
+  public List findWithNamedQuery(String namedQueryName) {
 		return this.entityManager.createNamedQuery(namedQueryName).getResultList();
 	}
 
-	public List findWithNamedQuery(String namedQueryName, Map<String, Object> parameters) {
+	@SuppressWarnings("unchecked")
+  public List findWithNamedQuery(String namedQueryName, Map<String, Object> parameters) {
 		return findWithNamedQuery(namedQueryName, parameters, 0);
 	}
 
-	public List findWithNamedQuery(String queryName, int resultLimit) {
+	@SuppressWarnings("unchecked")
+  public List findWithNamedQuery(String queryName, int resultLimit) {
 		return this.entityManager.createNamedQuery(queryName).setMaxResults(resultLimit).getResultList();
 	}
 
-	public List findWithNamedQuery(String namedQueryName, Map<String, Object> parameters, int resultLimit) {
+	@SuppressWarnings("unchecked")
+  public List findWithNamedQuery(String namedQueryName, Map<String, Object> parameters, int resultLimit) {
 		Set<Entry<String, Object>> rawParameters = parameters.entrySet();
 		Query query = this.entityManager.createNamedQuery(namedQueryName);
 		if (resultLimit > 0) {
@@ -248,7 +257,8 @@ public class CrudServiceBean implements CrudService {
 		return query.getResultList();
 	}
 
-	public <T> List<T> findByNativeQuery(String sql, Class<T> type) {
+	@SuppressWarnings("unchecked")
+  public <T> List<T> findByNativeQuery(String sql, Class<T> type) {
 		return this.entityManager.createNativeQuery(sql, type).getResultList();
 	}
 
@@ -278,10 +288,12 @@ public class CrudServiceBean implements CrudService {
 	 */
 	@SuppressWarnings("unchecked")
 	protected Query createExampleQuery(final Object example, boolean select, boolean distinct, boolean any) {
-		assert example != null : "The 'example' parameter can not be null";
+		assert example != null : "The 'example' parameter can not be null"; //TODO: throw IllegalArgumentException
 
 		BeanMap beanMap = new BeanMap(example); // Map<String, Object> beanMap = new BeanMap(example);
+		
 		String jpql = createJPQL(example.getClass().getName(), beanMap, select, distinct, any);
+		
 		Query query = getEntityManager().createQuery(jpql);
 		
 		Set<Entry<String, Object>> properties = beanMap.entrySet();
@@ -309,17 +321,17 @@ public class CrudServiceBean implements CrudService {
 			"java.lang.Short",     "java.util.Currency", "java.util.Date",
 			"java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" );
 
-	protected static boolean hasIdentity(Object entity) {
+	protected static boolean hasIdentity(final Object entity) {
 		return getIdentity(entity) != null ? true : false;
 	}
 
-	protected static Object getIdentity(Object entity) {
+	protected static Object getIdentity(final Object entity) {
 		String identityName = getIdentityPropertyName(entity.getClass());
 		BeanMap beanMap = new BeanMap(entity);
 		return beanMap.get(identityName);
 	}
 
-	protected static String getIdentityPropertyName(Class<?> clazz) {
+	protected static String getIdentityPropertyName(final Class<?> clazz) {
 		String idPropertyName = searchFieldsForIndentity(clazz);
 		if (idPropertyName == null) {
 			idPropertyName = searchMethodsForIdentity(clazz);
@@ -327,11 +339,12 @@ public class CrudServiceBean implements CrudService {
 		return idPropertyName != null ? idPropertyName : "id";
 	}
 
-	protected static String searchFieldsForIndentity(Class<?> clazz) {
+	/**
+	 * Copy from org.crank.crud.GenericDaoUtils
+	 */
+	protected static String searchFieldsForIndentity(final Class<?> clazz) {
 		String pkName = null;
-		Field[] fields = clazz.getDeclaredFields();
-
-		for (Field field : fields) {
+		for (Field field : clazz.getDeclaredFields()) {
 			Id id = field.getAnnotation(Id.class);
 			if (id != null) {
 				pkName = field.getName();
@@ -344,10 +357,12 @@ public class CrudServiceBean implements CrudService {
 		return pkName;
 	}
 
-	protected static String searchMethodsForIdentity(Class<?> clazz) {
+  /**
+   * Copy from org.crank.crud.GenericDaoUtils
+   */
+	protected static String searchMethodsForIdentity(final Class<?> clazz) {
 		String pkName = null;
-		Method[] methods = clazz.getDeclaredMethods();
-		for (Method method : methods) {
+		for (Method method : clazz.getDeclaredMethods()) {
 			Id id = method.getAnnotation(Id.class);
 			if (id != null) {
 				pkName = method.getName().substring(4);
@@ -360,17 +375,59 @@ public class CrudServiceBean implements CrudService {
 		}
 		return pkName;
 	}
+	
+	protected static Map<String, Field> fieldsForQuery(final Object example) {
+	  Map<String, Field> fields = new HashMap<String, Field>(); //new BeanMap(example);
+	  
+	  Class<?> clazz = example.getClass();
+	  for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+	    for ( Field field : clazz.getDeclaredFields() ) {
+	      if(!ignore(field)) {
+	        fields.put(field.getName(), field);
+	      }
+	    }
+	  }
+
+	  // Must run i separate loop
+    clazz = example.getClass();
+    for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+      for( Method method : clazz.getDeclaredMethods()) {
+        if( ignore(method)) {
+          String fieldName = method.getName().substring(4);
+          fieldName = method.getName().substring(3, 4).toLowerCase() + fieldName;
+          fields.remove(fieldName);
+        }
+      }
+    }
+	  return fields;
+	}
+
+	/**
+	 * Copied/Modified from org.jboss.seam.persistence.ManagedEntityWrapper
+	 */
+  protected static boolean ignore(Field field) {
+    return Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())
+        || field.isAnnotationPresent(Transient.class);
+  }
+
+  /**
+   * Modified from org.jboss.seam.persistence.ManagedEntityWrapper
+   */
+  protected static boolean ignore(Method method) {
+    return Modifier.isTransient(method.getModifiers()) || Modifier.isStatic(method.getModifiers())
+        || method.isAnnotationPresent(Transient.class);
+  }
 
 	/**
 	 * Creates a parameterized SELECT or DELETE JPQL query based on non null
-	 * property values in the <code>fields</code> parameter
+	 * property values, exclusive transient and static values, in the <code>fields</code> parameter
 	 * 
 	 * @return The created JPQL string
 	 */
 	protected static String createJPQL(final String entityClass, 
 			final Map<String, Object> fields, boolean select, boolean distinct,	boolean any) {
 
-		assert (entityClass != null) : "The 'entityClass' parameter can not be null!";
+		assert (entityClass != null) : "The 'entityClass' parameter can not be null!"; //TODO: throw IllegalArgumentException
 
 		final StringBuilder jpql = new StringBuilder((select ? String.format(
 				"SELECT %s e", (distinct ? "DISTINCT" : "")) : "DELETE")
@@ -393,6 +450,7 @@ public class CrudServiceBean implements CrudService {
 				if (type != null) {
 					int k = OBJECT_PRIMITIVES.indexOf(type.getName());
 					if (type.isPrimitive() || k > -1) {
+					  
 						String equals = (k == 0 ? (value.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 == java.lang.String
 						if (!where) {
 							where = true;
