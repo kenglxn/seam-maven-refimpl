@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
@@ -41,26 +42,21 @@ public class CrudServiceUtils {
    * Copy from org.crank.crud.GenericDaoUtils
    */
   public static String getEntityName(Class<?> clazz) {
-    Entity entity = clazz.getAnnotation(Entity.class);
-    if(entity != null) {
-      String entityName = entity.name();
-      return entityName == null || entityName.length() < 1 ? clazz.getSimpleName() : entityName;
+    
+    String entityName = null;
+    if(clazz != null) {
+      Entity entity = clazz.getAnnotation(Entity.class);
+      if(entity == null) {
+        entityName = clazz.getSimpleName();
+      }
+      else {
+        entityName = entity.name();
+        if(entityName == null || entityName.length() < 1) {
+          entityName = clazz.getSimpleName();
+        }
+      }
     }
-    return clazz.getSimpleName();
-  }
-
-  public static boolean hasIdentity(final Object entity) {
-    Object id = getIdentityValue(entity);
-    return id != null ? id instanceof Number && ((Number)id).longValue() < 0 ? false : true : false;
-  }
-
-  public static Object getIdentityValue(final Object entity) {
-    if(entity != null) {
-      String identityName = getIdentityPropertyName(entity.getClass());
-      BeanMap beanMap = new BeanMap(entity);
-      return beanMap.get(identityName);
-    }
-    return null;
+    return entityName;
   }
 
   public static String getIdentityPropertyName(final Class<?> clazz) {
@@ -71,9 +67,23 @@ public class CrudServiceUtils {
     return idPropertyName;
   }
   
+  public static boolean hasIdentity(final Object entity) {
+    Object id = getIdentityValue(entity);
+    if(id == null) return false;
+    return id instanceof Number && ((Number)id).longValue() >= 0 ? true : false;
+  }
+
+  public static Object getIdentityValue(final Object entity) {
+    if(entity == null) return null;
+    String identityName = getIdentityPropertyName(entity.getClass());
+    BeanMap beanMap = new BeanMap(entity);
+    return beanMap.get(identityName);
+  }
+
   public static Map<String, Field> getQueryableFields(final Class<?> entityClass) {
     Map<String, Field> fields = new HashMap<String, Field>();
 
+    // TODO: check if class i transient, i.e. abstract
     Class<?> clazz = entityClass;
     for ( ; clazz != Object.class; clazz = clazz.getSuperclass()) {
       for ( Field field : clazz.getDeclaredFields() ) {
@@ -216,7 +226,7 @@ public class CrudServiceUtils {
    */
   private static boolean ignore(Field field) {
     return Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())
-        || field.isAnnotationPresent(Transient.class);
+        || field.isAnnotationPresent(Transient.class) || field.isAnnotationPresent(Version.class);
   }
 
   /**
@@ -224,7 +234,7 @@ public class CrudServiceUtils {
    */
   private static boolean ignore(Method method) {
     return Modifier.isTransient(method.getModifiers()) || Modifier.isStatic(method.getModifiers())
-        || method.isAnnotationPresent(Transient.class);
+        || method.isAnnotationPresent(Transient.class) || method.isAnnotationPresent(Version.class);
   }
   
   /**

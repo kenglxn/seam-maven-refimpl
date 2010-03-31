@@ -51,7 +51,7 @@ import org.apache.log4j.Logger;
  * @author adam-bien.com
  * @author Leif Olsen
  */
-@Stateless(name = "crudService")
+@Stateless(name = CrudService.NAME)
 public class CrudServiceBean implements CrudService {
 
 	//protected Logger log = Logger.getLogger(this.getClass());
