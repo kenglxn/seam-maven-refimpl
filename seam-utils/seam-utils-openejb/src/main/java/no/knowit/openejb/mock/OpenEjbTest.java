@@ -89,11 +89,11 @@ public class OpenEjbTest {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
 	}
 
-	protected Object lookup(final String name) throws Exception {
+	protected <T> T lookup(final String name) throws Exception {
     try {
       Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
       Assert.assertNotNull(instance, String.format("initialContext.lookup(%s): returned null", name));
-      return instance;
+      return (T)instance;
     }
     catch (NamingException e) {
       log.error(e);
@@ -101,6 +101,7 @@ public class OpenEjbTest {
     }
 	}
 	
+	/* TODO: tbd/tbt
 	@SuppressWarnings("unchecked")
   protected <T> T lookup(final Class<?> clazz) throws Exception {
 
@@ -113,7 +114,7 @@ public class OpenEjbTest {
 	    Stateful sfsb =  clazz.getAnnotation(Stateful.class);
       name = sfsb.name();
 	  }
-	  if(name == null) {
+	  if(name == null || name.length() < 1) {
 	    name = clazz.getSimpleName();
 	  }
     try {
@@ -126,4 +127,5 @@ public class OpenEjbTest {
       throw(e);
     }
 	}
+	*/
 }

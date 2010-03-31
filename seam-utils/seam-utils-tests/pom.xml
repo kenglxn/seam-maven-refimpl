@@ -17,8 +17,8 @@
   <packaging>ejb</packaging>
   <description>
     Tests for "seam-utils-openejb" and "seam-utils-ejb" are split into
-    a separate module b.c. we need some code in src/main/java  to run
-    the tests and we don't want to deploy code used in test cases
+    a separate module b.c. we need some test support code in src/main/java  
+    to run the tests and we don't want to deploy code used in test cases
   </description>
   
   <dependencies>
