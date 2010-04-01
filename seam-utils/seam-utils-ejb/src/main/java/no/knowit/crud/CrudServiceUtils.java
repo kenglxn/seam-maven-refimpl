@@ -4,8 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,38 +73,36 @@ public class CrudServiceUtils {
    * @param entityClass
    * @return A list of attributes annotated with @Id 
    */
-  public static List<Member> getIdentity(final Class<?> entityClass) {
+  public static List<Member> getIdAnnotations(final Class<?> entityClass) {
     return ReflectionUtils.searchMembersForAnnotation(Id.class, entityClass);
   }
-  
-  /*
-  public static String getIdentityPropertyName(final Class<?> clazz) {
-    String idPropertyName = searchFieldsForId(clazz);
-    if (idPropertyName == null) {
-      idPropertyName = searchMethodsForId(clazz);
+
+  /**
+   * Get persistence identity based on field(s) or method(s) annotated with @Id 
+   * @param entity
+   * @return
+   */
+  public static List<Object> getIdValues(final Object entity) {
+    if(entity == null) {
+      throw new IllegalArgumentException("The entity parameter can not be null");
     }
-    return idPropertyName;
-  }
-  */
-  
-  /*
-  public static boolean hasIdentity(final Object entity) {
-    Object id = getIdentityValue(entity);
-    if(id == null) return false;
-    return id instanceof Number && ((Number)id).longValue() >= 0 ? true : false;
+    List<Member> id = getIdAnnotations(entity.getClass());
+    if(id.size() < 1) {
+      throw new IllegalArgumentException(
+          "Could not get identity. No @Id annotation found on class: " + entity.getClass());
+    }
+    List<Object> result = new ArrayList<Object>(id.size());
+    for (Member member : id) {
+      result.add(ReflectionUtils.getAttributeValue(member, entity));
+    }
+    return result;
   }
 
-  public static Object getIdentityValue(final Object entity) {
-    if(entity == null) return null;
-    String identityName = getIdentityPropertyName(entity.getClass());
-    
-    
-    BeanMap beanMap = new BeanMap(entity);
-    return beanMap.get(identityName);
-  }
-  */
   
-
+  
+  //----------------------
+  // rest is untested code
+  //----------------------
   public static Map<String, Field> getQueryableFields(final Class<?> entityClass) {
     Map<String, Field> fields = new HashMap<String, Field>();
 
