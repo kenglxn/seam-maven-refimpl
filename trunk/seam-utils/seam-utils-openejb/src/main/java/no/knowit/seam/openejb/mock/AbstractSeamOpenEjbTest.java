@@ -18,7 +18,7 @@ import org.testng.Assert;
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
 	protected static InitialContext initialContext = null;
-	protected static Properties contextProperties = BootStrapOpenEjb.getDefaultContextProperties(null);
+	protected static Properties contextProperties = new Properties();
 
 	/**
 	 * Start embedded OpenEJB container

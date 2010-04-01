@@ -45,16 +45,12 @@ public class BootStrapOpenEjb {
 				// Set the initial context factory
 				p.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
 	
-				// Corresponds to JBoss JNDI lookup format
-				// p.put("openejb.jndiname.format", "{deploymentId}/{interfaceType.annotationName}");
-	
 				// Overrides default properties in p if key match
 				if (properties != null) {
 					p.putAll(properties);
 				}
 				initialContext = new InitialContext(p);
 			}
-			
 			return initialContext;
 		} 
 		catch (Exception e) {
@@ -62,35 +58,6 @@ public class BootStrapOpenEjb {
 			System.out.println("\n*******\nOpenEJB bootstrap failed: " + e + "\n*******");
 			throw new RuntimeException(e);
 		}
-	}
-
-	/**
-	 * Get a set of default propertis to boot the OpenEJB embedded container
-	 * Note: This is only a suggestion.  
-	 * @param properties
-	 * @return
-	 */
-	
-	@Deprecated
-	public static Properties getDefaultContextProperties(final Properties properties) {
-		Properties p = new Properties();
-		
-		// see: http://openejb.apache.org/3.0/alternate-descriptors.html
-		// p.put("openejb.altdd.prefix", "openejb");
-		
-		// For multi module projects
-		// p.put("openejb.deployments.classpath.ear", "true");
-		
-
-		// Property that ensures that OpenEJB destroys the embedded container when closing the initial context
-		// See: http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
-		// p.put("openejb.embedded.initialcontext.close", "destroy"); 
-		
-		if (properties != null) {
-			p.putAll(properties);
-		}
-		
-		return p;
 	}
 
 	/**
