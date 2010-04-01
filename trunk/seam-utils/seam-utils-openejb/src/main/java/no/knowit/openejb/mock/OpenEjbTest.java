@@ -89,6 +89,7 @@ public class OpenEjbTest {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
 	}
 
+	
 	protected <T> T lookup(final String name) throws Exception {
     try {
       Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));

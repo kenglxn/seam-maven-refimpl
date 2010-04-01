@@ -46,7 +46,7 @@ import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
 
 /**
- * A minimalistic implementation of the generic CrudService.<br/>
+ * An implementation of the generic CrudService.<br/>
  * 
  * @author adam-bien.com
  * @author Leif Olsen
@@ -93,6 +93,7 @@ public class CrudServiceBean implements CrudService {
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult) {
 		assert entityClass != null : "The 'entityClass' parameter can not be null"; //TODO: throw IllegalArgumentException
+		
 		return getEntityManager().createQuery("from " + entityClass.getName())
 			.setFirstResult(startPosition).setMaxResults(maxResult).getResultList();
 	}

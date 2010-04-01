@@ -32,27 +32,32 @@ public class CrudServiceUtils {
     "java.lang.Short",     "java.util.Currency", "java.util.Date",
     "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" );
 
-  
-  public static boolean isEntity(final Object entity) {
-    if(entity == null) return false;
-    return entity.getClass().getAnnotation(Entity.class) != null ? true : false;
+  /**
+   * Checks if a class is an entity
+   * @param entityClass the entity class to check for @Entity annotation
+   * @return true if the class is annotated with @Entity
+   */
+  public static boolean isEntity(final Class<?> entityClass) {
+    if(entityClass == null) return false;
+    return entityClass.isAnnotationPresent(Entity.class) ? true : false;
   }
 
   /**
+   * Get entity name.
    * Copy from org.crank.crud.GenericDaoUtils
+   * @return the entity name
    */
-  public static String getEntityName(Class<?> clazz) {
-    
+  public static String getEntityName(final Class<?> entityClass) {
     String entityName = null;
-    if(clazz != null) {
-      Entity entity = clazz.getAnnotation(Entity.class);
+    if(entityClass != null) {
+      Entity entity = entityClass.getAnnotation(Entity.class);
       if(entity == null) {
-        entityName = clazz.getSimpleName();
+        entityName = entityClass.getSimpleName();
       }
       else {
         entityName = entity.name();
         if(entityName == null || entityName.length() < 1) {
-          entityName = clazz.getSimpleName();
+          entityName = entityClass.getSimpleName();
         }
       }
     }
@@ -76,6 +81,8 @@ public class CrudServiceUtils {
   public static Object getIdentityValue(final Object entity) {
     if(entity == null) return null;
     String identityName = getIdentityPropertyName(entity.getClass());
+    
+    
     BeanMap beanMap = new BeanMap(entity);
     return beanMap.get(identityName);
   }
@@ -120,7 +127,7 @@ public class CrudServiceUtils {
     if(exampleEntity == null)
       throw new IllegalStateException("exampleEntity parameter can not be null.");
     
-    if(!isEntity(exampleEntity))
+    if(!isEntity(exampleEntity.getClass()))
       throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
     
     Map<String, Field> fields = getQueryableFields(exampleEntity.getClass());

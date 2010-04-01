@@ -101,7 +101,7 @@
         <type>ejb</type>
       </dependency>
       
-      <!-- Could not browse into code in Eclipse w. 1.7.0 -->
+      <!-- TODO: Update root pom to 1.8 - could not browse into code in Eclipse w. 1.7.0 -->
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>

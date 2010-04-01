@@ -7,10 +7,9 @@ import org.testng.annotations.Test;
 
 import no.knowit.openejb.mock.OpenEjbTest;
 import no.knowit.testsupport.model.ConcreteEntityPropertyAnnotated;
-import no.knowit.testsupport.model.Movie;
 import no.knowit.testsupport.model.NamedEntity;
 import no.knowit.testsupport.model.NotAnEntity;
-import no.knowit.testsupport.model.SimpleEntity;
+import no.knowit.testsupport.model.SimpleEntityFieldAnnotated;
 
 public class CrudUtilsTest  extends OpenEjbTest {
   private static Logger log = Logger.getLogger(CrudServiceUtils.class);
@@ -24,23 +23,20 @@ public class CrudUtilsTest  extends OpenEjbTest {
   
   @Test
   public void shouldBeAnEntity() throws Exception {
-    SimpleEntity se = new SimpleEntity();
-    Assert.assertTrue(CrudServiceUtils.isEntity(se), "Expected class with @Entity annotation");
+    Assert.assertTrue(CrudServiceUtils.isEntity(SimpleEntityFieldAnnotated.class), "Expected class with @Entity annotation");
   }
   
   @Test
   public void shouldNotBeAnEntity() throws Exception {
-    NotAnEntity nae = new NotAnEntity();
-    Assert.assertFalse(CrudServiceUtils.isEntity(nae), "Expected class without @Entity annotation");
+    Assert.assertFalse(CrudServiceUtils.isEntity(NotAnEntity.class), "Expected class without @Entity annotation");
   }
   
   @Test
   public void shouldGetEntityName() throws Exception {
     final String expectedNameForNamedEntity = "aNamedEntity";
-    final NamedEntity entityWithName = new NamedEntity();
-    Assert.assertEquals( CrudServiceUtils.getEntityName(entityWithName.getClass()), expectedNameForNamedEntity);
+    Assert.assertEquals(CrudServiceUtils.getEntityName(NamedEntity.class), expectedNameForNamedEntity);
     
-    final SimpleEntity unnamedEntity = new SimpleEntity();
+    final SimpleEntityFieldAnnotated unnamedEntity = new SimpleEntityFieldAnnotated();
     final String expectedNameForUnnamedEntity = unnamedEntity.getClass().getSimpleName();
     Assert.assertEquals(CrudServiceUtils.getEntityName(unnamedEntity.getClass()), expectedNameForUnnamedEntity);
   }
@@ -48,8 +44,7 @@ public class CrudUtilsTest  extends OpenEjbTest {
   @Test
   public void shouldGetIdentityPropertyName() throws Exception {
     final String expectedIdPropertyName_1 = "id";
-    final SimpleEntity se = new SimpleEntity();
-    Assert.assertEquals(CrudServiceUtils.getIdentityPropertyName(se.getClass()), expectedIdPropertyName_1);
+    Assert.assertEquals(CrudServiceUtils.getIdentityPropertyName(SimpleEntityFieldAnnotated.class), expectedIdPropertyName_1);
     
     final String expectedIdPropertyName_2 = "identity";
     final ConcreteEntityPropertyAnnotated ce = new ConcreteEntityPropertyAnnotated();
@@ -68,19 +63,15 @@ public class CrudUtilsTest  extends OpenEjbTest {
 //    
 //    Assert.assertNotNull(CrudServiceUtils.getIdentityValue(se), "Identity should not be null after persist");
     
+//    Movie movie = crudService.persist(new Movie("Alan Parker", "The Wall", 2000));
+//    Assert.assertNotNull(movie, "crudService.persist: movie was null");
+//    Assert.assertNotNull(CrudServiceUtils.getIdentityValue(movie), "Identity should not be null after persist");
+    
+    
     CrudService crudService = lookup(CrudService.NAME);
-    Movie movie = crudService.persist(new Movie("Alan Parker", "The Wall", 2000));
-    Assert.assertNotNull(movie, "crudService.persist: movie was null");
-    Assert.assertNotNull(movie.getId(), "movie.getId: movie.id was null");
-    
-    Assert.assertNotNull(CrudServiceUtils.getIdentityValue(movie), "Identity should not be null after persist");
-    
-    
-//    SimpleEntity se = new SimpleEntity(100);
-//    se = crudService.persist(se);
-//    Assert.assertNotNull(se, "crudService.persist: movie was null");
-//    Assert.assertNotNull(se.getId(), "movie.getId: movie.id was null");
-//    
+    SimpleEntityFieldAnnotated se = new SimpleEntityFieldAnnotated(100);
+    se = crudService.persist(se);
+    Assert.assertNotNull(se, "crudService.persist: movie was null");
 //    Assert.assertNotNull(CrudServiceUtils.getIdentityValue(se), "Identity should not be null after persist");
   }
 }
