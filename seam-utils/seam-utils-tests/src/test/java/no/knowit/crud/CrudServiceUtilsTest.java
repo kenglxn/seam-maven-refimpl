@@ -75,5 +75,13 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
 
     List<Object> id = CrudServiceUtils.getIdValues(se);
     Assert.assertNotNull(id.get(0), "Identity value should not be null after persist");
+    
+    ConcreteEntityPropertyAnnotated ce = new ConcreteEntityPropertyAnnotated();
+    ce.setName("Hello");
+    ce = crudService.persist(ce);
+    Assert.assertNotNull(se, "Entity was null after persist");
+
+    id = CrudServiceUtils.getIdValues(ce);
+    Assert.assertNotNull(id.get(0), "Identity value should not be null after persist");
   }
 }
