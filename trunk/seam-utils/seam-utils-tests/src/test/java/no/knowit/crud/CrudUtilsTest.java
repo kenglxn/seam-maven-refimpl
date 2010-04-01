@@ -1,15 +1,20 @@
 package no.knowit.crud;
 
+import java.lang.reflect.Member;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import no.knowit.openejb.mock.OpenEjbTest;
+import no.knowit.testsupport.bean.SimpleBean;
 import no.knowit.testsupport.model.ConcreteEntityPropertyAnnotated;
 import no.knowit.testsupport.model.NamedEntity;
-import no.knowit.testsupport.model.NotAnEntity;
 import no.knowit.testsupport.model.SimpleEntityFieldAnnotated;
+import no.knowit.util.ReflectionUtils;
 
 public class CrudUtilsTest  extends OpenEjbTest {
   private static Logger log = Logger.getLogger(CrudServiceUtils.class);
@@ -28,7 +33,7 @@ public class CrudUtilsTest  extends OpenEjbTest {
   
   @Test
   public void shouldNotBeAnEntity() throws Exception {
-    Assert.assertFalse(CrudServiceUtils.isEntity(NotAnEntity.class), "Expected class without @Entity annotation");
+    Assert.assertFalse(CrudServiceUtils.isEntity(SimpleBean.class), "Expected class without @Entity annotation");
   }
   
   @Test
@@ -42,36 +47,32 @@ public class CrudUtilsTest  extends OpenEjbTest {
   }
   
   @Test
-  public void shouldGetIdentityPropertyName() throws Exception {
-    final String expectedIdPropertyName_1 = "id";
-    Assert.assertEquals(CrudServiceUtils.getIdentityPropertyName(SimpleEntityFieldAnnotated.class), expectedIdPropertyName_1);
+  public void shouldGetIdentity() throws Exception {
     
+    // @Id annotated on field id
+    final String expectedIdPropertyName_1 = "id";
+    List<Member> id = CrudServiceUtils.getIdentity(SimpleEntityFieldAnnotated.class);
+    Assert.assertTrue(id.size() > 0, "no @Id annotation");
+    Assert.assertEquals(ReflectionUtils.getAttributeName(id.get(0)), expectedIdPropertyName_1);
+    
+    // @Id annotated on method getIdentity 
     final String expectedIdPropertyName_2 = "identity";
-    final ConcreteEntityPropertyAnnotated ce = new ConcreteEntityPropertyAnnotated();
-    Assert.assertEquals(CrudServiceUtils.getIdentityPropertyName(ce.getClass()), expectedIdPropertyName_2);
+    id = CrudServiceUtils.getIdentity(ConcreteEntityPropertyAnnotated.class);
+    Assert.assertTrue(id.size() > 0, "no @Id annotation");
+    Assert.assertEquals(ReflectionUtils.getAttributeName(id.get(0)), expectedIdPropertyName_2);
   }
   
   @Test
-  public void shouldGetIdentityValue() throws Exception {
-//    SimpleEntity se = new SimpleEntity(100);
-//    Assert.assertNull(CrudServiceUtils.getIdentityValue(se), "Identity should be null before persist");
-//    
-//    CrudService crudService = lookup(CrudService.NAME);
-//    se = crudService.persist(se);
-//    
-//    log.debug(CrudServiceUtils.getIdentityValue(se));
-//    
-//    Assert.assertNotNull(CrudServiceUtils.getIdentityValue(se), "Identity should not be null after persist");
-    
-//    Movie movie = crudService.persist(new Movie("Alan Parker", "The Wall", 2000));
-//    Assert.assertNotNull(movie, "crudService.persist: movie was null");
-//    Assert.assertNotNull(CrudServiceUtils.getIdentityValue(movie), "Identity should not be null after persist");
-    
-    
+  public void shouldHaveIdentityValueAfterPersist() throws Exception {
     CrudService crudService = lookup(CrudService.NAME);
+    
     SimpleEntityFieldAnnotated se = new SimpleEntityFieldAnnotated(100);
+    List<Member> id = CrudServiceUtils.getIdentity(se.getClass());
+    Assert.assertTrue(id.size() > 0, "no @Id annotation");
+    
     se = crudService.persist(se);
-    Assert.assertNotNull(se, "crudService.persist: movie was null");
-//    Assert.assertNotNull(CrudServiceUtils.getIdentityValue(se), "Identity should not be null after persist");
+    Assert.assertNotNull(se, "SimpleEntityFieldAnnotated entity was null after persist");
+    Assert.assertNotNull(ReflectionUtils.getAttributeValue(id.get(0), se), 
+        "SimpleEntityFieldAnnotated: Identity should not be null after persist");
   }
 }

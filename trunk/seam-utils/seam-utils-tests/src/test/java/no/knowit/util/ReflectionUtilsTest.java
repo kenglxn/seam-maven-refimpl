@@ -1,7 +1,7 @@
 package no.knowit.util;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -19,53 +19,28 @@ import no.knowit.testsupport.model.SimpleEntityPropertyAnnotated;
 public class ReflectionUtilsTest {
   
   @Test
-  public void testSearchFieldForAnnotation() throws Exception {
-    Field field = ReflectionUtils.searchFieldForAnnotation(
-        SimpleEntityFieldAnnotated.class, Id.class);
-    Assert.assertNotNull(field);
-  }
-
-  @Test
-  public void testSearchMethodForAnnotation() {
-    Method method = ReflectionUtils.searchMethodForAnnotation(
-        SimpleEntityPropertyAnnotated.class, Id.class);
-    Assert.assertNotNull(method);
-  }
-
-  @Test
-  public void testSearchForAnnotation() {
-    AccessibleObject accessibleObject = ReflectionUtils.searchForAnnotation(
-        ConcreteEntityPropertyAnnotated.class, Version.class);
-    Assert.assertNotNull(accessibleObject);
-    
-    accessibleObject = ReflectionUtils.searchForAnnotation(
-        ConcreteEntityFieldAnnotated.class, Id.class);
-    Assert.assertNotNull(accessibleObject);
-  }
-  
-  @Test
   public void testSearchFieldsForAnnotation() throws Exception {
     List<Field> fields = ReflectionUtils.searchFieldsForAnnotation(
-        SimpleEntityFieldAnnotated.class, Id.class);
+        Id.class, SimpleEntityFieldAnnotated.class);
     Assert.assertTrue(fields.size() > 0);
   }
 
   @Test
-  public void testSearchMethodsForAnnotation() {
+  public void testSearchMethodsForAnnotation() throws Exception {
     List<Method> methods = ReflectionUtils.searchMethodsForAnnotation(
-        SimpleEntityPropertyAnnotated.class, Id.class);
+        Id.class, SimpleEntityPropertyAnnotated.class);
     Assert.assertTrue(methods.size() > 0);
   }
 
   @Test
-  public void testSearchForAnnotations() {
-    List<AccessibleObject> accessibleObjects = ReflectionUtils.searchForAnnotations(
-        ConcreteEntityPropertyAnnotated.class, Version.class);
+  public void testSearchForAnnotations() throws Exception {
+    List<Member> accessibleObjects = ReflectionUtils.searchMembersForAnnotation(
+        Version.class, ConcreteEntityPropertyAnnotated.class);
     Assert.assertTrue(accessibleObjects.size() > 0);
     
-    accessibleObjects = ReflectionUtils.searchForAnnotations(
-        ConcreteEntityFieldAnnotated.class, Id.class);
+    accessibleObjects = ReflectionUtils.searchMembersForAnnotation(
+        Id.class, ConcreteEntityFieldAnnotated.class);
     Assert.assertTrue(accessibleObjects.size() > 0);
   }
-
+  
 }

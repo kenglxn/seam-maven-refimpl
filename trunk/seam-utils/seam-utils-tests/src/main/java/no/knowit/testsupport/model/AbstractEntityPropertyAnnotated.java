@@ -1,7 +1,10 @@
 package no.knowit.testsupport.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
@@ -15,6 +18,7 @@ public class AbstractEntityPropertyAnnotated implements Serializable {
   private Integer version;
 
   @Id
+  @GeneratedValue(strategy = IDENTITY)
   public Integer getIdentity() {
     return id;
   }
