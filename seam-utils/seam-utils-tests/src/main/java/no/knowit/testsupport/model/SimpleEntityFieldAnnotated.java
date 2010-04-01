@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 
 @Entity
-public class SimpleEntity implements Serializable {
+public class SimpleEntityFieldAnnotated implements Serializable {
   private static final long serialVersionUID = 2818054409339379513L;
 
   @Id
@@ -22,11 +22,11 @@ public class SimpleEntity implements Serializable {
   
   private Integer foo;
   
-  public SimpleEntity() {
+  public SimpleEntityFieldAnnotated() {
     super();
   }
   
-  public SimpleEntity(int foo) {
+  public SimpleEntityFieldAnnotated(int foo) {
     super();
     this.foo = foo;
   }

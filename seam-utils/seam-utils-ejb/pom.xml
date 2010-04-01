@@ -42,6 +42,27 @@
     </profile>
   </profiles>
   
+  <dependencyManagement>
+    <dependencies>
+      <!-- TODO: Update root pom to 1.8 - could not browse into code in Eclipse w. 1.7.0 -->
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>1.8.0</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
   <dependencies>
     <!-- jee -->
     <dependency>
