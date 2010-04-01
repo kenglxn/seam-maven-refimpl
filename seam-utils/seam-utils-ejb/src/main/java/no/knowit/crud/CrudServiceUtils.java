@@ -1,6 +1,7 @@
 package no.knowit.crud;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -15,7 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.apache.commons.beanutils.BeanMap;
+import no.knowit.util.ReflectionUtils;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -64,6 +66,16 @@ public class CrudServiceUtils {
     return entityName;
   }
 
+  /**
+   * Get members (fields or methods) annotated with @Id
+   * @param entityClass
+   * @return A list of attributes annotated with @Id 
+   */
+  public static List<Member> getIdentity(final Class<?> entityClass) {
+    return ReflectionUtils.searchMembersForAnnotation(Id.class, entityClass);
+  }
+  
+  /*
   public static String getIdentityPropertyName(final Class<?> clazz) {
     String idPropertyName = searchFieldsForId(clazz);
     if (idPropertyName == null) {
@@ -71,7 +83,9 @@ public class CrudServiceUtils {
     }
     return idPropertyName;
   }
+  */
   
+  /*
   public static boolean hasIdentity(final Object entity) {
     Object id = getIdentityValue(entity);
     if(id == null) return false;
@@ -86,6 +100,8 @@ public class CrudServiceUtils {
     BeanMap beanMap = new BeanMap(entity);
     return beanMap.get(identityName);
   }
+  */
+  
 
   public static Map<String, Field> getQueryableFields(final Class<?> entityClass) {
     Map<String, Field> fields = new HashMap<String, Field>();
@@ -189,43 +205,6 @@ public class CrudServiceUtils {
       log.debug(debugData);
     }
     return jpql.toString();
-  }
-
-  /**
-   * Copy from org.crank.crud.GenericDaoUtils
-   */
-  private static String searchFieldsForId(final Class<?> clazz) {
-    String pkName = null;
-    for (Field field : clazz.getDeclaredFields()) {
-      Id id = field.getAnnotation(Id.class);
-      if (id != null) {
-        pkName = field.getName();
-        break;
-      }
-    }
-    if (pkName == null && clazz.getSuperclass() != null) {
-      pkName = searchFieldsForId((Class<?>) clazz.getSuperclass());
-    }
-    return pkName;
-  }
-
-  /**
-   * Copy from org.crank.crud.GenericDaoUtils
-   */
-  private static String searchMethodsForId(final Class<?> clazz) {
-    String pkName = null;
-    for (Method method : clazz.getDeclaredMethods()) {
-      Id id = method.getAnnotation(Id.class);
-      if (id != null) {
-        pkName = method.getName().substring(4);
-        pkName = method.getName().substring(3, 4).toLowerCase() + pkName;
-        break;
-      }
-    }
-    if (pkName == null && clazz.getSuperclass() != null) {
-      pkName = searchMethodsForId(clazz.getSuperclass());
-    }
-    return pkName;
   }
 
   /**
