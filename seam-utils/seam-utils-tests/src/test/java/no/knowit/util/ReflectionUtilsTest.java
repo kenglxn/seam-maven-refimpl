@@ -13,22 +13,22 @@ import org.testng.annotations.Test;
 
 import no.knowit.testsupport.model.ConcreteEntityFieldAnnotated;
 import no.knowit.testsupport.model.ConcreteEntityPropertyAnnotated;
-import no.knowit.testsupport.model.SimpleEntityFieldAnnotated;
-import no.knowit.testsupport.model.SimpleEntityPropertyAnnotated;
+import no.knowit.testsupport.model.FieldAnnotatedEntity;
+import no.knowit.testsupport.model.PropertyAnnotatedEntity;
 
 public class ReflectionUtilsTest {
   
   @Test
   public void testSearchFieldsForAnnotation() throws Exception {
     List<Field> fields = ReflectionUtils.searchFieldsForAnnotation(
-        Id.class, SimpleEntityFieldAnnotated.class);
+        Id.class, FieldAnnotatedEntity.class);
     Assert.assertTrue(fields.size() > 0);
   }
 
   @Test
   public void testSearchMethodsForAnnotation() throws Exception {
     List<Method> methods = ReflectionUtils.searchMethodsForAnnotation(
-        Id.class, SimpleEntityPropertyAnnotated.class);
+        Id.class, PropertyAnnotatedEntity.class);
     Assert.assertTrue(methods.size() > 0);
   }
 

@@ -85,6 +85,9 @@ public class ReflectionUtils {
     return field == null ? null : field.getName();
   }
 
+  /**
+   * Returns a property name if the method name begins with "set", "get" or "is" 
+   */
   public static String getPropertyName(final Method method) {
     if(method == null) return null;
     String methodName = method.getName();
