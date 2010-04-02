@@ -1,6 +1,8 @@
 package no.knowit.crud;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -50,23 +52,28 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
   }
   
   @Test
-  public void shouldHaveIdAnnotation() throws Exception {
-    
+  public void shouldGetIdAnnotationFromField() throws Exception {
     // @Id annotated on field id
-    final String expectedIdPropertyName_1 = "id";
+    final String expectedIdAttributeName = "id";
     List<Member> id = CrudServiceUtils.getIdAnnotations(SimpleEntityFieldAnnotated.class);
     Assert.assertTrue(id.size() > 0, "No @Id annotation");
-    Assert.assertEquals(ReflectionUtils.getAttributeName(id.get(0)), expectedIdPropertyName_1);
-    
+    Assert.assertTrue(id.get(0) instanceof Field, "@Id annotation is not on a field");
+    Assert.assertEquals(ReflectionUtils.getAttributeName(id.get(0)), expectedIdAttributeName);
+  }
+
+  @Test
+  public void shouldGetIdAnnotationFromMethod() throws Exception {
     // @Id annotated on method getIdentity 
-    final String expectedIdPropertyName_2 = "identity";
+    final String expectedIdAttributeName = "identity";
+    List<Member> id = CrudServiceUtils.getIdAnnotations(SimpleEntityFieldAnnotated.class);
     id = CrudServiceUtils.getIdAnnotations(ConcreteEntityPropertyAnnotated.class);
     Assert.assertTrue(id.size() > 0, "No @Id annotation");
-    Assert.assertEquals(ReflectionUtils.getAttributeName(id.get(0)), expectedIdPropertyName_2);
+    Assert.assertTrue(id.get(0) instanceof Method, "@Id annotation is not on a method");
+    Assert.assertEquals(ReflectionUtils.getAttributeName(id.get(0)), expectedIdAttributeName);
   }
   
   @Test
-  public void shouldHaveIdentityValueAfterPersist() throws Exception {
+  public void idShouldNotBeNullAfterPersist() throws Exception {
     CrudService crudService = lookup(CrudService.NAME);
     
     SimpleEntityFieldAnnotated se = new SimpleEntityFieldAnnotated(100);
@@ -75,13 +82,11 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
 
     List<Object> id = CrudServiceUtils.getIdValues(se);
     Assert.assertNotNull(id.get(0), "Identity value should not be null after persist");
-    
-    ConcreteEntityPropertyAnnotated ce = new ConcreteEntityPropertyAnnotated();
-    ce.setName("Hello");
-    ce = crudService.persist(ce);
-    Assert.assertNotNull(se, "Entity was null after persist");
-
-    id = CrudServiceUtils.getIdValues(ce);
-    Assert.assertNotNull(id.get(0), "Identity value should not be null after persist");
+  }
+  
+  @Test
+  public void should() throws Exception {
+    CrudServiceUtils.getQueryableAttributes(SimpleEntityFieldAnnotated.class);
+    CrudServiceUtils.getQueryableAttributes(ConcreteEntityPropertyAnnotated.class);
   }
 }

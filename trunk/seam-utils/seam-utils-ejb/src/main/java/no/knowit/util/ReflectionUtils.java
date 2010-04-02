@@ -34,6 +34,19 @@ public class ReflectionUtils {
     }
     return fields;
   }
+  
+  public static Field searcFieldsForFirstAnnotation(
+      final Class<? extends Annotation> annotation, final Class<?> target) {
+
+    if(target != null && annotation != null) {
+      for (Class<?> clazz = target; clazz != Object.class; clazz = clazz.getSuperclass()) {
+        for (Field field : clazz.getDeclaredFields()) {
+          if(field.isAnnotationPresent(annotation)) return field;
+        }
+      }
+    }
+    return null;
+  }
 
   public static List<Method> searchMethodsForAnnotation( 
       final Class<? extends Annotation> annotation, final Class<?> target) {
@@ -47,6 +60,19 @@ public class ReflectionUtils {
       }
     }
     return methods;
+  }
+  
+  public static Method searcMethodsForFirstAnnotation(
+      final Class<? extends Annotation> annotation, final Class<?> target) {
+ 
+    if(target != null && annotation != null) {
+      for (Class<?> clazz = target; clazz != Object.class; clazz = clazz.getSuperclass()) {
+        for (Method method : clazz.getDeclaredMethods()) {
+          if(method.isAnnotationPresent(annotation)) return method;
+        }
+      }
+    }
+    return null;
   }
   
   public static String getAttributeName(final Member attribute) {
@@ -112,12 +138,18 @@ public class ReflectionUtils {
     if(method.getParameterTypes().length > 0) {
       throw new IllegalArgumentException(message);
     }
+
+    boolean accessible = method.isAccessible();
     try {
+      method.setAccessible(true);
       return method.invoke(target, (Object[])null);
     }
     catch (Exception e) {
       throw new IllegalArgumentException(
           String.format(message, methodToString(method), target.getClass().getName()), e);
+    }
+    finally {
+      method.setAccessible(accessible);
     }
   }
   
@@ -131,44 +163,4 @@ public class ReflectionUtils {
       method.getParameterTypes().toString() + ")"; 
   }
 
-  
-  
-  /*
-   * Don't think we need the singular versions but keep them to decide later
-   *  
-  public static AccessibleObject searchForAnnotation(final Class<?> target, 
-      final Class<? extends Annotation> annotation) {
-    
-    if(target == null || annotation == null) return null;
-    AccessibleObject result = searchFieldForAnnotation(target, annotation);
-    if(result == null) result = searchMethodForAnnotation(target, annotation);
-    return result;
-  }
-
-  public static Field searchFieldForAnnotation(final Class<?> target, 
-      final Class<? extends Annotation> annotation) {
-
-    if(target != null && annotation != null) {
-      for (Class<?> clazz = target; clazz != Object.class; clazz = clazz.getSuperclass()) {
-        for (Field field : clazz.getDeclaredFields()) {
-          if(field.isAnnotationPresent(annotation)) return field;
-        }
-      }
-    }
-    return null;
-  }
-
-  public static Method searchMethodForAnnotation(final Class<?> target, 
-      final Class<? extends Annotation> annotation) {
-    
-    if(target != null && annotation != null) {
-      for (Class<?> clazz = target; clazz != Object.class; clazz = clazz.getSuperclass()) {
-        for (Method method : clazz.getDeclaredMethods()) {
-          if(method.isAnnotationPresent(annotation)) return method;
-        }
-      }
-    }
-    return null;
-  }
-   */
 }
