@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 public class ConcreteEntityPropertyAnnotated extends AbstractEntityPropertyAnnotated implements Serializable {
@@ -11,6 +12,7 @@ public class ConcreteEntityPropertyAnnotated extends AbstractEntityPropertyAnnot
   
   private String name;
   private Date dateOfBirth;
+  private long age;
   
   public String getName() {
     return name;
@@ -26,5 +28,10 @@ public class ConcreteEntityPropertyAnnotated extends AbstractEntityPropertyAnnot
   
   public void setDateOfBirth(Date dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
+  }
+
+  @Transient
+  public long getAge() {
+    return dateOfBirth != null ? new Date().getTime() - dateOfBirth.getTime() : 0;
   }
 }
