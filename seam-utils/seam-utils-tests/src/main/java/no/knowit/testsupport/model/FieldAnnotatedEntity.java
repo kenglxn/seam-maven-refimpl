@@ -22,8 +22,7 @@ public class FieldAnnotatedEntity implements Serializable {
   @Version
   private Long version;
   
-  @Transient
-  private Date cahcheTime;
+  transient private Date cahcheTime;
   
   private Integer foo;
   
