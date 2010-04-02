@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
@@ -126,8 +127,7 @@ public class CrudServiceUtils {
     Map<String, Field> fields = new HashMap<String, Field>();
     
     for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
-      // If class is abstract then we should ignore all fields
-      if(!Modifier.isAbstract(clazz.getModifiers())) {
+      if(!ignore(clazz)) {
         for ( Field field : clazz.getDeclaredFields() ) {
           if(!ignore(field)) {
             fields.put(field.getName(), field);
@@ -149,8 +149,7 @@ public class CrudServiceUtils {
     Map<String, Method> setters = new HashMap<String, Method>();
     
     for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
-      // If class is abstract then we should ignore all fields
-      if(!Modifier.isAbstract(clazz.getModifiers())) {
+      if(!ignore(clazz)) {
         for(Method method : clazz.getDeclaredMethods()) {
           String propertyName = ReflectionUtils.getPropertyName(method);
           
@@ -263,7 +262,7 @@ public class CrudServiceUtils {
   /**
    * Copied/Modified from org.jboss.seam.persistence.ManagedEntityWrapper
    */
-  private static boolean ignore(Field field) {
+  private static boolean ignore(final Field field) {
     return Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())
         || field.isAnnotationPresent(Transient.class) || field.isAnnotationPresent(Version.class);
   }
@@ -271,8 +270,16 @@ public class CrudServiceUtils {
   /**
    * Modified from org.jboss.seam.persistence.ManagedEntityWrapper
    */
-  private static boolean ignore(Method method) {
+  private static boolean ignore(final Method method) {
     return Modifier.isTransient(method.getModifiers()) || Modifier.isStatic(method.getModifiers())
         || method.isAnnotationPresent(Transient.class) || method.isAnnotationPresent(Version.class);
   }
+
+  /**
+   * If class is abstract and is not a @MappedSuperclass then we should ignore all fields in that class
+   */
+  private static boolean ignore(final Class<?> clazz) {
+    return Modifier.isAbstract(clazz.getModifiers()) && !clazz.isAnnotationPresent(MappedSuperclass.class);
+  }
+
 }
