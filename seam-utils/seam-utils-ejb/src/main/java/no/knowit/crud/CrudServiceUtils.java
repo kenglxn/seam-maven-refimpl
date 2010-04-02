@@ -52,20 +52,17 @@ public class CrudServiceUtils {
    * @return the entity name
    */
   public static String getEntityName(final Class<?> entityClass) {
-    String entityName = null;
-    if(entityClass != null) {
-      Entity entity = entityClass.getAnnotation(Entity.class);
-      if(entity == null) {
-        entityName = entityClass.getSimpleName();
-      }
-      else {
-        entityName = entity.name();
-        if(entityName == null || entityName.length() < 1) {
-          entityName = entityClass.getSimpleName();
-        }
-      }
+    if(entityClass == null) {
+      throw new IllegalArgumentException("The entityClass parameter can not be null");
     }
-    return entityName;
+    Entity entity = entityClass.getAnnotation(Entity.class);
+    if(entity == null) {
+      throw new IllegalArgumentException(
+          "The entityClass parameter is not a valid entity class. " +
+          "An entity should be annotated with the @Entity annotation");
+    }
+    String entityName = entity.name();
+    return entityName == null || entityName.length() < 1 ? entityClass.getSimpleName() : entityName;
   }
 
   /**
@@ -78,7 +75,7 @@ public class CrudServiceUtils {
   }
 
   /**
-   * Get persistence identity based on field(s) or method(s) annotated with @Id 
+   * Get entity identity based on field(s) or method(s) annotated with @Id 
    * @param entity
    * @return
    */
@@ -103,33 +100,88 @@ public class CrudServiceUtils {
   //----------------------
   // rest is untested code
   //----------------------
-  public static Map<String, Field> getQueryableFields(final Class<?> entityClass) {
-    Map<String, Field> fields = new HashMap<String, Field>();
-
-    // TODO: check if class i transient, i.e. abstract
-    Class<?> clazz = entityClass;
-    for ( ; clazz != Object.class; clazz = clazz.getSuperclass()) {
-      for ( Field field : clazz.getDeclaredFields() ) {
-        if(!ignore(field)) {
-          fields.put(field.getName(), field);
-        }
-      }
-    }
+  public static Map<String, Member> getQueryableAttributes(final Class<?> entityClass) {
     
-    // Must run i separate loop
-    clazz = entityClass;
-    for ( ; clazz != Object.class; clazz = clazz.getSuperclass()) {
-      for( Method method : clazz.getDeclaredMethods()) {
-        if( ignore(method)) {
-          String fieldName = method.getName().substring(4);
-          fieldName = method.getName().substring(3, 4).toLowerCase() + fieldName;
-          fields.remove(fieldName);
+    if(entityClass == null) {
+      throw new IllegalArgumentException("The entityClass parameter can not be null");
+    }
+    Map<String, Member> attributes = new HashMap<String, Member>();
+    Member id = ReflectionUtils.searcFieldsForFirstAnnotation(Id.class, entityClass);
+    if(id != null) {
+      attributes.putAll(getQueryableFields(entityClass));
+    }
+    else {
+      id = ReflectionUtils.searcMethodsForFirstAnnotation(Id.class, entityClass);
+      if(id != null) {
+        attributes.putAll(getQueryableProperties(entityClass));
+      }
+    }
+    return attributes;
+  }
+  
+  public static Map<String, Field> getQueryableFields(final Class<?> entityClass) {
+    if(entityClass == null) {
+      throw new IllegalArgumentException("The entityClass parameter can not be null");
+    }
+    Map<String, Field> fields = new HashMap<String, Field>();
+    
+    for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
+      // If class is abstract then we should ignore all fields
+      if(!Modifier.isAbstract(clazz.getModifiers())) {
+        for ( Field field : clazz.getDeclaredFields() ) {
+          if(!ignore(field)) {
+            fields.put(field.getName(), field);
+          }
         }
       }
     }
+    log.debug("Queryable attributes, fields: " + fields.keySet());
     return fields;
   }
 
+  public static Map<String, Method> getQueryableProperties(final Class<?> entityClass) {
+    if(entityClass == null) {
+      throw new IllegalArgumentException("The entityClass parameter can not be null");
+    }
+    
+    Map<String, Method> methods = new HashMap<String, Method>();
+    Map<String, Method> getters = new HashMap<String, Method>();
+    Map<String, Method> setters = new HashMap<String, Method>();
+    
+    for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
+      // If class is abstract then we should ignore all fields
+      if(!Modifier.isAbstract(clazz.getModifiers())) {
+        for(Method method : clazz.getDeclaredMethods()) {
+          String propertyName = ReflectionUtils.getPropertyName(method);
+          
+          if(propertyName != null) {
+            
+            if(ignore(method) || propertyName.equals("class")) {
+              getters.remove(propertyName);
+              setters.remove(propertyName);
+            }
+            else {
+              String methodName = method.getName();
+              if(methodName.startsWith("get") || methodName.startsWith("is")) {
+                if(!getters.containsKey(propertyName)) 
+                  getters.put(propertyName, method);
+              }
+              else {
+                if(!setters.containsKey(propertyName)) 
+                  setters.put(propertyName, method);
+              }
+            }
+          }
+        }
+      }
+    }
+    methods.putAll(getters);
+    methods.putAll(setters);
+
+    log.debug("Queryable attributes, methods: " + methods.keySet());
+    return methods;    
+  }
+  
   /**
    * Creates a parameterized SELECT or DELETE JPQL query based on non null
    * field values in the <code>exampleEntity</code> parameter, 
@@ -146,8 +198,9 @@ public class CrudServiceUtils {
     if(!isEntity(exampleEntity.getClass()))
       throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
     
-    Map<String, Field> fields = getQueryableFields(exampleEntity.getClass());
-    return createJPQL(exampleEntity, fields, select, distinct, any);
+    Map<String, Member> fields = getQueryableAttributes(exampleEntity.getClass());
+    //return createJPQL(exampleEntity, fields, select, distinct, any);
+    return null;
   }
   
   /**
@@ -177,7 +230,7 @@ public class CrudServiceUtils {
     for (Entry<String, Field> entry : properties) {
       String propertyName = entry.getKey();
       Field field = entry.getValue();
-      Object value = field != null ? getFieldValue(field, exampleEntity) : null;
+      Object value = field != null ? ReflectionUtils.getFieldValue(field, exampleEntity) : null;
       
       if (value != null) {
         Class<?> type = value.getClass();
@@ -222,24 +275,4 @@ public class CrudServiceUtils {
     return Modifier.isTransient(method.getModifiers()) || Modifier.isStatic(method.getModifiers())
         || method.isAnnotationPresent(Transient.class) || method.isAnnotationPresent(Version.class);
   }
-  
-  /**
-   * Copied/Modified from org.jboss.seam.util.Reflections
-   */
-  private static Object getFieldValue(Field field, Object target) throws Exception {
-    boolean accessible = field.isAccessible();
-    try {
-      field.setAccessible(true);
-      return field.get(target);
-    } 
-    catch (IllegalArgumentException iae) {
-      String message = "Could not get field value by reflection: " + field.getName() + " on: "
-          + target.getClass().getName();
-      throw new IllegalArgumentException(message, iae);
-    } 
-    finally {
-      field.setAccessible(accessible);
-    }
-  }
-
 }
