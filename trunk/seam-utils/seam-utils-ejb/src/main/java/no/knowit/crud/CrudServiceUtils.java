@@ -96,12 +96,7 @@ public class CrudServiceUtils {
     return result;
   }
 
-  
-  
-  //----------------------
-  // rest is untested code
-  //----------------------
-  public static Map<String, Member> getQueryableAttributes(final Class<?> entityClass) {
+  public static Map<String, Member> findQueryableAttributes(final Class<?> entityClass) {
     
     if(entityClass == null) {
       throw new IllegalArgumentException("The entityClass parameter can not be null");
@@ -109,18 +104,18 @@ public class CrudServiceUtils {
     Map<String, Member> attributes = new HashMap<String, Member>();
     Member id = ReflectionUtils.searcFieldsForFirstAnnotation(Id.class, entityClass);
     if(id != null) {
-      attributes.putAll(getQueryableFields(entityClass));
+      attributes.putAll(findQueryableFields(entityClass));
     }
     else {
       id = ReflectionUtils.searcMethodsForFirstAnnotation(Id.class, entityClass);
       if(id != null) {
-        attributes.putAll(getQueryableProperties(entityClass));
+        attributes.putAll(findQueryableProperties(entityClass));
       }
     }
     return attributes;
   }
   
-  public static Map<String, Field> getQueryableFields(final Class<?> entityClass) {
+  public static Map<String, Field> findQueryableFields(final Class<?> entityClass) {
     if(entityClass == null) {
       throw new IllegalArgumentException("The entityClass parameter can not be null");
     }
@@ -135,11 +130,11 @@ public class CrudServiceUtils {
         }
       }
     }
-    log.debug("Queryable attributes, fields: " + fields.keySet());
+    log.debug(entityClass.getSimpleName() +  " class, queryable fields: " + fields.keySet());
     return fields;
   }
 
-  public static Map<String, Method> getQueryableProperties(final Class<?> entityClass) {
+  public static Map<String, Method> findQueryableProperties(final Class<?> entityClass) {
     if(entityClass == null) {
       throw new IllegalArgumentException("The entityClass parameter can not be null");
     }
@@ -154,32 +149,53 @@ public class CrudServiceUtils {
           String propertyName = ReflectionUtils.getPropertyName(method);
           
           if(propertyName != null) {
-            
-            if(ignore(method) || propertyName.equals("class")) {
-              getters.remove(propertyName);
-              setters.remove(propertyName);
+            String methodName = method.getName();
+            if(methodName.startsWith("get") || methodName.startsWith("is")) {
+              if(!getters.containsKey(propertyName)) 
+                getters.put(propertyName, method);
             }
             else {
-              String methodName = method.getName();
-              if(methodName.startsWith("get") || methodName.startsWith("is")) {
-                if(!getters.containsKey(propertyName)) 
-                  getters.put(propertyName, method);
-              }
-              else {
-                if(!setters.containsKey(propertyName)) 
-                  setters.put(propertyName, method);
-              }
+              if(!setters.containsKey(propertyName)) 
+                setters.put(propertyName, method);
             }
           }
         }
       }
     }
+    
     methods.putAll(getters);
     methods.putAll(setters);
+    
+    Set<Entry<String, Method>> properties = getters.entrySet();
+    for (Entry<String, Method> entry : properties) {
+      String propertyName = entry.getKey();
+      Method method = entry.getValue();
 
-    log.debug("Queryable attributes, methods: " + methods.keySet());
+      if(ignore(method)) {
+        methods.remove(propertyName);
+      }
+    }
+
+    properties = setters.entrySet();
+    for (Entry<String, Method> entry : properties) {
+      String propertyName = entry.getKey();
+      Method method = entry.getValue();
+
+      if(ignore(method)) {
+        methods.remove(propertyName);
+      }
+    }
+    
+    log.debug(entityClass.getSimpleName() + " class, queryable methods: " + methods.keySet());
     return methods;    
   }
+  
+  
+  
+  //----------------------
+  // rest is untested code
+  //----------------------
+  
   
   /**
    * Creates a parameterized SELECT or DELETE JPQL query based on non null
@@ -197,7 +213,7 @@ public class CrudServiceUtils {
     if(!isEntity(exampleEntity.getClass()))
       throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
     
-    Map<String, Member> fields = getQueryableAttributes(exampleEntity.getClass());
+    Map<String, Member> fields = findQueryableAttributes(exampleEntity.getClass());
     //return createJPQL(exampleEntity, fields, select, distinct, any);
     return null;
   }
@@ -276,10 +292,21 @@ public class CrudServiceUtils {
   }
 
   /**
-   * If class is abstract and is not a @MappedSuperclass then we should ignore all fields in that class
+   * If a class is not annotated @Entity or  @MappedSuperclass then the 
+   * class is transient and we should ignore all fields in that class
    */
   private static boolean ignore(final Class<?> clazz) {
-    return Modifier.isAbstract(clazz.getModifiers()) && !clazz.isAnnotationPresent(MappedSuperclass.class);
+    return !(
+      clazz.isAnnotationPresent(MappedSuperclass.class) || clazz.isAnnotationPresent(Entity.class)
+    );
+    
+//    return !(
+//        clazz.isAnnotationPresent(MappedSuperclass.class)
+//        || clazz.isAnnotationPresent(Entity.class)
+//        || (Modifier.isAbstract(clazz.getModifiers()) 
+//            && clazz.isAnnotationPresent(MappedSuperclass.class))
+//      );
+
   }
 
 }
