@@ -21,6 +21,9 @@ import no.knowit.testsupport.model.ConcreteEntityPropertyAnnotated;
 import no.knowit.testsupport.model.NamedEntity;
 import no.knowit.testsupport.model.FieldAnnotatedEntity;
 import no.knowit.testsupport.model.PropertyAnnotatedEntity;
+import no.knowit.testsupport.model.inheritance.ContractEmployee;
+import no.knowit.testsupport.model.inheritance.FullTimeEmployee;
+import no.knowit.testsupport.model.inheritance.PartTimeEmployee;
 import no.knowit.util.ReflectionUtils;
 
 public class CrudServiceUtilsTest  extends OpenEjbTest {
@@ -80,10 +83,10 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
   @Test
   public void shouldFindQueriableAttributes() throws Exception {
     final String message = "Queryable attributes: %s did not match expected: %s";
-    
     List<String> expectedAttributes = Arrays.asList("id", "bar", "foo");
+    Map<String, Member> actualAttributes;
     
-    Map<String, Member> actualAttributes = CrudServiceUtils.findQueryableAttributes(FieldAnnotatedEntity.class);
+    actualAttributes= CrudServiceUtils.findQueryableAttributes(FieldAnnotatedEntity.class);
     Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes),
         String.format(message, actualAttributes.keySet(), expectedAttributes));
     
@@ -101,8 +104,24 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
     actualAttributes = CrudServiceUtils.findQueryableAttributes(ConcreteEntityPropertyAnnotated.class);
     Assert.assertEqualsNoOrder(actualAttributes.keySet().toArray(), expectedAttributes.toArray(),
         String.format(message, actualAttributes.keySet(), expectedAttributes));
+    
+    
+    expectedAttributes = Arrays.asList("id", "startDate", "term", "name", "dailyRate");
+    actualAttributes = CrudServiceUtils.findQueryableAttributes(ContractEmployee.class);
+    Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes),
+        String.format(message, actualAttributes.keySet(), expectedAttributes));
+
+    expectedAttributes = Arrays.asList("id", "startDate", "hourlyRate", "name", "vacation");
+    actualAttributes = CrudServiceUtils.findQueryableAttributes(PartTimeEmployee.class);
+    Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes),
+        String.format(message, actualAttributes.keySet(), expectedAttributes));
+
+    expectedAttributes = Arrays.asList("id", "startDate", "name", "vacation", "salary", "pemsion");
+    actualAttributes = CrudServiceUtils.findQueryableAttributes(FullTimeEmployee.class);
   }
 
+  
+  // TODO: Move to CrudServiceTest
   @Test
   public void idShouldNotBeNullAfterPersist() throws Exception {
     CrudService crudService = lookup(CrudService.NAME);
