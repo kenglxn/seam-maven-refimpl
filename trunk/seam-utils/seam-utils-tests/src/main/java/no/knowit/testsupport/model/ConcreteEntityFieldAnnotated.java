@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 public class ConcreteEntityFieldAnnotated extends AbstractEntityFieldAnnotated implements Serializable {
@@ -11,4 +12,6 @@ public class ConcreteEntityFieldAnnotated extends AbstractEntityFieldAnnotated i
   
   private String name;
   private Date dateOfBirth;
+  @Transient
+  private long age;
 }

@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import no.knowit.openejb.mock.OpenEjbTest;
 import no.knowit.testsupport.bean.SimpleBean;
+import no.knowit.testsupport.model.ConcreteEntityFieldAnnotated;
 import no.knowit.testsupport.model.ConcreteEntityPropertyAnnotated;
 import no.knowit.testsupport.model.NamedEntity;
 import no.knowit.testsupport.model.FieldAnnotatedEntity;
@@ -77,6 +78,32 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
   }
   
   @Test
+  public void shouldFindQueriableAttributes() throws Exception {
+    final String message = "Queryable attributes: %s did not match expected: %s";
+    
+    List<String> expectedAttributes = Arrays.asList("id", "bar", "foo");
+    
+    Map<String, Member> actualAttributes = CrudServiceUtils.findQueryableAttributes(FieldAnnotatedEntity.class);
+    Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes),
+        String.format(message, actualAttributes.keySet(), expectedAttributes));
+    
+    actualAttributes = CrudServiceUtils.findQueryableAttributes(PropertyAnnotatedEntity.class);
+    Assert.assertEqualsNoOrder(actualAttributes.keySet().toArray(), expectedAttributes.toArray(),
+        String.format(message, actualAttributes.keySet(), expectedAttributes));
+
+    
+    expectedAttributes = Arrays.asList("identity", "name", "dateOfBirth");
+    
+    actualAttributes = CrudServiceUtils.findQueryableAttributes(ConcreteEntityFieldAnnotated.class);
+    Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes),
+        String.format(message, actualAttributes.keySet(), expectedAttributes));
+    
+    actualAttributes = CrudServiceUtils.findQueryableAttributes(ConcreteEntityPropertyAnnotated.class);
+    Assert.assertEqualsNoOrder(actualAttributes.keySet().toArray(), expectedAttributes.toArray(),
+        String.format(message, actualAttributes.keySet(), expectedAttributes));
+  }
+
+  @Test
   public void idShouldNotBeNullAfterPersist() throws Exception {
     CrudService crudService = lookup(CrudService.NAME);
     
@@ -93,18 +120,4 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
     Assert.assertNotNull(id.get(0), "Identity value should not be null after persist");
   }
   
-  @Test
-  public void shouldFindQueriableAttributes() throws Exception {
-    final List<String> expectedAttributes = Arrays.asList("id", "bar", "foo");
-    
-    Map<String, Member> actualAttributes = CrudServiceUtils.findQueryableAttributes(FieldAnnotatedEntity.class);
-    Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes), 
-        "Queryable attributes: " +  actualAttributes.keySet() + 
-        " did not match expected: " + expectedAttributes);
-    
-    actualAttributes = CrudServiceUtils.findQueryableAttributes(PropertyAnnotatedEntity.class);
-    Assert.assertEqualsNoOrder(actualAttributes.keySet().toArray(), expectedAttributes.toArray(),
-        "Queryable attributes: " +  actualAttributes.keySet() + 
-        " did not match expected: " + expectedAttributes);
-  }
 }
