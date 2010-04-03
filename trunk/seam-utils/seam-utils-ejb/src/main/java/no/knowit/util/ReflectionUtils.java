@@ -129,18 +129,26 @@ public class ReflectionUtils {
     }
   }
 
-  public static Object getPropertyValue(final Method method, final Object target) {
+  public static Object getPropertyValue(Method method, final Object target) {
     if(method == null || target == null) return null;
     final String message = "Not a valid getter method: %s on: %s"; 
 
     String methodName = method.getName();
     if(!(methodName.startsWith("get") || methodName.startsWith("is"))) {
-      throw new IllegalArgumentException(
-          String.format(message, methodToString(method), target.getClass().getName()));
+
+      if(methodName.startsWith("set")) {
+        method = getGetMethod(methodName.substring(3), target);
+      }
+      else {
+        throw new IllegalArgumentException(
+            String.format(message, methodToString(method), target.getClass().getName()));
+      }
     }
-    if(method.getParameterTypes().length > 0) {
-      throw new IllegalArgumentException(message);
-    }
+    
+//    if(method.getParameterTypes().length > 0) {
+//      throw new IllegalArgumentException(
+//          String.format(message, methodToString(method), target.getClass().getName()));
+//    }
 
     boolean accessible = method.isAccessible();
     try {
@@ -156,6 +164,25 @@ public class ReflectionUtils {
     }
   }
   
+  private static Method getGetMethod(final String property, final Object target) {
+    if(property == null || target == null) return null;
+    String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
+    try {
+      return target.getClass().getDeclaredMethod(methodName);
+    } 
+    catch (Exception e) {
+    }
+    
+    methodName = "is" + property.substring(0, 1).toUpperCase() + property.substring(1);
+    try {
+      return target.getClass().getDeclaredMethod(methodName);
+    } 
+    catch (Exception e) {
+      throw new IllegalArgumentException(
+          String.format("Not a valid getter method: %s on: %s", 
+              methodName, target.getClass().getName()), e);
+    }
+  }
   
   private static String fieldToString(Field field) {
     return field.getDeclaringClass().getName() + '.' + field.getName(); 

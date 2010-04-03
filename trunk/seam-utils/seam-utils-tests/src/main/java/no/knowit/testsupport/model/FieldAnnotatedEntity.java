@@ -15,6 +15,8 @@ import javax.persistence.Version;
 public class FieldAnnotatedEntity implements Serializable {
   private static final long serialVersionUID = 2818054409339379513L;
 
+  private static final int FOOBAR = 100;
+  
   @Id
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
@@ -22,13 +24,14 @@ public class FieldAnnotatedEntity implements Serializable {
   @Version
   private Long version;
   
-  transient private Date cahcheTime;
+  @Transient
+  private Date cahcheTime;
   
   private Integer foo;
   
   private final int bar = 10;
   
-  private static final int BAZ = 100;
+  private String baz;
   
   public FieldAnnotatedEntity() {
     super();
@@ -37,5 +40,11 @@ public class FieldAnnotatedEntity implements Serializable {
   public FieldAnnotatedEntity(int foo) {
     super();
     this.foo = foo;
+  }
+
+  public FieldAnnotatedEntity(int foo, String baz) {
+    super();
+    this.foo = foo;
+    this.baz = baz;
   }
 }

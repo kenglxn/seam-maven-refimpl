@@ -83,7 +83,7 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
   @Test
   public void shouldFindQueriableAttributes() throws Exception {
     final String message = "Queryable attributes: %s did not match expected: %s";
-    List<String> expectedAttributes = Arrays.asList("id", "bar", "foo");
+    List<String> expectedAttributes = Arrays.asList("id", "foo", "baz");
     Map<String, Member> actualAttributes;
     
     actualAttributes= CrudServiceUtils.findQueryableAttributes(FieldAnnotatedEntity.class);
@@ -116,10 +116,78 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
     Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes),
         String.format(message, actualAttributes.keySet(), expectedAttributes));
 
-    expectedAttributes = Arrays.asList("id", "startDate", "name", "vacation", "salary", "pemsion");
+    expectedAttributes = Arrays.asList("id", "startDate", "name", "vacation", "salary", "pension");
     actualAttributes = CrudServiceUtils.findQueryableAttributes(FullTimeEmployee.class);
+    Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes),
+        String.format(message, actualAttributes.keySet(), expectedAttributes));
   }
 
+  @Test
+  public void shouldCreateJpqlWithAndOperator() throws Exception {
+    final String expectedSelect = "SELECT  e FROM %s e";
+    
+    FieldAnnotatedEntity fe = new FieldAnnotatedEntity();
+    String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
+    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    Assert.assertEquals(jpql, expectedJPQL);
+
+    PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity();
+    jpql = CrudServiceUtils.createJpql(pe, true, false, false);
+    expectedJPQL = String.format(expectedSelect, pe.getClass().getName());
+    Assert.assertEquals(jpql, expectedJPQL);
+    
+    fe = new FieldAnnotatedEntity(100);
+    jpql = CrudServiceUtils.createJpql(fe, true, false, false);
+    expectedJPQL = String.format(expectedSelect, fe.getClass().getName()) + " WHERE e.foo = :foo";
+    Assert.assertEquals(jpql, expectedJPQL);
+
+    fe = new FieldAnnotatedEntity(100, "HELLO");
+    jpql = CrudServiceUtils.createJpql(fe, true, false, false);
+    expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    boolean expected = jpql.startsWith(expectedJPQL) && 
+      jpql.contains("e.baz = :baz") && jpql.contains("AND") && jpql.contains("e.foo = :foo");
+    
+    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+  }
+
+  @Test
+  public void shouldCreateJpqlWithOrOperator() throws Exception {
+    final String expectedSelect = "SELECT  e FROM %s e";
+
+    FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
+    String jpql = CrudServiceUtils.createJpql(fe, true, false, true);
+    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") &&
+      jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
+    
+    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+  }
+  
+  @Test
+  public void shouldCreateDistinctJpql() throws Exception {
+    final String expectedSelect = "SELECT DISTINCT e FROM %s e";
+
+    FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
+    String jpql = CrudServiceUtils.createJpql(fe, true, true, true);
+    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
+      jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
+    
+    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+  }
+  
+  @Test
+  public void shouldCreateDeleteJpql() throws Exception {
+    final String expectedDelete = "DELETE FROM %s e";
+
+    FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
+    String jpql = CrudServiceUtils.createJpql(fe, false, false, true);
+    String expectedJPQL = String.format(expectedDelete, fe.getClass().getName());
+    boolean expected = jpql.startsWith(expectedJPQL) && 
+      jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
+    
+    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+  }
   
   // TODO: Move to CrudServiceTest
   @Test
