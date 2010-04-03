@@ -36,14 +36,14 @@ public class CrudServiceTest extends OpenEjbTest {
     super.beforeSuite();
 	}
 
-//	@Override
-//	@AfterClass
-//	public void cleanupClass() throws Exception {
-//		CrudService crudService = lookupCrudService();
-//		List<Movie> allMovies = crudService.find(Movie.class);
-//  	crudService.remove((List)allMovies);
-//		super.cleanupClass();
-//	}
+	@Override
+	@AfterClass
+	public void cleanupClass() throws Exception {
+		CrudService crudService = lookupCrudService();
+    crudService.remove(Movie.class);
+    assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 after cleanup"; 
+		super.cleanupClass();
+	}
 	
 	
 	@Test
