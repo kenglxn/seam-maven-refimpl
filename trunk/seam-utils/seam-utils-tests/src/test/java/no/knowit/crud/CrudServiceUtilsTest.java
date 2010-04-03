@@ -6,8 +6,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.testng.Assert;
@@ -58,6 +56,11 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
     final String expectedNameForUnnamedEntity = unnamedEntity.getClass().getSimpleName();
     Assert.assertEquals(
         CrudServiceUtils.getEntityName(unnamedEntity.getClass()), expectedNameForUnnamedEntity);
+  }
+  
+  @Test
+  public void shouldHaveIdAnnotation() throws Exception {
+    Assert.assertTrue(CrudServiceUtils.hasId(ConcreteEntityFieldAnnotated.class));
   }
   
   @Test
@@ -124,7 +127,7 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
 
   @Test
   public void shouldCreateJpqlWithAndOperator() throws Exception {
-    final String expectedSelect = "SELECT  e FROM %s e";
+    final String expectedSelect = "SELECT e FROM %s e";
     
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity();
     String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
@@ -152,7 +155,7 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
 
   @Test
   public void shouldCreateJpqlWithOrOperator() throws Exception {
-    final String expectedSelect = "SELECT  e FROM %s e";
+    final String expectedSelect = "SELECT e FROM %s e";
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
     String jpql = CrudServiceUtils.createJpql(fe, true, false, true);
@@ -175,6 +178,27 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
     
     Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
   }
+
+  @Test
+  public void shouldCreateWildcardJpql() throws Exception {
+    final String expectedSelect = "SELECT e FROM %s e";
+
+    FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELL%");
+    String jpql = CrudServiceUtils.createJpql(fe, true, false, true);
+    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
+      jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
+    
+    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+    
+    PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(100, "HELL%");
+    jpql = CrudServiceUtils.createJpql(pe, true, false, true);
+    expectedJPQL = String.format(expectedSelect, pe.getClass().getName());
+    expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
+      jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
+    
+    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+  }
   
   @Test
   public void shouldCreateDeleteJpql() throws Exception {
@@ -187,24 +211,15 @@ public class CrudServiceUtilsTest  extends OpenEjbTest {
       jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
     Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
-  }
-  
-  // TODO: Move to CrudServiceTest
-  @Test
-  public void idShouldNotBeNullAfterPersist() throws Exception {
-    CrudService crudService = lookup(CrudService.NAME);
+
     
-    FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100);
-    fe = crudService.persist(fe);
-    Assert.assertNotNull(fe, "Entity was null after persist");
-    List<Object> id = CrudServiceUtils.getIdValues(fe);
-    Assert.assertNotNull(id.get(0), "Identity value should not be null after persist");
+    PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(100, "HELL%");
+    jpql = CrudServiceUtils.createJpql(pe, false, false, true);
+    expectedJPQL = String.format(expectedDelete, pe.getClass().getName());
+    expected = jpql.startsWith(expectedJPQL) && 
+      jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
-    PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(100);
-    pe = crudService.persist(pe);
-    Assert.assertNotNull(pe, "Entity was null after persist");
-    id = CrudServiceUtils.getIdValues(pe);
-    Assert.assertNotNull(id.get(0), "Identity value should not be null after persist");
+    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
   }
   
 }

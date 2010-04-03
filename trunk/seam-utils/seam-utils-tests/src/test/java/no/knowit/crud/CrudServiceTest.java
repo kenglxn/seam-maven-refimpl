@@ -25,33 +25,25 @@ public class CrudServiceTest extends OpenEjbTest {
 	private Integer fargoId;
 	
 	private CrudService lookupCrudService() throws Exception {
-		try {
-			Object service = initialContext.lookup("crudService/Local");
-			Assert.assertNotNull(service, "initialContext.lookup: returned null");
-			Assert.assertTrue(service instanceof CrudService, "initialContext.lookup: incorrect type");
-			return (CrudService) service;
-		}
-		catch (NamingException e) {
-			log.error(e);
-			throw(e);
-		}
+    return lookup(CrudService.NAME);
 	}
 	
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
 		contextProperties.put("log4j.category.no.knowit.crud", "debug");
-		super.beforeSuite();
+    contextProperties.put("log4j.category.no.knowit.testsupport", "debug");
+    super.beforeSuite();
 	}
 
-	@Override
-	@AfterClass
-	public void cleanupClass() throws Exception {
-		CrudService crudService = lookupCrudService();
-		List<Movie> allMovies = crudService.find(Movie.class);
-  	crudService.remove((List)allMovies);
-		super.cleanupClass();
-	}
+//	@Override
+//	@AfterClass
+//	public void cleanupClass() throws Exception {
+//		CrudService crudService = lookupCrudService();
+//		List<Movie> allMovies = crudService.find(Movie.class);
+//  	crudService.remove((List)allMovies);
+//		super.cleanupClass();
+//	}
 	
 	
 	@Test
@@ -71,10 +63,14 @@ public class CrudServiceTest extends OpenEjbTest {
 	@Test(dependsOnMethods={ "create" })
 	public void read() throws Exception {
 		CrudService crudService = lookupCrudService();
+
 		Movie movie = crudService.find(Movie.class, theWall.getId());
 		Assert.assertNotNull(movie, "crudService.find: Did not find movie with id: " + theWall.getId());
-	}
 
+		movie = crudService.find(Movie.class, fargoId);
+    Assert.assertNotNull(movie, "crudService.find: Did not find movie with id: " + fargoId);
+	}
+	
 	@Test(dependsOnMethods={ "read" })
 	public void update() throws Exception {
 		CrudService crudService = lookupCrudService();
@@ -98,8 +94,7 @@ public class CrudServiceTest extends OpenEjbTest {
 	public void createOrUpdate() throws Exception {
 		CrudService crudService = lookupCrudService();
 		
-		Movie movie = new Movie("Joel Choen", "The Big Leboi", 1998);
-		movie = crudService.store(movie);
+		Movie movie = crudService.store(new Movie("Joel Choen", "The Big Leboi", 1998));
 		Assert.assertNotNull(movie.getId(), "movie.getId: movie.id was null");
 		
 		// Modify and update
@@ -111,6 +106,8 @@ public class CrudServiceTest extends OpenEjbTest {
 		// Add a second movie
 		movie = crudService.store(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
 		Assert.assertNotNull(movie.getId(), "movie.getId: movie.id was null");
+		
+		// Now there should be 2 movies for the findAll test
 	}
 	
 	@Test(dependsOnMethods={ "createOrUpdate" })
@@ -119,16 +116,17 @@ public class CrudServiceTest extends OpenEjbTest {
 		List<Movie> allMovies = crudService.find(Movie.class);
   	Assert.assertEquals(allMovies.size(), 2, "List.size()");
 	}
-	
+
 	@Test(dependsOnMethods={ "findAll" })
 	public void findByExample() throws Exception {
 		CrudService crudService = lookupCrudService();
 		Movie exampleMovie = new Movie();
 		exampleMovie.setDirector("Joel%");
 		exampleMovie.setYear(1992);
-		List<Movie> exampleMovies = crudService.find(exampleMovie, true, true);
+		List<Movie> exampleMovies = crudService.find(exampleMovie, false, true);
   	Assert.assertEquals(exampleMovies.size(), 2, "List.size()");
 	}
+	
 	
 	@Test(dependsOnMethods={ "findByExample" })
 	public void deleteByExample() throws Exception {
