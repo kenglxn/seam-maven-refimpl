@@ -133,6 +133,13 @@ public class CrudServiceBean implements CrudService {
 		em.remove(managedEntity);
 	}
 
+  public void remove(Class<?> entityClass) {
+    if(entityClass == null) 
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
+
+    getEntityManager().createQuery("delete from " + entityClass.getName()).executeUpdate();
+  }
+  
 	public void remove(Class<?> entityClass, Object id) {
 		Object ref = getEntityManager().getReference(entityClass, id);
 		getEntityManager().remove(ref);
@@ -151,7 +158,7 @@ public class CrudServiceBean implements CrudService {
 		Query query = createExampleQuery(example, false, false, any);
 		query.executeUpdate();
 	}
-
+	
 	// C or U :-)
 	public <T> T store(T entity) {
     if(entity == null) 
@@ -295,7 +302,8 @@ public class CrudServiceBean implements CrudService {
 	 * The limitations are:
 	 * <ul>
 	 *   <li>The entity must have at least one @Id annotation</li>
-	 *   <li>We can not e.g. handle enums, arrays and object references while generating JPQL</li>
+	 *   <li>Can query only primitives (Integer, String etc.)
+	 *   <li>Can not handle enums, arrays and object references while generating JPQL</li>
 	 * </ul>
 	 * 
 	 */
@@ -312,7 +320,6 @@ public class CrudServiceBean implements CrudService {
     if(log.isDebugEnabled()) 
       debugData.append(example.getClass().getSimpleName() + " class query parameters: ");
     
-
     Query query = getEntityManager().createQuery(jpql);
     Set<Entry<String, Member>> properties = attributes.entrySet();
     for (Entry<String, Member> entry : properties) {

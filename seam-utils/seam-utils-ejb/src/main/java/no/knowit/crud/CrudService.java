@@ -163,6 +163,15 @@ public interface CrudService {
 	public void remove(Object entity);
 
 	/**
+	 * Remove all instances of the specified class
+   * @throws IllegalArgumentException if <code>entityClass</code> parameter is null
+   * @throws java.lang.IllegalStateException if this EntityManager has been closed
+   * @throws TransactionRequiredException if there is  no transaction
+	 * @param entityClass The class to remove instances for
+	 */
+	public void remove(Class<?> entityClass);
+	
+	/**
 	 * Remove an object from persistent storage in the database. 
 	 * 
 	 * @param entityClass The entity class of the object to delete
