@@ -23,13 +23,9 @@ along with this program.  If not, see <http://www.opensource.org/licenses/gpl-2.
  */
 package no.knowit.crud;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,17 +33,17 @@ import java.util.Map.Entry;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.Transient;
 
-import org.apache.commons.beanutils.BeanMap;
+import no.knowit.util.ReflectionUtils;
+
 import org.apache.log4j.Logger;
 
 /**
  * An implementation of the generic CrudService.<br/>
  * 
+ * @author http://code.google.com/p/krank/
  * @author adam-bien.com
  * @author Leif Olsen
  */
@@ -152,7 +148,8 @@ public class CrudServiceBean implements CrudService {
 	public <T> T store(T entity) {
 		assert entity != null : "The 'entity' parameter can not be null"; //TODO: throw IllegalArgumentException
 
-		Object id = getIdentity(entity);
+		//Object id = getIdentity(entity);
+		Object id = CrudServiceUtils.getIdValues(entity).get(0);
 		if (!log.isDebugEnabled()) {
 			if (id != null) {
 				return find(entity.getClass(), id) == null ? persist(entity) : merge(entity);
@@ -165,7 +162,8 @@ public class CrudServiceBean implements CrudService {
 			if (id != null) {
 				if (find(entity.getClass(), id) == null) {
 					T e = persist(entity);
-					log.debug("CrudService.store: persisted new entity, got id: "	+ getIdentity(e));
+					log.debug("CrudService.store: persisted new entity, got id: "	+ 
+					    CrudServiceUtils.getIdValues(entity).get(0));
 					return e;
 				} else {
 					log.debug("CrudService.store: merge existing entity with id: " + id);
@@ -174,7 +172,8 @@ public class CrudServiceBean implements CrudService {
 			} 
 			else {
 				T e = persist(entity);
-				log.debug("CrudService.store: persisted new entity, got id: "	+ getIdentity(e));
+				log.debug("CrudService.store: persisted new entity, got id: "	+ 
+				    CrudServiceUtils.getIdValues(entity).get(0));
 				return e;
 			}
 		}
@@ -287,190 +286,32 @@ public class CrudServiceBean implements CrudService {
 	 * </ul>
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	protected Query createExampleQuery(final Object example, boolean select, boolean distinct, boolean any) {
 		assert example != null : "The 'example' parameter can not be null"; //TODO: throw IllegalArgumentException
+		
+    String jpql = CrudServiceUtils.createJpql(example, select, distinct, any);
+    Map<String, Member> attributes = CrudServiceUtils.findQueryableAttributes(example.getClass());
+    attributes = CrudServiceUtils.reduceQueryableAttributesToPopulatedAttributes(example, attributes);
 
-		BeanMap beanMap = new BeanMap(example); // Map<String, Object> beanMap = new BeanMap(example);
-		
-		String jpql = createJPQL(example.getClass().getName(), beanMap, select, distinct, any);
-		
-		Query query = getEntityManager().createQuery(jpql);
-		
-		Set<Entry<String, Object>> properties = beanMap.entrySet();
-		int n = 1;
-		for (Entry<String, Object> entry : properties) {
-			Object value = entry.getValue();
-			if (value != null) {
-				Class<?> type = value.getClass();
-				if (type != null && (type.isPrimitive() || OBJECT_PRIMITIVES.indexOf(type.getName()) > -1)) {
-					query.setParameter(n++, value);
-				}
-			}
-		}
+    final StringBuilder debugData = new StringBuilder(example.getClass().getSimpleName() + 
+        " class query parameters: ");
+
+    Query query = getEntityManager().createQuery(jpql);
+    Set<Entry<String, Member>> properties = attributes.entrySet();
+    for (Entry<String, Member> entry : properties) {
+      String property = entry.getKey();
+      Member member = entry.getValue();
+      Object value = member != null ? ReflectionUtils.getAttributeValue(member, example) : null;
+      query.setParameter(property, value);
+      
+      if(log.isDebugEnabled())
+        debugData.append("[:" + property + " = " + value + "] ");
+    } 
+
+    if(log.isDebugEnabled())
+      log.debug(debugData);
+    
 		return query;
 	}
-
-	// ------------------------------------
-	// Utility methods
-	// TODO: move to separate package/class
-	// ------------------------------------
-	private static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
-			"java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
-			"java.lang.Character", "java.lang.Double",   "java.lang.Float",
-			"java.lang.Integer",   "java.lang.Long",     "java.lang.Number",
-			"java.lang.Short",     "java.util.Currency", "java.util.Date",
-			"java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" );
-
-	protected static boolean hasIdentity(final Object entity) {
-		return getIdentity(entity) != null ? true : false;
-	}
-
-	protected static Object getIdentity(final Object entity) {
-		String identityName = getIdentityPropertyName(entity.getClass());
-		BeanMap beanMap = new BeanMap(entity);
-		return beanMap.get(identityName);
-	}
-
-	protected static String getIdentityPropertyName(final Class<?> clazz) {
-		String idPropertyName = searchFieldsForIndentity(clazz);
-		if (idPropertyName == null) {
-			idPropertyName = searchMethodsForIdentity(clazz);
-		}
-		return idPropertyName != null ? idPropertyName : "id";
-	}
-
-	/**
-	 * Copy from org.crank.crud.GenericDaoUtils
-	 */
-	protected static String searchFieldsForIndentity(final Class<?> clazz) {
-		String pkName = null;
-		for (Field field : clazz.getDeclaredFields()) {
-			Id id = field.getAnnotation(Id.class);
-			if (id != null) {
-				pkName = field.getName();
-				break;
-			}
-		}
-		if (pkName == null && clazz.getSuperclass() != null) {
-			pkName = searchFieldsForIndentity((Class<?>) clazz.getSuperclass());
-		}
-		return pkName;
-	}
-
-  /**
-   * Copy from org.crank.crud.GenericDaoUtils
-   */
-	protected static String searchMethodsForIdentity(final Class<?> clazz) {
-		String pkName = null;
-		for (Method method : clazz.getDeclaredMethods()) {
-			Id id = method.getAnnotation(Id.class);
-			if (id != null) {
-				pkName = method.getName().substring(4);
-				pkName = method.getName().substring(3, 4).toLowerCase() + pkName;
-				break;
-			}
-		}
-		if (pkName == null && clazz.getSuperclass() != null) {
-			pkName = searchMethodsForIdentity(clazz.getSuperclass());
-		}
-		return pkName;
-	}
 	
-	protected static Map<String, Field> fieldsForQuery(final Object example) {
-	  Map<String, Field> fields = new HashMap<String, Field>(); //new BeanMap(example);
-	  
-	  Class<?> clazz = example.getClass();
-	  for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
-	    for ( Field field : clazz.getDeclaredFields() ) {
-	      if(!ignore(field)) {
-	        fields.put(field.getName(), field);
-	      }
-	    }
-	  }
-
-	  // Must run i separate loop
-    clazz = example.getClass();
-    for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
-      for( Method method : clazz.getDeclaredMethods()) {
-        if( ignore(method)) {
-          String fieldName = method.getName().substring(4);
-          fieldName = method.getName().substring(3, 4).toLowerCase() + fieldName;
-          fields.remove(fieldName);
-        }
-      }
-    }
-	  return fields;
-	}
-
-	/**
-	 * Copied/Modified from org.jboss.seam.persistence.ManagedEntityWrapper
-	 */
-  protected static boolean ignore(Field field) {
-    return Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())
-        || field.isAnnotationPresent(Transient.class);
-  }
-
-  /**
-   * Modified from org.jboss.seam.persistence.ManagedEntityWrapper
-   */
-  protected static boolean ignore(Method method) {
-    return Modifier.isTransient(method.getModifiers()) || Modifier.isStatic(method.getModifiers())
-        || method.isAnnotationPresent(Transient.class);
-  }
-
-	/**
-	 * Creates a parameterized SELECT or DELETE JPQL query based on non null
-	 * property values, exclusive transient and static values, in the <code>fields</code> parameter
-	 * 
-	 * @return The created JPQL string
-	 */
-	protected static String createJPQL(final String entityClass, 
-			final Map<String, Object> fields, boolean select, boolean distinct,	boolean any) {
-
-		assert (entityClass != null) : "The 'entityClass' parameter can not be null!"; //TODO: throw IllegalArgumentException
-
-		final StringBuilder jpql = new StringBuilder((select ? String.format(
-				"SELECT %s e", (distinct ? "DISTINCT" : "")) : "DELETE")
-			)
-			.append(String.format(" FROM %s e", entityClass));
-		
-		final StringBuilder debugData = new StringBuilder();
-
-		Set<Entry<String, Object>> properties = fields.entrySet();
-		boolean where = false;
-		String operator = (any ? "OR" : "AND");
-		int n = 1;
-		
-		for (Entry<String, Object> entry : properties) {
-			String propertyName = entry.getKey();
-			Object value = entry.getValue();
-
-			if (value != null) {
-				Class<?> type = value.getClass();
-				if (type != null) {
-					int k = OBJECT_PRIMITIVES.indexOf(type.getName());
-					if (type.isPrimitive() || k > -1) {
-					  
-						String equals = (k == 0 ? (value.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 == java.lang.String
-						if (!where) {
-							where = true;
-							jpql.append(String.format(" where e.%s %s ?%d", propertyName, equals, n));
-						} else {
-							jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName, equals, n));
-						}
-						if(log.isDebugEnabled()) {
-							debugData.append("\n\t[?" + n + " = " + value + ']');
-						}
-						n++;
-					}
-				}
-			}
-		}
-		if(log.isDebugEnabled()) {
-			debugData.insert(0, "createJPQL, jpql = \n\t[" + jpql.toString() + "]");
-			log.debug(debugData);
-		}
-		return jpql.toString();
-	}
 }

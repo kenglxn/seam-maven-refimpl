@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Local;
-import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TransactionRequiredException;
 
 @Local
-//@Stateless(name = "crudService")
 public interface CrudService {
   
   final static String NAME = "crudService";

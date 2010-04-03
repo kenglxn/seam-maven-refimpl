@@ -21,6 +21,18 @@ public class ReflectionUtils {
     return result;
   }
 
+  public static Member searchMembersForFirstAnnotation(
+      final Class<? extends Annotation> annotation, final Class<?> target) {
+    
+    Member result = null;
+    if(target != null && annotation != null) {
+      result = searcFieldsForFirstAnnotation(annotation, target);
+      if(result == null)
+        result = searcMethodsForFirstAnnotation(annotation, target);
+    }
+    return result;
+  }
+
   public static List<Field> searchFieldsForAnnotation( 
       final Class<? extends Annotation> annotation, final Class<?> target) {
 
@@ -144,7 +156,8 @@ public class ReflectionUtils {
             String.format(message, methodToString(method), target.getClass().getName()));
       }
     }
-    
+
+// Do we care??
 //    if(method.getParameterTypes().length > 0) {
 //      throw new IllegalArgumentException(
 //          String.format(message, methodToString(method), target.getClass().getName()));

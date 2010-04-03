@@ -66,6 +66,15 @@ public class CrudServiceUtils {
   }
 
   /**
+   * Checks if an entity class is annotated with @Id
+   * @param entityClass The class to check for @Id annotation
+   * @return true if one or more attributes (field or method) has @Id annotation
+   */
+  public static boolean hasId(final Class<?> entityClass) {
+    return ReflectionUtils.searchMembersForFirstAnnotation(Id.class, entityClass) != null;
+  }
+  
+  /**
    * Get members (fields or methods) annotated with @Id
    * @param entityClass
    * @return A list of attributes annotated with @Id 
@@ -189,6 +198,29 @@ public class CrudServiceUtils {
     log.debug(entityClass.getSimpleName() + " class, queryable methods: " + methods.keySet());
     return methods;    
   }
+
+  public static Map<String, Member> reduceQueryableAttributesToPopulatedAttributes(
+      final Object exampleEntity, final Map<String, Member> attributes) {
+    
+    Map<String, Member> populatedAttributes = new HashMap<String, Member>();
+    Set<Entry<String, Member>> properties = attributes.entrySet();
+    for (Entry<String, Member> entry : properties) {
+      String propertyName = entry.getKey();
+      Member member = entry.getValue();
+      Object value = member != null ? ReflectionUtils.getAttributeValue(member, exampleEntity) : null;
+      
+      if (value != null) {
+        Class<?> type = value.getClass();
+        if (type != null) {
+          int k = OBJECT_PRIMITIVES.indexOf(type.getName());
+          if (type.isPrimitive() || k > -1) {
+            populatedAttributes.put(propertyName, member);
+          }
+        }
+      }
+    }    
+    return populatedAttributes;
+  }
   
   /**
    * Creates a parameterized SELECT or DELETE JPQL query based on non null
@@ -207,31 +239,26 @@ public class CrudServiceUtils {
       throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
     
     Map<String, Member> attributes = findQueryableAttributes(exampleEntity.getClass());
+    attributes = reduceQueryableAttributesToPopulatedAttributes(exampleEntity, attributes);
     return createJpql(exampleEntity, attributes, select, distinct, any);
   }
+
   
-  /**
-   * Creates a parameterized SELECT or DELETE JPQL query based on non null
-   * property values, exclusive transient and static values, in the <code>fields</code> parameter
-   * 
-   * @return The created JPQL string
-   */
   private static String createJpql(final Object exampleEntity, final Map<String, Member> attributes, 
       boolean select, boolean distinct, boolean any) {
 
-    String entityClassName = exampleEntity.getClass().getName();
-
-    final StringBuilder jpql = new StringBuilder((select ? String.format(
-        "SELECT %s e", (distinct ? "DISTINCT" : "")) : "DELETE")
-      )
-      .append(String.format(" FROM %s e", entityClassName));
+    final String entityClassName = exampleEntity.getClass().getName();
+    final StringBuilder jpql = new StringBuilder((select ? distinct ?
+      "SELECT DISTINCT e" : "SELECT e" : "DELETE")
+    )
+    .append(String.format(" FROM %s e", entityClassName));
     
     final StringBuilder debugData = new StringBuilder();
 
+    // TODO: remove redundant code use reduceQueryableAttributesToPopulatedAttributes method
     Set<Entry<String, Member>> properties = attributes.entrySet();
     boolean where = false;
     String operator = (any ? "OR" : "AND");
-    int n = 1;
     
     for (Entry<String, Member> entry : properties) {
       String propertyName = entry.getKey();
@@ -244,7 +271,7 @@ public class CrudServiceUtils {
           int k = OBJECT_PRIMITIVES.indexOf(type.getName());
           if (type.isPrimitive() || k > -1) {
             
-            String equals = (k == 0 ? (member.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 => java.lang.String
+            String equals = (k == 0 ? (value.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 => java.lang.String
             if (!where) {
               where = true;
               jpql.append(String.format(" WHERE e.%s %s :%s", propertyName, equals, propertyName));
@@ -252,15 +279,14 @@ public class CrudServiceUtils {
               jpql.append(String.format(" %s e.%s %s :%s", operator, propertyName, equals, propertyName));
             }
             if(log.isDebugEnabled()) {
-              debugData.append("\n\t[:" + propertyName + " = " + member + ']');
+              debugData.append(String.format("[e.%s %s %s ] ", propertyName, equals, value));
             }
-            n++;
           }
         }
       }
     }
     if(log.isDebugEnabled()) {
-      debugData.insert(0, "createJPQL, jpql = \n\t[" + jpql.toString() + "]");
+      debugData.insert(0, "createJPQL, jpql = \n\t[" + jpql.toString() + "]\n\t");
       log.debug(debugData);
     }
     return jpql.toString();
