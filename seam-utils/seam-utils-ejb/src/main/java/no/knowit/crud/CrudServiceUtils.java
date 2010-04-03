@@ -7,7 +7,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -163,8 +162,9 @@ public class CrudServiceUtils {
       }
     }
     
-    methods.putAll(getters);
     methods.putAll(setters);
+    methods.putAll(getters);  // getters are more important than setters - so add them last
+                              // TODO: Keep both setters and getters
     
     Set<Entry<String, Method>> properties = getters.entrySet();
     for (Entry<String, Method> entry : properties) {
@@ -190,13 +190,6 @@ public class CrudServiceUtils {
     return methods;    
   }
   
-  
-  
-  //----------------------
-  // rest is untested code
-  //----------------------
-  
-  
   /**
    * Creates a parameterized SELECT or DELETE JPQL query based on non null
    * field values in the <code>exampleEntity</code> parameter, 
@@ -204,8 +197,8 @@ public class CrudServiceUtils {
    * 
    * @return The created JPQL string
    */
-  public static String createExampleJPQL(final Object exampleEntity, boolean select, 
-      boolean distinct, boolean any) throws Exception {
+  public static String createJpql(final Object exampleEntity, boolean select, 
+      boolean distinct, boolean any) {
 
     if(exampleEntity == null)
       throw new IllegalStateException("exampleEntity parameter can not be null.");
@@ -213,9 +206,8 @@ public class CrudServiceUtils {
     if(!isEntity(exampleEntity.getClass()))
       throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
     
-    Map<String, Member> fields = findQueryableAttributes(exampleEntity.getClass());
-    //return createJPQL(exampleEntity, fields, select, distinct, any);
-    return null;
+    Map<String, Member> attributes = findQueryableAttributes(exampleEntity.getClass());
+    return createJpql(exampleEntity, attributes, select, distinct, any);
   }
   
   /**
@@ -224,8 +216,8 @@ public class CrudServiceUtils {
    * 
    * @return The created JPQL string
    */
-  private static String createJPQL(final Object exampleEntity, final Map<String, Field> fields, 
-      boolean select, boolean distinct, boolean any) throws Exception {
+  private static String createJpql(final Object exampleEntity, final Map<String, Member> attributes, 
+      boolean select, boolean distinct, boolean any) {
 
     String entityClassName = exampleEntity.getClass().getName();
 
@@ -236,16 +228,15 @@ public class CrudServiceUtils {
     
     final StringBuilder debugData = new StringBuilder();
 
-    
-    Set<Entry<String, Field>> properties = fields.entrySet();
+    Set<Entry<String, Member>> properties = attributes.entrySet();
     boolean where = false;
     String operator = (any ? "OR" : "AND");
     int n = 1;
     
-    for (Entry<String, Field> entry : properties) {
+    for (Entry<String, Member> entry : properties) {
       String propertyName = entry.getKey();
-      Field field = entry.getValue();
-      Object value = field != null ? ReflectionUtils.getFieldValue(field, exampleEntity) : null;
+      Member member = entry.getValue();
+      Object value = member != null ? ReflectionUtils.getAttributeValue(member, exampleEntity) : null;
       
       if (value != null) {
         Class<?> type = value.getClass();
@@ -253,15 +244,15 @@ public class CrudServiceUtils {
           int k = OBJECT_PRIMITIVES.indexOf(type.getName());
           if (type.isPrimitive() || k > -1) {
             
-            String equals = (k == 0 ? (field.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 == java.lang.String
+            String equals = (k == 0 ? (member.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 => java.lang.String
             if (!where) {
               where = true;
-              jpql.append(String.format(" where e.%s %s ?%d", propertyName, equals, n));
+              jpql.append(String.format(" WHERE e.%s %s :%s", propertyName, equals, propertyName));
             } else {
-              jpql.append(String.format(" %s e.%s %s ?%d", operator, propertyName, equals, n));
+              jpql.append(String.format(" %s e.%s %s :%s", operator, propertyName, equals, propertyName));
             }
             if(log.isDebugEnabled()) {
-              debugData.append("\n\t[?" + n + " = " + field + ']');
+              debugData.append("\n\t[:" + propertyName + " = " + member + ']');
             }
             n++;
           }
@@ -280,33 +271,28 @@ public class CrudServiceUtils {
    */
   private static boolean ignore(final Field field) {
     return Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())
+        || Modifier.isNative(field.getModifiers())    || Modifier.isFinal(field.getModifiers())     
         || field.isAnnotationPresent(Transient.class) || field.isAnnotationPresent(Version.class);
   }
 
   /**
    * Modified from org.jboss.seam.persistence.ManagedEntityWrapper
+   * If you have a final field then you should'nt use get/set methods that field
    */
   private static boolean ignore(final Method method) {
     return Modifier.isTransient(method.getModifiers()) || Modifier.isStatic(method.getModifiers())
+        || Modifier.isNative(method.getModifiers())    || Modifier.isFinal(method.getModifiers())
         || method.isAnnotationPresent(Transient.class) || method.isAnnotationPresent(Version.class);
   }
 
   /**
-   * If a class is not annotated @Entity or  @MappedSuperclass then the 
-   * class is transient and we should ignore all fields in that class
+   * If a class is not an annotated  @Entity or  @MappedSuperclass then  
+   * the class is transient and we should ignore all fields in that class
    */
   private static boolean ignore(final Class<?> clazz) {
     return !(
       clazz.isAnnotationPresent(MappedSuperclass.class) || clazz.isAnnotationPresent(Entity.class)
     );
-    
-//    return !(
-//        clazz.isAnnotationPresent(MappedSuperclass.class)
-//        || clazz.isAnnotationPresent(Entity.class)
-//        || (Modifier.isAbstract(clazz.getModifiers()) 
-//            && clazz.isAnnotationPresent(MappedSuperclass.class))
-//      );
-
   }
 
 }
