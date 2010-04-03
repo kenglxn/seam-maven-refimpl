@@ -49,6 +49,7 @@ import org.apache.log4j.Logger;
  */
 @Stateless(name = CrudService.NAME)
 public class CrudServiceBean implements CrudService {
+  final static String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
 
 	//protected Logger log = Logger.getLogger(this.getClass());
 	protected static Logger log = Logger.getLogger(CrudServiceBean.class);
@@ -82,13 +83,16 @@ public class CrudServiceBean implements CrudService {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass) {
-		assert entityClass != null : "The 'entityClass' parameter can not be null"; //TODO: throw IllegalArgumentException
+		if(entityClass == null)
+		  throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
+
 		return getEntityManager().createQuery("from " + entityClass.getName()).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult) {
-		assert entityClass != null : "The 'entityClass' parameter can not be null"; //TODO: throw IllegalArgumentException
+    if(entityClass == null)
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
 		
 		return getEntityManager().createQuery("from " + entityClass.getName())
 			.setFirstResult(startPosition).setMaxResults(maxResult).getResultList();
@@ -112,7 +116,9 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> merge(Collection<T> entities) {
-		assert entities != null : "The 'entities' parameter can not be null"; //TODO: throw IllegalArgumentException 
+		if(entities == null) 
+		  throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
+    
 		Collection<T> mergedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			mergedResults.add(merge(entity));
@@ -133,7 +139,9 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public void remove(Collection<Object> entities) {
-		assert entities != null : "The 'entities' parameter can not be null"; //TODO: throw IllegalArgumentException
+    if(entities == null) 
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
+    
 		for (Object entity : entities) {
 			remove(entity);
 		}
@@ -146,7 +154,8 @@ public class CrudServiceBean implements CrudService {
 
 	// C or U :-)
 	public <T> T store(T entity) {
-		assert entity != null : "The 'entity' parameter can not be null"; //TODO: throw IllegalArgumentException
+    if(entity == null) 
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entity"));
 
 		//Object id = getIdentity(entity);
 		Object id = CrudServiceUtils.getIdValues(entity).get(0);
@@ -180,15 +189,17 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> store(Collection<T> entities) {
-		assert entities != null : "The 'entities' parameter can not be null"; //TODO: throw IllegalArgumentException
-		Collection<T> storedResults = new ArrayList<T>(entities.size());
+    if(entities == null) 
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
+
+    Collection<T> storedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			storedResults.add(store(entity));
 		}
 		return storedResults;
 	}
 
-	public <T> T refresh(final T transientEntity) {
+	public <T> T refresh(T transientEntity) {
 		EntityManager em = getEntityManager();
 		T managedEntity = em.contains(transientEntity) ? transientEntity : em.merge(transientEntity);
 		em.refresh(managedEntity);
@@ -203,7 +214,9 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> refresh(Collection<T> entities) {
-		assert entities != null : "The 'entities' parameter can not be null"; //TODO: throw IllegalArgumentException
+    if(entities == null) 
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
+    
 		Collection<T> refreshedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			refreshedResults.add(refresh(entity));
@@ -287,14 +300,18 @@ public class CrudServiceBean implements CrudService {
 	 * 
 	 */
 	protected Query createExampleQuery(final Object example, boolean select, boolean distinct, boolean any) {
-		assert example != null : "The 'example' parameter can not be null"; //TODO: throw IllegalArgumentException
+    if(example == null) 
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "example"));
 		
     String jpql = CrudServiceUtils.createJpql(example, select, distinct, any);
     Map<String, Member> attributes = CrudServiceUtils.findQueryableAttributes(example.getClass());
     attributes = CrudServiceUtils.reduceQueryableAttributesToPopulatedAttributes(example, attributes);
 
-    final StringBuilder debugData = new StringBuilder(example.getClass().getSimpleName() + 
-        " class query parameters: ");
+    final StringBuilder debugData = new StringBuilder();
+    
+    if(log.isDebugEnabled()) 
+      debugData.append(example.getClass().getSimpleName() + " class query parameters: ");
+    
 
     Query query = getEntityManager().createQuery(jpql);
     Set<Entry<String, Member>> properties = attributes.entrySet();
