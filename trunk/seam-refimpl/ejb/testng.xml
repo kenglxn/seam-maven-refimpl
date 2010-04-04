@@ -2,13 +2,13 @@
 
 <suite name="SeamRefimpl" verbose="2" parallel="false">
 
-   <test name="SeamRefimpl: Authenticator">
+   <test name="Authenticator">
      <classes>
        <class name="no.knowit.seam.example.security.AuthenticatorTest"/>
      </classes>
    </test>
    
-   <test name="SeamRefimpl: Movie">
+   <test name="Movie">
      <classes>
        <class name="no.knowit.seam.example.action.MovieTest"/>
      </classes>
