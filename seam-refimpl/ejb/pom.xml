@@ -165,7 +165,7 @@
         <configuration>
           <suiteXmlFiles>
             <suiteXmlFile>
-              src/test/resources/testng.xml
+              testng.xml
             </suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
