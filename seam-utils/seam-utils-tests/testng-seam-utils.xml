@@ -1,20 +1,20 @@
 <!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
 
-<suite name="seam-utils" verbose="2" parallel="false">
+<suite name="Seam Utilities" verbose="2" parallel="false">
 
-  <test name="Utilities Test">
+  <test name="Utilities">
     <classes>
      <class name="no.knowit.util.ReflectionUtilsTest" />
     </classes>
   </test>
   
-  <test name="CRUD Service Utils Test">
+  <test name="CrudService Utilities">
   <classes>
     <class name="no.knowit.crud.CrudServiceUtilsTest" />
   </classes>
   </test>
   
-  <test name="CRUD Service Test">
+  <test name="CRUD Service SLSB">
     <classes>
       <class name="no.knowit.crud.CrudServiceTest" />
     </classes>
