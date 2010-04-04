@@ -39,7 +39,8 @@ public class BootStrapOpenEjb {
 			// Is OpenEJB is available
 			Class.forName("org.apache.openejb.OpenEJB");
 
-			if (!OpenEJB.isInitialized()) {
+			//if (!OpenEJB.isInitialized()) {
+			if(initialContext == null) {
 				Properties p = new Properties();
 	
 				// Set the initial context factory
@@ -68,14 +69,15 @@ public class BootStrapOpenEjb {
 	 * @return
 	 */
 	public static InitialContext closeInitialContext() {
-		if(initialContext != null)
-		try {
-			initialContext.close();
-			initialContext = null;
-		} 
-		catch (Exception e) {
-			System.out.println("\n*******\nClosing OpenEJB context failed: " + e + "\n*******");
-			throw new RuntimeException(e);
+		if(initialContext != null) {
+	    try {
+	      initialContext.close();
+	      initialContext = null;
+	    } 
+	    catch (Exception e) {
+	      System.out.println("\n*******\nClosing OpenEJB context failed: " + e + "\n*******");
+	      throw new RuntimeException(e);
+	    }
 		}
 		return null;
 	}

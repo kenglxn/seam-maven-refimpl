@@ -1,0 +1,23 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+
+<suite name="seam-utils" verbose="2" parallel="false">
+
+  <test name="Utilities Test">
+    <classes>
+     <class name="no.knowit.util.ReflectionUtilsTest" />
+    </classes>
+  </test>
+  
+  <test name="CRUD Service Utils Tests">
+  <classes>
+    <class name="no.knowit.crud.CrudServiceUtilsTest" />
+  </classes>
+  </test>
+  
+  <test name="CRUD Service Tests">
+    <classes>
+      <class name="no.knowit.crud.CrudServiceTest" />
+    </classes>
+  </test>
+  
+</suite>

@@ -2,10 +2,7 @@ package no.knowit.seam.injectedentitymanager;
 
 import java.util.List;
 
-import org.jboss.seam.log.LogProvider;
-import org.jboss.seam.log.Logging;
 import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import no.knowit.testsupport.model.Movie;
@@ -14,18 +11,16 @@ import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
 public class InjectedEntityManagerInStatelessBeanTest extends SeamOpenEjbTest {
 	
-  private static final LogProvider log = Logging.getLogProvider(InjectedEntityManagerInStatelessBeanTest.class);
-	
-	@Override
-	@BeforeSuite
-	public void beforeSuite() throws Exception {
-	 contextProperties.put("log4j.category.no.knowit.seam.injectedentitymanager", "DEBUG");
-	 super.beforeSuite();
-	}
+//	@Override
+//	@BeforeSuite
+//	public void beforeSuite() throws Exception {
+//	 contextProperties.put("log4j.category.no.knowit.seam.injectedentitymanager", "DEBUG");
+//	 super.beforeSuite();
+//	}
 
 
-	@Test(groups={ "seam", "unit-test" } )
-	public void shouldGetInjectedEntityManagerInStatelessSessionBean() throws Exception {
+	@Test
+	public void shouldInjectEntityManagerInStatelessSeamComponent() throws Exception {
 
 		new ComponentTest() {
 			@Override

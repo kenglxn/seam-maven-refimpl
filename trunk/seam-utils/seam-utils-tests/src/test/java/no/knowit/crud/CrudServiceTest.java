@@ -2,12 +2,9 @@ package no.knowit.crud;
 
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import no.knowit.openejb.mock.OpenEjbTest;
 import no.knowit.testsupport.model.Movie;
 
-import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeSuite;
@@ -20,7 +17,7 @@ import org.testng.annotations.Test;
  */
 public class CrudServiceTest extends OpenEjbTest {
 	
-	private Logger log = Logger.getLogger(this.getClass());
+//	private Logger log = Logger.getLogger(this.getClass());
 	private Movie theWall;
 	private Integer fargoId;
 	
@@ -136,16 +133,6 @@ public class CrudServiceTest extends OpenEjbTest {
 		crudService.remove(exampleMovie, true);
 		
 		List<Movie> movies = crudService.find(exampleMovie, false, true);
-  	Assert.assertEquals(movies.size(), 0, "List.size()");
-	}
-
-	@Test(dependsOnMethods={ "deleteByExample" })
-	public void deleteAll() throws Exception {
-		CrudService crudService = lookupCrudService();
-		Movie exampleMovie = new Movie();
-		crudService.remove(exampleMovie, true);
-		
-		List<Movie> movies = crudService.find(exampleMovie, false, false);
   	Assert.assertEquals(movies.size(), 0, "List.size()");
 	}
 }
