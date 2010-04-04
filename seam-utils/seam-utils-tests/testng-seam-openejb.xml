@@ -2,20 +2,20 @@
 
 <suite name="seam-utils-openejb" verbose="2" parallel="false">
 
-  <test name="Seam and OpenEJB Integration: HelloSeam">
+  <test name="Seam and OpenEJB Integration: HelloSeam Test">
     <classes>
       <class name="no.knowit.seam.hello.HelloSeamTest" />
     </classes>
   </test>
   
-  <test name="Seam and OpenEJB Integration: Stateless and Stateful">
+  <test name="Seam and OpenEJB Integration: Stateless and Stateful Tests">
     <classes>
       <class name="no.knowit.seam.injectedentitymanager.InjectedEntityManagerInStatelessBeanTest" />
       <class name="no.knowit.seam.stateful.MessageManagerTest" />
     </classes>
   </test>
   
-  <test name="Seam and OpenEJB Integration: Seam Framework">
+  <test name="Seam and OpenEJB Integration: Seam Framework Test">
     <classes>
       <class name="no.knowit.seam.framework.SeamFrameworkTest" />
     </classes>
