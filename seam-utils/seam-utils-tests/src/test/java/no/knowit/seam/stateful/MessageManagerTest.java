@@ -9,20 +9,19 @@ import no.knowit.testsupport.seam.stateful.MessageManager;
 import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 public class MessageManagerTest extends SeamOpenEjbTest {
 	
-	@Override
-	@BeforeSuite
-	public void beforeSuite() throws Exception {
-	 contextProperties.put("log4j.category.no.knowit.seam.statefulaction", "DEBUG");
-	 super.beforeSuite();
-	}
+//	@Override
+//	@BeforeSuite
+//	public void beforeSuite() throws Exception {
+//	 contextProperties.put("log4j.category.no.knowit.seam.statefulaction", "DEBUG");
+//	 super.beforeSuite();
+//	}
 
-	@Test(groups={ "seam", "unit-test" }, enabled=true)
-	public void testStatefulActionBean() throws Exception {
+	@Test
+	public void shouldRunStatefulSeamComponent() throws Exception {
 
 		new ComponentTest() {
 			@Override

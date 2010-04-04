@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+
+<suite name="seam-utils-openejb" verbose="2" parallel="false">
+
+  <test name="Seam and OpenEJB Integration: HelloSeam">
+    <classes>
+      <class name="no.knowit.seam.hello.HelloSeamTest" />
+    </classes>
+  </test>
+  
+  <test name="Seam and OpenEJB Integration: Stateless and Stateful">
+    <classes>
+      <class name="no.knowit.seam.injectedentitymanager.InjectedEntityManagerInStatelessBeanTest" />
+      <class name="no.knowit.seam.stateful.MessageManagerTest" />
+    </classes>
+  </test>
+  
+  <test name="Seam and OpenEJB Integration: Seam Framework">
+    <classes>
+      <class name="no.knowit.seam.framework.SeamFrameworkTest" />
+    </classes>
+  </test>
+  
+</suite>

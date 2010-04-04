@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import no.knowit.openejb.mock.OpenEjbTest;
@@ -25,14 +23,14 @@ import no.knowit.testsupport.model.inheritance.PartTimeEmployee;
 import no.knowit.util.ReflectionUtils;
 
 public class CrudServiceUtilsTest  extends OpenEjbTest {
-  private static Logger log = Logger.getLogger(CrudServiceUtils.class);
-
-  @BeforeSuite
-  public void beforeSuite() throws Exception {
-    contextProperties.put("log4j.category.no.knowit.crud", "debug");
-    contextProperties.put("log4j.category.no.knowit.testsupport", "debug");
-    super.beforeSuite();
-  }
+//  private static Logger log = Logger.getLogger(CrudServiceUtils.class);
+//
+//  @BeforeSuite
+//  public void beforeSuite() throws Exception {
+//    contextProperties.put("log4j.category.no.knowit.crud", "debug");
+//    contextProperties.put("log4j.category.no.knowit.testsupport", "debug");
+//    super.beforeSuite();
+//  }
   
   @Test
   public void shouldBeAnEntity() throws Exception {

@@ -2,12 +2,8 @@ package no.knowit.openejb.mock;
 
 import java.util.Properties;
 
-import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.Entity;
 
 import no.knowit.openejb.BootStrapOpenEjb;
 
@@ -89,7 +85,16 @@ public class OpenEjbTest {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
 	}
 
-	
+  /**
+   * Perform a clean shutdown of the embedded container
+   * This is an alternative to <code>initialContext.close()</code>
+   * @return
+   */
+  protected void shutdownOpenEJB() {
+    initialContext = BootStrapOpenEjb.shutdown();
+  }
+
+  
 	protected <T> T lookup(final String name) throws Exception {
     try {
       Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));

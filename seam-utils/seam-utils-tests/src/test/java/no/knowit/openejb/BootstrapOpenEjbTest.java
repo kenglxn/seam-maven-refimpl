@@ -32,7 +32,7 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
     // in this test case we want to verify that we're able to shutdown the container
 	}
 	
-	@Test(groups={ "openejb", "unit-test" }, enabled=true)
+	@Test(enabled=true)
 	public void bootstrapOpenEjb() throws Exception {
 		Assert.assertTrue(BootStrapOpenEjb.isopenEjbAvailable());
 		
@@ -40,13 +40,13 @@ public class BootstrapOpenEjbTest extends OpenEjbTest {
 		Assert.assertNotNull(initialContext);
 	}
 	
-	@Test(groups={ "openejb", "unit-test" }, dependsOnMethods={ "bootstrapOpenEjb" }, enabled=true)
+	@Test(dependsOnMethods={ "bootstrapOpenEjb" }, enabled=true)
 	public void closeOpenEjbInitialContext() throws Exception {
 		initialContext = BootStrapOpenEjb.closeInitialContext();
 		Assert.assertNull(initialContext);
 	}
 	
-	@Test(groups={ "openejb", "unit-test" }, dependsOnMethods={ "closeOpenEjbInitialContext" }, enabled=true)
+	@Test(dependsOnMethods={ "closeOpenEjbInitialContext" }, enabled=false)
 	public void shutdownopenEjb() throws Exception {
 		initialContext = BootStrapOpenEjb.bootstrap(null);
 		initialContext = BootStrapOpenEjb.shutdown();

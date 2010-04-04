@@ -27,16 +27,16 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-		 contextProperties.put("log4j.category.no.knowit.seam.seamframework", "debug");
-		 super.beforeSuite();
+    contextProperties.put("log4j.category.no.knowit.seam.seamframework", "debug");
+    super.beforeSuite();
 	}
 	
 	@Override
 	@BeforeClass
 	public void setupClass() throws Exception {
 		super.setupClass();
-		
     CrudService crudService = (CrudService)initialContext.lookup("crudService/Local");
+    crudService.remove(Movie.class);
     assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 before tests";
     
 		crudService.persist(new Movie("Alan Parker", "The Wall", 1999));
@@ -48,7 +48,7 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
     CrudService crudService = (CrudService)initialContext.lookup("crudService/Local");
     crudService.remove(Movie.class);
     assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 after cleanup"; 
-    
+
     super.cleanupClass();
 	}
 	
@@ -136,6 +136,7 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
 			protected void invokeApplication() throws Exception {
 			}
 			
+      @SuppressWarnings("unchecked")
       @Override
       protected void renderResponse() throws Exception {
       	List<Movie> list = (List<Movie>) invokeMethod( "#{movieList.getResultList}" );

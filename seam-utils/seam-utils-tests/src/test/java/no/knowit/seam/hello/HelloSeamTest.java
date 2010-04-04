@@ -21,20 +21,22 @@ public class HelloSeamTest extends SeamOpenEjbTest {
 		super.beforeSuite();
 	}
 
-	@Test(groups={ "seam", "unit-test" })
+	@Test
 	public void shouldLookupSeamComponentWithNoInterface() throws Exception {
 
 		new ComponentTest() {
 			@Override
 			protected void testComponents() throws Exception {
-				HelloSeamNoInterface seamComponent = getComponentInstanceWithAsserts("helloSeamNoInterface", HelloSeamNoInterface.class);
+				HelloSeamNoInterface seamComponent = 
+				  getComponentInstanceWithAsserts("helloSeamNoInterface", HelloSeamNoInterface.class);
+				
 				Assert.assertEquals(seamComponent.sayHello(), "Hello Seam - No Interface");
 				log.debug("*** Seam with no interface says Hello :-)");
 			}
 		}.run();
 	}
 	
-	@Test(groups={ "seam", "unit-test" }, dependsOnMethods={ "shouldLookupSeamComponentWithNoInterface" })
+	@Test(dependsOnMethods={ "shouldLookupSeamComponentWithNoInterface" })
 	public void shouldLookupSeamComponentWithLocalInterface() throws Exception {
 
 		new ComponentTest() {
