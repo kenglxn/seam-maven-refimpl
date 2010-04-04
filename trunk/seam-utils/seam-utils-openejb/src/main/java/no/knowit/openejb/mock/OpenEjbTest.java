@@ -17,121 +17,108 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 /**
- * Provides Base OpenEJB test functionality for TestNG tests.
- * This is a copy of the <code>org.jboss.seam.mock.SeamTest</code> class.<br/>
- * Use the <code>no.knowit.seam.openejb.mock.SeamOpenEjbTest</code> class to run Seam specific tests in OpenEJB.
+ * Provides Base OpenEJB test functionality for TestNG tests. This is a copy of
+ * the <code>org.jboss.seam.mock.SeamTest</code> class.<br/>
+ * Use the <code>no.knowit.seam.openejb.mock.SeamOpenEjbTest</code> class to run
+ * Seam specific tests in OpenEJB.
  */
 public class OpenEjbTest {
   private static Logger log = Logger.getLogger(OpenEjbTest.class);
   protected static final String JNDI_PATTERN = "%s/Local";
-	
-	protected static InitialContext initialContext = null;
-	protected static Properties contextProperties = new Properties();
 
-	
-	@BeforeMethod
-	public void begin() {
-	}
+  protected static InitialContext initialContext = null;
+  protected static Properties contextProperties = new Properties();
 
-	@AfterMethod
-	public void end() {
-	}
+  @BeforeMethod
+  public void begin() {
+  }
 
-	@BeforeClass
-	public void setupClass() throws Exception {
-	}
+  @AfterMethod
+  public void end() {
+  }
 
-	@AfterClass
-	public void cleanupClass() throws Exception {
-	}
+  @BeforeClass
+  public void setupClass() throws Exception {
+  }
 
-	@BeforeSuite
-	public void beforeSuite() throws Exception {
-		startOpenEjbEmbeddedIfNecessary();
-	}
+  @AfterClass
+  public void cleanupClass() throws Exception {
+  }
 
-	@AfterSuite
-	protected void afterSuite() throws Exception {
-		initialContext = BootStrapOpenEjb.closeInitialContext();
-	}
-	
-	/**
-	 * Start embedded OpenEJB container
-	 */
-	protected void startOpenEjbEmbeddedIfNecessary() throws Exception {
-		if (initialContext == null) {
-			initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param key
-	 */
-	protected void removeContextProperty(final String key) {
-		if (contextProperties.containsKey(key)) {
-			contextProperties.remove(key);
-		}
-	}
+  @BeforeSuite
+  public void beforeSuite() throws Exception {
+    startOpenEjbEmbeddedIfNecessary();
+  }
 
-	/**
-	 * Close the embedded container
-	 * If you need the embedded container to restart between different test scenarios, then
-	 * you should bootstrap the container with the property 
-	 * <code>"openejb.embedded.initialcontext.close=destroy"</code>
-	 * see http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html 
-	 */
-	protected void closeInitialContext() {
-		initialContext = BootStrapOpenEjb.closeInitialContext();
-	}
+  @AfterSuite
+  protected void afterSuite() throws Exception {
+    initialContext = BootStrapOpenEjb.closeInitialContext();
+  }
 
   /**
-   * Perform a clean shutdown of the embedded container
-   * This is an alternative to <code>initialContext.close()</code>
+   * Start embedded OpenEJB container
+   */
+  protected void startOpenEjbEmbeddedIfNecessary() throws Exception {
+    initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
+  }
+
+  /**
+   * 
+   * @param key
+   */
+  protected void removeContextProperty(final String key) {
+    if (contextProperties.containsKey(key)) {
+      contextProperties.remove(key);
+    }
+  }
+
+  /**
+   * Close the embedded container If you need the embedded container to restart
+   * between different test scenarios, then you should bootstrap the container
+   * with the property
+   * <code>"openejb.embedded.initialcontext.close=destroy"</code> see
+   * http://blog
+   * .jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+   */
+  protected void closeInitialContext() {
+    initialContext = BootStrapOpenEjb.closeInitialContext();
+  }
+
+  /**
+   * Perform a clean shutdown of the embedded container This is an alternative
+   * to <code>initialContext.close()</code>
+   * 
    * @return
    */
   protected void shutdownOpenEJB() {
     initialContext = BootStrapOpenEjb.shutdown();
   }
 
-  
-	protected <T> T lookup(final String name) throws Exception {
+  protected <T> T lookup(final String name) throws Exception {
     try {
       Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
-      Assert.assertNotNull(instance, String.format("initialContext.lookup(%s): returned null", name));
-      return (T)instance;
-    }
-    catch (NamingException e) {
+      Assert.assertNotNull(instance, String
+          .format("initialContext.lookup(%s): returned null", name));
+      return (T) instance;
+    } catch (NamingException e) {
       log.error(e);
-      throw(e);
+      throw (e);
     }
-	}
-	
-	/* TODO: tbd/tbt
-	@SuppressWarnings("unchecked")
-  protected <T> T lookup(final Class<?> clazz) throws Exception {
+  }
 
-	  String name = null;
-	  Stateless slsb = clazz.getAnnotation(Stateless.class);
-	  if(slsb != null) {
-	    name = slsb.name();
-	  }
-	  if(name == null) {
-	    Stateful sfsb =  clazz.getAnnotation(Stateful.class);
-      name = sfsb.name();
-	  }
-	  if(name == null || name.length() < 1) {
-	    name = clazz.getSimpleName();
-	  }
-    try {
-      T instance = (T)initialContext.lookup(String.format(JNDI_PATTERN, name));
-      Assert.assertNotNull(instance, String.format("initialContext.lookup(%s): returned null", name));
-      return instance;
-    }
-    catch (NamingException e) {
-      log.error(e);
-      throw(e);
-    }
-	}
-	*/
+  /*
+   * TODO: tbd/tbt
+   * 
+   * @SuppressWarnings("unchecked") protected <T> T lookup(final Class<?> clazz)
+   * throws Exception {
+   * 
+   * String name = null; Stateless slsb = clazz.getAnnotation(Stateless.class);
+   * if(slsb != null) { name = slsb.name(); } if(name == null) { Stateful sfsb =
+   * clazz.getAnnotation(Stateful.class); name = sfsb.name(); } if(name == null
+   * || name.length() < 1) { name = clazz.getSimpleName(); } try { T instance =
+   * (T)initialContext.lookup(String.format(JNDI_PATTERN, name));
+   * Assert.assertNotNull(instance,
+   * String.format("initialContext.lookup(%s): returned null", name)); return
+   * instance; } catch (NamingException e) { log.error(e); throw(e); } }
+   */
 }
