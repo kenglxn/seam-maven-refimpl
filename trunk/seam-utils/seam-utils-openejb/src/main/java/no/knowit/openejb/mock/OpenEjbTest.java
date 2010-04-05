@@ -26,7 +26,6 @@ public class OpenEjbTest {
   private static Logger log = Logger.getLogger(OpenEjbTest.class);
   protected static final String JNDI_PATTERN = "%s/Local";
 
-  protected static InitialContext initialContext = null;
   protected static Properties contextProperties = new Properties();
 
   @BeforeMethod
@@ -52,36 +51,34 @@ public class OpenEjbTest {
 
   @AfterSuite
   protected void afterSuite() throws Exception {
-    initialContext = BootStrapOpenEjb.closeInitialContext();
+    BootStrapOpenEjb.closeInitialContext();
   }
 
   /**
    * Start embedded OpenEJB container
    */
   protected void startOpenEjbEmbeddedIfNecessary() throws Exception {
-    initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
+    BootStrapOpenEjb.bootstrap(contextProperties);
   }
 
   /**
    * 
    * @param key
    */
-  protected void removeContextProperty(final String key) {
-    if (contextProperties.containsKey(key)) {
-      contextProperties.remove(key);
-    }
-  }
+//  protected void removeContextProperty(final String key) {
+//    if (contextProperties.containsKey(key)) {
+//      contextProperties.remove(key);
+//    }
+//  }
 
   /**
    * Close the embedded container If you need the embedded container to restart
    * between different test scenarios, then you should bootstrap the container
-   * with the property
-   * <code>"openejb.embedded.initialcontext.close=destroy"</code> see
-   * http://blog
-   * .jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+   * with the property <code>"openejb.embedded.initialcontext.close=destroy"</code>, see
+   * http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
    */
   protected void closeInitialContext() {
-    initialContext = BootStrapOpenEjb.closeInitialContext();
+    BootStrapOpenEjb.closeInitialContext();
   }
 
   /**
@@ -90,17 +87,18 @@ public class OpenEjbTest {
    * 
    * @return
    */
-  protected void shutdownOpenEJB() {
-    initialContext = BootStrapOpenEjb.shutdown();
-  }
+//  protected void shutdownOpenEJB() {
+//    BootStrapOpenEjb.shutdown();
+//  }
 
   protected <T> T lookup(final String name) throws Exception {
     try {
-      Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
-      Assert.assertNotNull(instance, String
-          .format("initialContext.lookup(%s): returned null", name));
+      InitialContext ic = BootStrapOpenEjb.getInitialContext();
+      Object instance = ic.lookup(String.format(JNDI_PATTERN, name));
+      Assert.assertNotNull(instance, String.format("InitialContext.lookup(%s): returned null", name));
       return (T) instance;
-    } catch (NamingException e) {
+    } 
+    catch (NamingException e) {
       log.error(e);
       throw (e);
     }
@@ -108,17 +106,32 @@ public class OpenEjbTest {
 
   /*
    * TODO: tbd/tbt
-   * 
-   * @SuppressWarnings("unchecked") protected <T> T lookup(final Class<?> clazz)
-   * throws Exception {
-   * 
-   * String name = null; Stateless slsb = clazz.getAnnotation(Stateless.class);
-   * if(slsb != null) { name = slsb.name(); } if(name == null) { Stateful sfsb =
-   * clazz.getAnnotation(Stateful.class); name = sfsb.name(); } if(name == null
-   * || name.length() < 1) { name = clazz.getSimpleName(); } try { T instance =
-   * (T)initialContext.lookup(String.format(JNDI_PATTERN, name));
-   * Assert.assertNotNull(instance,
-   * String.format("initialContext.lookup(%s): returned null", name)); return
-   * instance; } catch (NamingException e) { log.error(e); throw(e); } }
    */
+  
+//  @SuppressWarnings("unchecked")
+//  protected <T> T lookup(final Class<?> clazz) throws Exception {
+//
+//    String name = null;
+//    Stateless slsb = clazz.getAnnotation(Stateless.class);
+//    if (slsb != null) {
+//      name = slsb.name();
+//    }
+//    if (name == null) {
+//      Stateful sfsb = clazz.getAnnotation(Stateful.class);
+//      name = sfsb.name();
+//    }
+//    if (name == null || name.length() < 1) {
+//      name = clazz.getSimpleName();
+//    }
+//    try {
+//      T instance = (T) initialContext.lookup(String.format(JNDI_PATTERN, name));
+//      Assert.assertNotNull(instance, String
+//          .format("initialContext.lookup(%s): returned null", name));
+//      return instance;
+//    } 
+//    catch (NamingException e) {
+//      log.error(e);
+//      throw (e);
+//    }
+//  }
 }
