@@ -7,6 +7,7 @@ import javax.naming.NamingException;
 
 import no.knowit.openejb.BootStrapOpenEjb;
 
+import org.apache.log4j.Logger;
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.mock.AbstractSeamTest;
@@ -18,8 +19,12 @@ import org.testng.Assert;
  */
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
-  protected static InitialContext initialContext = null;
+  protected static final String JNDI_PATTERN = "%s/Local";
+  
+  protected static Logger log = Logger.getLogger(AbstractSeamOpenEjbTest.class);
+  
   protected static Properties contextProperties = new Properties();
+  protected static InitialContext initialContext = null;
 
   /**
    * Start embedded OpenEJB container
@@ -27,23 +32,16 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
   @Override
   protected void startJbossEmbeddedIfNecessary() throws Exception {
     initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
-    // do not call super
+    // do not call super!!
   }
 
   @Override
   protected InitialContext getInitialContext() throws NamingException {
+    if(initialContext == null) {
+      initialContext = BootStrapOpenEjb.getInitialContext();
+    }
     return initialContext;
     // do not call super
-  }
-
-  public static InitialContext getStaticInitialContext() throws NamingException {
-    return initialContext;
-  }
-
-  protected void removeContextProperty(final String key) {
-    if (contextProperties.containsKey(key)) {
-      contextProperties.remove(key);
-    }
   }
 
   /**
@@ -58,16 +56,21 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
     initialContext = BootStrapOpenEjb.closeInitialContext();
   }
 
-  /**
-   * Perform a clean shutdown of the embedded container
-   * This is an alternative to <code>initialContext.close()</code>
-   * @return
-   */
-  protected void shutdownOpenEJB() {
-    initialContext = BootStrapOpenEjb.shutdown();
+  protected <T> T doJndiLookup(final String name) throws Exception {
+    try {
+      if(initialContext == null) {
+        initialContext = BootStrapOpenEjb.getInitialContext();
+      }
+      Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
+      Assert.assertNotNull(instance, String.format("InitialContext.lookup(%s): returned null", name));
+      return (T)instance;
+    } 
+    catch (NamingException e) {
+      log.error(e);
+      throw (e);
+    }
   }
-  
-  
+
   /**
    * Type safe version of Component.getInstance(name)
    * 
@@ -117,8 +120,9 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
       Assert.assertNotNull(instance, "Component.getInstance(\"" + name + "\") returned null");
       Assert.assertTrue(instance.getClass() instanceof Class,
           "Component.getInstance(\"name\") returned incorrect type");
-      return (T) instance;
-    } catch (Exception e) {
+      return (T)instance;
+    } 
+    catch (Exception e) {
       Assert.fail("Could not lookup Seam component: " + name, e);
     }
     return null;

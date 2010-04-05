@@ -22,7 +22,7 @@ public class CrudServiceTest extends OpenEjbTest {
 	private Integer fargoId;
 	
 	private CrudService lookupCrudService() throws Exception {
-    return lookup(CrudService.NAME);
+    return doJndiLookup(CrudService.NAME);
 	}
 	
 	@Override

@@ -72,10 +72,16 @@ public class BootStrapOpenEjb {
 	}
 
 	/**
-	 * Close the initial context
-	 * If the container was started with <code>openejb.embedded.initialcontext.close=destroy</code> then 
+	 * Close the initial context.
+	 * If the container was started with the property 
+	 * <code>openejb.embedded.initialcontext.close=destroy</code> then 
 	 * OpenEJB destroys the embedded container when closing the initial context, see:
-	 * http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+	 * <ul>
+	 * <li> http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html</li>
+	 * <li>http://openejb.apache.org/faq.html</li>
+	 * <li>https://blogs.apache.org/openejb/entry/user_blog_restarting_the_embedded</li>
+	 * </ul>
+	 * 
 	 * @return
 	 */
 	public static InitialContext closeInitialContext() {
