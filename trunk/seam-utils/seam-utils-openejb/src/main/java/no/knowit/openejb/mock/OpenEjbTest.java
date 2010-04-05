@@ -23,10 +23,12 @@ import org.testng.annotations.BeforeSuite;
  * Seam specific tests in OpenEJB.
  */
 public class OpenEjbTest {
-  private static Logger log = Logger.getLogger(OpenEjbTest.class);
   protected static final String JNDI_PATTERN = "%s/Local";
 
+  protected static Logger log = Logger.getLogger(OpenEjbTest.class);
+
   protected static Properties contextProperties = new Properties();
+  protected static InitialContext initialContext = null;
 
   @BeforeMethod
   public void begin() {
@@ -51,25 +53,15 @@ public class OpenEjbTest {
 
   @AfterSuite
   protected void afterSuite() throws Exception {
-    BootStrapOpenEjb.closeInitialContext();
+    closeInitialContext();
   }
 
   /**
    * Start embedded OpenEJB container
    */
   protected void startOpenEjbEmbeddedIfNecessary() throws Exception {
-    BootStrapOpenEjb.bootstrap(contextProperties);
+    initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
   }
-
-  /**
-   * 
-   * @param key
-   */
-//  protected void removeContextProperty(final String key) {
-//    if (contextProperties.containsKey(key)) {
-//      contextProperties.remove(key);
-//    }
-//  }
 
   /**
    * Close the embedded container If you need the embedded container to restart
@@ -78,24 +70,23 @@ public class OpenEjbTest {
    * http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
    */
   protected void closeInitialContext() {
-    BootStrapOpenEjb.closeInitialContext();
+    initialContext = BootStrapOpenEjb.closeInitialContext();
+  }
+  
+  protected InitialContext getInitialContext() {
+    if(initialContext == null) {
+      initialContext = BootStrapOpenEjb.getInitialContext();
+    }
+    return initialContext;
   }
 
-  /**
-   * Perform a clean shutdown of the embedded container This is an alternative
-   * to <code>initialContext.close()</code>
-   * 
-   * @return
-   */
-//  protected void shutdownOpenEJB() {
-//    BootStrapOpenEjb.shutdown();
-//  }
-
-  protected <T> T lookup(final String name) throws Exception {
+  protected <T> T doJndiLookup(final String name) throws Exception {
     try {
-      InitialContext ic = BootStrapOpenEjb.getInitialContext();
-      Object instance = ic.lookup(String.format(JNDI_PATTERN, name));
-      Assert.assertNotNull(instance, String.format("InitialContext.lookup(%s): returned null", name));
+      if(initialContext == null) {
+        initialContext = BootStrapOpenEjb.getInitialContext();
+      }
+      Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
+      Assert.assertNotNull(instance, String.format("InitialContext.lookup(\"%s\"): returned null", name));
       return (T) instance;
     } 
     catch (NamingException e) {
