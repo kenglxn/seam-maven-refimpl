@@ -138,12 +138,12 @@ public class BootStrapOpenEjb {
    * <tt>openejb.embedded.initialcontext.close=destroy</tt>
    * see: http://openejb.apache.org/faq.html
    * </p>
-   * <p><b>Note</b>: Shuts down the server is OK, but I'm not able to restart server afterwards
+   * <p><b>Note</b>: Shut down works as expected, but I'm not able to restart server afterwards. 
    * Get a NullPointerException: 
-   *    <tt>Cannot instantiate a LocalInitialContext. 
-   *    Exception: java.lang.NullPointerException null</tt>.<br/>
-   * Must be a bug somwhere.
-   * Use Shurefire Fork instead, as mentioned here: 
+   *    "<tt>Cannot instantiate a LocalInitialContext. 
+   *    Exception: java.lang.NullPointerException null</tt>".<br/>
+   * Must be a bug somwhere. As an alternative use Surefire Forking to achieve a similar result that 
+   * will also clear out any embedded database state as well, as mentioned here: 
    *    https://blogs.apache.org/openejb/entry/user_blog_restarting_the_embedded
    * </p>
    * @return

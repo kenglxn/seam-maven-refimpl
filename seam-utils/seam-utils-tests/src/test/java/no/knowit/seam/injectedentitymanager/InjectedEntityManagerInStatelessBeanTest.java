@@ -3,6 +3,7 @@ package no.knowit.seam.injectedentitymanager;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import no.knowit.testsupport.model.Movie;
@@ -11,12 +12,15 @@ import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
 
 public class InjectedEntityManagerInStatelessBeanTest extends SeamOpenEjbTest {
 	
-//	@Override
-//	@BeforeSuite
-//	public void beforeSuite() throws Exception {
-//	 contextProperties.put("log4j.category.no.knowit.seam.injectedentitymanager", "DEBUG");
-//	 super.beforeSuite();
-//	}
+	@Override
+	@BeforeSuite
+	public void beforeSuite() throws Exception {
+    
+    //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
+    
+	 //contextProperties.put("log4j.category.no.knowit.seam.injectedentitymanager", "DEBUG");
+	 super.beforeSuite();
+	}
 
 
 	@Test

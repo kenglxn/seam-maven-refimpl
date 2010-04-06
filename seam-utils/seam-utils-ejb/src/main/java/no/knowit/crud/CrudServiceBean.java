@@ -173,25 +173,25 @@ public class CrudServiceBean implements CrudService {
 			else {
 				return persist(entity);
 			}
-		} 
-		else {
-			if (id != null) {
-				if (find(entity.getClass(), id) == null) {
-					T e = persist(entity);
-					log.debug("CrudService.store: persisted new entity, got id: "	+ 
-					    CrudServiceUtils.getIdValues(entity).get(0));
-					return e;
-				} else {
-					log.debug("CrudService.store: merge existing entity with id: " + id);
-					return merge(entity);
-				}
-			} 
-			else {
+		}
+		
+		// Debug
+		if (id != null) {
+			if (find(entity.getClass(), id) == null) {
 				T e = persist(entity);
 				log.debug("CrudService.store: persisted new entity, got id: "	+ 
 				    CrudServiceUtils.getIdValues(entity).get(0));
 				return e;
+			} else {
+				log.debug("CrudService.store: merge existing entity with id: " + id);
+				return merge(entity);
 			}
+		} 
+		else {
+			T e = persist(entity);
+			log.debug("CrudService.store: persisted new entity, got id: "	+ 
+			    CrudServiceUtils.getIdValues(entity).get(0));
+			return e;
 		}
 	}
 
@@ -205,6 +205,7 @@ public class CrudServiceBean implements CrudService {
 		}
 		return storedResults;
 	}
+  // end CRUD
 
 	public <T> T refresh(T transientEntity) {
 		EntityManager em = getEntityManager();
