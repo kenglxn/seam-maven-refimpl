@@ -199,7 +199,7 @@ public class CrudServiceUtils {
     return methods;    
   }
 
-  public static Map<String, Member> reduceQueryableAttributesToPopulatedAttributes(
+  public static Map<String, Member> reduceQueryableAttributesToPopulatedFields(
       final Object exampleEntity, final Map<String, Member> attributes) {
     
     Map<String, Member> populatedAttributes = new HashMap<String, Member>();
@@ -239,7 +239,7 @@ public class CrudServiceUtils {
       throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
     
     Map<String, Member> attributes = findQueryableAttributes(exampleEntity.getClass());
-    attributes = reduceQueryableAttributesToPopulatedAttributes(exampleEntity, attributes);
+    attributes = reduceQueryableAttributesToPopulatedFields(exampleEntity, attributes);
     return createJpql(exampleEntity, attributes, select, distinct, any);
   }
 

@@ -314,7 +314,7 @@ public class CrudServiceBean implements CrudService {
 		
     String jpql = CrudServiceUtils.createJpql(example, select, distinct, any);
     Map<String, Member> attributes = CrudServiceUtils.findQueryableAttributes(example.getClass());
-    attributes = CrudServiceUtils.reduceQueryableAttributesToPopulatedAttributes(example, attributes);
+    attributes = CrudServiceUtils.reduceQueryableAttributesToPopulatedFields(example, attributes);
 
     final StringBuilder debugData = new StringBuilder();
     
