@@ -27,7 +27,12 @@ public class BootstrapOpenEjbTest { // extends OpenEjbTest {
 	
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-    Assert.assertTrue(BootStrapOpenEjb.isopenEjbAvailable(), "OpenEJB is not available. Check your classpath");
+
+	  //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
+	  
+    Assert.assertTrue(BootStrapOpenEjb.isopenEjbAvailable(), 
+        "OpenEJB is not available. Check your classpath");
+    
     Assert.assertFalse(OpenEJB.isInitialized(), "OpenEJB already running");
 
     contextProperties.put(OPENEJB_EMBEDDED_IC_CLOSE, "destroy");

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import no.knowit.testsupport.model.ConcreteEntityFieldAnnotated;
@@ -17,6 +18,13 @@ import no.knowit.testsupport.model.FieldAnnotatedEntity;
 import no.knowit.testsupport.model.PropertyAnnotatedEntity;
 
 public class ReflectionUtilsTest {
+  
+  @BeforeSuite
+  public void beforeSuite() throws Exception {
+    
+    //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
+    
+  }
   
   @Test
   public void testSearchFieldsForAnnotation() throws Exception {
