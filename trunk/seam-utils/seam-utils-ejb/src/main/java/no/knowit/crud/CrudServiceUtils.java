@@ -5,7 +5,6 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import no.knowit.util.ReflectionUtils;
+import static no.knowit.util.ReflectionUtils.OBJECT_PRIMITIVES;  
 
 import org.apache.log4j.Logger;
 
@@ -27,13 +27,6 @@ import org.apache.log4j.Logger;
  */
 public class CrudServiceUtils {
   private static Logger log = Logger.getLogger(CrudServiceUtils.class);
-
-  public static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
-    "java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
-    "java.lang.Character", "java.lang.Double",   "java.lang.Float",
-    "java.lang.Integer",   "java.lang.Long",     "java.lang.Number",
-    "java.lang.Short",     "java.util.Currency", "java.util.Date",
-    "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" );
 
   /**
    * Checks if a class is an entity
@@ -211,8 +204,7 @@ public class CrudServiceUtils {
       if (value != null) {
         Class<?> type = value.getClass();
         if (type != null) {
-          int k = OBJECT_PRIMITIVES.indexOf(type.getName());
-          if (type.isPrimitive() || k > -1) {
+          if (type.isPrimitive() || OBJECT_PRIMITIVES.indexOf(type) > -1) {
             populatedAttributes.put(propertyName, member);
           }
         }
@@ -267,9 +259,8 @@ public class CrudServiceUtils {
       if (value != null) {
         Class<?> type = value.getClass();
         if (type != null) {
-          int k = OBJECT_PRIMITIVES.indexOf(type.getName());
+          int k = OBJECT_PRIMITIVES.indexOf(type);
           if (type.isPrimitive() || k > -1) {
-            
             String equals = (k == 0 ? (value.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 => java.lang.String
             if (!where) {
               where = true;

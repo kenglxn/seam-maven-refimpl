@@ -13,7 +13,7 @@ import static javax.persistence.TemporalType.DATE;
 
 @MappedSuperclass
 public abstract class AbstractEmployee {
-    @Id private int id;
+    @Id private Long id;
     @Version  private Long version;
     private String name;
     @Temporal(DATE)

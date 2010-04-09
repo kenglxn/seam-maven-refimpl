@@ -1,11 +1,13 @@
 package no.knowit.util;
 
 import java.beans.Introspector;
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,6 +17,22 @@ import java.util.List;
  * <tt>org.crank.core.AnnotationUtils.java</tt>
  */
 public class ReflectionUtils {
+  
+//  public static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
+//      "java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
+//      "java.lang.Character", "java.lang.Double",   "java.lang.Float",
+//      "java.lang.Integer",   "java.lang.Long",     "java.lang.Number",
+//      "java.lang.Short",     "java.util.Currency", "java.util.Date",
+//      "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" 
+//  );
+
+  public static final List<Class<? extends Serializable>> OBJECT_PRIMITIVES = Arrays.asList(
+      java.lang.String.class,    java.lang.Boolean.class,  java.lang.Byte.class,
+      java.lang.Character.class, java.lang.Double.class,   java.lang.Float.class,
+      java.lang.Integer.class,   java.lang.Long.class,     java.lang.Number.class,
+      java.lang.Short.class,     java.util.Currency.class, java.util.Date.class,
+      java.sql.Date.class,       java.sql.Time.class,      java.sql.Timestamp.class
+  );
   
   private ReflectionUtils() {
     ;
@@ -44,16 +62,16 @@ public class ReflectionUtils {
   }
 
   public static Object get(final Method method, final Object target) {
-    final Object[] noargs = (Object[]) null;
     
     if(method == null || target == null) { 
       return null;
     }
     
+    //final Object[] noargs = (Object[]) null;
     boolean accessible = method.isAccessible();
     try {
       method.setAccessible(true);
-      return method.invoke(target, noargs);
+      return method.invoke(target, (Object[])null);
     }
     catch (Exception e) {
       throw new IllegalArgumentException(

@@ -32,8 +32,8 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
     
-    //contextProperties.put("log4j.category.no.knowit.crud", "debug");
-    //contextProperties.put("log4j.category.no.knowit.testsupport", "debug");
+    contextProperties.put("log4j.category.no.knowit.crud", "debug");
+    contextProperties.put("log4j.category.no.knowit.testsupport", "debug");
     
     super.beforeSuite();
   }
