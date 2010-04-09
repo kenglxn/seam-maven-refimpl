@@ -1,5 +1,6 @@
 package no.knowit.util;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -83,49 +84,95 @@ public class MetaCache {
   }
   
   public static String objectToString(final Object target) {
-    return target == null 
-      ? "{}"
-      : "{\n" + doObjectToString(target, 2) + "}";
+    final StringBuilder sb = new StringBuilder("{");
+    if(target == null) { 
+      sb.append("\n}");
+    }
+    else {
+      sb.append(quote(target.getClass().getSimpleName()) + ": ");
+      sb.append(doObjectToString(target, 2));
+    }
+    sb.append('}');
+    return sb.toString();
   }
 
-  private static String doObjectToString(final Object target, int level) {
+  private static String doObjectToString(final Object target, int indent) {
 
-    final Meta meta = getMeta(target.getClass());
-    final StringBuilder sb = new StringBuilder(level > 0 ? String.format("%" + level + "s", "") : "");
-    sb.append(quote(target.getClass().getSimpleName()) + ": {\n");
+    if(target == null) {
+      return "";
+    }
     
-    boolean delimiter = false;
+    final Meta meta = getMeta(target.getClass());
+    final StringBuilder sb = new StringBuilder();
+
+    sb.append("{\n");
+    
+    int i = 0;
+    int j = meta.fields.size();
     for (Entry<String, Field> entry : meta.fields.entrySet()) {
-      if(delimiter) {
-        sb.append(",\n");
-      }
-      else {
-        delimiter = true;
-      }
-      sb.append(String.format("%" + (level+2) + "s%s", "", quote(entry.getKey()) + ": "));
+      String property = entry.getKey();
+      
+      sb.append(String.format("%" + (indent+2) + "s", ""));
       
       Field field = entry.getValue();
       Object value = ReflectionUtils.get(field, target);
       Class<?> type = field.getType();
-      if(value != null) {
-        if(type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1) {
-          if(value instanceof String) {
-            sb.append(quote((String)value));
+      
+      if(isPrimitive(type)) {
+        sb.append(quote(property) + ": ");
+        sb.append(primitiveToString(value));
+      }
+      else if(type.isArray()) {
+        sb.append(quote(property) + ": [");
+        int l = value == null ? 0 : Array.getLength(value);
+        for (int k = 0; k < l; k++) {
+          Object v = Array.get(value, k);
+          if(v != null && isPrimitive(v.getClass())) {
+            sb.append(primitiveToString(v));
           }
           else {
-            sb.append(value);
+            sb.append(doObjectToString(v, indent+2));
           }
+          
+          int n = sb.length()-1;
+          if(sb.charAt(n) == '\n') {
+            sb.deleteCharAt(n);
+          }
+          
+          sb.append(k < l-1 ? ", " : "");
         }
+        sb.append(']');
+      }
+      else if(value != null && value instanceof Object) {
+        sb.append(quote(property) + ": ");
+        sb.append(doObjectToString(value, indent+2));
+      }
+      
+      if(++i < j) {
+        int n = sb.length()-1;
+        if(sb.charAt(n) == '\n') {
+          sb.deleteCharAt(n);
+        }
+        sb.append(",\n");
       }
     }
 
-    sb.append(String.format(level > 0 ? String.format("\n%" + level + "s}\n", "") : "\n}\n"));
+    sb.append(String.format(indent > 0 ? String.format("\n%" + indent + "s}\n", "") : "\n}\n"));
     return sb.toString();
   }
   
+  private static boolean isPrimitive(final Class<?> type) {
+    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
+  }
+  
+  private static String primitiveToString(final Object primitive) {
+    return primitive == null 
+      ? "" : primitive instanceof String 
+      ? quote((String)primitive) : primitive.toString();
+  }
   
   /**
-   * Copy from: org.json.JSONObject
+   * Copy from: org.json.JSONObject\n
    * Produce a string in double quotes with backslash sequences in all the
    * right places. A backslash will be inserted within </, allowing JSON
    * text to be delivered in HTML. In JSON text, a string cannot contain a
