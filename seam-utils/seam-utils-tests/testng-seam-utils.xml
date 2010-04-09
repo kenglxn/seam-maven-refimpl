@@ -5,6 +5,7 @@
   <test name="Utilities">
     <classes>
      <class name="no.knowit.util.ReflectionUtilsTest" />
+     <class name="no.knowit.util.MetaCacheTest" />
     </classes>
   </test>
   

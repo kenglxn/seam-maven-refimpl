@@ -6,16 +6,21 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
+import no.knowit.util.ReflectionUtils;
+import static no.knowit.util.ReflectionUtils.OBJECT_PRIMITIVES;
 /**
  * 
  * @author LeifOO
  *
  */
 public class MetaCache {
-  
-  // TODO: Must be thread safe??
-  private static transient final Map<String, Meta> metaCache = new HashMap<String, Meta>(); 
+
+  private static final ConcurrentMap<String, Meta> 
+    metaCache = new ConcurrentHashMap<String, Meta>(); 
 
   private MetaCache() {
     ;
@@ -34,7 +39,8 @@ public class MetaCache {
     }
 
     throw new IllegalArgumentException(String.format(
-      "Could not get attribute: %s.%s", target.getClass().getName(), attribute));
+      "MetaCache.get(%s): Attribute not found: \"%s.%s\"", 
+      attribute, target.getClass().getName(), attribute));
   }
   
   public static void set(final String attribute, final Object target, final Object value) {
@@ -52,14 +58,22 @@ public class MetaCache {
     }
     
     throw new IllegalArgumentException(String.format(
-      "Cold not set attribute: %s.%s", target.getClass().getName(), attribute));
+      "MetaCache.set(%s): Attribute not found: \"%s.%s\"", 
+      attribute, target.getClass().getName(), attribute));
   }
 
   public static Meta getMeta(Class<?> clazz) {
     Meta meta = metaCache.get(clazz.getName());
     if(meta == null) {
-      meta = new Meta(clazz);
-      metaCache.put(clazz.getName(), meta);
+      // To safely create values on demand you must use the putIfAbsent   
+      // method and avoid making extra calls to get in the process. 
+      // see: http://dmy999.com/article/34/correct-use-of-concurrenthashmap
+      Meta newMeta = new Meta(clazz);
+      meta = metaCache.putIfAbsent(clazz.getName(), newMeta);
+      if(meta == null) {
+        // put succeeded, use new value
+        meta = newMeta;
+      }
     }
     return meta;
   }
@@ -67,15 +81,121 @@ public class MetaCache {
   public static void removeMetaFromCache(final String attributeName) {
     metaCache.remove(attributeName);
   }
+  
+  public static String objectToString(final Object target) {
+    return target == null 
+      ? "{}"
+      : doObjectToString(target, 0);
+  }
+
+  private static String doObjectToString(final Object target, int level) {
+
+    final Meta meta = getMeta(target.getClass());
+    final StringBuilder sb = new StringBuilder(level > 0 ? String.format("%" + level + "s", level) : "");
+    sb.append(quote(target.getClass().getSimpleName()) + ": {\n");
+    
+    boolean delimiter = false;
+    for (Entry<String, Field> entry : meta.fields.entrySet()) {
+      if(delimiter) {
+        sb.append(",\n");
+      }
+      else {
+        delimiter = true;
+      }
+      sb.append(String.format("%" + (level+1) + "s %s", "", quote(entry.getKey()) + ": "));
+      
+      Field field = entry.getValue();
+      Object value = ReflectionUtils.get(field, target);
+      Class<?> type = field.getType();
+      if(value != null) {
+        if(type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1) {
+          if(value instanceof String) {
+            sb.append(quote((String)value));
+          }
+          else {
+            sb.append(value);
+          }
+        }
+      }
+    }
+    sb.append("\n}\n");
+    return sb.toString();
+  }
+  
+  
+  /**
+   * Copy from: org.json.JSONObject
+   * Produce a string in double quotes with backslash sequences in all the
+   * right places. A backslash will be inserted within </, allowing JSON
+   * text to be delivered in HTML. In JSON text, a string cannot contain a
+   * control character or an unescaped quote or backslash.
+   * @param string A String
+   * @return  A String correctly formatted for insertion in a JSON text.
+   */
+  private static String quote(String string) {
+    if (string == null || string.length() == 0) {
+      return "\"\"";
+    }
+
+    char b;
+    char c = 0;
+    int i;
+    int len = string.length();
+    StringBuffer sb = new StringBuffer(len + 4);
+    String t;
+
+    sb.append('"');
+    for (i = 0; i < len; i += 1) {
+      b = c;
+      c = string.charAt(i);
+      switch (c) {
+      case '\\':
+      case '"':
+        sb.append('\\');
+        sb.append(c);
+        break;
+      case '/':
+        if (b == '<') {
+          sb.append('\\');
+        }
+        sb.append(c);
+        break;
+      case '\b':
+        sb.append("\\b");
+        break;
+      case '\t':
+        sb.append("\\t");
+        break;
+      case '\n':
+        sb.append("\\n");
+        break;
+      case '\f':
+        sb.append("\\f");
+        break;
+      case '\r':
+        sb.append("\\r");
+        break;
+      default:
+        if (c < ' ' || (c >= '\u0080' && c < '\u00a0') || (c >= '\u2000' && c < '\u2100')) {
+          t = "000" + Integer.toHexString(c);
+          sb.append("\\u" + t.substring(t.length() - 4));
+        } else {
+          sb.append(c);
+        }
+      }
+    }
+    sb.append('"');
+    return sb.toString();
+  }
 
   /*
    * 
    */
-  private static class Meta {
+  public static class Meta {
     //transient Class<?> metaClass;
-    transient Map<String, Field> fields = null;
-    transient Map<String, Method> getters = null;
-    transient Map<String, Method> setters = null;
+    transient Map<String, Field> fields;
+    transient Map<String, Method> getters;
+    transient Map<String, Method> setters;
     
     @SuppressWarnings("unused")
     private Meta() {
@@ -105,11 +225,11 @@ public class MetaCache {
             continue;
           }
           String methodName = method.getName();
-          String propertyName = ReflectionUtils.getPropertyName(method);
+          String propertyName = ReflectionUtils.getPropertyName(method);  // <- get, is or set
           Class<?>[] types = method.getParameterTypes();
           
-          if(methodName.startsWith("get") || methodName.startsWith("is")) {
-            if((types == null || types.length == 0) &&  !getters.containsKey(propertyName)) 
+          if((methodName.startsWith("get") || methodName.startsWith("is"))) {
+            if((types == null || types.length == 0) && !getters.containsKey(propertyName)) 
               getters.put(propertyName, method);
           }
           else {
