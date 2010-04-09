@@ -74,7 +74,7 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     List<Member> id = CrudServiceUtils.getIdAnnotations(FieldAnnotatedEntity.class);
     Assert.assertTrue(id.size() > 0, "No @Id annotation");
     Assert.assertTrue(id.get(0) instanceof Field, "@Id annotation is not on a field");
-    Assert.assertEquals(ReflectionUtils.getAttributeName(id.get(0)), expectedIdAttributeName);
+    Assert.assertEquals(ReflectionUtils.getMemberName(id.get(0)), expectedIdAttributeName);
   }
 
   @Test
@@ -84,7 +84,7 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     List<Member> id = CrudServiceUtils.getIdAnnotations(ConcreteEntityPropertyAnnotated.class);
     Assert.assertTrue(id.size() > 0, "No @Id annotation");
     Assert.assertTrue(id.get(0) instanceof Method, "@Id annotation is not on a method");
-    Assert.assertEquals(ReflectionUtils.getAttributeName(id.get(0)), expectedIdAttributeName);
+    Assert.assertEquals(ReflectionUtils.getMemberName(id.get(0)), expectedIdAttributeName);
   }
   
   @Test

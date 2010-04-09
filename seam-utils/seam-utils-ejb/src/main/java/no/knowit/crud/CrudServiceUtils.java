@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 
 /**
  * @author LeifOO
- * @author org.crank.crud
  */
 public class CrudServiceUtils {
   private static Logger log = Logger.getLogger(CrudServiceUtils.class);
@@ -99,7 +98,7 @@ public class CrudServiceUtils {
     }
     List<Object> result = new ArrayList<Object>(id.size());
     for (Member member : id) {
-      result.add(ReflectionUtils.getAttributeValue(member, entity));
+      result.add(ReflectionUtils.get(member, entity));
     }
     return result;
   }
@@ -207,7 +206,7 @@ public class CrudServiceUtils {
     for (Entry<String, Member> entry : properties) {
       String propertyName = entry.getKey();
       Member member = entry.getValue();
-      Object value = member != null ? ReflectionUtils.getAttributeValue(member, exampleEntity) : null;
+      Object value = member != null ? ReflectionUtils.get(member, exampleEntity) : null;
       
       if (value != null) {
         Class<?> type = value.getClass();
@@ -263,7 +262,7 @@ public class CrudServiceUtils {
     for (Entry<String, Member> entry : properties) {
       String propertyName = entry.getKey();
       Member member = entry.getValue();
-      Object value = member != null ? ReflectionUtils.getAttributeValue(member, exampleEntity) : null;
+      Object value = member != null ? ReflectionUtils.get(member, exampleEntity) : null;
       
       if (value != null) {
         Class<?> type = value.getClass();
@@ -303,7 +302,7 @@ public class CrudServiceUtils {
 
   /**
    * Modified from org.jboss.seam.persistence.ManagedEntityWrapper
-   * If you have a final field then you should'nt use get/set methods that field
+   * If you have a final field then you should'nt use get/set methods for that field
    */
   private static boolean ignore(final Method method) {
     return Modifier.isTransient(method.getModifiers()) || Modifier.isStatic(method.getModifiers())
