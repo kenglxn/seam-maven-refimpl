@@ -326,7 +326,7 @@ public class CrudServiceBean implements CrudService {
     for (Entry<String, Member> entry : properties) {
       String property = entry.getKey();
       Member member = entry.getValue();
-      Object value = member != null ? ReflectionUtils.getAttributeValue(member, example) : null;
+      Object value = member != null ? ReflectionUtils.get(member, example) : null;
       query.setParameter(property, value);
       
       if(log.isDebugEnabled())
