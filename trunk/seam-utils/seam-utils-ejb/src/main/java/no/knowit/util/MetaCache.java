@@ -85,13 +85,13 @@ public class MetaCache {
   public static String objectToString(final Object target) {
     return target == null 
       ? "{}"
-      : doObjectToString(target, 0);
+      : "{\n" + doObjectToString(target, 2) + "}";
   }
 
   private static String doObjectToString(final Object target, int level) {
 
     final Meta meta = getMeta(target.getClass());
-    final StringBuilder sb = new StringBuilder(level > 0 ? String.format("%" + level + "s", level) : "");
+    final StringBuilder sb = new StringBuilder(level > 0 ? String.format("%" + level + "s", "") : "");
     sb.append(quote(target.getClass().getSimpleName()) + ": {\n");
     
     boolean delimiter = false;
@@ -102,7 +102,7 @@ public class MetaCache {
       else {
         delimiter = true;
       }
-      sb.append(String.format("%" + (level+1) + "s %s", "", quote(entry.getKey()) + ": "));
+      sb.append(String.format("%" + (level+2) + "s%s", "", quote(entry.getKey()) + ": "));
       
       Field field = entry.getValue();
       Object value = ReflectionUtils.get(field, target);
@@ -118,7 +118,8 @@ public class MetaCache {
         }
       }
     }
-    sb.append("\n}\n");
+
+    sb.append(String.format(level > 0 ? String.format("\n%" + level + "s}\n", "") : "\n}\n"));
     return sb.toString();
   }
   
