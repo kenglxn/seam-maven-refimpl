@@ -5,7 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -89,13 +91,15 @@ public class MetaCache {
       sb.append("\n}");
     }
     else {
-      sb.append(quote(target.getClass().getSimpleName()) + ": ");
       sb.append(doObjectToString(target, 2));
     }
     sb.append('}');
     return sb.toString();
   }
 
+  /*
+   * TODO: Need refactoring 
+   */
   private static String doObjectToString(final Object target, int indent) {
 
     if(target == null) {
@@ -105,10 +109,12 @@ public class MetaCache {
     final Meta meta = getMeta(target.getClass());
     final StringBuilder sb = new StringBuilder();
 
+    sb.append(quote(target.getClass().getSimpleName()) + " : ");
     sb.append("{\n");
     
     int i = 0;
     int j = meta.fields.size();
+    
     for (Entry<String, Field> entry : meta.fields.entrySet()) {
       String property = entry.getKey();
       
@@ -119,11 +125,11 @@ public class MetaCache {
       Class<?> type = field.getType();
       
       if(isPrimitive(type)) {
-        sb.append(quote(property) + ": ");
+        sb.append(quote(property) + " : ");
         sb.append(primitiveToString(value));
       }
       else if(type.isArray()) {
-        sb.append(quote(property) + ": [");
+        sb.append(quote(property) + " : [");
         int l = value == null ? 0 : Array.getLength(value);
         for (int k = 0; k < l; k++) {
           Object v = Array.get(value, k);
@@ -143,8 +149,52 @@ public class MetaCache {
         }
         sb.append(']');
       }
+      else if(value != null && value instanceof Collection) {
+        sb.append(quote(property) + " : [");
+        
+        Collection<Object> c = (Collection)value;
+        for (Object v : c) {
+          if(v != null && isPrimitive(v.getClass())) {
+            sb.append(primitiveToString(v));
+          } 
+          else {
+            sb.append(doObjectToString(v, indent+2));
+          }
+          
+          int n = sb.length()-1;
+          if(sb.charAt(n) == '\n') {
+            sb.deleteCharAt(n);
+          }
+          sb.append(", ");
+        }
+
+        int n = sb.length()-1;
+        sb.delete(n-1, n);
+        
+        sb.append(']');
+      }
+      else if(value != null && value instanceof Map) {
+        sb.append(quote(property) + " : {\n");
+        
+        for (Iterator iter = ((Map) value).entrySet().iterator(); iter.hasNext();) {
+          Entry e = (Entry)iter.next();
+          
+          sb.append(String.format("%" + (indent+4) + "s", ""));
+          sb.append(quote(e.getKey().toString()) + " : ");
+          Object v = e.getValue();
+
+          if(v != null && isPrimitive(v.getClass())) {
+            sb.append(primitiveToString(v));
+          } 
+          else {
+            sb.append(doObjectToString(v, indent+4));
+          }
+        }
+        sb.append(String.format("%" + (indent+2) + "s", ""));
+        sb.append("}");
+      }
       else if(value != null && value instanceof Object) {
-        sb.append(quote(property) + ": ");
+        sb.append(quote(property) + " : ");
         sb.append(doObjectToString(value, indent+2));
       }
       
