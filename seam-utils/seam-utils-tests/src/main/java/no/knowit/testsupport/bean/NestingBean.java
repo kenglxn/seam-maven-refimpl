@@ -5,13 +5,15 @@ import java.util.Map;
 
 public class NestingBean {
   private Integer id;
+  private SimpleBean simpleBean;
   private int[] intArray;
   private String[] stringArray;
-  private SimpleBean[] beanArray;
-  private SimpleBean simpleBean;
+  private Cat[] catArray;
+  private List<Integer> integersList;
+  private List<String> stringsList;
   private List<Animal> animalsList;
-  private Map<String, Dog> dogsMap;
   private Map<String, String> stringsMap;
+  private Map<String, Dog> dogsMap;
   
   public NestingBean() {
     super();

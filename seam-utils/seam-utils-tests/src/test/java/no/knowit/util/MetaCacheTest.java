@@ -37,25 +37,34 @@ public class MetaCacheTest {
     MetaCache.set("baz",   simpleBean, "Hello BAZ!");
     MetaCache.set("color", simpleBean, SimpleBean.Color.RED);
     
-    System.out.println(MetaCache.objectToString(simpleBean));
-    
-    
-    SimpleBean sb1 = new SimpleBean();
-    MetaCache.set("id" , sb1, 10001);
-    MetaCache.set("bar", sb1, "Instance One");
-    
-    SimpleBean sb2 = new SimpleBean();
-    MetaCache.set("id" , sb2, 10002);
-    MetaCache.set("bar", sb2, "Instance Two");
+    System.out.println(MetaCache.toStringBuilder(simpleBean));
     
     NestingBean nestingBean = new NestingBean(99, simpleBean);
     MetaCache.set("intArray",    nestingBean, new int[]{1,2,3});
     MetaCache.set("stringArray", nestingBean, new String[]{"I am", "a", "string", "array"});
-    MetaCache.set("beanArray",   nestingBean, new SimpleBean[]{sb1, sb2});
-    
+
+    Cat cat1 = new Cat("Puss");
+    Cat cat2 = new Cat("Tiger");
+    MetaCache.set("says", cat2, "Roar");
+    MetaCache.set("catArray",  nestingBean, new Cat[]{cat1, cat2});
+
+    List<Integer> integers = Arrays.asList(new Integer(101), new Integer(201), new Integer(301));
+    MetaCache.set("integersList", nestingBean, integers);
+
+    List<String> stringList = Arrays.asList("A", "list", "of", "strings");
+    MetaCache.set("stringsList", nestingBean, stringList);
+
     List<Animal> animals = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));;
     MetaCache.set("animalsList", nestingBean, animals);
     
+    Map<String, String> strings = new HashMap<String, String>();
+    strings.put("finland", "the land of a thousand lakes");
+    strings.put("norway",  "the land of the midnight sun");
+    strings.put("denmark", "the land of fairy-tales and mermaids");
+    strings.put("sweden",  "one upon a time they had Volvo and Saab");
+    strings.put("iceland", "the land of volcanoes and geysirs");
+    MetaCache.set("stringsMap", nestingBean, strings);
+      
     Map<String, Dog> dogs = new HashMap<String, Dog>();
     dogs.put("Bonzo", new Dog("Bonzo"));
     dogs.put("Fido",  new Dog("Fido"));
@@ -63,15 +72,8 @@ public class MetaCacheTest {
     dogs.put("Tramp", new Dog("Tramp"));
     MetaCache.set("dogsMap", nestingBean, dogs);
     
-    Map<String, String> strings = new HashMap<String, String>();
-    strings.put("finland", "the land of a thousand lakes");
-    strings.put("norway",  "the land of the midnight sun");
-    strings.put("denmark", "fairy-tales and mermaids");
-    strings.put("sweden",  "once they had Volvo and Saab.");
-    strings.put("iceland", "volcanoes and geysirs.");
-    MetaCache.set("stringsMap", nestingBean, strings);
     
-    System.out.println(MetaCache.objectToString(nestingBean));
+    System.out.println(MetaCache.toStringBuilder(nestingBean));
   }
   
 }
