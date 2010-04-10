@@ -11,6 +11,7 @@ public class NestingBean {
   private SimpleBean simpleBean;
   private List<Animal> animalsList;
   private Map<String, Dog> dogsMap;
+  private Map<String, String> stringsMap;
   
   public NestingBean() {
     super();

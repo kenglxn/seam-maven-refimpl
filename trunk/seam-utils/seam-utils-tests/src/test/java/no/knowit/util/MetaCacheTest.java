@@ -63,6 +63,11 @@ public class MetaCacheTest {
     dogs.put("Tramp", new Dog("Tramp"));
     MetaCache.set("dogsMap", nestingBean, dogs);
     
+    Map<String, String> strings = new HashMap<String, String>();
+    strings.put("finland", "They stole Santa from us");
+    strings.put("norway",  "Norway, the land of the midnight sun");
+    MetaCache.set("stringsMap", nestingBean, strings);
+    
     System.out.println(MetaCache.objectToString(nestingBean));
   }
   

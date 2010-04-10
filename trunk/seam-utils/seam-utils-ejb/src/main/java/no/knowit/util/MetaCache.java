@@ -185,6 +185,11 @@ public class MetaCache {
 
           if(v != null && isPrimitive(v.getClass())) {
             sb.append(primitiveToString(v));
+            
+            if(iter.hasNext()) {
+              sb.append(',');
+            }
+            sb.append('\n');
           } 
           else {
             sb.append(doObjectToString(v, indent+4));
