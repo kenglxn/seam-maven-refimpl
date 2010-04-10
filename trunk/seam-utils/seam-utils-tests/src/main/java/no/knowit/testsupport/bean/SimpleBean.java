@@ -1,5 +1,7 @@
 package no.knowit.testsupport.bean;
 
+import java.util.Date;
+
 public class SimpleBean {
   public enum Color {RED, YELLOW, GREEN};
   
@@ -8,6 +10,7 @@ public class SimpleBean {
   protected String bar;
   public String baz;
   public Color color;
+  public Date someTime = new Date();
   
   private void setFoo(int foo) {
     this.foo = foo * 2;
