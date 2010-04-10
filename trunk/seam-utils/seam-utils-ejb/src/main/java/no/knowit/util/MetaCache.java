@@ -85,135 +85,114 @@ public class MetaCache {
     metaCache.remove(attributeName);
   }
   
-  public static String objectToString(final Object target) {
-    final StringBuilder sb = new StringBuilder("{");
-    if(target == null) { 
-      sb.append("\n}");
-    }
-    else {
-      sb.append(doObjectToString(target, 2));
-    }
-    sb.append('}');
-    return sb.toString();
+  public static StringBuilder toStringBuilder(final Object target) {
+    return new StringBuilder("{ ").append(buildToStringBuilder(target, 2)).append("\n}");
   }
 
-  /*
-   * TODO: Need refactoring 
-   */
-  private static String doObjectToString(final Object target, int indent) {
-
+  private static StringBuilder buildToStringBuilder(final Object target, int indent) {
+    
     if(target == null) {
-      return "";
+      return new StringBuilder();
     }
     
-    final Meta meta = getMeta(target.getClass());
     final StringBuilder sb = new StringBuilder();
-
-    sb.append(quote(target.getClass().getSimpleName()) + " : ");
-    sb.append("{\n");
     
-    int i = 0;
-    int j = meta.fields.size();
-    
-    for (Entry<String, Field> entry : meta.fields.entrySet()) {
-      String property = entry.getKey();
+    if(target instanceof Collection) {
+      sb.append("[");
       
-      sb.append(String.format("%" + (indent+2) + "s", ""));
-      
-      Field field = entry.getValue();
-      Object value = ReflectionUtils.get(field, target);
-      Class<?> type = field.getType();
-      
-      if(isPrimitive(type)) {
-        sb.append(quote(property) + " : ");
-        sb.append(primitiveToString(value));
-      }
-      else if(type.isArray()) {
-        sb.append(quote(property) + " : [");
-        int l = value == null ? 0 : Array.getLength(value);
-        for (int k = 0; k < l; k++) {
-          Object v = Array.get(value, k);
-          if(v != null && isPrimitive(v.getClass())) {
-            sb.append(primitiveToString(v));
-          }
-          else {
-            sb.append(doObjectToString(v, indent+2));
-          }
-          
-          int n = sb.length()-1;
-          if(sb.charAt(n) == '\n') {
-            sb.deleteCharAt(n);
-          }
-          
-          sb.append(k < l-1 ? ", " : "");
+      Collection<Object> c = (Collection)target;
+      for (Object v : c) {
+        if(v != null && isPrimitive(v.getClass())) {
+          sb.append(primitiveToString(v));
+        } 
+        else {
+          sb.append(String.format("\n%" + (indent+2) + "s", ""))
+            .append(buildToStringBuilder(v, indent+2));
         }
-        sb.append(']');
+        sb.append(", ");
       }
-      else if(value != null && value instanceof Collection) {
-        sb.append(quote(property) + " : [");
-        
-        Collection<Object> c = (Collection)value;
-        for (Object v : c) {
-          if(v != null && isPrimitive(v.getClass())) {
-            sb.append(primitiveToString(v));
-          } 
-          else {
-            sb.append(doObjectToString(v, indent+2));
-          }
-          
-          int n = sb.length()-1;
-          if(sb.charAt(n) == '\n') {
-            sb.deleteCharAt(n);
-          }
-          sb.append(", ");
-        }
 
-        int n = sb.length()-1;
-        sb.delete(n-1, n);
-        
-        sb.append(']');
-      }
-      else if(value != null && value instanceof Map) {
-        sb.append(quote(property) + " : {\n");
-        
-        for (Iterator iter = ((Map) value).entrySet().iterator(); iter.hasNext();) {
-          Entry e = (Entry)iter.next();
-          
-          sb.append(String.format("%" + (indent+4) + "s", ""));
-          sb.append(quote(e.getKey().toString()) + " : ");
-          Object v = e.getValue();
-
-          if(v != null && isPrimitive(v.getClass())) {
-            sb.append(primitiveToString(v));
-            
-            if(iter.hasNext()) {
-              sb.append(',');
-            }
-            sb.append('\n');
-          } 
-          else {
-            sb.append(doObjectToString(v, indent+4));
-          }
-        }
-        sb.append(String.format("%" + (indent+2) + "s", ""));
-        sb.append("}");
-      }
-      else if(value != null && value instanceof Object) {
-        sb.append(quote(property) + " : ");
-        sb.append(doObjectToString(value, indent+2));
-      }
+      // Delete trailing ", "
+      int n = sb.length()-1;
+      sb.deleteCharAt(n-1);
+      sb.deleteCharAt(n-1);
+      sb.append(']');
+    }
+    else if(target instanceof Map) {
+      sb.append("{\n");
       
-      if(++i < j) {
+      for (Iterator iter = ((Map) target).entrySet().iterator(); iter.hasNext();) {
+        Entry e = (Entry)iter.next();
+        Object v = e.getValue();
+        
+        sb.append(String.format("%" + (indent+2) + "s", ""))
+          .append(quote(e.getKey().toString()) + " : ");
+        
+        if(v != null && isPrimitive(v.getClass())) {
+          sb.append(primitiveToString(v));
+        } 
+        else {
+          sb.append(buildToStringBuilder(v, indent+2));
+        }
+        if(iter.hasNext()) {
+          sb.append(',');
+        }
+        sb.append('\n');
+      }
+      sb.append(String.format("%" + (indent) + "s", "")).append("}");
+    }
+    else if(target.getClass().isArray()) {
+      sb.append("[");
+      
+      int l = Array.getLength(target);
+      for (int k = 0; k < l; k++) {
+        Object v = Array.get(target, k);
+        if(v != null && isPrimitive(v.getClass())) {
+          sb.append(primitiveToString(v));
+        }
+        else {
+          sb.append(String.format("\n%" + (indent+2) + "s", ""))
+            .append(buildToStringBuilder(v, indent+2));
+        }
         int n = sb.length()-1;
         if(sb.charAt(n) == '\n') {
           sb.deleteCharAt(n);
         }
+        sb.append(k < l-1 ? ", " : "");
+      }
+      sb.append(']');
+    }
+    else if(target instanceof Object) {
+      sb.append(quote(target.getClass().getSimpleName()) + " : {\n");
+      
+      final Meta meta = getMeta(target.getClass());
+      for (Entry<String, Field> entry : meta.fields.entrySet()) {
+        
+        Field field = entry.getValue();
+        Object value = ReflectionUtils.get(field, target);
+        Class<?> type = field.getType();
+        
+        sb.append(String.format("%" + (indent+2) + "s", ""))
+          .append(quote(entry.getKey())).append(" : ");
+        
+        if(isPrimitive(type)) {
+          sb.append(primitiveToString(value));
+        }
+        else {
+          sb.append(buildToStringBuilder(value, indent+2));
+        }
         sb.append(",\n");
       }
-    }
-
-    sb.append(String.format(indent > 0 ? String.format("\n%" + indent + "s}\n", "") : "\n}\n"));
-    return sb.toString();
+      
+      // Delete last ',' char
+      int n = sb.length()-2;
+      if(sb.charAt(n) == ',') {
+        sb.deleteCharAt(n);
+      }
+      sb.append(String.format("%" + (indent) + "s", ""))
+        .append('}');
+    }    
+    return sb;
   }
   
   private static boolean isPrimitive(final Class<?> type) {
