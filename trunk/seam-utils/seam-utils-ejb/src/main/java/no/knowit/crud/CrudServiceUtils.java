@@ -34,7 +34,9 @@ public class CrudServiceUtils {
    * @return true if the class is annotated with @Entity
    */
   public static boolean isEntity(final Class<?> entityClass) {
-    if(entityClass == null) return false;
+    if(entityClass == null) {
+      return false;
+    }
     return entityClass.isAnnotationPresent(Entity.class) ? true : false;
   }
 
@@ -119,8 +121,8 @@ public class CrudServiceUtils {
     if(entityClass == null) {
       throw new IllegalArgumentException("The entityClass parameter can not be null");
     }
+
     Map<String, Field> fields = new HashMap<String, Field>();
-    
     for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
       if(!ignore(clazz)) {
         for ( Field field : clazz.getDeclaredFields() ) {
@@ -167,8 +169,7 @@ public class CrudServiceUtils {
     methods.putAll(getters);  // getters are more important than setters - so add them last
                               // TODO: Keep both setters and getters
     
-    Set<Entry<String, Method>> properties = getters.entrySet();
-    for (Entry<String, Method> entry : properties) {
+    for (Entry<String, Method> entry : getters.entrySet()) {
       String propertyName = entry.getKey();
       Method method = entry.getValue();
 
@@ -177,8 +178,7 @@ public class CrudServiceUtils {
       }
     }
 
-    properties = setters.entrySet();
-    for (Entry<String, Method> entry : properties) {
+    for (Entry<String, Method> entry : setters.entrySet()) {
       String propertyName = entry.getKey();
       Method method = entry.getValue();
 
@@ -195,8 +195,7 @@ public class CrudServiceUtils {
       final Object exampleEntity, final Map<String, Member> attributes) {
     
     Map<String, Member> populatedAttributes = new HashMap<String, Member>();
-    Set<Entry<String, Member>> properties = attributes.entrySet();
-    for (Entry<String, Member> entry : properties) {
+    for (Entry<String, Member> entry : attributes.entrySet()) {
       String propertyName = entry.getKey();
       Member member = entry.getValue();
       Object value = member != null ? ReflectionUtils.get(member, exampleEntity) : null;
@@ -247,10 +246,10 @@ public class CrudServiceUtils {
     final StringBuilder debugData = new StringBuilder();
 
     // TODO: remove redundant code use reduceQueryableAttributesToPopulatedAttributes method
-    Set<Entry<String, Member>> properties = attributes.entrySet();
     boolean where = false;
     String operator = (any ? "OR" : "AND");
     
+    Set<Entry<String, Member>> properties = attributes.entrySet();
     for (Entry<String, Member> entry : properties) {
       String propertyName = entry.getKey();
       Member member = entry.getValue();

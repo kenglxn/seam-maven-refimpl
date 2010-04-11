@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import no.knowit.seam.framework.SeamFrameworkTest;
+import no.knowit.openejb.mock.OpenEjbTest;
 import no.knowit.testsupport.bean.Animal;
 import no.knowit.testsupport.bean.Bird;
 import no.knowit.testsupport.bean.Cat;
@@ -13,19 +13,16 @@ import no.knowit.testsupport.bean.Dog;
 import no.knowit.testsupport.bean.NestingBean;
 import no.knowit.testsupport.bean.SimpleBean;
 
-import org.jboss.seam.log.LogProvider;
-import org.jboss.seam.log.Logging;
+import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 public class MetaCacheTest {
-  private static final LogProvider log = Logging.getLogProvider(SeamFrameworkTest.class);
+  private static Logger log = Logger.getLogger(MetaCacheTest.class);
 
   @BeforeSuite
   public void beforeSuite() throws Exception {
-    
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
-    
   }
   
   @Test
@@ -37,7 +34,7 @@ public class MetaCacheTest {
     MetaCache.set("baz",   simpleBean, "Hello BAZ!");
     MetaCache.set("color", simpleBean, SimpleBean.Color.RED);
     
-    System.out.println(MetaCache.toStringBuilder(simpleBean));
+    log.debug(MetaCache.toStringBuilder(simpleBean).insert(0, '\n'));
     
     NestingBean nestingBean = new NestingBean(99, simpleBean);
     MetaCache.set("intArray",    nestingBean, new int[]{1,2,3});
@@ -72,8 +69,7 @@ public class MetaCacheTest {
     dogs.put("Tramp", new Dog("Tramp"));
     MetaCache.set("dogsMap", nestingBean, dogs);
     
-    
-    System.out.println(MetaCache.toStringBuilder(nestingBean));
+    log.debug(MetaCache.toStringBuilder(nestingBean).insert(0, '\n'));
   }
   
 }

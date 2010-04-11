@@ -16,15 +16,16 @@ import java.util.List;
  * <tt>org.jboss.seam.persistence.ManagedEntityWrapper</tt> and 
  * <tt>org.crank.core.AnnotationUtils.java</tt>
  */
+@SuppressWarnings("unchecked")
 public class ReflectionUtils {
   
-//  public static final List<String> OBJECT_PRIMITIVES = Arrays.asList(
-//      "java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
-//      "java.lang.Character", "java.lang.Double",   "java.lang.Float",
-//      "java.lang.Integer",   "java.lang.Long",     "java.lang.Number",
-//      "java.lang.Short",     "java.util.Currency", "java.util.Date",
-//      "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" 
-//  );
+  public static final List<String> OBJECT_PRIMITIVES_AS_STRING = Arrays.asList(
+      "java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
+      "java.lang.Character", "java.lang.Double",   "java.lang.Float",
+      "java.lang.Integer",   "java.lang.Long",     "java.lang.Number",
+      "java.lang.Short",     "java.util.Currency", "java.util.Date",
+      "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" 
+  );
 
   public static final List<Class<? extends Serializable>> OBJECT_PRIMITIVES = Arrays.asList(
       java.lang.String.class,    java.lang.Boolean.class,  java.lang.Byte.class,
@@ -135,24 +136,25 @@ public class ReflectionUtils {
   public static List<Member> searchMembersForAnnotation(
       final Class<? extends Annotation> annotation, final Class<?> target) {
     
-    List<Member> result = new ArrayList<Member>();
+    List<Member> members = new ArrayList<Member>();
     if(target != null && annotation != null) {
-      result.addAll(searchFieldsForAnnotation(annotation, target));
-      result.addAll(searchMethodsForAnnotation(annotation, target));
+      members.addAll(searchFieldsForAnnotation(annotation, target));
+      members.addAll(searchMethodsForAnnotation(annotation, target));
     }
-    return result;
+    return members;
   }
 
   public static Member searchMembersForFirstAnnotation(
       final Class<? extends Annotation> annotation, final Class<?> target) {
     
-    Member result = null;
+    Member member = null;
     if(target != null && annotation != null) {
-      result = searcFieldsForFirstAnnotation(annotation, target);
-      if(result == null)
-        result = searcMethodsForFirstAnnotation(annotation, target);
+      member = searcFieldsForFirstAnnotation(annotation, target);
+      if(member == null) {
+        member = searcMethodsForFirstAnnotation(annotation, target);
+      }
     }
-    return result;
+    return member;
   }
 
   public static List<Field> searchFieldsForAnnotation( 

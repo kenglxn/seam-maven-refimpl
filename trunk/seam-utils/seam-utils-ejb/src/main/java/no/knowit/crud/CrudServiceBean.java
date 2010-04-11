@@ -205,7 +205,7 @@ public class CrudServiceBean implements CrudService {
 		}
 		return storedResults;
 	}
-  // end CRUD
+  // end C.R.U.D
 
 	public <T> T refresh(T transientEntity) {
 		EntityManager em = getEntityManager();
