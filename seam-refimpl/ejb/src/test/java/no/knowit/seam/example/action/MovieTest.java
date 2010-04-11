@@ -55,17 +55,13 @@ public class MovieTest extends SeamOpenEjbTest {
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-		
 		//System.out.println("**** MovieTest.beforeSuite()");
 
-		
 		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
 		contextProperties.put("log4j.category.org.jboss.seam.Component", "DEBUG");
 		contextProperties.put("log4j.category.org.jboss.seam.transaction", "DEBUG");
 		contextProperties.put("log4j.category.org.jboss.seam.mock", "DEBUG");
-
 		contextProperties.put("log4j.category.no.knowit.seam.openejb.mock", "DEBUG");
-		
 		contextProperties.put("log4j.category.no.knowit.seam.example", "debug");
 		
 		super.beforeSuite();
