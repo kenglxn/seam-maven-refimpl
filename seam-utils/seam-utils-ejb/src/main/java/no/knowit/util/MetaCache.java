@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import no.knowit.util.ReflectionUtils;
 import static no.knowit.util.ReflectionUtils.OBJECT_PRIMITIVES;
+
 /**
  * 
  * @author LeifOO
@@ -288,7 +289,7 @@ public class MetaCache {
    * 
    */
   public static class Meta {
-    //transient Class<?> metaClass;
+    transient Class<?> metaClass;
     transient Map<String, Field>  fields;
     transient Map<String, Method> getters;
     transient Map<String, Method> setters;
@@ -297,15 +298,15 @@ public class MetaCache {
     private Meta() {
     }
     
-    public Meta (final Class<?> metaClass) {
+    public Meta (final Class<?> targetClass) {
       super();
       
-      //this.metaClass = metaClass;
+      this.metaClass = targetClass;
       this.fields = new HashMap<String, Field>();
       this.setters = new HashMap<String, Method>();
       this.getters = new HashMap<String, Method>();
       
-      for (Class<?> clazz = metaClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
+      for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
         for (Field field : clazz.getDeclaredFields()) {
           if(!ignore(field)) {
             fields.put(field.getName(), field);
@@ -313,13 +314,14 @@ public class MetaCache {
         }
       }
 
-      for (Class<?> clazz = metaClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
+      for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
         
         for(Method method : clazz.getDeclaredMethods()) {
           
           if(ignore(method)) {
             continue;
           }
+          
           String methodName = method.getName();
           String propertyName = ReflectionUtils.getPropertyName(method);  // <- get, is or set
           Class<?>[] types = method.getParameterTypes();

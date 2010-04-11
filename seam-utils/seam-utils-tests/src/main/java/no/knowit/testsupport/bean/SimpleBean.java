@@ -10,7 +10,7 @@ public class SimpleBean {
   protected String bar;
   public String baz;
   public Color color;
-  public Date someTime = new Date();
+  public Date someDate = new Date();
   
   private void setFoo(int foo) {
     this.foo = foo * 2;

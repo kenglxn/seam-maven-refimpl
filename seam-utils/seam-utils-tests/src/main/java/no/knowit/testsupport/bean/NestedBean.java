@@ -3,23 +3,23 @@ package no.knowit.testsupport.bean;
 import java.util.List;
 import java.util.Map;
 
-public class NestingBean {
+public class NestedBean {
   private Integer id;
   private SimpleBean simpleBean;
   private int[] intArray;
   private String[] stringArray;
   private Cat[] catArray;
-  private List<Integer> integersList;
-  private List<String> stringsList;
-  private List<Animal> animalsList;
-  private Map<String, String> stringsMap;
-  private Map<String, Dog> dogsMap;
+  private List<Integer> integerList;
+  private List<String> stringList;
+  private List<Animal> animalList;
+  private Map<String, String> stringMap;
+  private Map<String, Dog> dogMap;
   
-  public NestingBean() {
+  public NestedBean() {
     super();
   }
 
-  public NestingBean(Integer id, SimpleBean simpleBean) {
+  public NestedBean(Integer id, SimpleBean simpleBean) {
     this.id = id;
     this.simpleBean = simpleBean;
   }
