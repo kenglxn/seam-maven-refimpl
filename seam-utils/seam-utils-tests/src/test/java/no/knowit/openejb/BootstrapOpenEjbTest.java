@@ -41,7 +41,7 @@ public class BootstrapOpenEjbTest { // extends OpenEjbTest {
 
 	@AfterSuite
   public void afterSuite() throws Exception {
-	  //BootStrapOpenEjb.shutdown();  // Will make next suite choke
+	  //BootStrapOpenEjb.shutdown();  // Will make next test suite choke
 	}
 	
 	
@@ -85,7 +85,7 @@ public class BootstrapOpenEjbTest { // extends OpenEjbTest {
   @Test(dependsOnMethods={ "shouldBootstrapWithoutDestroy" }, enabled=true)
   public void shouldCloseInitialContextWithoutDestroy() throws Exception {
     log.debug(String.format(
-        "*** Closing initial context without property: \"%s\"", OPENEJB_EMBEDDED_IC_CLOSE));
+        "*** Closing initial context WITHOUT property: \"%s\"", OPENEJB_EMBEDDED_IC_CLOSE));
     
     BootStrapOpenEjb.closeInitialContext();
     Assert.assertTrue(OpenEJB.isInitialized(), 

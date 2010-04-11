@@ -42,8 +42,7 @@ public class MetaCache {
     }
 
     throw new IllegalArgumentException(String.format(
-      "MetaCache.get(%s): Attribute not found: \"%s.%s\"", 
-      attribute, target.getClass().getName(), attribute));
+      "MetaCache.get: Attribute not found: \"%s.%s\"", target.getClass().getName(), attribute));
   }
   
   public static void set(final String attribute, final Object target, final Object value) {
@@ -61,8 +60,7 @@ public class MetaCache {
     }
     
     throw new IllegalArgumentException(String.format(
-      "MetaCache.set(%s): Attribute not found: \"%s.%s\"", 
-      attribute, target.getClass().getName(), attribute));
+      "MetaCache.set: Attribute not found: \"%s.%s\"", target.getClass().getName(), attribute));
   }
 
   public static Meta getMeta(Class<?> clazz) {
@@ -85,8 +83,14 @@ public class MetaCache {
     metaCache.remove(attributeName);
   }
   
+  public static void clearMetaCache() {
+    metaCache.clear();
+  }
+  
   public static StringBuilder toStringBuilder(final Object target) {
-    return new StringBuilder("{ ").append(buildToStringBuilder(target, 2)).append("\n}");
+    return new StringBuilder("{ ")
+      .append(buildToStringBuilder(target, 2))
+      .append("\n}");
   }
 
   private static StringBuilder buildToStringBuilder(final Object target, int indent) {
@@ -97,10 +101,10 @@ public class MetaCache {
     
     final StringBuilder sb = new StringBuilder();
     
-    if(target instanceof Collection) {
+    if(target instanceof Collection<?>) {
       sb.append("[");
       
-      Collection<Object> c = (Collection)target;
+      Collection<?> c = (Collection<?>)target;
       for (Object v : c) {
         if(v != null && isPrimitive(v.getClass())) {
           sb.append(primitiveToString(v));
@@ -118,11 +122,11 @@ public class MetaCache {
       sb.deleteCharAt(n-1);
       sb.append(']');
     }
-    else if(target instanceof Map) {
+    else if(target instanceof Map<?, ?>) {
       sb.append("{\n");
       
-      for (Iterator iter = ((Map) target).entrySet().iterator(); iter.hasNext();) {
-        Entry e = (Entry)iter.next();
+      for (Iterator<?> iter = ((Map<?, ?>) target).entrySet().iterator(); iter.hasNext();) {
+        Entry<?, ?> e = (Entry<?, ?>)iter.next();
         Object v = e.getValue();
         
         sb.append(String.format("%" + (indent+2) + "s", ""))
@@ -275,7 +279,7 @@ public class MetaCache {
    */
   public static class Meta {
     //transient Class<?> metaClass;
-    transient Map<String, Field> fields;
+    transient Map<String, Field>  fields;
     transient Map<String, Method> getters;
     transient Map<String, Method> setters;
     
