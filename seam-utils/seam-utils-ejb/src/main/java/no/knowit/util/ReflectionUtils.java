@@ -1,5 +1,7 @@
 package no.knowit.util;
 
+import static no.knowit.util.ReflectionUtils.OBJECT_PRIMITIVES;
+
 import java.beans.Introspector;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -257,5 +259,10 @@ public class ReflectionUtils {
     }
     throw new IllegalArgumentException("No such method: " + clazz.getName() + '.' + methodName);
   }
+  
+  public static boolean isPrimitive(final Class<?> type) {
+    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
+  }
+
   
 }
