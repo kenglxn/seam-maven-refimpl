@@ -21,9 +21,7 @@ public class ReflectionUtilsTest {
   
   @BeforeSuite
   public void beforeSuite() throws Exception {
-    
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
-    
   }
   
   @Test
