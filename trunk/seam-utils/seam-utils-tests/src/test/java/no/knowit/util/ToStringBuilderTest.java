@@ -64,9 +64,8 @@ public class ToStringBuilderTest {
 
   @Test
   public void anythingToString() throws Exception {
+    
     int[] intArray = new int[]{1,2,3};
-    log.debug(ToStringBuilder.build(intArray).insert(0, '\n'));
-
     String actual = ToStringBuilder.build(intArray).toString(); 
     assert actual.equals(EXPECTED_INTARRAY_TOSTRING)  
       : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
@@ -78,6 +77,9 @@ public class ToStringBuilderTest {
 
     List<Integer> integerList = Arrays.asList(new Integer(1), new Integer(2), new Integer(3));
     actual = ToStringBuilder.build(integerList).toString(); 
+
+    log.debug("\n"+actual);
+    
     assert actual.equals(EXPECTED_INTARRAY_TOSTRING)  
       : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
 
@@ -98,7 +100,7 @@ public class ToStringBuilderTest {
     assert actual.startsWith(EXPECTED_SIMPLEBEAN_FRAGMENT)
       : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLEBEAN_FRAGMENT);
     
-    log.debug(ToStringBuilder.build(simpleBean).insert(0, '\n'));
+    log.debug("\n"+actual);
 
     NestedBean nestedBean = createNestedBean(simpleBean);
     actual = ToStringBuilder.build(nestedBean).toString();
@@ -107,10 +109,9 @@ public class ToStringBuilderTest {
       : String.format(ASSERT_MESSAGE_FORMAT, actual, 
           EXPECTED_NESTEDBEAN_FRAGMENT_1 + "\n" + EXPECTED_NESTEDBEAN_FRAGMENT_2);
     
-    log.debug(ToStringBuilder.build(nestedBean).insert(0, '\n'));
+    log.debug("\n"+actual);
   }
 
-  
   private SimpleBean createSimpleBean() {
     SimpleBean simpleBean = new SimpleBean();
     MetaCache.set("id" ,   simpleBean, 2);
@@ -159,5 +160,4 @@ public class ToStringBuilderTest {
     
     return nestedBean;
   }
-
 }

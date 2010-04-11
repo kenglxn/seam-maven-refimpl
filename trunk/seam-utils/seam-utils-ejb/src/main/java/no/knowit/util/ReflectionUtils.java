@@ -1,7 +1,5 @@
 package no.knowit.util;
 
-import static no.knowit.util.ReflectionUtils.OBJECT_PRIMITIVES;
-
 import java.beans.Introspector;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -18,8 +16,16 @@ import java.util.List;
  * <tt>org.jboss.seam.persistence.ManagedEntityWrapper</tt> and 
  * <tt>org.crank.core.AnnotationUtils.java</tt>
  */
-@SuppressWarnings("unchecked")
 public class ReflectionUtils {
+  
+  @SuppressWarnings("unchecked")
+  public static final List<Class<? extends Serializable>> OBJECT_PRIMITIVES = Arrays.asList(
+      java.lang.String.class,    java.lang.Boolean.class,  java.lang.Byte.class,
+      java.lang.Character.class, java.lang.Double.class,   java.lang.Float.class,
+      java.lang.Integer.class,   java.lang.Long.class,     java.lang.Number.class,
+      java.lang.Short.class,     java.util.Currency.class, java.util.Date.class,
+      java.sql.Date.class,       java.sql.Time.class,      java.sql.Timestamp.class
+  );
   
   public static final List<String> OBJECT_PRIMITIVES_AS_STRING = Arrays.asList(
       "java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
@@ -29,14 +35,6 @@ public class ReflectionUtils {
       "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" 
   );
 
-  public static final List<Class<? extends Serializable>> OBJECT_PRIMITIVES = Arrays.asList(
-      java.lang.String.class,    java.lang.Boolean.class,  java.lang.Byte.class,
-      java.lang.Character.class, java.lang.Double.class,   java.lang.Float.class,
-      java.lang.Integer.class,   java.lang.Long.class,     java.lang.Number.class,
-      java.lang.Short.class,     java.util.Currency.class, java.util.Date.class,
-      java.sql.Date.class,       java.sql.Time.class,      java.sql.Timestamp.class
-  );
-  
   private ReflectionUtils() {
     ;
   }
@@ -263,6 +261,4 @@ public class ReflectionUtils {
   public static boolean isPrimitive(final Class<?> type) {
     return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
   }
-
-  
 }

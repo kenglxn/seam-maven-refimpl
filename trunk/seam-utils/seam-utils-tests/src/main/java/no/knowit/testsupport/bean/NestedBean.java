@@ -3,6 +3,7 @@ package no.knowit.testsupport.bean;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class NestedBean {
   private Integer id;
   private SimpleBean simpleBean;
