@@ -2,60 +2,24 @@ package no.knowit.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
-import no.knowit.testsupport.bean.Animal;
-import no.knowit.testsupport.bean.Bird;
-import no.knowit.testsupport.bean.Cat;
-import no.knowit.testsupport.bean.Dog;
-import no.knowit.testsupport.bean.NestedBean;
 import no.knowit.testsupport.bean.SimpleBean;
 import no.knowit.util.MetaCache.Meta;
 
-import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 public class MetaCacheTest {
-  private static Logger log = Logger.getLogger(MetaCacheTest.class);
+  //private static Logger log = Logger.getLogger(MetaCacheTest.class);
 
   private static final Integer EXPECTED_ID = 2;
   private static final int EXPECTED_FOO = 200; 
   private static final String EXPECTED_BAR = "setBar -> Hello \"BAR\"!"; 
   private static final String EXPECTED_BAZ = "Hello BAZ!"; 
   private static final SimpleBean.Color EXPECTED_COLOR = SimpleBean.Color.RED;
-  private static Date EXPECTED_DATE = null;
   
-  private static final String EXPECTED_INTARRAY_TOSTRING = "{ [1, 2, 3]\n}";
-  private static final String EXPECTED_STRINGARRAY_TOSTRING = 
-    "{ [\"Array\", \"or\", \"List\", \"of\", \"strings\"]\n}";
-  
-  private static final String EXPECTED_STRINGMAP_TOSTRING = 
-    "{ {\n" +
-    "    \"finland\" : \"the land of a thousand lakes\",\n" +
-    "    \"norway\" : \"the land of the midnight sun\"\n" +
-    "  }\n" +
-    "}";
-
-  private static final String EXPECTED_SIMPLEBEAN_TOSTRING = 
-    "{ \"SimpleBean\" : {\n" +
-    "    \"id\" : 2,\n" +
-    "    \"baz\" : \"Hello BAZ!\",\n" +
-    "    \"color\" : RED,\n" +
-    "    \"foo\" : 200,\n" +
-    "    \"bar\" : \"setBar -> Hello \\\"BAR\\\"!\",\n";
-    
-  private static final String EXPECTED_NESTEDBEAN_TOSTRING_1 = "{ \"NestedBean\" : {";
-
-  private static final String EXPECTED_NESTEDBEAN_TOSTRING_2 = 
-    "\"norway\" : \"the land of the midnight sun\"";
-    
-    
   private static final String ASSERT_MESSAGE_FORMAT = "Actual: [%s]. Expected: [%s].";
   private final DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private Date expectedDate;
@@ -99,52 +63,6 @@ public class MetaCacheTest {
     assert meta != null;
   }
   
-  @Test
-  public void anythingToString() throws Exception {
-    int[] intArray = new int[]{1,2,3};
-    String actual = MetaCache.toStringBuilder(intArray).toString(); 
-    assert actual.equals(EXPECTED_INTARRAY_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
-    
-    String[] stringArray = new String[]{"Array", "or", "List", "of", "strings"};
-    actual = MetaCache.toStringBuilder(stringArray).toString(); 
-    assert actual.equals(EXPECTED_STRINGARRAY_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGARRAY_TOSTRING);
-
-    List<Integer> integerList = Arrays.asList(new Integer(1), new Integer(2), new Integer(3));
-    actual = MetaCache.toStringBuilder(integerList).toString(); 
-    assert actual.equals(EXPECTED_INTARRAY_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
-
-    List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
-    actual = MetaCache.toStringBuilder(stringList).toString(); 
-    assert actual.equals(EXPECTED_STRINGARRAY_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGARRAY_TOSTRING);
-    
-    Map<String, String> stringMap = new HashMap<String, String>();
-    stringMap.put("finland", "the land of a thousand lakes");
-    stringMap.put("norway",  "the land of the midnight sun");
-    actual = MetaCache.toStringBuilder(stringMap).toString(); 
-    assert actual.equals(EXPECTED_STRINGMAP_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGMAP_TOSTRING);
-
-    SimpleBean simpleBean = createSimpleBean();
-    actual = MetaCache.toStringBuilder(simpleBean).toString();
-    assert actual.startsWith(EXPECTED_SIMPLEBEAN_TOSTRING)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLEBEAN_TOSTRING);
-    
-    log.debug(MetaCache.toStringBuilder(simpleBean).insert(0, '\n'));
-
-    NestedBean nestedBean = createNestedBean(simpleBean);
-    actual = MetaCache.toStringBuilder(nestedBean).toString();
-    assert actual.startsWith(EXPECTED_NESTEDBEAN_TOSTRING_1) && 
-      actual.contains(EXPECTED_NESTEDBEAN_TOSTRING_2)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, 
-          EXPECTED_NESTEDBEAN_TOSTRING_1 + "\n" + EXPECTED_NESTEDBEAN_TOSTRING_2);
-    
-    log.debug(MetaCache.toStringBuilder(nestedBean).insert(0, '\n'));
-  }
-  
   private SimpleBean createSimpleBean() {
     SimpleBean simpleBean = new SimpleBean();
     MetaCache.set("id" ,   simpleBean, 2);
@@ -155,42 +73,5 @@ public class MetaCacheTest {
     MetaCache.set("someDate", simpleBean, expectedDate);
 
     return simpleBean;
-  }
-
-  private NestedBean createNestedBean(SimpleBean simpleBean) {
-    NestedBean nestedBean = new NestedBean(99, simpleBean);
-    MetaCache.set("intArray",    nestedBean, new int[]{1,2,3});
-    MetaCache.set("stringArray", nestedBean, new String[]{"Array", "or", "List", "of", "strings"});
-
-    Cat cat1 = new Cat("Puss");
-    Cat cat2 = new Cat("Tiger");
-    MetaCache.set("says", cat2, "Roar");
-    MetaCache.set("catArray",  nestedBean, new Cat[]{cat1, cat2});
-
-    List<Integer> integerList = Arrays.asList(new Integer(101), new Integer(201), new Integer(301));
-    MetaCache.set("integerList", nestedBean, integerList);
-
-    List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
-    MetaCache.set("stringList", nestedBean, stringList);
-
-    List<Animal> animalsList = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));;
-    MetaCache.set("animalList", nestedBean, animalsList);
-    
-    Map<String, String> stringMap = new HashMap<String, String>();
-    stringMap.put("finland", "the land of a thousand lakes");
-    stringMap.put("norway",  "the land of the midnight sun");
-    stringMap.put("denmark", "the land of fairy-tales and mermaids");
-    stringMap.put("sweden",  "one upon a time they had Volvo and Saab");
-    stringMap.put("iceland", "the land of volcanoes and geysirs");
-    MetaCache.set("stringMap", nestedBean, stringMap);
-      
-    Map<String, Dog> dogMap = new HashMap<String, Dog>();
-    dogMap.put("Bonzo", new Dog("Bonzo"));
-    dogMap.put("Fido",  new Dog("Fido"));
-    dogMap.put("Lady",  new Dog("Lady"));
-    dogMap.put("Tramp", new Dog("Tramp"));
-    MetaCache.set("dogMap", nestedBean, dogMap);    
-    
-    return nestedBean;
   }
 }
