@@ -1,20 +1,15 @@
 package no.knowit.util;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import no.knowit.util.ReflectionUtils;
-import static no.knowit.util.ReflectionUtils.OBJECT_PRIMITIVES;
 
 /**
  * 
@@ -81,8 +76,7 @@ public class MetaCache {
       Meta newMeta = new Meta(clazz);
       meta = metaCache.putIfAbsent(clazz.getName(), newMeta);
       if(meta == null) {
-        // put succeeded, use new value
-        meta = newMeta;
+        meta = newMeta; // put succeeded, use new value
       }
     }
     return meta;

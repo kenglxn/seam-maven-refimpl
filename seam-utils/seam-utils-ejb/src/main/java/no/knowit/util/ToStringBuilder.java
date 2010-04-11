@@ -11,12 +11,21 @@ import java.util.Map.Entry;
 
 import no.knowit.util.MetaCache.Meta;
 
+/**
+ * 
+ * @author LeifOO
+ *
+ */
 public class ToStringBuilder {
 
   private ToStringBuilder() {
     ;
   }
 
+  public static String buildToString(final Object target) {
+    return build(target).toString();
+  }
+  
   public static StringBuilder build(final Object target) {
     return new StringBuilder("{ ")
       .append(toStringBuilder(target, 2))
