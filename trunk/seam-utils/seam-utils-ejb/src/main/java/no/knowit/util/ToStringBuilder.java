@@ -19,11 +19,11 @@ public class ToStringBuilder {
 
   public static StringBuilder build(final Object target) {
     return new StringBuilder("{ ")
-      .append(doBuild(target, 2))
+      .append(toStringBuilder(target, 2))
       .append("\n}");
   }
 
-  private static StringBuilder doBuild(final Object target, int indent) {
+  private static StringBuilder toStringBuilder(final Object target, int indent) {
     
     if(target == null) {
       return new StringBuilder();
@@ -41,7 +41,7 @@ public class ToStringBuilder {
         } 
         else {
           sb.append(String.format("\n%" + (indent+2) + "s", ""))
-            .append(doBuild(v, indent+2));
+            .append(toStringBuilder(v, indent+2));
         }
         sb.append(", ");
       }
@@ -66,7 +66,7 @@ public class ToStringBuilder {
           sb.append(primitiveToString(v));
         } 
         else {
-          sb.append(doBuild(v, indent+2));
+          sb.append(toStringBuilder(v, indent+2));
         }
         if(iter.hasNext()) {
           sb.append(',');
@@ -86,7 +86,7 @@ public class ToStringBuilder {
         }
         else {
           sb.append(String.format("\n%" + (indent+2) + "s", ""))
-            .append(doBuild(v, indent+2));
+            .append(toStringBuilder(v, indent+2));
         }
         int n = sb.length()-1;
         if(sb.charAt(n) == '\n') {
@@ -113,7 +113,7 @@ public class ToStringBuilder {
           sb.append(primitiveToString(value));
         }
         else {
-          sb.append(doBuild(value, indent+2));
+          sb.append(toStringBuilder(value, indent+2));
         }
         sb.append(",\n");
       }
