@@ -1,15 +1,19 @@
 package no.knowit.util;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.Map.Entry;
 
 import no.knowit.testsupport.bean.Animal;
 import no.knowit.testsupport.bean.Bird;
@@ -31,6 +35,13 @@ public class MetaCacheTest {
   private static final String EXPECTED_BAZ = "Hello BAZ!"; 
   private static final SimpleBean.Color EXPECTED_COLOR = SimpleBean.Color.RED;
   
+  private static final List<String> EXPECTED_STRINGLIST = Arrays.asList(
+      "Array", "or", "List", "of", "strings");
+
+  private static Map<String, String> EXPECTED_STRINGMAP = new HashMap<String, String>();
+  
+  private static Map<String, Dog> EXPECTED_DOGMAP = new HashMap<String, Dog>();
+
   private static final String ASSERT_MESSAGE_FORMAT = "Actual: [%s]. Expected: [%s].";
   private final DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private Date expectedDate;
@@ -42,6 +53,17 @@ public class MetaCacheTest {
     
     dateformat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
     expectedDate = dateformat.parse("2010-04-11 15:11:28");
+    
+    EXPECTED_STRINGMAP.put("finland", "the land of a thousand lakes");
+    EXPECTED_STRINGMAP.put("norway",  "the land of the midnight sun");
+    EXPECTED_STRINGMAP.put("denmark", "the land of fairy-tales and mermaids");
+    EXPECTED_STRINGMAP.put("sweden",  "one upon a time they had Volvo and Saab");
+    EXPECTED_STRINGMAP.put("iceland", "the land of volcanoes and geysirs");
+    
+    EXPECTED_DOGMAP.put("Bonzo", new Dog("Bonzo"));
+    EXPECTED_DOGMAP.put("Fido",  new Dog("Fido"));
+    EXPECTED_DOGMAP.put("Lady",  new Dog("Lady"));
+    EXPECTED_DOGMAP.put("Tramp", new Dog("Tramp"));
   }
   
   @Test
@@ -78,31 +100,53 @@ public class MetaCacheTest {
   public void shouldSetAttributesByReflectionOnNestedBean() throws Exception {
     NestedBean nestedBean = createNestedBean(createSimpleBean());
     
-    {
-      Object actual = MetaCache.get("intArray", nestedBean);
-      assert actual.getClass().isArray() && Array.getLength(actual) == 3;
+    Object actual = MetaCache.get("intArray", nestedBean);
+    assert actual.getClass().isArray() && Array.getLength(actual) == 3;
+    
+    actual = MetaCache.get("stringArray", nestedBean);
+    assert actual.getClass().isArray() && Array.getLength(actual) == 5;
+    for (String v : (String[])actual) {
+      assert EXPECTED_STRINGLIST.contains(v);
     }
     
-    {
-      Object actual = MetaCache.get("stringArray", nestedBean);
-      assert actual.getClass().isArray() && Array.getLength(actual) == 5;
-      
-      List<String> expected = Arrays.asList("Array", "or", "List", "of", "strings");
-      for (String v : (String[])actual) {
-        assert expected.contains(v);
-      }
-    }
-    
-    {
-      Object actual = MetaCache.get("stringList", nestedBean);
-      assert actual instanceof Collection<?>;
+    actual = MetaCache.get("stringList", nestedBean);
+    assert actual instanceof Collection<?>;
 
-      List<String> expected = Arrays.asList("Array", "or", "List", "of", "strings");
-      for (String v : (Collection<String>)actual) {
-        assert expected.contains(v);
-      }
+    List<?> list = (List<?>) actual;
+    for (String v : EXPECTED_STRINGLIST) {
+      assert list.contains(v);
     }
     
+    actual = MetaCache.get("stringMap", nestedBean);
+    assert actual instanceof Map<?, ?>;
+
+    Map<?, ?> map = (Map<?, ?>) actual;
+    for (Entry<String, String> entry : EXPECTED_STRINGMAP.entrySet()) {
+      String key = entry.getKey();
+      String value = entry.getValue();
+      assert map.containsKey(key);
+      assert map.get(key).toString().equals(value.toString());
+    }
+    
+    actual = MetaCache.get("animalList", nestedBean);
+    assert actual instanceof Collection<?>;
+
+    List<?> animalList = (List<?>) actual;
+    for (Object obj : animalList) {
+      assert obj instanceof Animal;
+    }
+    
+    actual = MetaCache.get("dogMap", nestedBean);
+    assert actual instanceof Map<?, ?>;
+
+    Map<?, ?> dogMap = (Map<?, ?>) actual;
+    for (Entry<String, Dog> entry : EXPECTED_DOGMAP.entrySet()) {
+      String key = entry.getKey();
+      Dog dog = entry.getValue();
+      String dogSays = MetaCache.get("says", dog).toString();
+      assert dogMap.containsKey(key);
+      assert dogSays.equals("Bark") : String.format(ASSERT_MESSAGE_FORMAT, dogSays, "Bark");
+    }
   }
   
   private SimpleBean createSimpleBean() {
@@ -133,8 +177,8 @@ public class MetaCacheTest {
     List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
     MetaCache.set("stringList", nestedBean, stringList);
 
-    List<Animal> animalsList = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));;
-    MetaCache.set("animalList", nestedBean, animalsList);
+    List<Animal> animalList = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));;
+    MetaCache.set("animalList", nestedBean, animalList);
     
     Map<String, String> stringMap = new HashMap<String, String>();
     stringMap.put("finland", "the land of a thousand lakes");
