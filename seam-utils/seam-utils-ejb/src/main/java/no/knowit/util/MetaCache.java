@@ -30,6 +30,11 @@ public class MetaCache {
   }
 
   public static Object get(final String attribute, final Object target) {
+    if(target == null) {
+      throw new IllegalArgumentException(
+        String.format("%s can not be null!", attribute==null ? "attribute" : "target"));
+    }
+
     Meta meta = getMeta(target.getClass());
     Method method = meta.getters.get(attribute);
     if(method != null) {
@@ -46,6 +51,11 @@ public class MetaCache {
   }
   
   public static void set(final String attribute, final Object target, final Object value) {
+    if(target == null) {
+      throw new IllegalArgumentException(
+        String.format("%s can not be null!", attribute==null ? "attribute" : "target"));
+    }
+    
     Meta meta = getMeta(target.getClass());
     Method method = meta.setters.get(attribute);
     if(method != null) {
