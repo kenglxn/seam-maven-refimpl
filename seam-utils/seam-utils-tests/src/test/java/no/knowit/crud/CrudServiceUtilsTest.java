@@ -29,7 +29,6 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
   @Override
   @BeforeSuite
   public void beforeSuite() throws Exception {
-    
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
     
     contextProperties.put("log4j.category.no.knowit.crud", "debug");
