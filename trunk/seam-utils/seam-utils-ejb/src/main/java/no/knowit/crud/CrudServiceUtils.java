@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
  * @author LeifOO
  */
 public class CrudServiceUtils {
+  private final static String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
   private static Logger log = Logger.getLogger(CrudServiceUtils.class);
 
   /**
@@ -47,13 +48,13 @@ public class CrudServiceUtils {
    */
   public static String getEntityName(final Class<?> entityClass) {
     if(entityClass == null) {
-      throw new IllegalArgumentException("The entityClass parameter can not be null");
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
     }
     Entity entity = entityClass.getAnnotation(Entity.class);
     if(entity == null) {
       throw new IllegalArgumentException(
           "The entityClass parameter is not a valid entity class. " +
-          "An entity should be annotated with the @Entity annotation");
+          "An entity should be annotated with @Entity");
     }
     String entityName = entity.name();
     return entityName == null || entityName.length() < 1 ? entityClass.getSimpleName() : entityName;
@@ -84,7 +85,7 @@ public class CrudServiceUtils {
    */
   public static List<Object> getIdValues(final Object entity) {
     if(entity == null) {
-      throw new IllegalArgumentException("The entity parameter can not be null");
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entity"));
     }
     List<Member> id = getIdAnnotations(entity.getClass());
     if(id.size() < 1) {
@@ -98,17 +99,26 @@ public class CrudServiceUtils {
     return result;
   }
 
+  /**
+   * Find attributes that can be used in JPQL.
+   * @param entityClass the class to search for queryable attributes, fields or set/get methods 
+   * dependent on annotation. The method also searches trough the inheritance hierarchy for 
+   * queryable attributes. 
+   * @return a map with attributes to use in JPQL
+   */
   public static Map<String, Member> findQueryableAttributes(final Class<?> entityClass) {
     
     if(entityClass == null) {
-      throw new IllegalArgumentException("The entityClass parameter can not be null");
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
     }
     Map<String, Member> attributes = new HashMap<String, Member>();
     Member id = ReflectionUtils.searcFieldsForFirstAnnotation(Id.class, entityClass);
     if(id != null) {
+      // This entity (and all other entities in the inheritance tree) uses field annotation
       attributes.putAll(findQueryableFields(entityClass));
     }
     else {
+      // Property annotation (setter/getter annotated)
       id = ReflectionUtils.searcMethodsForFirstAnnotation(Id.class, entityClass);
       if(id != null) {
         attributes.putAll(findQueryableProperties(entityClass));
@@ -117,15 +127,103 @@ public class CrudServiceUtils {
     return attributes;
   }
   
-  public static Map<String, Field> findQueryableFields(final Class<?> entityClass) {
-    if(entityClass == null) {
-      throw new IllegalArgumentException("The entityClass parameter can not be null");
-    }
+  public static Map<String, Member> reduceQueryableAttributesToPopulatedFields(
+      final Object exampleEntity, final Map<String, Member> attributes) {
+    
+    Map<String, Member> populatedAttributes = new HashMap<String, Member>();
+    for (Entry<String, Member> entry : attributes.entrySet()) {
+      String propertyName = entry.getKey();
+      Member member = entry.getValue();
+      Object value = member != null ? ReflectionUtils.get(member, exampleEntity) : null;
+      
+      if (value != null) {
+        Class<?> type = value.getClass();
+        if (type != null) {
+          // TODO: Should be possible to query embedded classes, arrays, collections and maps
+          if (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1) {
+            populatedAttributes.put(propertyName, member);
+          }
+        }
+      }
+    }    
+    return populatedAttributes;
+  }
 
+  /**
+   * Creates a parameterized SELECT or DELETE JPQL query based on non null
+   * field values in the <code>exampleEntity</code> parameter, 
+   * exclusive transient and static values.
+   * 
+   * @return The created JPQL string
+   */
+  public static String createJpql(final Object exampleEntity, boolean select, 
+      boolean distinct, boolean any) {
+
+    if(exampleEntity == null) {
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "exampleEntity"));
+    }
+    
+    if(!isEntity(exampleEntity.getClass())) {
+      throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
+    }
+    
+    Map<String, Member> attributes = findQueryableAttributes(exampleEntity.getClass());
+    attributes = reduceQueryableAttributesToPopulatedFields(exampleEntity, attributes);
+    return createJpql(exampleEntity, attributes, select, distinct, any);
+  }
+
+  
+  public static String createJpql(final Object exampleEntity, final Map<String, Member> attributes, 
+      boolean select, boolean distinct, boolean any) {
+
+    final String entityClassName = exampleEntity.getClass().getName();
+    final StringBuilder jpql = new StringBuilder(
+      (select ? distinct ? "SELECT DISTINCT e" : "SELECT e" : "DELETE"))
+      .append(String.format(" FROM %s e", entityClassName));
+    
+    final StringBuilder debugData = new StringBuilder();
+
+    // TODO: remove redundant code use reduceQueryableAttributesToPopulatedAttributes method
+    boolean where = false;
+    String operator = (any ? "OR" : "AND");
+    
+    Set<Entry<String, Member>> properties = attributes.entrySet();
+    for (Entry<String, Member> entry : properties) {
+      String propertyName = entry.getKey();
+      Member member = entry.getValue();
+      Object value = member != null ? ReflectionUtils.get(member, exampleEntity) : null;
+      
+      if (value != null) {
+        Class<?> type = value.getClass();
+        if (type != null) {
+          int k = OBJECT_PRIMITIVES.indexOf(type);
+          if (type.isPrimitive() || k > -1) {
+            String equals = (k == 0 ? (value.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 => java.lang.String
+            if (!where) {
+              where = true;
+              jpql.append(String.format(" WHERE e.%s %s :%s", propertyName, equals, propertyName));
+            } else {
+              jpql.append(String.format(" %s e.%s %s :%s", operator, propertyName, equals, propertyName));
+            }
+            if(log.isDebugEnabled()) {
+              debugData.append(String.format("[e.%s %s %s ] ", propertyName, equals, value));
+            }
+          }
+        }
+      }
+    }
+    if(log.isDebugEnabled()) {
+      debugData.insert(0, "createJPQL, jpql = \n\t[" + jpql.toString() + "]\n\t");
+      log.debug(debugData);
+    }
+    return jpql.toString();
+  }
+
+  private static Map<String, Field> findQueryableFields(final Class<?> entityClass) {
     Map<String, Field> fields = new HashMap<String, Field>();
     for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
       if(!ignore(clazz)) {
-        for ( Field field : clazz.getDeclaredFields() ) {
+        for (Field field : clazz.getDeclaredFields()) {
           if(!ignore(field)) {
             fields.put(field.getName(), field);
           }
@@ -136,14 +234,10 @@ public class CrudServiceUtils {
     return fields;
   }
 
-  public static Map<String, Method> findQueryableProperties(final Class<?> entityClass) {
-    if(entityClass == null) {
-      throw new IllegalArgumentException("The entityClass parameter can not be null");
-    }
-    
-    Map<String, Method> methods = new HashMap<String, Method>();
-    Map<String, Method> getters = new HashMap<String, Method>();
-    Map<String, Method> setters = new HashMap<String, Method>();
+  private static Map<String, Method> findQueryableProperties(final Class<?> entityClass) {
+    final Map<String, Method> methods = new HashMap<String, Method>();
+    final Map<String, Method> getters = new HashMap<String, Method>();
+    final Map<String, Method> setters = new HashMap<String, Method>();
     
     for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
       if(!ignore(clazz)) {
@@ -191,96 +285,6 @@ public class CrudServiceUtils {
     return methods;    
   }
 
-  public static Map<String, Member> reduceQueryableAttributesToPopulatedFields(
-      final Object exampleEntity, final Map<String, Member> attributes) {
-    
-    Map<String, Member> populatedAttributes = new HashMap<String, Member>();
-    for (Entry<String, Member> entry : attributes.entrySet()) {
-      String propertyName = entry.getKey();
-      Member member = entry.getValue();
-      Object value = member != null ? ReflectionUtils.get(member, exampleEntity) : null;
-      
-      if (value != null) {
-        Class<?> type = value.getClass();
-        if (type != null) {
-          if (type.isPrimitive() || OBJECT_PRIMITIVES.indexOf(type) > -1) {
-            populatedAttributes.put(propertyName, member);
-          }
-        }
-      }
-    }    
-    return populatedAttributes;
-  }
-  
-  /**
-   * Creates a parameterized SELECT or DELETE JPQL query based on non null
-   * field values in the <code>exampleEntity</code> parameter, 
-   * exclusive transient and static values.
-   * 
-   * @return The created JPQL string
-   */
-  public static String createJpql(final Object exampleEntity, boolean select, 
-      boolean distinct, boolean any) {
-
-    if(exampleEntity == null)
-      throw new IllegalStateException("exampleEntity parameter can not be null.");
-    
-    if(!isEntity(exampleEntity.getClass()))
-      throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
-    
-    Map<String, Member> attributes = findQueryableAttributes(exampleEntity.getClass());
-    attributes = reduceQueryableAttributesToPopulatedFields(exampleEntity, attributes);
-    return createJpql(exampleEntity, attributes, select, distinct, any);
-  }
-
-  
-  private static String createJpql(final Object exampleEntity, final Map<String, Member> attributes, 
-      boolean select, boolean distinct, boolean any) {
-
-    final String entityClassName = exampleEntity.getClass().getName();
-    final StringBuilder jpql = new StringBuilder((select ? distinct ?
-      "SELECT DISTINCT e" : "SELECT e" : "DELETE")
-    )
-    .append(String.format(" FROM %s e", entityClassName));
-    
-    final StringBuilder debugData = new StringBuilder();
-
-    // TODO: remove redundant code use reduceQueryableAttributesToPopulatedAttributes method
-    boolean where = false;
-    String operator = (any ? "OR" : "AND");
-    
-    Set<Entry<String, Member>> properties = attributes.entrySet();
-    for (Entry<String, Member> entry : properties) {
-      String propertyName = entry.getKey();
-      Member member = entry.getValue();
-      Object value = member != null ? ReflectionUtils.get(member, exampleEntity) : null;
-      
-      if (value != null) {
-        Class<?> type = value.getClass();
-        if (type != null) {
-          int k = OBJECT_PRIMITIVES.indexOf(type);
-          if (type.isPrimitive() || k > -1) {
-            String equals = (k == 0 ? (value.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 => java.lang.String
-            if (!where) {
-              where = true;
-              jpql.append(String.format(" WHERE e.%s %s :%s", propertyName, equals, propertyName));
-            } else {
-              jpql.append(String.format(" %s e.%s %s :%s", operator, propertyName, equals, propertyName));
-            }
-            if(log.isDebugEnabled()) {
-              debugData.append(String.format("[e.%s %s %s ] ", propertyName, equals, value));
-            }
-          }
-        }
-      }
-    }
-    if(log.isDebugEnabled()) {
-      debugData.insert(0, "createJPQL, jpql = \n\t[" + jpql.toString() + "]\n\t");
-      log.debug(debugData);
-    }
-    return jpql.toString();
-  }
-
   /**
    * Copied/Modified from org.jboss.seam.persistence.ManagedEntityWrapper
    */
@@ -301,13 +305,13 @@ public class CrudServiceUtils {
   }
 
   /**
-   * If a class is not an annotated  @Entity or  @MappedSuperclass then  
-   * the class is transient and we should ignore all fields in that class
+   * If a class is not an annotated  with @Entity or  @MappedSuperclass then  
+   * the class is transient and we should ignore all fields in that class, 
+   * given that the class is a part of an entity's inheritance hierarchy
    */
   private static boolean ignore(final Class<?> clazz) {
     return !(
       clazz.isAnnotationPresent(MappedSuperclass.class) || clazz.isAnnotationPresent(Entity.class)
     );
   }
-
 }

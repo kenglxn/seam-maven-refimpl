@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  */
 @Stateless(name = CrudService.NAME)
 public class CrudServiceBean implements CrudService {
-  final static String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
+  private final static String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
 
 	//protected Logger log = Logger.getLogger(this.getClass());
 	protected static Logger log = Logger.getLogger(CrudServiceBean.class);
@@ -83,17 +83,17 @@ public class CrudServiceBean implements CrudService {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass) {
-		if(entityClass == null)
+		if(entityClass == null) {
 		  throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
-
+		}
 		return getEntityManager().createQuery("from " + entityClass.getName()).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult) {
-    if(entityClass == null)
+    if(entityClass == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
-		
+    }
 		return getEntityManager().createQuery("from " + entityClass.getName())
 			.setFirstResult(startPosition).setMaxResults(maxResult).getResultList();
 	}
@@ -116,9 +116,9 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> merge(Collection<T> entities) {
-		if(entities == null) 
+		if(entities == null) {
 		  throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
-    
+		}
 		Collection<T> mergedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			mergedResults.add(merge(entity));
@@ -134,9 +134,9 @@ public class CrudServiceBean implements CrudService {
 	}
 
   public void remove(Class<?> entityClass) {
-    if(entityClass == null) 
+    if(entityClass == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
-
+    }
     getEntityManager().createQuery("delete from " + entityClass.getName()).executeUpdate();
   }
   
@@ -146,9 +146,9 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public void remove(Collection<Object> entities) {
-    if(entities == null) 
+    if(entities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
-    
+    }
 		for (Object entity : entities) {
 			remove(entity);
 		}
@@ -161,9 +161,9 @@ public class CrudServiceBean implements CrudService {
 	
 	// C or U :-)
 	public <T> T store(T entity) {
-    if(entity == null) 
+    if(entity == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entity"));
-
+    }
 		//Object id = getIdentity(entity);
 		Object id = CrudServiceUtils.getIdValues(entity).get(0);
 		if (!log.isDebugEnabled()) {
@@ -196,9 +196,9 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> store(Collection<T> entities) {
-    if(entities == null) 
+    if(entities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
-
+    }
     Collection<T> storedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			storedResults.add(store(entity));
@@ -222,9 +222,9 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	public <T> Collection<T> refresh(Collection<T> entities) {
-    if(entities == null) 
+    if(entities == null) { 
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
-    
+    }
 		Collection<T> refreshedResults = new ArrayList<T>(entities.size());
 		for (T entity : entities) {
 			refreshedResults.add(refresh(entity));
@@ -309,17 +309,18 @@ public class CrudServiceBean implements CrudService {
 	 * 
 	 */
 	protected Query createExampleQuery(final Object example, boolean select, boolean distinct, boolean any) {
-    if(example == null) 
+    if(example == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "example"));
-		
+    }
     String jpql = CrudServiceUtils.createJpql(example, select, distinct, any);
     Map<String, Member> attributes = CrudServiceUtils.findQueryableAttributes(example.getClass());
     attributes = CrudServiceUtils.reduceQueryableAttributesToPopulatedFields(example, attributes);
 
     final StringBuilder debugData = new StringBuilder();
     
-    if(log.isDebugEnabled()) 
+    if(log.isDebugEnabled()) {
       debugData.append(example.getClass().getSimpleName() + " class query parameters: ");
+    }
     
     Query query = getEntityManager().createQuery(jpql);
     Set<Entry<String, Member>> properties = attributes.entrySet();
@@ -329,12 +330,14 @@ public class CrudServiceBean implements CrudService {
       Object value = member != null ? ReflectionUtils.get(member, example) : null;
       query.setParameter(property, value);
       
-      if(log.isDebugEnabled())
+      if(log.isDebugEnabled()) {
         debugData.append("[:" + property + " = " + value + "] ");
+      }
     } 
 
-    if(log.isDebugEnabled())
+    if(log.isDebugEnabled()) {
       log.debug(debugData);
+    }
     
 		return query;
 	}

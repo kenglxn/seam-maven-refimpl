@@ -88,8 +88,8 @@ public class ToStringBuilder {
       sb.append("[");
       
       int l = Array.getLength(target);
-      for (int k = 0; k < l; k++) {
-        Object v = Array.get(target, k);
+      for (int i = 0; i < l; i++) {
+        Object v = Array.get(target, i);
         if(v != null && isPrimitive(v.getClass())) {
           sb.append(primitiveToString(v));
         }
@@ -101,7 +101,7 @@ public class ToStringBuilder {
         if(sb.charAt(n) == '\n') {
           sb.deleteCharAt(n);
         }
-        sb.append(k < l-1 ? ", " : "");
+        sb.append(i < l-1 ? ", " : "");
       }
       sb.append(']');
     }
