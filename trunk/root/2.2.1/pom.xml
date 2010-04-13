@@ -332,7 +332,12 @@
         </exclusions>
       </dependency>
       
-
+      <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr</artifactId>
+        <version>3.2</version>
+      </dependency>
+      
       <dependency>
         <groupId>org.richfaces.framework</groupId>
         <artifactId>richfaces-api</artifactId>
@@ -431,7 +436,7 @@
           </exclusion>
         </exclusions>
       </dependency>
-
+			
       <dependency>
         <groupId>org.jbpm</groupId>
         <artifactId>jbpm-jpdl</artifactId>
@@ -520,6 +525,10 @@
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
           </exclusion>
+         	<exclusion>
+         		<groupId>com.sun.xml.stream</groupId>
+         		<artifactId>sjsxp</artifactId>
+         	</exclusion>
           <!-- ** -->
           <exclusion>
             <groupId>org.codehaus.jettison</groupId>
@@ -594,7 +603,7 @@
           </exclusion>
         </exclusions>
       </dependency>
-
+			
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
@@ -620,6 +629,7 @@
         <artifactId>groovy-all</artifactId>
         <version>1.7.1</version>
         <exclusions>
+					<!-- groovy-all imports a lot of stuff, would be better to just use specific bits -->
           <exclusion>
             <groupId>bsf</groupId>
             <artifactId>bsf</artifactId>
@@ -714,7 +724,7 @@
             <artifactId>xpp3</artifactId>
           </exclusion>
           <exclusion>
-            <groupId>xstream</groupId>
+            <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
           </exclusion>
           <!-- ** -->
@@ -728,7 +738,7 @@
       <dependency>
         <groupId>org.jboss.el</groupId>
         <artifactId>jboss-el</artifactId>
-        <version>1.0_02.CR4</version>
+        <version>1.0_02.CR5</version>
         <exclusions>
         <!-- ** -->
         <exclusion>
@@ -809,12 +819,6 @@
       </dependency> 
 
       <!-- antlr -->
-      <dependency>
-        <groupId>org.antlr</groupId>
-        <artifactId>antlr</artifactId>
-        <version>3.2</version>
-      </dependency>
-      
       <dependency>
         <groupId>org.antlr</groupId>
         <artifactId>antlr-runtime</artifactId>
