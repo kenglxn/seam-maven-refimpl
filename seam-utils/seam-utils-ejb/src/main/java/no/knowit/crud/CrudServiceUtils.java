@@ -30,7 +30,7 @@ public class CrudServiceUtils {
   private static Logger log = Logger.getLogger(CrudServiceUtils.class);
 
   /**
-   * Checks if a class is an entity
+   * Checks if a class is an entity. A class annotated with @Entity is recognized as an entity class.
    * @param entityClass the entity class to check for @Entity annotation
    * @return true if the class is annotated with @Entity
    */
@@ -79,7 +79,7 @@ public class CrudServiceUtils {
   }
 
   /**
-   * Get entity identity based on field(s) or method(s) annotated with @Id 
+   * Get entity identity based on field(s) or method(s) annotated with the @Id annotation 
    * @param entity
    * @return
    */
@@ -101,7 +101,7 @@ public class CrudServiceUtils {
 
   /**
    * Find attributes that can be used in JPQL.
-   * @param entityClass the class to search for queryable attributes, fields or set/get methods 
+   * @param entityClass the class to search for queryable attributes; fields or set/get methods 
    * dependent on annotation. The method also searches trough the inheritance hierarchy for 
    * queryable attributes. 
    * @return a map with attributes to use in JPQL
@@ -126,7 +126,14 @@ public class CrudServiceUtils {
     }
     return attributes;
   }
-  
+
+  /**
+   * Inspects an entity instance and removes attributes from the map where the entity's 
+   * corresponding field is null.
+   * @param exampleEntity
+   * @param attributes
+   * @return
+   */
   public static Map<String, Member> reduceQueryableAttributesToPopulatedFields(
       final Object exampleEntity, final Map<String, Member> attributes) {
     
@@ -151,9 +158,12 @@ public class CrudServiceUtils {
 
   /**
    * Creates a parameterized SELECT or DELETE JPQL query based on non null
-   * field values in the <code>exampleEntity</code> parameter, 
-   * exclusive transient and static values.
+   * attribute values in the <code>exampleEntity</code> parameter. 
    * 
+   * @param exampleEntity the entity instance to use to create the query
+   * @param select if the value is true, a select query will be generated.
+   * @param distinct if the value is true, a select distinct query will be generated
+   * @param any if the value is true, attributes used in the <code>where</code> clause will be "ored"
    * @return The created JPQL string
    */
   public static String createJpql(final Object exampleEntity, boolean select, 
@@ -164,7 +174,7 @@ public class CrudServiceUtils {
     }
     
     if(!isEntity(exampleEntity.getClass())) {
-      throw new IllegalStateException("exampleEntity parameter must be an @Entity.");
+      throw new IllegalStateException("The \"exampleEntity\" parameter must be an @Entity.");
     }
     
     Map<String, Member> attributes = findQueryableAttributes(exampleEntity.getClass());
@@ -172,7 +182,18 @@ public class CrudServiceUtils {
     return createJpql(exampleEntity, attributes, select, distinct, any);
   }
 
-  
+  /**
+   * Creates a parameterized SELECT or DELETE JPQL query based on 
+   * key/value pairs in the <code>attributes</code> map. 
+   * 
+   * @param exampleEntity thenentity instance to use to create the query
+   * @param attributes a map with attributes that should be used to generate the <code>where</code>
+   *        clause. Attrubute must correspond with the entity's attributes. 
+   * @param select if the value is true, a select query will be generated.
+   * @param distinct if the value is true, a select distinct query will be generated
+   * @param any if the value is true, attributes used in the query will be "ored"
+   * @return The created JPQL string
+   */
   public static String createJpql(final Object exampleEntity, final Map<String, Member> attributes, 
       boolean select, boolean distinct, boolean any) {
 

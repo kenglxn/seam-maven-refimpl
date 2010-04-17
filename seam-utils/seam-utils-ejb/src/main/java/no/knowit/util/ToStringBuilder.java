@@ -12,9 +12,8 @@ import java.util.Map.Entry;
 import no.knowit.util.MetaCache.Meta;
 
 /**
- * 
+ * Utility methods to build a string representation of an objects' field values. 
  * @author LeifOO
- *
  */
 public class ToStringBuilder {
 
@@ -22,10 +21,20 @@ public class ToStringBuilder {
     ;
   }
 
+  /**
+   * Creates a string representation of an object
+   * @param target the object to create a string representation of
+   * @return a string representation of the objects' field values
+   */
   public static String buildToString(final Object target) {
     return build(target).toString();
   }
   
+  /**
+   * Creates a string representation of an object
+   * @param target the object to create a string representation of
+   * @return a string buffer representation of the objects' field values
+   */
   public static StringBuilder build(final Object target) {
     return new StringBuilder("{ ")
       .append(toStringBuilder(target, 2))
@@ -34,11 +43,11 @@ public class ToStringBuilder {
 
   private static StringBuilder toStringBuilder(final Object target, int indent) {
     
-    if(target == null) {
-      return new StringBuilder();
-    }
-    
     final StringBuilder sb = new StringBuilder();
+    
+    if(target == null) {
+      return sb;
+    }
     
     if(target instanceof Collection<?>) {
       sb.append("[");
