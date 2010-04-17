@@ -18,6 +18,9 @@ import no.knowit.util.ReflectionUtils;
  */
 public class MetaCache {
 
+  private static final String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
+  private static final String ATTRIBUTE_NOT_FOUND = "Attribute not found: \"%s.%s\""; 
+  
   private static final ConcurrentMap<String, Meta> 
     metaCache = new ConcurrentHashMap<String, Meta>(); 
 
@@ -27,7 +30,7 @@ public class MetaCache {
 
   public static Object get(final String attribute, final Object target) {
     if(target == null) {
-      throw new IllegalArgumentException(String.format("%s can not be null!", "target"));
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "target"));
     }
 
     Meta meta = getMeta(target.getClass());
@@ -42,12 +45,12 @@ public class MetaCache {
     }
 
     throw new IllegalArgumentException(String.format(
-      "MetaCache.get: Attribute not found: \"%s.%s\"", target.getClass().getName(), attribute));
+        ATTRIBUTE_NOT_FOUND, target.getClass().getName(), attribute));
   }
   
   public static void set(final String attribute, final Object target, final Object value) {
     if(target == null) {
-      throw new IllegalArgumentException(String.format("%s can not be null!", "target"));
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "target"));
     }
     
     Meta meta = getMeta(target.getClass());
@@ -64,7 +67,7 @@ public class MetaCache {
     }
     
     throw new IllegalArgumentException(String.format(
-      "MetaCache.set: Attribute not found: \"%s.%s\"", target.getClass().getName(), attribute));
+        ATTRIBUTE_NOT_FOUND, target.getClass().getName(), attribute));
   }
 
   public static Meta getMeta(Class<?> clazz) {
@@ -90,8 +93,8 @@ public class MetaCache {
     metaCache.clear();
   }
   
-  /*
-   * 
+  /**
+   * Wrapper class for cached meta data 
    */
   public static class Meta {
     transient Class<?> metaClass;
@@ -99,11 +102,10 @@ public class MetaCache {
     transient Map<String, Method> getters;
     transient Map<String, Method> setters;
     
-    @SuppressWarnings("unused")
     private Meta() {
     }
     
-    public Meta (final Class<?> targetClass) {
+    private Meta (final Class<?> targetClass) {
       super();
       
       this.metaClass = targetClass;
@@ -120,13 +122,10 @@ public class MetaCache {
       }
 
       for (Class<?> clazz = targetClass; clazz != Object.class; clazz = clazz.getSuperclass()) {
-        
         for(Method method : clazz.getDeclaredMethods()) {
-          
           if(ignore(method)) {
             continue;
           }
-          
           String methodName = method.getName();
           String propertyName = ReflectionUtils.getPropertyName(method);  // <- get, is or set
           Class<?>[] types = method.getParameterTypes();
@@ -146,6 +145,5 @@ public class MetaCache {
     private boolean ignore(final Member member) {
       return Modifier.isStatic(member.getModifiers()) || Modifier.isNative(member.getModifiers());
     }
-    
   } // ~Meta  
 }

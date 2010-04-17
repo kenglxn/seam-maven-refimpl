@@ -34,6 +34,9 @@ public class ReflectionUtils {
       "java.lang.Short",     "java.util.Currency", "java.util.Date",
       "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" 
   );
+  
+  private static final String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
+
 
   private ReflectionUtils() {
     ;
@@ -96,7 +99,7 @@ public class ReflectionUtils {
     
     if(field == null || target == null) {
       throw new IllegalArgumentException(
-        String.format("%s can not be null!", field==null ? "field" : "target"));
+        String.format(PARAM_NOT_NULL, field==null ? "field" : "target"));
     }
     
     boolean accessible = field.isAccessible();
@@ -116,7 +119,7 @@ public class ReflectionUtils {
   public static void set(final Method method, final Object target, final Object value) {
     if(method == null || target == null) {
       throw new IllegalArgumentException(
-        String.format("%s can not be null!", method==null ? "method" : "target"));
+        String.format(PARAM_NOT_NULL, method==null ? "method" : "target"));
     }
     
     boolean accessible = method.isAccessible();
