@@ -4,14 +4,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 
 @Entity
 public class ConcreteEntityPropertyAnnotated extends AbstractEntityPropertyAnnotated implements Serializable {
   private static final long serialVersionUID = -6191438010226617582L;
   
+  public enum Color {RED, YELLOW, GREEN};
+  
   private String name;
   private Date dateOfBirth;
+  private Color color;
   private long age;
   
   public String getName() {
@@ -28,6 +33,15 @@ public class ConcreteEntityPropertyAnnotated extends AbstractEntityPropertyAnnot
   
   public void setDateOfBirth(Date dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
+  }
+
+  @Enumerated(EnumType.STRING)
+  public Color getColor() {
+    return color;
+  }
+
+  public void setColor(Color color) {
+    this.color = color;
   }
 
   @Transient

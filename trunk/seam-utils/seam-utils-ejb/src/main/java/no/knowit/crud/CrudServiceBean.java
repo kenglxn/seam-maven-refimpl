@@ -303,8 +303,8 @@ public class CrudServiceBean implements CrudService {
 	 * The limitations are:
 	 * <ul>
 	 *   <li>The entity must have at least one @Id annotation</li>
-	 *   <li>Can query only primitives (Integer, String etc.)
-	 *   <li>Can not handle enums, arrays and object references while generating JPQL</li>
+	 *   <li>Only primitives can be part of the query(Integer, String etc.)
+	 *   <li>Can not handle embedded classes, object references, arrays and collections while generating JPQL</li>
 	 * </ul>
 	 * 
 	 */

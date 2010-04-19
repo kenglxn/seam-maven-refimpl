@@ -13,9 +13,14 @@ import javax.persistence.Version;
 
 @Entity
 public class FieldAnnotatedEntity implements Serializable {
+  
   private static final long serialVersionUID = 2818054409339379513L;
 
   private static final int FOOBAR = 100;
+  
+  public enum Color {
+    RED, YELLOW, GREEN
+  };
   
   @Id
   @GeneratedValue(strategy = IDENTITY)
@@ -33,18 +38,24 @@ public class FieldAnnotatedEntity implements Serializable {
   
   private String baz;
   
+  private Color color;
+  
   public FieldAnnotatedEntity() {
     super();
   }
   
   public FieldAnnotatedEntity(int foo) {
-    super();
+    this();
     this.foo = foo;
   }
 
+  public FieldAnnotatedEntity(Color color) {
+    this();
+    this.color = color;
+  }
+
   public FieldAnnotatedEntity(int foo, String baz) {
-    super();
-    this.foo = foo;
+    this(foo);
     this.baz = baz;
   }
 }
