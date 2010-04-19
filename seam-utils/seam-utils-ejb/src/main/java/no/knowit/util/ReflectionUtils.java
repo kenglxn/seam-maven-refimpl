@@ -239,7 +239,9 @@ public class ReflectionUtils {
   }
 
   public static String getPropertyName(final Method method) {
-    if(method == null) return null;
+    if(method == null) {
+      return null;
+    }
     String methodName = method.getName();
     if(methodName.startsWith("get") || methodName.startsWith("set")) {
       return Introspector.decapitalize(methodName.substring(3));

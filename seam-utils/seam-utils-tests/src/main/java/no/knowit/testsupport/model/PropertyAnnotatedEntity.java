@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -17,6 +19,10 @@ public class PropertyAnnotatedEntity implements Serializable {
 
   private static final int FOOBAR = 100;
 
+  public enum Color {
+    RED, YELLOW, GREEN
+  };
+  
   private Long id;
 
   private Long version;
@@ -29,18 +35,24 @@ public class PropertyAnnotatedEntity implements Serializable {
 
   private String baz;
   
+  private Color color;
+  
   public PropertyAnnotatedEntity() {
     super();
   }
   
   public PropertyAnnotatedEntity(int foo) {
-    super();
+    this();
     this.foo = foo;
   }
 
+  public PropertyAnnotatedEntity(Color color) {
+    this();
+    this.color = color;
+  }
+
   public PropertyAnnotatedEntity(int foo, String baz) {
-    super();
-    this.foo = foo;
+    this(foo);
     this.baz = baz;
   }
 
@@ -102,5 +114,14 @@ public class PropertyAnnotatedEntity implements Serializable {
 
   public void setBaz(String fooBar) {
     this.baz = fooBar;
+  }
+
+  @Enumerated(EnumType.STRING)
+  public Color getColor() {
+    return color;
+  }
+
+  public void setColor(Color color) {
+    this.color = color;
   }
 }

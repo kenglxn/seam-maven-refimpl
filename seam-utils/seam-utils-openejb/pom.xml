@@ -14,7 +14,7 @@
   <artifactId>seam-utils-openejb</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>${project.artifactId} : ${project.version}</name>
-  <description>Utilities to run Seam tests in the Apache OpenEJB embedded container</description>
+  <description>Utilities needed to run Seam tests in the Apache OpenEJB embedded container</description>
   <packaging>ejb</packaging>
   
   <profiles>

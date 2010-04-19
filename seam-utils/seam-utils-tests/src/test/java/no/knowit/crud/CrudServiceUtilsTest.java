@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -22,9 +23,10 @@ import no.knowit.testsupport.model.inheritance.ContractEmployee;
 import no.knowit.testsupport.model.inheritance.FullTimeEmployee;
 import no.knowit.testsupport.model.inheritance.PartTimeEmployee;
 import no.knowit.util.ReflectionUtils;
+import no.knowit.util.ToStringBuilder;
 
 public class CrudServiceUtilsTest extends OpenEjbTest {
-  //private static Logger log = Logger.getLogger(CrudServiceUtils.class);
+  private static Logger log = Logger.getLogger(CrudServiceUtils.class);
 
   @Override
   @BeforeSuite
@@ -88,8 +90,8 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
   
   @Test
   public void shouldFindQueriableAttributes() throws Exception {
-    final String message = "Queryable attributes: %s did not match expected: %s";
-    List<String> expectedAttributes = Arrays.asList("id", "foo", "baz");
+    final String message = "Queryable attributes: %s did not match expected attributes: %s";
+    List<String> expectedAttributes = Arrays.asList("id", "foo", "baz", "color");
     Map<String, Member> actualAttributes;
     
     actualAttributes= CrudServiceUtils.findQueryableAttributes(FieldAnnotatedEntity.class);
@@ -101,7 +103,7 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
         String.format(message, actualAttributes.keySet(), expectedAttributes));
 
     
-    expectedAttributes = Arrays.asList("identity", "name", "dateOfBirth");
+    expectedAttributes = Arrays.asList("identity", "name", "dateOfBirth", "color");
     
     actualAttributes = CrudServiceUtils.findQueryableAttributes(ConcreteEntityFieldAnnotated.class);
     Assert.assertTrue(actualAttributes.keySet().containsAll(expectedAttributes),
@@ -129,7 +131,7 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
   }
 
   @Test
-  public void shouldCreateJpqlWithAndOperator() throws Exception {
+  public void shouldCreateSelectJpql() throws Exception {
     final String expectedSelect = "SELECT e FROM %s e";
     
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity();
@@ -141,23 +143,48 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     jpql = CrudServiceUtils.createJpql(pe, true, false, false);
     expectedJPQL = String.format(expectedSelect, pe.getClass().getName());
     Assert.assertEquals(jpql, expectedJPQL);
+  }
+  
+  @Test
+  public void shouldCreateSelectJpqlWithWhereClause() throws Exception {
+    final String expectedSelect = "SELECT e FROM %s e WHERE e.foo = :foo";
     
-    fe = new FieldAnnotatedEntity(100);
-    jpql = CrudServiceUtils.createJpql(fe, true, false, false);
-    expectedJPQL = String.format(expectedSelect, fe.getClass().getName()) + " WHERE e.foo = :foo";
+    FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100);
+    String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
+    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
     Assert.assertEquals(jpql, expectedJPQL);
-
-    fe = new FieldAnnotatedEntity(100, "HELLO");
-    jpql = CrudServiceUtils.createJpql(fe, true, false, false);
-    expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
-    boolean expected = jpql.startsWith(expectedJPQL) && 
-      jpql.contains("e.baz = :baz") && jpql.contains("AND") && jpql.contains("e.foo = :foo");
-    
-    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
   }
 
   @Test
-  public void shouldCreateJpqlWithOrOperator() throws Exception {
+  public void shouldCreateSelectJpqlWithEnum() throws Exception {
+    final String expectedSelect = "SELECT e FROM %s e WHERE e.color = :color";
+
+    FieldAnnotatedEntity fe = new FieldAnnotatedEntity(FieldAnnotatedEntity.Color.GREEN);
+    String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
+    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    Assert.assertEquals(jpql, expectedJPQL);
+    
+    PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(PropertyAnnotatedEntity.Color.GREEN);
+    jpql = CrudServiceUtils.createJpql(pe, true, false, false);
+    expectedJPQL = String.format(expectedSelect, pe.getClass().getName());
+    Assert.assertEquals(jpql, expectedJPQL);
+  }
+  
+  @Test
+  public void shouldCreateSelectJpqlWithAndOperator() throws Exception {
+    final String expectedSelect = "SELECT e FROM %s e";
+    
+    FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
+    String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
+    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    boolean expected = jpql.startsWith(expectedJPQL) && 
+      jpql.contains("e.baz = :baz") && jpql.contains("AND") && jpql.contains("e.foo = :foo");
+    
+    Assert.assertTrue(expected, "Actual JPQL was not expected JPQL: [" + jpql + "]");
+  }
+
+  @Test
+  public void shouldCreateSelectJpqlWithOrOperator() throws Exception {
     final String expectedSelect = "SELECT e FROM %s e";
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
@@ -166,11 +193,11 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") &&
       jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
-    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+    Assert.assertTrue(expected, "Actual JPQL was not expected JPQL: [" + jpql + "]");
   }
   
   @Test
-  public void shouldCreateDistinctJpql() throws Exception {
+  public void shouldCreateSelectDistinctJpql() throws Exception {
     final String expectedSelect = "SELECT DISTINCT e FROM %s e";
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
@@ -179,11 +206,11 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
       jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
-    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+    Assert.assertTrue(expected, "Actual JPQL was not expected JPQL: [" + jpql + "]");
   }
 
   @Test
-  public void shouldCreateWildcardJpql() throws Exception {
+  public void shouldCreateSelectJpqlWithWildcard() throws Exception {
     final String expectedSelect = "SELECT e FROM %s e";
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELL%");
@@ -192,7 +219,7 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
       jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
-    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+    Assert.assertTrue(expected, "Actual JPQL was not expected JPQL: [" + jpql + "]");
     
     PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(100, "HELL%");
     jpql = CrudServiceUtils.createJpql(pe, true, false, true);
@@ -200,7 +227,7 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
       jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
-    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+    Assert.assertTrue(expected, "Actual JPQL was not expected JPQL: [" + jpql + "]");
   }
   
   @Test
@@ -213,7 +240,7 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     boolean expected = jpql.startsWith(expectedJPQL) && 
       jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
-    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+    Assert.assertTrue(expected, "Actual JPQL was not expected JPQL: [" + jpql + "]");
 
     
     PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(100, "HELL%");
@@ -222,7 +249,7 @@ public class CrudServiceUtilsTest extends OpenEjbTest {
     expected = jpql.startsWith(expectedJPQL) && 
       jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
-    Assert.assertTrue(expected, "Actual JPQL was not expected: [" + jpql + "]");
+    Assert.assertTrue(expected, "Actual JPQL was not expected JPQL: [" + jpql + "]");
   }
   
 }

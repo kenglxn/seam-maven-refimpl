@@ -163,7 +163,7 @@ public class CrudServiceUtils {
    * @param exampleEntity the entity instance to use to create the query
    * @param select if the value is true, a select query will be generated.
    * @param distinct if the value is true, a select distinct query will be generated
-   * @param any if the value is true, attributes used in the <code>where</code> clause will be "ored"
+   * @param any if the value is true, attributes used in the <code>where</code> clause will be "or'ed"
    * @return The created JPQL string
    */
   public static String createJpql(final Object exampleEntity, boolean select, 
@@ -218,8 +218,8 @@ public class CrudServiceUtils {
         Class<?> type = value.getClass();
         if (type != null) {
           int k = OBJECT_PRIMITIVES.indexOf(type);
-          if (type.isPrimitive() || k > -1) {
-            String equals = (k == 0 ? (value.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // 0 => java.lang.String
+          if (type.isPrimitive() || type.isEnum() || k > -1) {
+            String equals = (k == 0 ? (value.toString().indexOf('%') > -1 ? "LIKE" : "=") : "="); // k=0 => java.lang.String
             if (!where) {
               where = true;
               jpql.append(String.format(" WHERE e.%s %s :%s", propertyName, equals, propertyName));
