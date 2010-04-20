@@ -22,7 +22,7 @@
       More than one profile can be active at once. Since profiles can contain the same 
       types of configuration there can be clashes. If two profiles clash the last to be activated 
       will override those activated earlier. 
-      Note: "mvn install -Penv-dev" deactivates activeByDefault prpofiles
+      Note: "mvn install -Penv-dev" deactivates activeByDefault profiles
      -->
     <profile>
       <id>env-dev</id>
