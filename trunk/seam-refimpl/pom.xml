@@ -43,7 +43,7 @@
       Properties for production are located in src/main/filters/filter-prod.properties
       Properties to be modified by developer are located in src/main/filters/filter-dev.properties
       Copy filter-prod.properties to filter-dev.properties and add filter-dev.properties to svn:ignore
-      Type e.g "mvn install -Penv-dev" to activate the developemnt profile.  
+      Type e.g "mvn install -Penv-dev" to activate the development profile.  
     -->
   </properties>
 
@@ -373,6 +373,7 @@
                 </goals>
                 <configuration>
                   <tasks>
+                    <echo>project.artifactId        : ${project.artifactId}</echo>
                     <echo>env                       : ${env}</echo>
                     <echo>app.context               : ${app.context}</echo>
                     <echo>app.unpack.modules        : ${app.unpack.modules}</echo>
