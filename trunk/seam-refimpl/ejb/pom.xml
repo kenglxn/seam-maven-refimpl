@@ -74,7 +74,7 @@
                     <copy
                       todir="${deploy-path}/${project.build.finalName}.jar"
                       verbose="true">
-                      <fileset dir="${project.build.outputDirectory}"	>
+                      <fileset dir="${project.build.outputDirectory}">
                         <include name="**/*.class" />
                       </fileset>
                     </copy>
@@ -149,10 +149,7 @@
           <execution>
             <configuration>
               <files>
-                <file>../src/main/filters/filter-${env}.properties</file>
-                <!-- 
-                <file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file> 
-                -->
+                <file>${basedir}/../src/main/filters/filter-${env}.properties</file>
               </files>
             </configuration>
           </execution>
