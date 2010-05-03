@@ -281,9 +281,9 @@
         The Properties Maven Plugin is here to make life a little easier when 
         dealing with properties. It provides goals to read and write properties 
         from and to	files, and also to set system properties. It's main use-case 
-        is loading properties	from files instead of declaring them in pom.xml, 
+        is loading properties from files instead of declaring them in pom.xml, 
         something that comes in handy when dealing with different environments. 
-        The plugin read properties during the	"validate" phase and the 
+        The plugin read properties during the "validate" phase and the 
         properties are then accessible from the pom.
          
         The "filters" tag read properties after the "generate-resources" phase 
@@ -295,12 +295,9 @@
         <artifactId>properties-maven-plugin</artifactId>
         <executions>
           <execution>
-            <configuration>
+          	<configuration>
               <files>
-                <file>../src/main/filters/filter-${env}.properties</file>
-                <!-- 
-                <file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file> 
-                -->
+                <file>${basedir}/../src/main/filters/filter-${env}.properties</file>
               </files>
             </configuration>
           </execution>
@@ -313,7 +310,7 @@
             </goals>
             <configuration>
               <files>
-                <file>../src/main/filters/filter-${env}.properties</file>
+                <file>${basedir}/../src/main/filters/filter-${env}.properties</file>
               </files>
             </configuration>
           </execution>

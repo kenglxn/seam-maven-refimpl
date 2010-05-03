@@ -45,7 +45,7 @@
       <properties>
         <env>prod</env>
       </properties>
-    </profile>	
+    </profile>
   
     <profile>
       <id>explode</id>
@@ -217,10 +217,7 @@
           <execution>
             <configuration>
               <files>
-                <file>../src/main/filters/filter-${env}.properties</file>
-                <!-- 
-                <file>${project.parent.basedir}/src/main/filters/filter-${env}.properties</file> 
-                -->
+                <file>${basedir}/../src/main/filters/filter-${env}.properties</file>
               </files>
             </configuration>
           </execution>
