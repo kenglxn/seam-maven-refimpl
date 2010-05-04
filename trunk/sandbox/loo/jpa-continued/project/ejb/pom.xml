@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>no.knowit.javabin</groupId>
+    <artifactId>jpa-continued</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>jpa-continued-ejb</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
+  <name>${project.artifactId} : ${project.version}</name>
+  <description>JPA Continued EJB module</description>
+  <packaging>ejb</packaging>
+
+  <profiles>
+    <!--
+      More than one profile can be active at once. Since profiles can contain the same 
+      types of configuration there can be clashes. If two profiles clash the last to be activated 
+      will override those activated earlier. 
+      Note: "mvn install -Penv-prod" deactivates activeByDefault profiles
+     -->
+    <profile>
+      <id>env-dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>env</name>
+          <value>dev</value>
+        </property>
+      </activation>
+      <properties>
+        <env>dev</env>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>env-prod</id>
+      <properties>
+        <env>prod</env>
+      </properties>
+    </profile>
+  </profiles>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.openejb</groupId>
+      <artifactId>openejb-core</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <filters>
+      <filter>../src/main/filters/filter-${env}.properties</filter>
+    </filters>
+    
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering> <!-- filtering persistence.xml -->
+      </resource>
+    </resources>
+    
+    <testResources>                                                                                                     
+      <testResource>                                                                                                    
+        <directory>src/test/resources</directory>                                                                 
+        <filtering>true</filtering>                                                                               
+      </testResource>
+      <testResource>                                                                                                    
+        <directory>src/test/resources-openejb</directory>                                                                 
+        <filtering>true</filtering>                                                                               
+      </testResource>
+    </testResources>
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ejb-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
