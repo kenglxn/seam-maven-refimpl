@@ -58,13 +58,13 @@ public class FakturaTest extends OpenEjbTest {
 //    "where  f = l.faktura " +
 //    "and    f.id=" + fakturaId);
     
-//    "select l " +
-//    "from   Faktura f JOIN f.fakturalinjer l " +
-//    "where  f.id=" + fakturaId);
-    
     "select l " +
-    "from   Faktura f, IN(f.fakturalinjer) l " +
+    "from   Faktura f JOIN f.fakturalinjer l " +
     "where  f.id=" + fakturaId);
+    
+//    "select l " +
+//    "from   Faktura f, IN(f.fakturalinjer) l " +
+//    "where  f.id=" + fakturaId);
     
     Assert.assertEquals(fakturalinjer.size(), 2, "fakturalinjer().size()");
   }
