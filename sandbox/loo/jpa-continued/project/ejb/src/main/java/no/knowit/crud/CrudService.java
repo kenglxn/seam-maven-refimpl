@@ -127,6 +127,9 @@ public interface CrudService {
   public <T> List<T> find(T example, boolean distinct, boolean any, int startPosition, int maxResult);
   
   
+  public <T> List<T> find(Class<T> entityClass, final String jpql);
+  
+
 	/**
 	 * Merge the state of the given entity into the current persistence context, 
 	 * returning (a potentially different object) the persisted entity.

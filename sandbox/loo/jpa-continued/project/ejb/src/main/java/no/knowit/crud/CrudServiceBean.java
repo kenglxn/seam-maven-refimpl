@@ -110,6 +110,14 @@ public class CrudServiceBean implements CrudService {
 		return query.setFirstResult(startPosition).setMaxResults(maxResult).getResultList();
 	}
 
+  @SuppressWarnings("unchecked")
+  public <T> List<T> find(Class<T> entityClass, final String jpql) {
+    if(entityClass == null) {
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
+    }
+    return getEntityManager().createQuery(jpql).getResultList();
+  }
+
 	// 'U'
 	public <T> T merge(T entity) {
 		return (T) getEntityManager().merge(entity);
