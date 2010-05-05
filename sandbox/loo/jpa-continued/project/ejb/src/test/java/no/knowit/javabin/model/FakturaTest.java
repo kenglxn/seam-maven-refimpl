@@ -24,6 +24,7 @@ public class FakturaTest extends OpenEjbTest {
   @Override
   @BeforeSuite
   public void beforeSuite() throws Exception {
+    contextProperties.put("log4j.category.no.knowit.crud", "debug");
     contextProperties.put("log4j.category.no.knowit.javabin", "debug");
     super.beforeSuite();
   }
@@ -57,11 +58,29 @@ public class FakturaTest extends OpenEjbTest {
 //    "where  f = l.faktura " +
 //    "and    f.id=" + fakturaId);
     
+//    "select l " +
+//    "from   Faktura f JOIN f.fakturalinjer l " +
+//    "where  f.id=" + fakturaId);
+    
     "select l " +
-    "from   Faktura f join f.fakturalinjer l " +
+    "from   Faktura f, IN(f.fakturalinjer) l " +
     "where  f.id=" + fakturaId);
     
-    Assert.assertEquals(fakturalinjer.size(), 2, "faktura.getFakturalinjer().size()");
+    Assert.assertEquals(fakturalinjer.size(), 2, "fakturalinjer().size()");
   }
+  
+  @Test(dependsOnMethods={ "fakturaSkalHaToFakturalinjer" })
+  public void fakturalinjerSkalIkkeEksistereEtterSlettingAvFaktura() throws Exception {
+    CrudService crudService = lookupCrudService();
+    Faktura faktura = crudService.find(Faktura.class, fakturaId);
+
+    crudService.remove(faktura);
+    Collection<Fakturalinje> fakturalinjer = crudService.find(Fakturalinje.class, 
+      "select l " +
+      "from   Faktura f JOIN f.fakturalinjer l " +
+      "where  f.id=" + fakturaId);
+    Assert.assertEquals(fakturalinjer.size(), 0, "fakturalinjer().size()");
+  }
+  
 
 }
