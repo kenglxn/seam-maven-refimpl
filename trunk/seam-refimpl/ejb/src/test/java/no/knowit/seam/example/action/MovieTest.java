@@ -294,6 +294,7 @@ public class MovieTest extends SeamOpenEjbTest {
 				setValue("#{movieList.movie.director}", DIRECTOR_JOEL_COEN);
       }
 
+      @SuppressWarnings("unchecked")
       @Override
       protected void renderResponse() throws Exception {
       	List<Movie> list= (List<Movie>) invokeMethod( "#{movieList.getResultList()}" );
