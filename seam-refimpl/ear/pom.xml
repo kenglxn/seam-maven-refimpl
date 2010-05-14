@@ -26,27 +26,27 @@
     <profile>
       <id>env-dev</id>
       <activation>
-		<file>
-			<exists>${basedir}/../src/main/filters/filter-dev.properties</exists>
-		</file>
+        <file>
+          <exists>${basedir}/../src/main/filters/filter-dev.properties</exists>
+        </file>
       </activation>
       <properties>
         <env>dev</env>
       </properties>
     </profile>
-
+  
     <profile>
       <id>env-prod</id>
       <activation>
-		<file>
-			<missing>${basedir}/../src/main/filters/filter-dev.properties</missing>
-		</file>
+        <file>
+          <missing>${basedir}/../src/main/filters/filter-dev.properties</missing>
+        </file>
       </activation>
       <properties>
         <env>prod</env>
       </properties>
     </profile>
-  
+    
     <profile>
       <!--
         Explode ear to appserver deploy folder. execute e.g. 
