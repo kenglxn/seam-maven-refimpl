@@ -24,18 +24,6 @@
 	  	You may of course still manually activate "env-prod" this way: mvn install -Penv-prod 
     -->
     <profile>
-      <id>env-prod</id>
-      <activation>
-        <file>
-          <exists>${basedir}/../src/main/filters/filter-prod.properties</exists>
-        </file>
-      </activation>
-      <properties>
-        <env>prod</env>
-      </properties>
-    </profile>
-  
-    <profile>
       <id>env-dev</id>
       <activation>
         <file>
@@ -44,6 +32,18 @@
       </activation>
       <properties>
         <env>dev</env>
+      </properties>
+    </profile>
+  
+    <profile>
+      <id>env-prod</id>
+      <activation>
+        <file>
+          <missing>${basedir}/../src/main/filters/filter-dev.properties</missing>
+        </file>
+      </activation>
+      <properties>
+        <env>prod</env>
       </properties>
     </profile>
 
