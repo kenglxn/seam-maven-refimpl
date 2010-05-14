@@ -89,7 +89,7 @@
         <type>ejb</type>
       </dependency>
       
-      <!-- For running tests with OpenEJB embedded container -->
+      <!-- For running Seam tests with OpenEJB embedded container -->
       <dependency>
         <groupId>no.knowit.seam</groupId>
         <artifactId>seam-utils-openejb</artifactId>
@@ -213,7 +213,7 @@
 
     <!-- 
       JBoss Rules. Needed to be listed here if you have drools integration tests, e.g. Seam Identity 
-      see: samples/jboss-seam/examlpes/seamspace 
+      see: samples/jboss-seam/examles/seamspace 
     -->
     <dependency>
       <groupId>org.drools</groupId>
@@ -288,7 +288,6 @@
       <scope>test</scope>
     </dependency>
     
-    <!-- For in-memory database -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
@@ -357,7 +356,6 @@
   </dependencies>
 
   <profiles>
-  
     <profile>
       <id>show-properties</id>
       <build>
@@ -378,6 +376,7 @@
                     <echo>app.unpack.modules        : ${app.unpack.modules}</echo>
                     <echo>project.parent.basedir    : ${project.parent.basedir}</echo>
                     <echo>project.basedir           : ${project.basedir}</echo>
+                    <echo>project.build.directory   : ${project.build.directory}</echo>
                     <echo>jdk.source                : ${jdk.source}</echo>
                     <echo>jdk.target                : ${jdk.target}</echo>
                     <echo>jdk.debug                 : ${jdk.debug}</echo>
@@ -388,7 +387,7 @@
                     <echo>ds                        : ${ds}</echo>
                     <echo>ds.connection.url         : ${ds.connection.url}</echo>
                     <echo>ds.xml                    : ${ds.xml}</echo>
-                    <echo>pu.hibernate.dialect      : ${pu.hibernate.dialect.test}</echo>
+                    <echo>pu.hibernate.dialect      : ${pu.hibernate.dialect}</echo>
                     <echo>pu.hibernate.show_sql     : ${pu.hibernate.show_sql}</echo>										
                     <echo>ds.test                   : ${ds.test}</echo>
                     <echo>ds.connection.url.test    : ${ds.connection.url.test}</echo>
@@ -423,7 +422,7 @@
         <artifactId>buildnumber-maven-plugin</artifactId>
         <configuration>
           <!-- 
-            Comment out the format and items tags if you want the implementation 
+            Comment out the format- and items tags if you want the implementation 
             build number fom scm, see e.g. the m2m example project.
           -->
           <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>

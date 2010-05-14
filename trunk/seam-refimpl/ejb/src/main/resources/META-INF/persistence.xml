@@ -129,7 +129,6 @@
     hibernate.
     generate_statistics     : If enabled, Hibernate will collect statistics useful for performance 
                               tuning. eg. true | false 
-                              
     hibernate.
     use_sql_comments   	    : If turned on, Hibernate will generate comments inside the SQL, for 
                               easier debugging, defaults to false. eg. true | false 
@@ -252,19 +251,4 @@
                               
                               (This is an alternative to using the property 
                               hibernate.transaction.manager_lookup_class )
-
-                              
-  Notes:
-  ======
-  
-  Needed for hbm2ddl but not for JTA, should be a better place to put this than persistence.xml
-    <property name="hibernate.connection.driver_class"  
-             value="com.mysql.jdbc.Driver" />
-    <property name="hibernate.connection.url" 
-             value="jdbc:mysql://localhost:3306/some_database_name" />
-    <property name="hibernate.connection.username" 
-             value="root" />
-    <property name="hibernate.connection.password" 
-             value="" />
-
 -->
