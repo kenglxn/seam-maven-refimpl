@@ -213,7 +213,7 @@
 
     <!-- 
       JBoss Rules. Needed to be listed here if you have drools integration tests, e.g. Seam Identity 
-      see: samples/jboss-seam/examles/seamspace 
+      see: samples/jboss-seam/examples/seamspace 
     -->
     <dependency>
       <groupId>org.drools</groupId>
