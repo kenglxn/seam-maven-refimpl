@@ -627,7 +627,7 @@
       <dependency>
         <groupId>org.codehaus.groovy</groupId>
         <artifactId>groovy-all</artifactId>
-        <version>1.7.1</version>
+        <version>1.7.2</version>
         <exclusions>
 					<!-- groovy-all imports a lot of stuff, would be better to just use specific bits -->
           <exclusion>
