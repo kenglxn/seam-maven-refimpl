@@ -31,6 +31,8 @@
     <version.jboss.embedded>beta3.SP9</version.jboss.embedded>
     <version.junit>4.7</version.junit>
     <version.testng>5.9</version.testng>
+    <version.gmaven>1.2</version.gmaven>
+    <version.groovy>1.7.2</version.groovy>
 
     <jdk.debug>true</jdk.debug>
     <jdk.optimize>false</jdk.optimize>
@@ -628,7 +630,7 @@
       <dependency>
         <groupId>org.codehaus.groovy</groupId>
         <artifactId>groovy-all</artifactId>
-        <version>1.7.2</version>
+        <version>${version.groovy}</version>
         <exclusions>
           <exclusion>
             <groupId>bsf</groupId>
@@ -914,8 +916,8 @@
     <pluginManagement>
       <plugins>
         <!-- 
-          see: http://maven.apache.org/plugins/index.html and  http://mojo.codehaus.org 
-          for a complete list 
+          see: http://maven.apache.org/plugins/index.html 
+          and  http://mojo.codehaus.org for a complete list 
         -->
         
         <!-- building -->
@@ -1177,28 +1179,51 @@
           see: http://docs.codehaus.org/display/GMAVEN/Home
         -->
         <plugin>
-          <groupId>org.codehaus.groovy.maven</groupId>
+          <groupId>org.codehaus.gmaven</groupId>
           <artifactId>gmaven-plugin</artifactId>
-          <version>1.0</version>
+          <version>${version.gmaven}</version>
           <configuration>
+            <providerSelection>1.7</providerSelection>
             <debug>${jdk.debug}</debug>
             <stacktrace>${jdk.debug}</stacktrace>
             <targetBytecode>1.5</targetBytecode> <!-- is the value to compile for a JDK 1.5 or later JVM. -->
             <verbose>true</verbose>
             <sourceEncoding>utf-8</sourceEncoding>
           </configuration>
+          
           <executions>
             <execution>
               <goals>
-                <goal>generateStubs</goal>
                 <goal>compile</goal>
-                <goal>generateTestStubs</goal>
                 <goal>testCompile</goal>
+                <!-- if you want joint compilation, add stub generation goals here -->
+                <goal>generateStubs</goal>
+                <goal>generateTestStubs</goal>
               </goals>
             </execution>
           </executions>
-        </plugin>		
-        
+          
+          <!-- gmaven runtime has a dependency on groovy-all v1.6 but we want 1.7.x -->
+          <dependencies>
+            <dependency>
+              <groupId>org.codehaus.gmaven.runtime</groupId>
+              <artifactId>gmaven-runtime-1.7</artifactId>
+              <version>${version.gmaven}</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>org.codehaus.groovy</groupId>
+                  <artifactId>groovy-all</artifactId>
+                </exclusion>
+              </exclusions>
+            </dependency>
+            <dependency>
+              <groupId>org.codehaus.groovy</groupId>
+              <artifactId>groovy-all</artifactId>
+              <version>${version.groovy}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+                
         <!-- Build Number Maven Plugin -->
         <plugin>
           <groupId>org.codehaus.mojo</groupId>

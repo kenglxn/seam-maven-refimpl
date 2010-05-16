@@ -1,6 +1,8 @@
 //$Id: Booking.groovy 4698 2007-04-18 06:40:06Z ebernard $
 package org.jboss.seam.example.groovy
 
+import java.math.BigDecimal;
+
 import java.text.DateFormat
 import javax.persistence.Basic
 import javax.persistence.Entity
