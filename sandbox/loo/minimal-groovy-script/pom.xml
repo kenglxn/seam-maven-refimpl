@@ -79,29 +79,13 @@
           <version>${version.gmaven}</version>
           <configuration>
             <providerSelection>1.7</providerSelection>
-            <debug>${jdk.debug}</debug>
-            <stacktrace>${jdk.debug}</stacktrace>
-            <targetBytecode>1.5</targetBytecode> <!-- is the value to compile for a JDK 1.5 or later JVM. -->
-            <verbose>true</verbose>
-            <sourceEncoding>utf-8</sourceEncoding>
           </configuration>
-          
-          <executions>
-            <execution>
-              <goals>
-                <goal>compile</goal>
-                <goal>testCompile</goal>
-                <!-- if you want joint compilation, add stub generation goals here -->
-                <goal>generateStubs</goal>
-                <goal>generateTestStubs</goal>
-              </goals>
-            </execution>
-          </executions>
           
           <!-- gmaven runtime has a dependency on groovy-all v1.6 but we want 1.7.x -->
           <!-- 
             NOTE: Does not work with println.
             Get following error: [FATAL ERROR] org.codehaus.gmaven.plugin.execute.ExecuteMojo#execute() caused a linkage error (java.lang.NoClassDefFoundError) and may be out-of-date. Check the realms:
+            
           <dependencies>
             <dependency>
               <groupId>org.codehaus.gmaven.runtime</groupId>
