@@ -924,13 +924,13 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>2.3</version>
+          <version>2.4.1</version>
         </plugin>
         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.1</version>
+          <version>2.3</version>
           <configuration>
             <source>${jdk.source}</source>
             <target>${jdk.target}</target>
@@ -955,7 +955,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4.1</version>
+          <version>2.4.2</version>
           <configuration>
             <encoding>UTF-8</encoding>
           </configuration>
@@ -1075,7 +1075,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.6.1</version>
+          <version>2.7</version>
         </plugin>
 
         <!-- 
@@ -1090,6 +1090,12 @@
         </plugin>
 
         <!-- tools -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-ant-plugin</artifactId>
+          <version>2.3</version>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
@@ -1323,9 +1329,9 @@
 
   <developers>
     <developer>
-      <id>loo@knowit.no</id>
+      <id>loo@knowit#no</id>
       <name>Leif Olsen</name>
-      <email>loo@knowit.no</email>
+      <email>loo@knowit#no</email>
       <organization>Know IT Objectnet Kristiansand</organization>
       <organizationUrl>http://www.knowit.no</organizationUrl>
       <roles>
@@ -1334,9 +1340,9 @@
       <timezone>GMT +1</timezone>
     </developer>
     <developer>
-      <id>krg@knowit.no</id>
+      <id>krg@knowit#no</id>
       <name>Ken Gullaksen</name>
-      <email>krg@knowit.no</email>
+      <email>krg@knowit#no</email>
       <organization>Know IT Objectnet Oslo</organization>
       <organizationUrl>http://www.knowit.no</organizationUrl>
       <roles>
@@ -1344,8 +1350,19 @@
       </roles>
       <timezone>GMT +1</timezone>
     </developer>
+    <developer>
+      <id>sten.aksel.heien@otrum#com</id>
+      <name>Sten Aksel Heien</name>
+      <email>sten.aksel.heien@otrum#com</email>
+      <organization>OTRUM ASA</organization>
+      <organizationUrl>http://www.otrum.com/</organizationUrl>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>GMT +1</timezone>
+    </developer>
   </developers>
-
+  
   <repositories>
     <repository>
       <id>repository.jboss.org</id>
