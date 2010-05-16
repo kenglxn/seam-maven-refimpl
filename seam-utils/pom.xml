@@ -53,21 +53,22 @@
                 </goals>
                 <configuration>
                   <tasks>
-                    <echo>env                   : ${env}</echo>
-                    <echo>app.context           : ${app.context}</echo>
-                    <echo>app.unpack.modules    : ${app.unpack.modules}</echo>
-                    <echo>project.parent.basedir: ${project.parent.basedir}</echo>
-                    <echo>project.basedir       : ${project.basedir}</echo>
-                    <echo>jdk.source            : ${jdk.source}</echo>
-                    <echo>jdk.target            : ${jdk.target}</echo>
-                    <echo>jdk.debug             : ${jdk.debug}</echo>
-                    <echo>jdk.optimize          : ${jdk.optimize}</echo>
-                    <echo>as                    : ${as}</echo>
-                    <echo>as.deploy             : ${as.deploy}</echo>
-                    <echo>ds                    : ${ds}</echo>
-                    <echo>ds.connection.url     : ${ds.connection.url}</echo>
-                    <echo>ds.test               : ${ds.test}</echo>
-                    <echo>ds.connection.url.test: ${ds.connection.url.test}</echo>
+                    <echo>env                    : ${env}</echo>
+                    <echo>app.context            : ${app.context}</echo>
+                    <echo>app.unpack.modules     : ${app.unpack.modules}</echo>
+                    <echo>project.parent.basedir : ${project.parent.basedir}</echo>
+                    <echo>project.basedir        : ${project.basedir}</echo>
+                    <echo>project.build.directory: ${project.build.directory}</echo>
+                    <echo>jdk.source             : ${jdk.source}</echo>
+                    <echo>jdk.target             : ${jdk.target}</echo>
+                    <echo>jdk.debug              : ${jdk.debug}</echo>
+                    <echo>jdk.optimize           : ${jdk.optimize}</echo>
+                    <echo>as                     : ${as}</echo>
+                    <echo>as.deploy              : ${as.deploy}</echo>
+                    <echo>ds                     : ${ds}</echo>
+                    <echo>ds.connection.url      : ${ds.connection.url}</echo>
+                    <echo>ds.test                : ${ds.test}</echo>
+                    <echo>ds.connection.url.test : ${ds.connection.url.test}</echo>
                   </tasks>
                 </configuration>
               </execution>

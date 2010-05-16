@@ -37,7 +37,7 @@ Differences from the original app:
   * `*`.groovy files moved to ejb/src/main/groovy folder
   * Removed components.properties, uses filtering to set values in components.xml
   * Uses gmaven-plugin to compile Groovy files
-  * "groovy-all" is upgraded to version 1.7.1 in the refimpl root POM. Version 1.5.4 provided by the seam-2.2.0 root POM, does not work.
+  * "groovy-all" is upgraded to version 1.7.x in the refimpl root POM. Version 1.5.4 provided by the seam-2.2.0 root POM, does not work.
 
 == How to install and run the application ==
   * [http://www.glxn.net/seam-maven-refimpl/doc/tutorial/ The Getting Started tutorial] explains the basic steps
