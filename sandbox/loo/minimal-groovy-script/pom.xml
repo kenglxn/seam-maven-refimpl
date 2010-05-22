@@ -22,6 +22,9 @@
     
     usage: 
       mvn groovy:execute
+      
+    play with groovy:
+      mvn groovy:console
   </description>
   
   <packaging>pom</packaging>
@@ -34,6 +37,8 @@
     <jdk.optimize>false</jdk.optimize>
     <jdk.source>1.6</jdk.source>
     <jdk.target>1.6</jdk.target>
+    
+    <hello.groovy>Maven says hello to Groovy</hello.groovy>
     
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -56,8 +61,31 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>env-dev</id>
+      <properties>
+        <env>dev</env>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>env-prod</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <env>prod</env>
+      </properties>
+    </profile>
+  </profiles>
+
   
   <build>
+    <filters>
+      <filter>filter.properties</filter>
+    </filters>
+
     <pluginManagement>
       <plugins>
         <plugin>
@@ -105,6 +133,15 @@
             </dependency>
           </dependencies>
           -->
+
+          <dependencies>
+            <dependency>
+              <groupId>org.codehaus.gmaven.runtime</groupId>
+              <artifactId>gmaven-runtime-1.7</artifactId>
+              <version>${version.gmaven}</version>
+            </dependency>
+          </dependencies>
+
         </plugin>
       </plugins>
     </pluginManagement>
@@ -115,9 +152,16 @@
         <artifactId>gmaven-plugin</artifactId>
         <configuration>
           <source>
-            println "******"
-            println "****** Hello World!"
-            println "******"
+            println "---------------------------------------"
+            println "\nHello World!"
+            println "Maven hello.groovy property: " + project.properties['hello.groovy']
+            
+            println "\nIterating Maven properties:"
+            println "---------------------------------------"
+            project.properties.sort{it.key}.each { key, value ->
+              println key + "=" + value + " "  
+            }
+            println "---------------------------------------"
           </source>
         </configuration>
       </plugin>
