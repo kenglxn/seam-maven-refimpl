@@ -152,7 +152,7 @@
         <artifactId>gmaven-plugin</artifactId>
         <configuration>
           <source>
-            println "\nHello Groovy script"
+            println "\nHello Groovy script:"
             println "======================================================="
             println "Maven hello.groovy property: " + project.properties['hello.groovy']
             
