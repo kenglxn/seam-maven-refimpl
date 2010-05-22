@@ -152,16 +152,16 @@
         <artifactId>gmaven-plugin</artifactId>
         <configuration>
           <source>
-            println "---------------------------------------"
-            println "\nHello World!"
+            println "\nHello Groovy script"
+            println "======================================================="
             println "Maven hello.groovy property: " + project.properties['hello.groovy']
             
             println "\nIterating Maven properties:"
-            println "---------------------------------------"
+            println "======================================================="
             project.properties.sort{it.key}.each { key, value ->
               println key + "=" + value + " "  
             }
-            println "---------------------------------------"
+            println "======================================================="
           </source>
         </configuration>
       </plugin>
