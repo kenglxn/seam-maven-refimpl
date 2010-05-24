@@ -20,6 +20,7 @@
       http://docs.codehaus.org/display/GMAVEN/Executing+Groovy+Code
       http://docs.codehaus.org/display/GMAVEN/Building+Groovy+Projects
       http://groovy.codehaus.org/Regular%2BExpressions
+      http://groovy.codehaus.org/JN2015-Files
       http://langref.org/groovy/pattern-matching
       http://pleac.sourceforge.net/pleac_groovy/patternmatching.html
       http://mrhaki.blogspot.com/2009/09/groovy-goodness-matchers-for-regular.html
@@ -50,7 +51,7 @@
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
-    <!-- <app>minimal-groovy</app> -->
+    <app>minimal-groovy</app>
     <app.context>minimal-groovy-script</app.context>  <!-- hint: same value as artifactId -->
     <app.web.context>${app.context}</app.web.context>
     <app.display.name>Groovy for Properties</app.display.name>
@@ -107,8 +108,19 @@
           <!-- gmaven runtime has a dependency on groovy-all v1.6 but we want 1.7.x -->
           <!-- 
             NOTE: Does not work with println.
-            Get following error: [FATAL ERROR] org.codehaus.gmaven.plugin.execute.ExecuteMojo#execute() caused a linkage error (java.lang.NoClassDefFoundError) and may be out-of-date. Check the realms:
-            
+            Get following error im m2: 
+              [FATAL ERROR] org.codehaus.gmaven.plugin.execute.ExecuteMojo#execute() caused a 
+              linkage error (java.lang.NoClassDefFoundError) and may be out-of-date. Check the realms:
+              
+            Get following error in m3: 
+              [ERROR] Failed to execute goal org.codehaus.gmaven:gmaven-plugin:1.2:execute 
+              (default-cli) on project minimal-groovy-script: Execution default-cli of goal 
+              org.codehaus.gmaven:gmaven-plugin:1.2:execute failed: A required class was missing 
+              while executing org.codehaus.gmaven:gmaven-plugin:1.2:execute: 
+              org/apache/tools/ant/input/InputHandler
+          -->
+
+          <!--
           <dependencies>
             <dependency>
               <groupId>org.codehaus.gmaven.runtime</groupId>
@@ -128,7 +140,8 @@
             </dependency>
           </dependencies>
           -->
-
+  
+          <!-- works -->
           <dependencies>
             <dependency>
               <groupId>org.codehaus.gmaven.runtime</groupId>
@@ -136,7 +149,7 @@
               <version>${version.gmaven}</version>
             </dependency>
           </dependencies>
-
+          
         </plugin>
       </plugins>
     </pluginManagement>
@@ -145,15 +158,67 @@
       <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
-        <configuration>
-          <source>
-            println "\n======================================================="
-            println "Hello Groovy script:"
-            println "hello.groovy property: " + project.properties['hello.groovy']
-            println "=======================================================\n"
-          </source>
-        </configuration>
+          <configuration>
+            <source>
+              println "\n========================================================================"
+              println "Hello Groovy script:"
+              println "hello.groovy property: " + project.properties['hello.groovy']
+              println "========================================================================\n"
+            </source>
+          </configuration>
       </plugin>
+      
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>g-validate</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>execute</goal>
+              </goals>
+              <configuration>
+                <source>
+                  def f = new File("./filter.properties");
+                  log.info("Reading properties from: $f.canonicalPath");
+
+                  Properties properties = new Properties();
+                  properties.load(new FileInputStream(f));
+                  
+                  // Flatten configuration for easy access keys with dotted notation.
+                  def m = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
+
+                  // Add flattened map to project.properties
+                  project.properties.putAll(m);
+
+                  // Pattern to match ${property} placeholders
+                  def placeholderPattern = ~/\$\{(.*?)\}/;  
+                  
+                  project.properties.each { key, value ->
+                    def matcher = placeholderPattern.matcher(value);
+                    if(matcher.count > 0) {
+                      // Replace ${property} placeholders with real value
+                      matcher.each { placeholder, property ->
+                        def placeholderValue = project.properties.getProperty(property);
+                        if(placeholderValue) value = value.replace(placeholder, placeholderValue);
+                      }
+                      project.properties[key] = value;
+                    }
+                  }
+                  
+                  // Warn for dangling placholders
+                  project.properties.each { key, value ->
+                    def matcher = placeholderPattern.matcher(value);
+                    if(matcher)
+                      log.warn "Non existing property in placeholder: $key = $value" 
+                  }
+                </source>
+              </configuration>                
+            </execution>
+          </executions>
+      </plugin>
+
     </plugins>
   </build>
   
@@ -184,44 +249,27 @@
             <artifactId>gmaven-plugin</artifactId>
             <executions>
               <execution>
+                <id>g-show-properties</id>
                 <phase>generate-sources</phase>
                 <goals>
                   <goal>execute</goal>
                 </goals>
                   <configuration>
                     <source>
-                      Properties properties = new Properties();
-                      properties.load(new FileInputStream("./filter.properties"));
-                      
-                      // Flatten configuration for easy access keys with dotted notation.
-                      def m = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
-
-                      // Add flattened map to project.properties
-                      project.properties.putAll(m);
-
                       // Pattern to match ${property} placeholders
                       def placeholderPattern = ~/\$\{(.*?)\}/;  
                       
-                      project.properties.each { key, value ->
-                        def matcher = placeholderPattern.matcher(value);
-                        if(matcher.count > 0) {
-                          // Replace ${property} placeholders with real value
-                          matcher.each { placeholder, property ->
-                            def placeholderValue = project.properties.getProperty(property);
-                            if(placeholderValue) value = value.replace(placeholder, placeholderValue);
-                          }
-                          project.properties[key] = value;
-                        }
-                      }
-                      
-                      println "\nMaven project.properties:"
-                      println "======================================================="
+                      log.info "========================================================================"
+                      log.info "Maven project.properties:"
+                      log.info "========================================================================"
                       project.properties.sort{it.key}.each { key, value ->
                         def matcher = placeholderPattern.matcher(value);
-                        print matcher ? "****** WARNING! Non existing placeholder in: " : '';
-                        println "$key = $value";
+                        if(matcher)
+                          log.warn "Non existing property in placeholder: $key = $value" 
+                        else
+                          log.info "$key = $value";
                       }
-                      println "======================================================="
+                      log.info "========================================================================"
                     </source>
                   </configuration>                
               </execution>
