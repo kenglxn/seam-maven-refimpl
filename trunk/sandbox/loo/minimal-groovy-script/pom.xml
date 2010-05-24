@@ -183,10 +183,10 @@
                     properties.load(new FileInputStream(filter));
                     
                     // Flatten configuration for easy access keys with dotted notation.
-                    def p = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
+                    def burp = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
 
                     // Add flattened map to project.properties
-                    project.properties.putAll(p);
+                    project.properties.putAll(burp);
                   }
                   
                   // Pattern to match ${property} placeholders
