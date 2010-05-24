@@ -50,14 +50,6 @@
     
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
-    <app>minimal-groovy</app>
-    <app.context>minimal-groovy-script</app.context>  <!-- hint: same value as artifactId -->
-    <app.web.context>${app.context}</app.web.context>
-    <app.display.name>Groovy for Properties</app.display.name>
-    <app.distributable>false</app.distributable>
-    <app.jndi.pattern>${app.context}-ear/#{ejbName}/local</app.jndi.pattern> <!-- JBoss JNDI Pattern -->
-    <app.jndi.pattern.test>/#{ejbName}/Local</app.jndi.pattern.test>         <!-- OpenEJB JNDI Pattern -->
   </properties>
 
   <dependencyManagement>
@@ -80,8 +72,9 @@
   <build>
     <filters>
       <filter>filter.properties</filter>
+      <filter>filter-${env}.properties</filter>
     </filters>
-
+    
     <pluginManagement>
       <plugins>
         <plugin>
@@ -180,25 +173,27 @@
               </goals>
               <configuration>
                 <source>
-                  def f = new File("./filter.properties");
-                  log.info("Reading properties from: $f.canonicalPath");
+                  // Read properties from each file in Maven's filters tag
+                  project.filters.each { filter ->
+                    log.info("Reading properties from: $filter");
 
-                  Properties properties = new Properties();
-                  properties.load(new FileInputStream(f));
+                    Properties properties = new Properties();
+                    properties.load(new FileInputStream(filter));
+                    
+                    // Flatten configuration for easy access keys with dotted notation.
+                    def m = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
+
+                    // Add flattened map to project.properties
+                    project.properties.putAll(m);
+                  }
                   
-                  // Flatten configuration for easy access keys with dotted notation.
-                  def m = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
-
-                  // Add flattened map to project.properties
-                  project.properties.putAll(m);
-
                   // Pattern to match ${property} placeholders
                   def placeholderPattern = ~/\$\{(.*?)\}/;  
                   
+                  // Replace ${property} placeholders with real value
                   project.properties.each { key, value ->
                     def matcher = placeholderPattern.matcher(value);
                     if(matcher.count > 0) {
-                      // Replace ${property} placeholders with real value
                       matcher.each { placeholder, property ->
                         def placeholderValue = project.properties.getProperty(property);
                         if(placeholderValue) value = value.replace(placeholder, placeholderValue);
@@ -211,7 +206,7 @@
                   project.properties.each { key, value ->
                     def matcher = placeholderPattern.matcher(value);
                     if(matcher)
-                      log.warn "Non existing property in placeholder: $key = $value" 
+                      log.warn "NON EXISTING PROPERTY IN PLACEHOLDER: $key = $value"
                   }
                 </source>
               </configuration>                
@@ -250,11 +245,16 @@
             <executions>
               <execution>
                 <id>g-show-properties</id>
-                <phase>generate-sources</phase>
+                <phase>initialize</phase>
                 <goals>
                   <goal>execute</goal>
                 </goals>
                   <configuration>
+                    <!--
+                      NOTE: This does not work in m2. The validate phase is not triggerd and the 
+                      g-validate id does not execute. 
+                      In contrast executing "mvn validate" works as expected in m2
+                    -->
                     <source>
                       // Pattern to match ${property} placeholders
                       def placeholderPattern = ~/\$\{(.*?)\}/;  
@@ -265,7 +265,7 @@
                       project.properties.sort{it.key}.each { key, value ->
                         def matcher = placeholderPattern.matcher(value);
                         if(matcher)
-                          log.warn "Non existing property in placeholder: $key = $value" 
+                          log.warn "NON EXISTING PROPERTY IN PLACEHOLDER: $key = $value"
                         else
                           log.info "$key = $value";
                       }
