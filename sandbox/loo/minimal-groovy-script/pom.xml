@@ -50,6 +50,8 @@
     
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <!-- <env>dev</env> -->
   </properties>
 
   <dependencyManagement>
@@ -181,10 +183,10 @@
                     properties.load(new FileInputStream(filter));
                     
                     // Flatten configuration for easy access keys with dotted notation.
-                    def m = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
+                    def p = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
 
                     // Add flattened map to project.properties
-                    project.properties.putAll(m);
+                    project.properties.putAll(p);
                   }
                   
                   // Pattern to match ${property} placeholders
@@ -218,17 +220,29 @@
   </build>
   
   <profiles>
+    <!--
+    	We select profile "env-dev" or "env-prod", based on file "filter-dev.properties" exist/missing. 
+    	So when you create "filter-dev.properties" the default active profile will be "env-dev".
+	  	You may of course still manually activate "env-prod" this way: mvn install -Penv-prod 
+     -->
     <profile>
       <id>env-dev</id>
+      <activation>
+        <file>
+          <exists>./filter-dev.properties</exists>
+        </file>
+      </activation>
       <properties>
         <env>dev</env>
       </properties>
     </profile>
-
+  
     <profile>
       <id>env-prod</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <file>
+          <missing>./filter-dev.properties</missing>
+        </file>
       </activation>
       <properties>
         <env>prod</env>
