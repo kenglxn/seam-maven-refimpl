@@ -42,8 +42,9 @@
   <packaging>pom</packaging>
 
   <properties>
-    <version.gmaven>1.2</version.gmaven>
+    <version.ant>1.7.0</version.ant>
     <version.groovy>1.7.2</version.groovy>
+    <version.gmaven>1.2</version.gmaven>
     
     <jdk.debug>true</jdk.debug>
     <jdk.optimize>false</jdk.optimize>
@@ -54,26 +55,7 @@
     
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
-    <!-- <env>dev</env> -->
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.codehaus.groovy</groupId>
-        <artifactId>groovy-all</artifactId>
-        <version>${version.groovy}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-  
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-    </dependency>
-  </dependencies>
 
   <build>
     <filters>
@@ -105,21 +87,6 @@
           </configuration>
           
           <!-- gmaven runtime has a dependency on groovy-all v1.6 but we want 1.7.x -->
-          <!-- 
-            NOTE: Does not work with println.
-            Get following error im m2: 
-              [FATAL ERROR] org.codehaus.gmaven.plugin.execute.ExecuteMojo#execute() caused a 
-              linkage error (java.lang.NoClassDefFoundError) and may be out-of-date. Check the realms:
-              
-            Get following error in m3: 
-              [ERROR] Failed to execute goal org.codehaus.gmaven:gmaven-plugin:1.2:execute 
-              (default-cli) on project minimal-groovy-script: Execution default-cli of goal 
-              org.codehaus.gmaven:gmaven-plugin:1.2:execute failed: A required class was missing 
-              while executing org.codehaus.gmaven:gmaven-plugin:1.2:execute: 
-              org/apache/tools/ant/input/InputHandler
-          -->
-
-          <!--
           <dependencies>
             <dependency>
               <groupId>org.codehaus.gmaven.runtime</groupId>
@@ -137,18 +104,12 @@
               <artifactId>groovy-all</artifactId>
               <version>${version.groovy}</version>
             </dependency>
-          </dependencies>
-          -->
-  
-          <!-- works -->
-          <dependencies>
             <dependency>
-              <groupId>org.codehaus.gmaven.runtime</groupId>
-              <artifactId>gmaven-runtime-1.7</artifactId>
-              <version>${version.gmaven}</version>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant</artifactId>
+              <version>${version.ant}</version>
             </dependency>
           </dependencies>
-          
         </plugin>
       </plugins>
     </pluginManagement>
@@ -268,11 +229,6 @@
                   <goal>execute</goal>
                 </goals>
                   <configuration>
-                    <!--
-                      NOTE: This does not work in m2. The validate phase is not triggerd and the 
-                      g-validate id does not execute. 
-                      In contrast executing "mvn validate" works as expected in m2
-                    -->
                     <source>
                       // Pattern to match ${property} placeholders
                       def placeholderPattern = ~/\$\{(.*?)\}/;  
