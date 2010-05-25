@@ -34,6 +34,10 @@
     play with groovy:
       mvn groovy:console
   </description>
+
+  <prerequisites>
+    <maven>3</maven>
+  </prerequisites> 
   
   <packaging>pom</packaging>
 
