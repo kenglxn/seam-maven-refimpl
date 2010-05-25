@@ -42,7 +42,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <version.ant>1.7.0</version.ant>
+    <version.ant>1.8.1</version.ant>
     <version.groovy>1.7.2</version.groovy>
     <version.gmaven>1.2</version.gmaven>
     
