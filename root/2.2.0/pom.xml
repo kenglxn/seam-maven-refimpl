@@ -33,6 +33,7 @@
     <version.testng>5.9</version.testng>
     <version.gmaven>1.2</version.gmaven>
     <version.groovy>1.7.2</version.groovy>
+    <version.ant>1.8.1</version.ant>
 
     <jdk.debug>true</jdk.debug>
     <jdk.optimize>false</jdk.optimize>
@@ -338,6 +339,23 @@
         </exclusions>
       </dependency>
       
+			<dependency>
+				<groupId>org.apache.ant</groupId>
+				<artifactId>ant</artifactId>
+				<version>${version.ant}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-launcher</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.ant</groupId>
+				<artifactId>ant-antlr</artifactId>
+				<version>${version.ant}</version>
+			</dependency>
 
       <dependency>
         <groupId>org.richfaces.framework</groupId>
