@@ -945,7 +945,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.3</version>
+          <version>2.3.1</version>
           <configuration>
             <source>${jdk.source}</source>
             <target>${jdk.target}</target>
@@ -964,13 +964,13 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
-          <version>2.3</version>
+          <version>2.3.1</version>
         </plugin>
         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4.2</version>
+          <version>2.4.3</version>
           <configuration>
             <encoding>UTF-8</encoding>
           </configuration>
@@ -986,7 +986,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-ear-plugin</artifactId>
-          <version>2.4.1</version>
+          <version>2.4.2</version>
           <configuration>
             <!-- 
               MNGECLIPSE-1541:
@@ -1045,7 +1045,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.3</version>
+          <version>2.3.1</version>
           <configuration>
             <encoding>UTF-8</encoding>
             <archive>
@@ -1218,8 +1218,10 @@
                 <goal>compile</goal>
                 <goal>testCompile</goal>
                 <!-- if you want joint compilation, add stub generation goals here -->
+                <!--
                 <goal>generateStubs</goal>
                 <goal>generateTestStubs</goal>
+                -->
               </goals>
             </execution>
           </executions>
