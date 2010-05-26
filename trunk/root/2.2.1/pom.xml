@@ -644,8 +644,8 @@
       </dependency>
 
       <!-- 
-        groovy-all-1.5.4 provided by the Seam-2.1.2 and seam-2.2.0
-        root POM does not work with the gmaven plugin.
+        groovy-all-1.5.4 provided by the Seam-2.2.1 root POM 
+        does not work with the gmaven plugin, uses 1.7.2.
       -->
       <dependency>
         <groupId>org.codehaus.groovy</groupId>
