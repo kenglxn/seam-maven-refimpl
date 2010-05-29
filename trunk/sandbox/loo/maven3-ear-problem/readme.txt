@@ -31,4 +31,6 @@ Description:
     is not supported. -> [Help 1]
   
   If I put the ${as.version} property placeholder inside Maven's property tag
-  everything works ok in Maven3. 
+  everything works ok in Maven3.
+  
+  
