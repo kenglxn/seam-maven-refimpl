@@ -62,7 +62,7 @@
   <build>
     <filters>
       <filter>filter.properties</filter>
-      <filter>filter-${env}.properties</filter>
+      <filter>${env}.properties</filter>
     </filters>
     
     <pluginManagement>
@@ -211,7 +211,7 @@
       <id>env-dev</id>
       <activation>
         <file>
-          <exists>filter-dev.properties</exists>
+          <exists>dev.properties</exists>
         </file>
       </activation>
       <properties>
@@ -223,7 +223,7 @@
       <id>env-prod</id>
       <activation>
         <file>
-          <missing>filter-dev.properties</missing>
+          <missing>dev.properties</missing>
         </file>
       </activation>
       <properties>
