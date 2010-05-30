@@ -4,15 +4,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>no.knowit.sandbox.loo</groupId>
-  <artifactId>mvn3-problem-ear</artifactId>
-  <version>0.1-SNAPSHOT</version>
-  <name>${project.artifactId} : ${project.version}</name>
-  <description>Maven3 does not evaluate external property placeholders in EAR plugin</description>
-  <url>http://code.google.com/p/seam-maven-refimpl/</url>
-  <packaging>ear</packaging>
-
   <!--
     Problem: 
       Maven3 does not evaluate external properties during the "ear:generate-application-xml" goal.
@@ -49,6 +40,16 @@
       If I put the ${as.version} property placeholder inside Maven's property tag
       everything works ok in Maven3. 
   -->
+
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>no.knowit.sandbox.loo</groupId>
+  <artifactId>mvn3-problem-ear</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <name>${project.artifactId} : ${project.version}</name>
+  <description>Maven3 does not evaluate external property placeholders in EAR plugin</description>
+  <url>http://code.google.com/p/seam-maven-refimpl/</url>
+  <packaging>ear</packaging>
 
   <properties>
     <env>dev</env> <!-- The default setting if no profile is specified -->
