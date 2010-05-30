@@ -2,7 +2,7 @@ Problem:
   Maven2 does not calculate file paths correctly in profile activation
   
 Description:
-  In a multi module project I want to activate a profile in a child 
+  In a multi module project I would like to activate a profile in a child 
   POM based on file exist/missing in parent POM's directory, e.g.
   
   <profiles>

@@ -28,8 +28,8 @@
     
     usage: 
       mvn groovy:execute
-      mvn groovy:shell
       mvn generate-sources -Pshow-properties
+      mvn groovy:shell
       
     play with groovy:
       mvn groovy:console
