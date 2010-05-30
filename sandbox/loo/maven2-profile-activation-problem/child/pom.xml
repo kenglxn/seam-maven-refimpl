@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!--
+    Problem: 
+      See ../pom.xml
+  -->
+  
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>no.knowit.sandbox.loo</groupId>
+    <artifactId>mvn2-profile-activation-problem</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  
+  <artifactId>mvn2-profile-activation-problem-child</artifactId>
+  <name>${project.artifactId} : ${project.version}</name>
+  <description>Maven2</description>
+  <packaging>pom</packaging>
+  
+  <profiles>
+    <!--
+    	We select profile "env-dev" or "env-prod", based on file "dev.properties" exist/missing. 
+    	So when you create "dev.properties" the default active profile will be "env-dev".
+	  	You may of course still manually activate "env-prod" this way: mvn install -Penv-prod 
+     -->
+    <profile>
+      <id>env-dev</id>
+      <activation>
+        <file>
+          <exists>${basedir}/../dev.properties</exists>
+        </file>
+      </activation>
+      <properties>
+        <env>dev</env>
+      </properties>
+    </profile>
+  
+    <profile>
+      <id>env-prod</id>
+      <activation>
+        <file>
+          <missing>${basedir}/../dev.properties</missing>
+        </file>
+      </activation>
+      <properties>
+        <env>prod</env>
+      </properties>
+    </profile>
+  </profiles>
+
+</project>

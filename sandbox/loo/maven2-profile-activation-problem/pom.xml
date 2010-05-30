@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!--
+    Problem: 
+      Maven2 does not calculate file paths correctly in profile activation
+      
+    Description:
+      We want to activate a profile based on file exist/missing.
+      Given that two files, dev.properties and prod.properties, 
+      exists in the parent POM's directory and two profiles, 
+      env-dev and env-prod ,is defined in the child POM.
+      When I execute mvn help:acive.profiles,
+      then the env-dev profile should be reported as active.
+      
+      This works ok when I execute mvn help:active-profiles from the 
+      paren POM's directoy, but WRONG profile is activated when I execute 
+      mvn help:active-profiles from the child directory.
+      
+      In Maven3, the env-dev profile is activated correctly.
+      Maven 2 activates correct profile if I add a hard coded file path, e.g. 
+      
+      <profile>
+        <id>env-dev</id>
+        <activation>
+          <file>
+            <exists>c:\\projects\\mvn2-profile-activation-problem\\dev.properties</exists>
+          </file>
+        </activation>
+        <properties>
+          <env>dev</env>
+        </properties>
+      </profile>
+  -->
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>no.knowit.sandbox.loo</groupId>
+  <artifactId>mvn2-profile-activation-problem</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <name>${project.artifactId} : ${project.version}</name>
+  <description>Maven2</description>
+  <url>http://code.google.com/p/seam-maven-refimpl/</url>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>child</module>
+  </modules>
+
+  <properties>
+    <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+</project>
