@@ -1214,20 +1214,25 @@
             <verbose>true</verbose>
             <sourceEncoding>utf-8</sourceEncoding>
           </configuration>
-          
+
+          <!-- 
+            Add executions to modules that contains Groovy classes
+            see: http://communitymapbuilder.org/pages/viewpage.action?pageId=110166073 
+            see: http://btilford.blogspot.com/2010_02_01_archive.html
+          -->
+          <!--           
           <executions>
             <execution>
               <goals>
                 <goal>compile</goal>
                 <goal>testCompile</goal>
-                <!-- if you want joint compilation, add stub generation goals here -->
-                <!--
+                
                 <goal>generateStubs</goal>
                 <goal>generateTestStubs</goal>
-                -->
               </goals>
             </execution>
           </executions>
+          -->
           
           <!-- gmaven runtime has a dependency on groovy-all v1.6 but we want 1.7.x -->
           <dependencies>
@@ -1252,7 +1257,21 @@
               <artifactId>ant</artifactId>
               <version>${version.ant}</version>
             </dependency>
+            <dependency>
+              <groupId>org.fusesource.jansi</groupId>
+              <artifactId>jansi</artifactId>
+              <version>1.3</version>
+            </dependency>
+            
+            <!-- 
+            <dependency>
+              <groupId>org.codehaus.gmaven.runtime</groupId>
+              <artifactId>gmaven-runtime-1.7</artifactId>
+              <version>${version.gmaven}</version>
+            </dependency>
+            -->
           </dependencies>
+
         </plugin>
                 
         <!-- Build Number Maven Plugin -->
