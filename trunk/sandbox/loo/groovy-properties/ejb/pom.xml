@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>no.knowit.sandbox.loo</groupId>
+    <artifactId>groovy-properties</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>groovy-properties-ejb</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
+  <name>${project.artifactId} : ${project.version}</name>
+  <description>Groovy Properties EJB module</description>
+  <packaging>ejb</packaging>
+
+  <profiles>
+    <!--
+    	We select profile "env-dev" or "env-prod", based on file "filter-dev.properties" exist/missing. 
+    	So when you create "filter-dev.properties" the default active profile will be "env-dev".
+	  	You may of course still manually activate "env-prod" this way: mvn install -Penv-prod 
+    -->
+    <profile>
+      <id>env-dev</id>
+      <activation>
+        <file>
+          <exists>${basedir}/../src/main/filters/filter-dev.properties</exists>
+        </file>
+      </activation>
+      <properties>
+        <env>dev</env>
+      </properties>
+    </profile>
+  
+    <profile>
+      <id>env-prod</id>
+      <activation>
+        <file>
+          <missing>${basedir}/../src/main/filters/filter-dev.properties</missing>
+        </file>
+      </activation>
+      <properties>
+        <env>prod</env>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>explode</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>dev</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>ejb-process-classes</id>
+                <phase>process-classes</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <property
+                      name="deploy-path"
+                      value="${as.deploy}/${app.context}-ear.ear" />
+                    <copy
+                      todir="${deploy-path}/${project.build.finalName}.jar"
+                      verbose="true">
+                      <fileset dir="${project.build.outputDirectory}">
+                        <include name="**/*.class" />
+                      </fileset>
+                    </copy>
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <dependencies>
+    <dependency>
+      <groupId>no.knowit.seam</groupId>
+      <artifactId>seam-utils-ejb</artifactId>
+      <type>ejb</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>no.knowit.seam</groupId>
+      <artifactId>seam-utils-openejb</artifactId>
+      <type>ejb</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <filters>
+      <filter>${basedir}/../src/main/filters/filter-${env}.properties</filter>
+    </filters>
+    
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering> <!-- filtering persistence.xml -->
+      </resource>
+    </resources>
+    
+    <testResources>                                                                                                     
+      <testResource>                                                                                                    
+        <directory>src/test/resources</directory>                                                                 
+        <filtering>true</filtering>                                                                               
+      </testResource>
+      <testResource>                                                                                                    
+        <directory>src/test/resources-openejb</directory>                                                                 
+        <filtering>true</filtering>                                                                               
+      </testResource>
+    </testResources>
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>
+              testng.xml
+            </suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ejb-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Build-Date>${timestamp}</Build-Date>
+              <Build-Revision>${buildNumber}</Build-Revision>
+              <Mode>${env}</Mode>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
