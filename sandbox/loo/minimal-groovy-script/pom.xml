@@ -157,9 +157,8 @@
               <configuration>
                 <source>
                   // Read properties from each file in Maven's filters tag
-                  log.info("Reading properties");
                   project.filters.each { filter ->
-                    log.info("Reading properties from: $filter");
+                    log.info "Reading properties from: " + new File(filter).canonicalPath;
 
                     Properties properties = new Properties();
                     properties.load(new FileInputStream(filter));
