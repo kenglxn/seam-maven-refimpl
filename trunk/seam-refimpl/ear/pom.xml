@@ -270,7 +270,10 @@
   </dependencies>
 
   <build>
-    <!-- 
+    <!--
+      Maven filter properties are ony visible to
+      resources and can not be accessed from the POM.
+    
     <filters>
       <filter>../src/main/filters/filter-${env}.properties</filter>
     </filters>
@@ -278,17 +281,15 @@
     
     <plugins>
       <!--
-        The Properties Maven Plugin is here to make life a little easier when 
-        dealing with properties. It provides goals to read and write properties 
-        from and to	files, and also to set system properties. It's main use-case 
+        Maven filter properties are ony visible to resources and can not be 
+        accessed from the POM. This is where the Properties Maven Plugin makes
+        our life a little easier when dealing with properties that we need to 
+        access inside our POM. It provides goals to read and write properties 
+        from and to files, and also to set system properties. It's main use-case 
         is loading properties from files instead of declaring them in pom.xml, 
         something that comes in handy when dealing with different environments. 
-        The plugin read properties during the "validate" phase and the 
-        properties are then accessible from the pom.
-         
-        The "filters" tag read properties after the "generate-resources" phase 
-        but you can not	access the property values from the pom - they are only 
-        visible to filters (filtering=true).
+        The plugin is configured to read properties during the "validate" phase 
+        and the properties are then accessible from the pom.
       -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

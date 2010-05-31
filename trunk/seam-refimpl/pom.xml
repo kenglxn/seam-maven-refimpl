@@ -41,7 +41,10 @@
     <!-- 
       Properties for production are located in src/main/filters/filter-prod.properties
       Properties to be modified by developer are located in src/main/filters/filter-dev.properties
-      Copy filter-prod.properties to filter-dev.properties and add filter-dev.properties to svn:ignore
+      
+      To set up your own dev profile:
+        * Copy filter-prod.properties to filter-dev.properties and add filter-dev.properties to svn:ignore
+        * Execute maven commands with the dev profile, e.g. mvn install -Penv-dev
     -->
   </properties>
 
