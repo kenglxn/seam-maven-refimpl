@@ -22,7 +22,6 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
   protected static final String JNDI_PATTERN = "%s/Local";
   
   protected static Logger log = Logger.getLogger(AbstractSeamOpenEjbTest.class);
-  
   protected static Properties contextProperties = new Properties();
   protected static InitialContext initialContext = null;
 
@@ -47,13 +46,13 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
   /**
    * Close the embedded container If you need the embedded container to restart
    * between different test scenarios, then you should bootstrap the container
-   * with the property
-   * <code>"openejb.embedded.initialcontext.close=destroy"</code> see
-   * http://blog
-   * .jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+   * with the property <code>"openejb.embedded.initialcontext.close=destroy"</code>, see
+   * <a href="http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html">
+   *  http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+   * </a>
    */
   protected void closeInitialContext() {
-    initialContext = BootStrapOpenEjb.closeInitialContext();
+    BootStrapOpenEjb.closeInitialContext(initialContext);
   }
 
   protected <T> T doJndiLookup(final String name) throws Exception {

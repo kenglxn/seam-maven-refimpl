@@ -19,11 +19,11 @@ import org.testng.annotations.Test;
  * @author LeifOO
  *
  */
-public class BootstrapOpenEjbTest { // extends OpenEjbTest {
+public class BootstrapOpenEjbTest { 
   private static final String OPENEJB_EMBEDDED_IC_CLOSE = "openejb.embedded.initialcontext.close";
   
   private static Logger log = Logger.getLogger(OpenEjbTest.class);
-  private static Properties contextProperties = new Properties();
+  private InitialContext initialContext = null;
 	
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
@@ -31,9 +31,6 @@ public class BootstrapOpenEjbTest { // extends OpenEjbTest {
 	  
     assert BootStrapOpenEjb.isopenEjbAvailable() : "OpenEJB is not available. Check your classpath";
     assert OpenEJB.isInitialized() == false : "OpenEJB is already running";
-
-    contextProperties.put(OPENEJB_EMBEDDED_IC_CLOSE, "destroy");
-    contextProperties.put("log4j.category.no.knowit.openejb", "debug");
 	}
 
 	@AfterSuite
@@ -44,23 +41,28 @@ public class BootstrapOpenEjbTest { // extends OpenEjbTest {
 	
 	@Test(enabled=true)
 	public void shouldBootstrapWithDestroy() throws Exception {
-	  // We do not have a logger yet
+    Properties environment = new Properties();
+    environment.put(OPENEJB_EMBEDDED_IC_CLOSE, "destroy");
+    environment.put("log4j.category.no.knowit.openejb", "debug");
+    
+	  // We do not have a logger yet, so using sysout
 		System.out.println(String.format(
 		    "*** Bootstrapping OpenEJB embedded container with property: \"%s=%s\"",
-		    OPENEJB_EMBEDDED_IC_CLOSE, contextProperties.get(OPENEJB_EMBEDDED_IC_CLOSE)));
+		    OPENEJB_EMBEDDED_IC_CLOSE, environment.get(OPENEJB_EMBEDDED_IC_CLOSE)));
 		
-		InitialContext initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
+		initialContext = BootStrapOpenEjb.bootstrap(environment);
 		
 		Assert.assertNotNull(initialContext, "InitialContext was null after bootstrap.");
     Assert.assertTrue(OpenEJB.isInitialized(), "OpenEJB is not running after bootstrap");
 	}
 	
-	@Test(dependsOnMethods={ "shouldBootstrapWithDestroy" }, enabled=true)
+  @Test(dependsOnMethods={ "shouldBootstrapWithDestroy" }, enabled=true)
 	public void shouldCloseInitialContextAndDestroy() throws Exception {
+
 	  log.debug(String.format("*** Closing initial context with property: \"%s=%s\"", 
-	      OPENEJB_EMBEDDED_IC_CLOSE, contextProperties.get(OPENEJB_EMBEDDED_IC_CLOSE)));
+	      OPENEJB_EMBEDDED_IC_CLOSE, "destroy"));
 	  
-	  BootStrapOpenEjb.closeInitialContext();
+	  BootStrapOpenEjb.closeInitialContext(initialContext);
     Assert.assertFalse(OpenEJB.isInitialized(), "OpenEJB should not be initialized after close");
 	}
 
@@ -71,8 +73,9 @@ public class BootstrapOpenEjbTest { // extends OpenEjbTest {
         "*** Bootstrapping OpenEJB embedded container without property: \"%s\"", 
         OPENEJB_EMBEDDED_IC_CLOSE));
     
-    contextProperties.remove(OPENEJB_EMBEDDED_IC_CLOSE);
-    InitialContext initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
+    Properties environment = new Properties();
+    environment.put("log4j.category.no.knowit.openejb", "debug");
+    InitialContext initialContext = BootStrapOpenEjb.bootstrap(environment);
     
     Assert.assertNotNull(initialContext, "InitialContext was null after bootstrap.");
     Assert.assertTrue(OpenEJB.isInitialized(), "OpenEJB is not running after bootstrap");
@@ -84,8 +87,8 @@ public class BootstrapOpenEjbTest { // extends OpenEjbTest {
     log.debug(String.format(
         "*** Closing initial context WITHOUT property: \"%s\"", OPENEJB_EMBEDDED_IC_CLOSE));
     
-    BootStrapOpenEjb.closeInitialContext();
-    Assert.assertTrue(OpenEJB.isInitialized(), 
-        "OpenEJB should be initialized after close");
+    InitialContext ic = new InitialContext();
+    ic.close();
+    Assert.assertTrue(OpenEJB.isInitialized(), "OpenEJB should be initialized after close");
   }
 }

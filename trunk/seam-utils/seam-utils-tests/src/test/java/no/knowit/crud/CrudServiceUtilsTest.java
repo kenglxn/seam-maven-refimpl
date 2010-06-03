@@ -7,36 +7,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
-
-import no.knowit.openejb.mock.OpenEjbTest;
 import no.knowit.testsupport.bean.SimpleBean;
 import no.knowit.testsupport.model.ConcreteEntityFieldAnnotated;
 import no.knowit.testsupport.model.ConcreteEntityPropertyAnnotated;
-import no.knowit.testsupport.model.NamedEntity;
 import no.knowit.testsupport.model.FieldAnnotatedEntity;
+import no.knowit.testsupport.model.NamedEntity;
 import no.knowit.testsupport.model.PropertyAnnotatedEntity;
 import no.knowit.testsupport.model.inheritance.ContractEmployee;
 import no.knowit.testsupport.model.inheritance.FullTimeEmployee;
 import no.knowit.testsupport.model.inheritance.PartTimeEmployee;
 import no.knowit.util.ReflectionUtils;
-import no.knowit.util.ToStringBuilder;
 
-public class CrudServiceUtilsTest extends OpenEjbTest {
-  private static Logger log = Logger.getLogger(CrudServiceUtils.class);
+import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
-  @Override
+public class CrudServiceUtilsTest { //extends OpenEjbTest {
+
   @BeforeSuite
   public void beforeSuite() throws Exception {
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
-    
-    contextProperties.put("log4j.category.no.knowit.crud", "debug");
-    contextProperties.put("log4j.category.no.knowit.testsupport", "debug");
-    
-    super.beforeSuite();
   }
   
   @Test
