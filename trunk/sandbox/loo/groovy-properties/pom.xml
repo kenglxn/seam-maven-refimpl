@@ -374,6 +374,10 @@
                     log.info "========================================================================"
                     log.info "Maven project.properties:"
                     log.info "========================================================================"
+                    log.info "project.parent.basedir = $project.parent.basedir";
+                    log.info "project.basedir        = $project.basedir";
+                    log.info "project.artifactId     = $project.artifactId";
+                    
                     project.properties.sort{it.key}.each { key, value ->
                       def matcher = placeholderPattern.matcher(value);
                       if(matcher)
