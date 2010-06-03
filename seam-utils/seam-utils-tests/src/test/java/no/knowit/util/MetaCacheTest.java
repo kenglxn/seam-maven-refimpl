@@ -1,15 +1,12 @@
 package no.knowit.util;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;

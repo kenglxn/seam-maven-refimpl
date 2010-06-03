@@ -10,8 +10,6 @@ import no.knowit.testsupport.seam.framework.MovieList;
 
 import org.jboss.seam.Component;
 import org.jboss.seam.core.Conversation;
-import org.jboss.seam.log.LogProvider;
-import org.jboss.seam.log.Logging;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -20,8 +18,6 @@ import org.testng.annotations.Test;
 
 public class SeamFrameworkTest extends SeamOpenEjbTest {
 
-  private static final LogProvider log = Logging.getLogProvider(SeamFrameworkTest.class);
-  
   private Integer reservoirDogsMovieId;
   
 	@Override

@@ -26,7 +26,6 @@ public class OpenEjbTest {
   protected static final String JNDI_PATTERN = "%s/Local";
 
   protected static Logger log = Logger.getLogger(OpenEjbTest.class);
-
   protected static Properties contextProperties = new Properties();
   protected static InitialContext initialContext = null;
 
@@ -70,7 +69,7 @@ public class OpenEjbTest {
    * http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
    */
   protected void closeInitialContext() {
-    initialContext = BootStrapOpenEjb.closeInitialContext();
+    BootStrapOpenEjb.closeInitialContext(initialContext);
   }
   
   protected InitialContext getInitialContext() {

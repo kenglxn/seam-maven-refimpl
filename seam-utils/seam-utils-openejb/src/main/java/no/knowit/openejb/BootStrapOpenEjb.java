@@ -1,8 +1,6 @@
 package no.knowit.openejb;
 
 import java.util.Properties;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,7 +12,8 @@ import org.apache.openejb.loader.SystemInstance;
 
 
 /**
- * @author <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">Using OpenEJB for integration testing</a>
+ * @author <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">
+ *            Using OpenEJB for integration testing</a>
  * @author LeifOO
  */
 public class BootStrapOpenEjb {
@@ -22,8 +21,6 @@ public class BootStrapOpenEjb {
   //private static final String OPENEJB_EMBEDDED_IC_CLOSE = "openejb.embedded.initialcontext.close";
   //private static final String OPENEJB_EMBEDDED_IC_CLOSE_DESTROY = "destroy";
   //private static final String OPENEJB_EMBEDDED_IC_CLOSE_CLOSE = "close";
-
-  private static InitialContext context = null;
 
 	/**
    * Bootstrap the OpenEJB embedded container
@@ -36,8 +33,10 @@ public class BootStrapOpenEjb {
 
 	/**
 	 * Bootstrap the OpenEJB embedded container
-	 * @param properties See: <a href="http://openejb.apache.org/3.0/embedded-configuration.html">
-	 *   OpenEJB: Embedded Configuration </a>
+	 * @param properties See: 
+	 *   <a href="http://openejb.apache.org/3.0/embedded-configuration.html">
+	 *     OpenEJB: Embedded Configuration 
+	 *   </a>
 	 * @return the initial context
 	 * @throws Exception
 	 */
@@ -57,12 +56,11 @@ public class BootStrapOpenEjb {
         if (properties != null) {
           p.putAll(properties);
         }
-        context = new InitialContext(p);
+        return new InitialContext(p);
 			}
 			else {
-        context = new InitialContext(); // Properties have no effect if OpenEJB is already running
+        return new InitialContext(); // Properties have no effect if OpenEJB is already running
 			}
-			return context;
 		} 
 		catch (Exception e) {
 			// Since OpenEJB failed to start, we do not have a logger
@@ -77,25 +75,28 @@ public class BootStrapOpenEjb {
 	 * <code>openejb.embedded.initialcontext.close=destroy</code> then 
 	 * OpenEJB destroys the embedded container when closing the initial context, see:
 	 * <ul>
-	 * <li> http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html</li>
-	 * <li>http://openejb.apache.org/faq.html</li>
-	 * <li>https://blogs.apache.org/openejb/entry/user_blog_restarting_the_embedded</li>
+	 * <li>
+	 *   <a href="http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html">
+	 *   Restarting the embedded OpenEJB container between each test</a>
+	 * </li>
+	 * <li>
+	 *   <a href="http://openejb.apache.org/faq.html">http://openejb.apache.org/faq.html</a>
+	 * </li>
 	 * </ul>
 	 * 
 	 * @return
 	 */
-	public static InitialContext closeInitialContext() {
-		if(context != null) {
+	public static void closeInitialContext(final InitialContext initialContext) {
+    
+		if(initialContext != null) {
 	    try {
-        context.close();
-        context = null;
+        initialContext.close();
 	    } 
 	    catch (Exception e) {
 	      System.out.println("\n*******\nClosing OpenEJB context failed: " + e + "\n*******");
 	      throw new RuntimeException(e);
 	    }
 		}
-		return context;
 	}
 
 	/**
@@ -105,22 +106,20 @@ public class BootStrapOpenEjb {
 	public static InitialContext getInitialContext() {
 	  
     if (!OpenEJB.isInitialized()) {
-      throw new IllegalStateException("Could not obtain OpenEJB InitialContext," +
-      		" OpenEJB is not initialized");
+      throw new IllegalStateException(
+        "Could not obtain OpenEJB InitialContext, " +
+        "OpenEJB is not initialized, call boostrap method first.");
     }
-    if (context == null) {
-      try {
-        context = new InitialContext();
-      } catch (Exception e) {
-        throw new IllegalStateException("Could not obtain OpenEJB InitialContext", e);
-      }
+    try {
+      return new InitialContext();
+    } catch (Exception e) {
+      throw new IllegalStateException("Could not obtain OpenEJB InitialContext", e);
     }
-	  return context;
 	}
 	
   /**
    * Checks if OpenEJB is in class path
-   * @return <code>true</code> if OpenEJB is available in classpath
+   * @return <code>true</code> if OpenEJB is available in class path
    */
   public static Boolean isopenEjbAvailable() {
     try {
@@ -136,19 +135,18 @@ public class BootStrapOpenEjb {
    * <p>Perform a clean shutdown of this embedded instance
    * This is an alternative to <code>initialContext.close()</code> with the property
    * <tt>openejb.embedded.initialcontext.close=destroy</tt>
-   * see: http://openejb.apache.org/faq.html
+   * see: <a href="http://openejb.apache.org/faq.html">http://openejb.apache.org/faq.html</a>
    * </p>
    * <p><b>Note</b>: Shut down works as expected, but I'm not able to restart server afterwards. 
-   * Get a NullPointerException: 
-   *    "<tt>Cannot instantiate a LocalInitialContext. 
-   *    Exception: java.lang.NullPointerException null</tt>".<br/>
-   * Must be a bug somwhere. As an alternative use Surefire Forking to achieve a similar result that 
+   * Get a NullPointerException: "<tt>Cannot instantiate a LocalInitialContext. 
+   * Exception: java.lang.NullPointerException null</tt>".<br/>
+   * Must be a bug somewhere. As an alternative use Surefire Forking to achieve a similar result that 
    * will also clear out any embedded database state as well, as mentioned here: 
    *    https://blogs.apache.org/openejb/entry/user_blog_restarting_the_embedded
    * </p>
    * @return
    */
-  public static InitialContext shutdown() {
+  public static void shutdown() {
     if (OpenEJB.isInitialized()) {
       Assembler assembler = SystemInstance.get().getComponent(Assembler.class);
       try {
@@ -162,7 +160,5 @@ public class BootStrapOpenEjb {
         throw new RuntimeException(e);
       }
     }
-    context = null;
-    return null;
   }
 }
