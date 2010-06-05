@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+
+<suite name="Open EJB Bootstrap" verbose="2" parallel="false">
+
+  <!-- 
+    Must run in a separate test suite. 
+    Run before any other integration tests.
+  -->
+  <test name="OpenEJB Bootstrap">
+    <classes>
+      <class name="no.knowit.openejb.BootstrapOpenEjbTest" />
+    </classes>
+  </test>
+  
+</suite>
