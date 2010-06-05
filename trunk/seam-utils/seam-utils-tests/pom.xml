@@ -118,9 +118,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>testng-openejb.xml</suiteXmlFile>
-            <suiteXmlFile>testng-seam-utils.xml</suiteXmlFile>
-            <suiteXmlFile>testng-seam-openejb.xml</suiteXmlFile>
+            <suiteXmlFile>testng-unit-tests.xml</suiteXmlFile>
+            <suiteXmlFile>testng-openejb-bootstrap.xml</suiteXmlFile>
+            <suiteXmlFile>testng-integration-tests.xml</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>
