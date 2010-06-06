@@ -38,7 +38,7 @@ public class HelloSeamTest extends SeamOpenEjbTest {
 		}.run();
 	}
 	
-	@Test(dependsOnMethods={ "shouldLookupSeamComponentWithNoInterface" })
+	@Test
 	public void shouldLookupSeamComponentWithLocalInterface() throws Exception {
 
 		new ComponentTest() {
