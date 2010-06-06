@@ -33,7 +33,7 @@ public class MovieTest extends SeamOpenEjbTest {
 
 	private CrudService lookupCrudService() throws Exception {
 		try {
-			Object service = initialContext.lookup("crudService/Local");
+			Object service = getInitialContext().lookup("crudService/Local");
 			assert service != null : "initialContext.lookup(\"crudService/Local\") returned null";
 			assert service instanceof CrudService : "initialContext.lookup(\"crudService/Local\") returned incorrect type";
 			return (CrudService) service;

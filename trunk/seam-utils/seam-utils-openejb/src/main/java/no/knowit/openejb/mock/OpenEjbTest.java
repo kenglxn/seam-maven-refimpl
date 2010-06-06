@@ -26,7 +26,7 @@ public class OpenEjbTest {
   protected static final String JNDI_PATTERN = "%s/Local";
 
   protected static Logger log = Logger.getLogger(OpenEjbTest.class);
-  protected static Properties environment = new Properties();
+  protected static Properties contextProperties = new Properties();
 
   @BeforeMethod
   public void begin() {
@@ -58,7 +58,7 @@ public class OpenEjbTest {
    * Start embedded OpenEJB container
    */
   protected void startOpenEjbEmbeddedIfNecessary() throws Exception {
-    BootStrapOpenEjb.bootstrap(environment);
+    BootStrapOpenEjb.bootstrap(contextProperties);
   }
 
   protected InitialContext getInitialContext() {
