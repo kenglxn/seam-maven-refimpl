@@ -42,7 +42,7 @@ public class AuthenticatorTest extends SeamOpenEjbTest {
 		}.run();
 	}
 	
-	@Test(dependsOnMethods={ "shouldAuthenticate" })
+	@Test
 	public void shouldLoginThenLogout() throws Exception {
 		
     new NonFacesRequest() {

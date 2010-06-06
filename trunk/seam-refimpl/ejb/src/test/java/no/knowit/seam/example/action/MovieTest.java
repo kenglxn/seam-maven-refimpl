@@ -3,8 +3,6 @@ package no.knowit.seam.example.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import no.knowit.crud.CrudService;
 import no.knowit.seam.example.model.Movie;
 import no.knowit.seam.openejb.mock.SeamOpenEjbTest;
@@ -22,28 +20,26 @@ import org.testng.annotations.Test;
 
 public class MovieTest extends SeamOpenEjbTest {
 
-  private static final String  DIRECTOR_JOEL_COEN= "Joel Coen";
+  private static final String  DIRECTOR_JOEL_COEN      = "Joel Coen";
+  private static final String  THE_BIG_LEBOWSKI_TITLE  = "The Big Lebowski";
+  private static final Integer THE_BIG_LEBOWSKI_YEAR   = 1992;
+  private static final String  THE_BIG_LEBOWSKI_PLOT   =
+    "\"Dude\" Lebowski, mistaken for a millionaire Lebowski, seeks restitution for his " +
+    "ruined rug and enlists his bowling buddies to help get it.";
+    
   private static final String  THE_WALL_DIRECTOR = "Alan Parker";
   private static final String  THE_WALL_TITLE    = "The Wall";
   private static final Integer THE_WALL_YEAR     = 1992;
-  private static final String  THE_WALL_PLOT     = "A troubled rock star descends into madness in the midst of his physical and social isolation from everyone.";
-  private Integer              theWallId;
+  private static final String  THE_WALL_PLOT     = 
+    "A troubled rock star descends into madness " +
+    "in the midst of his physical and social isolation from everyone.";
+
+  private Integer theBigLebowskiId;
+  private Integer reservoirDogsId;
+  private Integer theWallId;
   
   private static final LogProvider log = Logging.getLogProvider(MovieTest.class);
 
-	private CrudService lookupCrudService() throws Exception {
-		try {
-			Object service = getInitialContext().lookup("crudService/Local");
-			assert service != null : "initialContext.lookup(\"crudService/Local\") returned null";
-			assert service instanceof CrudService : "initialContext.lookup(\"crudService/Local\") returned incorrect type";
-			return (CrudService) service;
-		}
-		catch (NamingException e) {
-			log.error(e);
-			throw(e);
-		}
-	}
-	
 	private boolean mockLogin() {
 		Credentials credentials = (Credentials)Component.getInstance("org.jboss.seam.security.credentials");
 		Identity identity = (Identity)Component.getInstance("org.jboss.seam.security.identity");
@@ -73,25 +69,26 @@ public class MovieTest extends SeamOpenEjbTest {
 		super.setupClass();
 		
 		// Delete all movies
-		CrudService crudService = lookupCrudService();
+		CrudService crudService = doJndiLookup("crudService");
 		crudService.remove(new Movie(), true);
 		assert crudService.find(Movie.class).size() == 0 : "List.size():";
 		
 		// Persist 3 movies
 		ArrayList<Movie> movies = new ArrayList<Movie>();
-		movies.add(new Movie(DIRECTOR_JOEL_COEN, "The Big Lebowski", 1998, 
-			"\"Dude\" Lebowski, mistaken for a millionaire Lebowski, seeks restitution for his " +
-			"ruined rug and enlists his bowling buddies to help get it."));
-		movies.add(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992, 
-			"After a simple jewelery heist goes terribly wrong, the surviving criminals begin " +
-			"to suspect that one of them is a police informant."));
-		movies.add(new Movie(DIRECTOR_JOEL_COEN, "Fargo", 1996, 
-			"Jerry Lundegaard's inept crime falls apart due to his and his henchmen's bungling " +
-			"and the persistent police work of pregnant Marge Gunderson."));
+		movies.add(new Movie(DIRECTOR_JOEL_COEN, THE_BIG_LEBOWSKI_TITLE, THE_BIG_LEBOWSKI_YEAR, "..."));
 		
-		crudService.persist(movies);
+		movies.add(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992, 
+		  "After a simple jewelery heist goes terribly wrong, the surviving criminals begin " +
+		  "to suspect that one of them is a police informant."));
+		
+		movies.add(new Movie(DIRECTOR_JOEL_COEN, "Fargo", 1996, 
+		  "Jerry Lundegaard's inept crime falls apart due to his and his henchmen's bungling " +
+		  "and the persistent police work of pregnant Marge Gunderson."));
+		
+		movies = (ArrayList<Movie>) crudService.persist(movies);
+		theBigLebowskiId = movies.get(0).getId();
+    reservoirDogsId = movies.get(1).getId();
 	}
-
 
 	@Test
 	public void newMovie() throws Exception {
@@ -100,7 +97,7 @@ public class MovieTest extends SeamOpenEjbTest {
       @Override
       protected void renderResponse() throws Exception {
       	int actual = (Integer)getValue("#{movieList.resultList.size}");
-      	Assert.assertEquals(actual, 3, "movieList.size:");
+      	Assert.assertTrue(actual > 0, "movieList.size should be gt. 0");
       }
 		}.run();
 
@@ -126,6 +123,7 @@ public class MovieTest extends SeamOpenEjbTest {
 				setValue("#{movieHome.instance.director}", THE_WALL_DIRECTOR);
 				setValue("#{movieHome.instance.title}",    THE_WALL_TITLE);
 				setValue("#{movieHome.instance.year}",     THE_WALL_YEAR);
+        setValue("#{movieHome.instance.plot}",     THE_WALL_PLOT);
 	    }
 
 			@Override
@@ -150,6 +148,7 @@ public class MovieTest extends SeamOpenEjbTest {
 				assert getValue("#{movieHome.instance.director}").equals(THE_WALL_DIRECTOR);
 				assert getValue("#{movieHome.instance.title}").equals(THE_WALL_TITLE);
 				assert getValue("#{movieHome.instance.year}").equals(THE_WALL_YEAR);
+        assert getValue("#{movieHome.instance.plot}").equals(THE_WALL_PLOT);
 			}
 		}.run();
 		
@@ -163,7 +162,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();       
 	}
 
-	@Test(dependsOnMethods={ "newMovie" })
+	@Test
 	public void editMovie() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
@@ -171,9 +170,9 @@ public class MovieTest extends SeamOpenEjbTest {
 				Conversation.instance().begin();
 				assert !isSessionInvalid() : "Invalid session";
 				assert mockLogin() : "Login failed";
-				setValue("#{movieHome.movieId}", theWallId);
+				setValue("#{movieHome.movieId}", theBigLebowskiId);
 				invokeMethod( "#{movieHome.wire}" );
-				setValue("#{movieHome.instance.plot}", THE_WALL_PLOT);
+				setValue("#{movieHome.instance.plot}", THE_BIG_LEBOWSKI_PLOT);
 				Object result = invokeMethod( "#{movieHome.update}" );
 				Assert.assertEquals(result, "updated", "#{movieHome.update}");
 				Conversation.instance().end();
@@ -181,20 +180,20 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();
 	}
 	
-	@Test(dependsOnMethods={ "editMovie" })
+	@Test
 	public void unauthorizedAccess() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
 			protected void invokeApplication() throws Exception {
 				Conversation.instance().begin();
 				assert !isSessionInvalid() : "Invalid session";
-				setValue("#{movieHome.movieId}", theWallId);
+				setValue("#{movieHome.movieId}", theBigLebowskiId);
 				invokeMethod( "#{movieHome.wire}" );
-				setValue("#{movieHome.instance.plot}", THE_WALL_PLOT);
+				setValue("#{movieHome.instance.plot}", "Not allowed to edit");
 				
 				try {
 					invokeMethod( "#{movieHome.update}" );
-					assert false : "Unauthorized access!";
+					assert false : "Expected authentication failed!";
 				} 
 				catch (javax.el.ELException e) {
 					assert e.getCause() instanceof org.jboss.seam.security.NotLoggedInException : 
@@ -209,7 +208,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();
 	}
 
-	@Test(dependsOnMethods={ "unauthorizedAccess" })
+	@Test
 	public void persistWithMissingRequiredFieldValue() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
@@ -218,8 +217,9 @@ public class MovieTest extends SeamOpenEjbTest {
 				assert !isSessionInvalid() : "Invalid session";
 				assert mockLogin() : "Login failed";
 				invokeMethod("#{movieHome.clearInstance}");
-				setValue("#{movieHome.instance.director}", THE_WALL_DIRECTOR);
-				setValue("#{movieHome.instance.year}",     THE_WALL_YEAR);
+				setValue("#{movieHome.instance.director}", DIRECTOR_JOEL_COEN);
+				setValue("#{movieHome.instance.year}",     THE_BIG_LEBOWSKI_YEAR);
+				// The title field value is missing
 				
 				try {
 					invokeMethod( "#{movieHome.persist}" );
@@ -238,8 +238,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();
 	}
 	
-	
-	@Test(dependsOnMethods={ "persistWithMissingRequiredFieldValue" })
+	@Test
 	public void duplicateUniqueSecondaryIndex() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
@@ -248,13 +247,14 @@ public class MovieTest extends SeamOpenEjbTest {
 				assert !isSessionInvalid() : "Invalid session";
 				assert mockLogin() : "Login failed";
 				invokeMethod("#{movieHome.clearInstance}");
-				setValue("#{movieHome.instance.director}", THE_WALL_DIRECTOR);
-				setValue("#{movieHome.instance.title}",    THE_WALL_TITLE);
-				setValue("#{movieHome.instance.year}",     THE_WALL_YEAR);
+				setValue("#{movieHome.instance.director}", DIRECTOR_JOEL_COEN);
+				setValue("#{movieHome.instance.title}",    THE_BIG_LEBOWSKI_TITLE);
+				setValue("#{movieHome.instance.year}",     THE_BIG_LEBOWSKI_YEAR);
+				// The title field value must be unique
 				
 				try {
 					invokeMethod( "#{movieHome.persist}" );
-					assert false : "Movie with duplicate title persisted!";
+					assert false : "Expected to persist a movie with a duplicate unique secondary index!";
 				} 
 				catch (javax.el.ELException e) {
 					assert e.getCause() instanceof javax.persistence.PersistenceException : 
@@ -269,7 +269,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();
 	}
 
-	@Test(dependsOnMethods={ "duplicateUniqueSecondaryIndex" })
+	@Test
 	public void deleteMovie() throws Exception {
 		new FacesRequest("/view/example/MovieEdit.xhtml") {
 			@Override
@@ -277,7 +277,7 @@ public class MovieTest extends SeamOpenEjbTest {
 				Conversation.instance().begin();
 				assert !isSessionInvalid() : "Invalid session";
 				assert mockLogin() : "Login failed";
-				setValue("#{movieHome.movieId}", theWallId);
+				setValue("#{movieHome.movieId}", reservoirDogsId);
 				invokeMethod( "#{movieHome.wire}" );
 				Assert.assertEquals(invokeMethod( "#{movieHome.remove}" ), "removed", "#{movieHome.remove}");
 				Conversation.instance().end();
@@ -285,7 +285,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		}.run();
 	}
 
-	@Test(dependsOnMethods={ "deleteMovie" })
+	@Test
 	public void findMoviesDirectedByJoelCoen() throws Exception {
 		
 		new FacesRequest("/view/example/MovieList.xhtml") {
