@@ -2,7 +2,7 @@
 
 <suite name="Integration Tests" verbose="2" parallel="false">
 
-  <test name="Test Spport">
+  <test name="Test Support">
     <classes>
       <class name="no.knowit.testsupport.ejb.stateless.HelloStatelessEjbTest" />
     </classes>

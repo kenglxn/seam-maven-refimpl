@@ -1226,7 +1226,6 @@
               <goals>
                 <goal>compile</goal>
                 <goal>testCompile</goal>
-                
                 <goal>generateStubs</goal>
                 <goal>generateTestStubs</goal>
               </goals>

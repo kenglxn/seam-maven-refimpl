@@ -19,7 +19,7 @@ public class MessageManagerTest extends SeamOpenEjbTest {
 	public void beforeSuite() throws Exception {
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
     
-    contextProperties.put("log4j.category.no.knowit.seam.statefulaction", "DEBUG");
+    environment.put("log4j.category.no.knowit.seam.statefulaction", "DEBUG");
     super.beforeSuite();
 	}
 

@@ -15,10 +15,10 @@ public class AuthenticatorTest extends SeamOpenEjbTest {
 		//System.out.println("**** AuthenticatorTest.beforeSuite()");
 		
 		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL		contextProperties.put("log4j.category.org.jboss.seam.Component", "DEBUG");
-		contextProperties.put("log4j.category.org.jboss.seam.transaction", "DEBUG");
-		contextProperties.put("log4j.category.org.jboss.seam.mock", "DEBUG");
-		contextProperties.put("log4j.category.no.knowit.seam.openejb.mock", "DEBUG");
-		contextProperties.put("log4j.category.no.knowit.seam.example", "debug");
+		environment.put("log4j.category.org.jboss.seam.transaction", "DEBUG");
+		environment.put("log4j.category.org.jboss.seam.mock", "DEBUG");
+		environment.put("log4j.category.no.knowit.seam.openejb.mock", "DEBUG");
+		environment.put("log4j.category.no.knowit.seam.example", "debug");
 		super.beforeSuite();
 	}
 

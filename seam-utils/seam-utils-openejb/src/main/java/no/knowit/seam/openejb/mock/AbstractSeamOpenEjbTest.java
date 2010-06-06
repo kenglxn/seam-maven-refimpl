@@ -22,25 +22,21 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
   protected static final String JNDI_PATTERN = "%s/Local";
   
   protected static Logger log = Logger.getLogger(AbstractSeamOpenEjbTest.class);
-  protected static Properties contextProperties = new Properties();
-  protected static InitialContext initialContext = null;
-
+  protected static Properties environment = new Properties();
+  
   /**
    * Start embedded OpenEJB container
    */
   @Override
   protected void startJbossEmbeddedIfNecessary() throws Exception {
-    initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
     // do not call super!!
+    BootStrapOpenEjb.bootstrap(environment);
   }
 
   @Override
   protected InitialContext getInitialContext() throws NamingException {
-    if(initialContext == null) {
-      initialContext = BootStrapOpenEjb.getInitialContext();
-    }
-    return initialContext;
-    // do not call super
+    // do not call super!!
+    return BootStrapOpenEjb.getInitialContext();
   }
 
   /**
@@ -52,14 +48,13 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
    * </a>
    */
   protected void closeInitialContext() {
-    BootStrapOpenEjb.closeInitialContext(initialContext);
+    BootStrapOpenEjb.closeInitialContext();
   }
 
+  @SuppressWarnings("unchecked")
   protected <T> T doJndiLookup(final String name) throws Exception {
     try {
-      if(initialContext == null) {
-        initialContext = BootStrapOpenEjb.getInitialContext();
-      }
+      InitialContext initialContext = getInitialContext();
       Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
       Assert.assertNotNull(instance, String.format("InitialContext.lookup(%s): returned null", name));
       return (T)instance;
@@ -77,6 +72,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
    * @param name
    * @return
    */
+  @SuppressWarnings("unchecked")
   protected static <T> T getComponentInstance(final String name) {
     return (T) Component.getInstance(name);
   }
@@ -88,6 +84,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
    * @param clazz
    * @return
    */
+  @SuppressWarnings("unchecked")
   protected static <T> T getComponentInstance(final Class<T> clazz) {
     return (T) Component.getInstance(clazz);
   }
@@ -100,6 +97,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
    * @param scope
    * @return
    */
+  @SuppressWarnings("unchecked")
   protected static <T> T getComponentInstance(final String name, final ScopeType scope) {
     return (T) Component.getInstance(name, scope);
   }
@@ -112,6 +110,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
    * @return
    * @throws Exception
    */
+  @SuppressWarnings("unchecked")
   protected static <T> T getComponentInstanceWithAsserts(final String name, Class<?> clazz)
       throws Exception {
     try {
@@ -126,5 +125,4 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
     }
     return null;
   }
-
 }
