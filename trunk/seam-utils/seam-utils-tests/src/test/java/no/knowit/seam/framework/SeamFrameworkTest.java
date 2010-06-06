@@ -25,7 +25,7 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
 	public void beforeSuite() throws Exception {
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
     
-    contextProperties.put("log4j.category.no.knowit.seam.seamframework", "debug");
+    environment.put("log4j.category.no.knowit.seam.seamframework", "debug");
     super.beforeSuite();
 	}
 	
@@ -33,7 +33,8 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
 	@BeforeClass
 	public void setupClass() throws Exception {
 		super.setupClass();
-    CrudService crudService = (CrudService)initialContext.lookup("crudService/Local");
+		
+    CrudService crudService = (CrudService)getInitialContext().lookup("crudService/Local");
     crudService.remove(Movie.class);
     assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 before tests";
     
@@ -43,7 +44,7 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
   @Override
   @AfterClass
 	public void cleanupClass() throws Exception {
-    CrudService crudService = (CrudService)initialContext.lookup("crudService/Local");
+    CrudService crudService = (CrudService)getInitialContext().lookup("crudService/Local");
     crudService.remove(Movie.class);
     assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 after cleanup"; 
 

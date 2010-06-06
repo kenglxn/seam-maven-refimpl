@@ -17,36 +17,37 @@ import org.apache.openejb.loader.SystemInstance;
  * @author LeifOO
  */
 public class BootStrapOpenEjb {
+  public static final String OPENEJB_EMBEDDED_IC_CLOSE = "openejb.embedded.initialcontext.close";
+  public static final String DESTROY = "DESTROY";
+  public static final String CLOSE = "CLOSE";
+  
+  /**
+   * We need to keep a reference to the opened initial context if we open the 
+   * context with the property openejb.embedded.initialcontext.close = DESTROY. 
+   * IntilalContext.close will not shut down the container unless we're calling 
+   * the close method on the same instance as the instance created with the
+   * openejb.embedded.initialcontext.close property.  
+   */
+  private static InitialContext initialContext = null;
 
-  //private static final String OPENEJB_EMBEDDED_IC_CLOSE = "openejb.embedded.initialcontext.close";
-  //private static final String OPENEJB_EMBEDDED_IC_CLOSE_DESTROY = "destroy";
-  //private static final String OPENEJB_EMBEDDED_IC_CLOSE_CLOSE = "close";
-
-	/**
+  
+  /**
    * Bootstrap the OpenEJB embedded container
+   * @param properties See: 
+   *   <a href="http://openejb.apache.org/3.0/embedded-configuration.html">
+   *     OpenEJB: Embedded Configuration 
+   *   </a>
    * @return the initial context
-	 * @throws Exception
-	 */
-	public static InitialContext bootstrap() throws Exception {
-		return bootstrap(null);
-	}
+   * @throws Exception
+   */
+  public static InitialContext bootstrap(final Properties properties) throws Exception {
+    
+    if(!isopenEjbAvailable()) {
+      throw new IllegalStateException("OpenEJB is not available. Check your classpath!");
+    }
 
-	/**
-	 * Bootstrap the OpenEJB embedded container
-	 * @param properties See: 
-	 *   <a href="http://openejb.apache.org/3.0/embedded-configuration.html">
-	 *     OpenEJB: Embedded Configuration 
-	 *   </a>
-	 * @return the initial context
-	 * @throws Exception
-	 */
-	public static InitialContext bootstrap(final Properties properties) throws Exception {
-	  
-	  if(!isopenEjbAvailable()) {
-	    throw new IllegalStateException("OpenEJB is not available. Check your classpath!");
-	  }
-		try {
-			if (!OpenEJB.isInitialized()) {
+    try {
+      if (!OpenEJB.isInitialized()) {
         Properties p = new Properties();
         
         // Set the initial context factory
@@ -56,23 +57,44 @@ public class BootStrapOpenEjb {
         if (properties != null) {
           p.putAll(properties);
         }
-        return new InitialContext(p);
-			}
-			else {
-        return new InitialContext(); // Properties have no effect if OpenEJB is already running
-			}
-		} 
-		catch (Exception e) {
-			// Since OpenEJB failed to start, we do not have a logger
-			System.out.println("\n*******\nOpenEJB bootstrap failed: " + e + "\n*******");
-			throw new RuntimeException(e);
-		}
-	}
+        initialContext = new InitialContext(p);
+        return initialContext;
+      }
+      else {
+        // Properties have no effect if OpenEJB is already running
+        if(initialContext == null) {
+          initialContext = new InitialContext();
+        }
+        return initialContext; 
+      }
+    } catch (Exception e) {
+      throw new RuntimeException("Could not bootstrap OpenEJB.", e);
+    }
+  }
+  
+  /**
+   * Get initial context. Bootstraps OpenEJB if the container is not initialized.  
+   * @return The InitialContext
+   */
+  public static InitialContext getInitialContext() {
+    if (!OpenEJB.isInitialized()) {
+      throw new IllegalStateException(
+          "Could not obtain initial context: OpenEJB is not initialized.");
+    }
+    if(initialContext == null) {
+      try {
+        initialContext = new InitialContext();
+      } catch (Exception e) {
+        throw new RuntimeException("Could not obtain OpenEJB initial context.", e);
+      }
+    }
+    return initialContext;
+  }
 
 	/**
 	 * Close the initial context.
 	 * If the container was started with the property 
-	 * <code>openejb.embedded.initialcontext.close=destroy</code> then 
+	 * <code>openejb.embedded.initialcontext.close=DESTROY</code> then 
 	 * OpenEJB destroys the embedded container when closing the initial context, see:
 	 * <ul>
 	 * <li>
@@ -86,37 +108,18 @@ public class BootStrapOpenEjb {
 	 * 
 	 * @return
 	 */
-	public static void closeInitialContext(final InitialContext initialContext) {
-    
+	public static void closeInitialContext() {
 		if(initialContext != null) {
 	    try {
         initialContext.close();
+        initialContext = null;
 	    } 
 	    catch (Exception e) {
-	      System.out.println("\n*******\nClosing OpenEJB context failed: " + e + "\n*******");
-	      throw new RuntimeException(e);
+	      throw new RuntimeException("Closing OpenEJB initial context failed.", e);
 	    }
 		}
 	}
 
-	/**
-	 * Get initial context
-	 * @return The InitialContext
-	 */
-	public static InitialContext getInitialContext() {
-	  
-    if (!OpenEJB.isInitialized()) {
-      throw new IllegalStateException(
-        "Could not obtain OpenEJB InitialContext, " +
-        "OpenEJB is not initialized, call boostrap method first.");
-    }
-    try {
-      return new InitialContext();
-    } catch (Exception e) {
-      throw new IllegalStateException("Could not obtain OpenEJB InitialContext", e);
-    }
-	}
-	
   /**
    * Checks if OpenEJB is in class path
    * @return <code>true</code> if OpenEJB is available in class path
@@ -144,20 +147,19 @@ public class BootStrapOpenEjb {
    * will also clear out any embedded database state as well, as mentioned here: 
    *    https://blogs.apache.org/openejb/entry/user_blog_restarting_the_embedded
    * </p>
-   * @return
    */
   public static void shutdown() {
     if (OpenEJB.isInitialized()) {
       Assembler assembler = SystemInstance.get().getComponent(Assembler.class);
       try {
         for (AppInfo appInfo : assembler.getDeployedApplications()) {
-            assembler.destroyApplication(appInfo.jarPath);
+          assembler.destroyApplication(appInfo.jarPath);
         }
         OpenEJB.destroy();
+        initialContext = null;
       } 
       catch (Exception e) {
-        System.out.println("\n*******\nClosing OpenEJB context failed: " + e + "\n*******");
-        throw new RuntimeException(e);
+        throw new RuntimeException("OpenEJB shutdown failed.", e);
       }
     }
   }

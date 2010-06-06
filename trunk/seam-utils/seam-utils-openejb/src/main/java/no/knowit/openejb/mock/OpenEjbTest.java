@@ -26,8 +26,7 @@ public class OpenEjbTest {
   protected static final String JNDI_PATTERN = "%s/Local";
 
   protected static Logger log = Logger.getLogger(OpenEjbTest.class);
-  protected static Properties contextProperties = new Properties();
-  protected static InitialContext initialContext = null;
+  protected static Properties environment = new Properties();
 
   @BeforeMethod
   public void begin() {
@@ -59,37 +58,34 @@ public class OpenEjbTest {
    * Start embedded OpenEJB container
    */
   protected void startOpenEjbEmbeddedIfNecessary() throws Exception {
-    initialContext = BootStrapOpenEjb.bootstrap(contextProperties);
+    BootStrapOpenEjb.bootstrap(environment);
+  }
+
+  protected InitialContext getInitialContext() {
+    return BootStrapOpenEjb.getInitialContext();
   }
 
   /**
-   * Close the embedded container If you need the embedded container to restart
+   * Close the embedded container. If you need the embedded container to restart
    * between different test scenarios, then you should bootstrap the container
-   * with the property <code>"openejb.embedded.initialcontext.close=destroy"</code>, see
+   * with the property <code>"openejb.embedded.initialcontext.close=DESTROY"</code>, see
    * http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
    */
   protected void closeInitialContext() {
-    BootStrapOpenEjb.closeInitialContext(initialContext);
-  }
-  
-  protected InitialContext getInitialContext() {
-    if(initialContext == null) {
-      initialContext = BootStrapOpenEjb.getInitialContext();
-    }
-    return initialContext;
+    BootStrapOpenEjb.closeInitialContext();
   }
 
+  
+  @SuppressWarnings("unchecked")
   protected <T> T doJndiLookup(final String name) throws Exception {
     try {
-      if(initialContext == null) {
-        initialContext = BootStrapOpenEjb.getInitialContext();
-      }
+      InitialContext initialContext = getInitialContext();
       Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
       Assert.assertNotNull(instance, String.format("InitialContext.lookup(\"%s\"): returned null", name));
       return (T) instance;
     } 
     catch (NamingException e) {
-      log.error(e);
+      log.error("JNDI lookup failed.", e);
       throw (e);
     }
   }

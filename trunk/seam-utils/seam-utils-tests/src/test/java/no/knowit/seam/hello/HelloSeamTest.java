@@ -19,7 +19,7 @@ public class HelloSeamTest extends SeamOpenEjbTest {
 	public void beforeSuite() throws Exception {
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
     
-		contextProperties.put("log4j.category.no.knowit.seam.hello", "debug");
+		environment.put("log4j.category.no.knowit.seam.hello", "debug");
 		super.beforeSuite();
 	}
 

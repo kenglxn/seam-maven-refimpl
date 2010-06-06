@@ -30,8 +30,8 @@ public class CrudServiceTest extends OpenEjbTest {
 	public void beforeSuite() throws Exception {
 	  //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
     
-		contextProperties.put("log4j.category.no.knowit.crud", "debug");
-    contextProperties.put("log4j.category.no.knowit.testsupport", "debug");
+		environment.put("log4j.category.no.knowit.crud", "debug");
+    environment.put("log4j.category.no.knowit.testsupport", "debug");
     super.beforeSuite();
 	}
 

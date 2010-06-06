@@ -1,6 +1,9 @@
 package no.knowit.testsupport.ejb.stateless;
 
+import java.util.Properties;
+
 import javax.ejb.EJB;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import org.apache.openejb.api.LocalClient;
@@ -28,9 +31,11 @@ public class HelloStatelessEjbTest {
   
   @BeforeClass
   public void setup() throws Exception {
-    initialContext = new InitialContext();
-    
-    // Here's the fun part
+    Properties p = new Properties();
+    p.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
+    p.put("openejb.embedded.initialcontext.close", "DESTROY");
+
+    initialContext = new InitialContext(p);
     initialContext.bind("inject", this);
   }
 

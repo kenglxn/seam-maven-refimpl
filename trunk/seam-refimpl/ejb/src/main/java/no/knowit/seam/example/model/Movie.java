@@ -1,7 +1,5 @@
 package no.knowit.seam.example.model;
 
-// Generated 11.jan.2010 11:16:11 by Hibernate Tools 3.2.4.GA
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Column;
@@ -22,11 +20,29 @@ public class Movie implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+  @Id
+  @GeneratedValue(strategy = IDENTITY)
 	private Integer id;
+
+  @Version
 	private Long version;
+  
+  @org.hibernate.annotations.Index(name="idx_director")
+  @Column(nullable = false, length = 50)
+  @NotNull
+  @Length(max = 50)
 	private String director;
+  
+  @Column(unique = true, nullable = false, length = 60)
+  @NotNull
+  @Length(max = 60)
 	private String title;
+  
+  @Column(nullable = false)
+  @NotNull
 	private Integer year;
+  
+  @Lob
 	private String plot;
 
 	public Movie() {
@@ -45,8 +61,6 @@ public class Movie implements java.io.Serializable {
 		this.plot = plot;
 	}
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
 	public Integer getId() {
 		return this.id;
 	}
@@ -55,7 +69,6 @@ public class Movie implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Version
 	public Long getVersion() {
 		return this.version;
 	}
@@ -64,10 +77,6 @@ public class Movie implements java.io.Serializable {
 		this.version = version;
 	}
 
-	@org.hibernate.annotations.Index(name="idx_director")
-	@Column(nullable = false, length = 50)
-	@NotNull
-	@Length(max = 50)
 	public String getDirector() {
 		return this.director;
 	}
@@ -76,9 +85,6 @@ public class Movie implements java.io.Serializable {
 		this.director = director;
 	}
 
-	@Column(unique = true, nullable = false, length = 60)
-	@NotNull
-	@Length(max = 60)
 	public String getTitle() {
 		return this.title;
 	}
@@ -87,8 +93,6 @@ public class Movie implements java.io.Serializable {
 		this.title = title;
 	}
 
-	@Column(nullable = false)
-	@NotNull
 	public Integer getYear() {
 		return this.year;
 	}
@@ -97,7 +101,6 @@ public class Movie implements java.io.Serializable {
 		this.year = year;
 	}
 
-	@Lob
 	public String getPlot() {
 		return this.plot;
 	}

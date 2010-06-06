@@ -33,7 +33,7 @@ public class MovieTest extends SeamOpenEjbTest {
 
 	private CrudService lookupCrudService() throws Exception {
 		try {
-			Object service = initialContext.lookup("crudService/Local");
+			Object service = getInitialContext().lookup("crudService/Local");
 			assert service != null : "initialContext.lookup(\"crudService/Local\") returned null";
 			assert service instanceof CrudService : "initialContext.lookup(\"crudService/Local\") returned incorrect type";
 			return (CrudService) service;
@@ -58,11 +58,11 @@ public class MovieTest extends SeamOpenEjbTest {
 		//System.out.println("**** MovieTest.beforeSuite()");
 
 		// Change some logging, INFO|DEBUG|WARN|ERROR|FATAL
-		contextProperties.put("log4j.category.org.jboss.seam.Component", "DEBUG");
-		contextProperties.put("log4j.category.org.jboss.seam.transaction", "DEBUG");
-		contextProperties.put("log4j.category.org.jboss.seam.mock", "DEBUG");
-		contextProperties.put("log4j.category.no.knowit.seam.openejb.mock", "DEBUG");
-		contextProperties.put("log4j.category.no.knowit.seam.example", "debug");
+		environment.put("log4j.category.org.jboss.seam.Component", "DEBUG");
+		environment.put("log4j.category.org.jboss.seam.transaction", "DEBUG");
+		environment.put("log4j.category.org.jboss.seam.mock", "DEBUG");
+		environment.put("log4j.category.no.knowit.seam.openejb.mock", "DEBUG");
+		environment.put("log4j.category.no.knowit.seam.example", "debug");
 		
 		super.beforeSuite();
 	}
