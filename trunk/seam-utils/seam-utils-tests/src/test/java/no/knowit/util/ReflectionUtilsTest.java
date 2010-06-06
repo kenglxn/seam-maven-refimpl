@@ -19,11 +19,6 @@ import no.knowit.testsupport.model.PropertyAnnotatedEntity;
 
 public class ReflectionUtilsTest {
   
-  @BeforeSuite
-  public void beforeSuite() throws Exception {
-    //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
-  }
-  
   @Test
   public void testSearchFieldsForAnnotation() throws Exception {
     List<Field> fields = ReflectionUtils.searchFieldsForAnnotation(
@@ -48,5 +43,4 @@ public class ReflectionUtilsTest {
         Id.class, ConcreteEntityFieldAnnotated.class);
     Assert.assertTrue(accessibleObjects.size() > 0);
   }
-  
 }

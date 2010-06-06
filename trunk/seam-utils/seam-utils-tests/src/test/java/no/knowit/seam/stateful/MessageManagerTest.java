@@ -103,6 +103,5 @@ public class MessageManagerTest extends SeamOpenEjbTest {
 				assert list.getRowCount() == 1;
 			}
 		}.run();
-
 	}
 }
