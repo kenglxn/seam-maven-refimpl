@@ -22,7 +22,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
   protected static final String JNDI_PATTERN = "%s/Local";
   
   protected static Logger log = Logger.getLogger(AbstractSeamOpenEjbTest.class);
-  protected static Properties environment = new Properties();
+  protected static Properties contextProperties = new Properties();
   
   /**
    * Start embedded OpenEJB container
@@ -30,7 +30,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
   @Override
   protected void startJbossEmbeddedIfNecessary() throws Exception {
     // do not call super!!
-    BootStrapOpenEjb.bootstrap(environment);
+    BootStrapOpenEjb.bootstrap(contextProperties);
   }
 
   @Override

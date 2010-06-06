@@ -25,7 +25,7 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
 	public void beforeSuite() throws Exception {
     //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
     
-    environment.put("log4j.category.no.knowit.seam.seamframework", "debug");
+    contextProperties.put("log4j.category.no.knowit.seam.seamframework", "debug");
     super.beforeSuite();
 	}
 	
