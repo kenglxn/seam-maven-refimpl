@@ -2,9 +2,9 @@
 
 <suite name="Integration Tests" verbose="2" parallel="false">
 
-  <test name="Test Support">
+  <test name="Simplest possible OpenEJB test">
     <classes>
-      <class name="no.knowit.testsupport.ejb.stateless.HelloStatelessEjbTest" />
+      <class name="no.knowit.openejb.HelloStatelessEjbTest" />
     </classes>
   </test>
 
@@ -14,7 +14,7 @@
     </classes>
   </test>
 
-  <test name="Hello Seam">
+  <test name="Simplest possible Seam test">
     <classes>
       <class name="no.knowit.seam.hello.HelloSeamTest" />
     </classes>

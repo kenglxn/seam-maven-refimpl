@@ -11,5 +11,4 @@
       <class name="no.knowit.openejb.BootstrapOpenEjbTest" />
     </classes>
   </test>
-  
 </suite>
