@@ -73,7 +73,8 @@ public class BootStrapOpenEjb {
   }
   
   /**
-   * Get initial context. Bootstraps OpenEJB if the container is not initialized.  
+   * Get initial context.  
+   * @throws IllegalStateException if the OpenEJB embedded container is not initialized.
    * @return The InitialContext
    */
   public static InitialContext getInitialContext() {
@@ -145,7 +146,8 @@ public class BootStrapOpenEjb {
    * Exception: java.lang.NullPointerException null</tt>".<br/>
    * Must be a bug somewhere. As an alternative use Surefire Forking to achieve a similar result that 
    * will also clear out any embedded database state as well, as mentioned here: 
-   *    https://blogs.apache.org/openejb/entry/user_blog_restarting_the_embedded
+   * <a href="https://blogs.apache.org/openejb/entry/user_blog_restarting_the_embedded">
+   * User Blog: Restarting the embedded OpenEJB container between each test</a>
    * </p>
    */
   public static void shutdown() {

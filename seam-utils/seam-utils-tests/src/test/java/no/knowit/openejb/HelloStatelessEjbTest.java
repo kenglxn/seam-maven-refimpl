@@ -1,22 +1,17 @@
 package no.knowit.openejb;
 
-import java.util.Properties;
-
 import javax.ejb.EJB;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import no.knowit.openejb.mock.OpenEjbTest;
 import no.knowit.testsupport.ejb.stateless.HelloService;
 
 import org.apache.openejb.api.LocalClient;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 /**
- * Tests Local client injection as described in
+ * Uses Local client injection as described in
  * <a href="http://openejb.apache.org/3.0/local-client-injection.html">OpenEJB: Local Client Injection</a>
  * Indirectly tests that a service is injected into another service. The 
  * <code<>HelloService</code> injects the <code>CalculatorService</code> using

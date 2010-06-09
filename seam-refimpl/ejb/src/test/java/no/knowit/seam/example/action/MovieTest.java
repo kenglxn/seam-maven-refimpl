@@ -29,7 +29,7 @@ public class MovieTest extends SeamOpenEjbTest {
     
   private static final String  THE_WALL_DIRECTOR = "Alan Parker";
   private static final String  THE_WALL_TITLE    = "The Wall";
-  private static final Integer THE_WALL_YEAR     = 1992;
+  private static final Integer THE_WALL_YEAR     = 1999;
   private static final String  THE_WALL_PLOT     = 
     "A troubled rock star descends into madness " +
     "in the midst of his physical and social isolation from everyone.";
@@ -86,6 +86,8 @@ public class MovieTest extends SeamOpenEjbTest {
 		  "and the persistent police work of pregnant Marge Gunderson."));
 		
 		movies = (ArrayList<Movie>) crudService.persist(movies);
+    assert crudService.find(Movie.class).size() == 3 : "List.size():";
+    
 		theBigLebowskiId = movies.get(0).getId();
     reservoirDogsId = movies.get(1).getId();
 	}
