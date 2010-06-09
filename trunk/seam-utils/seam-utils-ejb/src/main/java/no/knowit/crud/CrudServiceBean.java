@@ -55,7 +55,7 @@ public class CrudServiceBean implements CrudService {
 	protected static Logger log = Logger.getLogger(CrudServiceBean.class);
 
 	@PersistenceContext
-	EntityManager entityManager;
+	protected EntityManager entityManager;
 
 	// 'C'
 	public <T> T persist(T entity) {
