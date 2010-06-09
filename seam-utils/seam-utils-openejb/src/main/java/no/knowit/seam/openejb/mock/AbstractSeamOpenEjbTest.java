@@ -19,9 +19,9 @@ import org.testng.Assert;
  */
 public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
+  private static final Logger log = Logger.getLogger(AbstractSeamOpenEjbTest.class);
+
   protected static final String JNDI_PATTERN = "%s/Local";
-  
-  protected static Logger log = Logger.getLogger(AbstractSeamOpenEjbTest.class);
   protected static Properties contextProperties = new Properties();
   
   /**

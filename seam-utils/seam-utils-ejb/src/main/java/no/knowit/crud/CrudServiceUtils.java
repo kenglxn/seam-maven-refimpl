@@ -26,8 +26,8 @@ import org.apache.log4j.Logger;
  * @author LeifOO
  */
 public class CrudServiceUtils {
+  private final static Logger log = Logger.getLogger(CrudServiceUtils.class);
   private final static String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
-  private static Logger log = Logger.getLogger(CrudServiceUtils.class);
 
   /**
    * Checks if a class is an entity. A class annotated with @Entity is recognized as an entity class.

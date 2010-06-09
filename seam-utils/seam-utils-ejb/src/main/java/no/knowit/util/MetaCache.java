@@ -20,9 +20,7 @@ public class MetaCache {
 
   private static final String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
   private static final String ATTRIBUTE_NOT_FOUND = "Attribute not found: \"%s.%s\""; 
-  
-  private static final ConcurrentMap<String, Meta> 
-    metaCache = new ConcurrentHashMap<String, Meta>(); 
+  private static final ConcurrentMap<String, Meta> metaCache = new ConcurrentHashMap<String, Meta>(); 
 
   private MetaCache() {
     ;
