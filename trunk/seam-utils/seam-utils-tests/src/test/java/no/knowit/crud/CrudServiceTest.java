@@ -52,10 +52,6 @@ public class CrudServiceTest extends OpenEjbTest {
   @Resource
   private UserTransaction userTransaction;
 
-  @PersistenceContext
-  private EntityManager entityManager;
-
-	
 	private Integer fargoId;
   private Integer theBigLebowskiId;
   private Integer reservoirDogsId;
@@ -64,8 +60,6 @@ public class CrudServiceTest extends OpenEjbTest {
 	@Override
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-	  //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
-    
 		contextProperties.put("log4j.category.no.knowit.crud", "debug");
     contextProperties.put("log4j.category.no.knowit.testsupport", "debug");
     super.beforeSuite();
@@ -83,7 +77,7 @@ public class CrudServiceTest extends OpenEjbTest {
     crudService.remove(Movie.class);
     assert crudService.find(Movie.class).size() == 0 : "List.size():";
     
-    // Persist 3 movies
+    // Persist 4 movies
     ArrayList<Movie> movies = new ArrayList<Movie>();
 
     movies.add(new Movie(DIRECTOR_JOEL_COEN, THE_BIG_LEBOWSKI_TITLE, THE_BIG_LEBOWSKI_YEAR, "..."));
