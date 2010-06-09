@@ -5,13 +5,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 
 import no.knowit.openejb.mock.OpenEjbTest;
 import no.knowit.testsupport.model.Movie;
 
+import org.apache.log4j.Logger;
 import org.apache.openejb.api.LocalClient;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -25,6 +24,7 @@ import org.testng.annotations.Test;
  * OpenEJB: Local Client Injection</a> and 
  * <a href="https://blogs.apache.org/openejb/entry/example_testing_transaction_rollback">
  * OpenEJB Example: Testing Transaction Rollback</a>
+ * 
  * @author LeifOO
  *
  */
@@ -45,6 +45,7 @@ public class CrudServiceTest extends OpenEjbTest {
     "A troubled rock star descends into madness " +
     "in the midst of his physical and social isolation from everyone.";
 
+  private static final Logger log = Logger.getLogger(CrudServiceTest.class);
   
   @EJB
   private CrudService crudService;
@@ -178,12 +179,15 @@ public class CrudServiceTest extends OpenEjbTest {
   	Assert.assertEquals(exampleMovies.size(), 3, "List.size()");
 	}
 	
-	@Test(dependsOnMethods={ "findByExample" })
+	@Test
 	public void deleteByExample() throws Exception {
 
     Movie exampleMovie = new Movie();
     exampleMovie.setDirector("Joel Coen");
     exampleMovie.setYear(1930);
+    
+    log.debug("Testing transaction Rollback");
+    
 	  userTransaction.begin();
 	  try {
 	    crudService.remove(exampleMovie, true);

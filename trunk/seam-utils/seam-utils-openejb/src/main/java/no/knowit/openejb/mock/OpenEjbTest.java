@@ -23,11 +23,13 @@ import org.testng.annotations.BeforeSuite;
  * Seam specific tests in OpenEJB.
  */
 public class OpenEjbTest {
-  protected static final String JNDI_PATTERN = "%s/Local";
 
-  protected static Logger log = Logger.getLogger(OpenEjbTest.class);
+  private static final Logger log = Logger.getLogger(OpenEjbTest.class);
+  
+  protected static final String JNDI_PATTERN = "%s/Local";
   protected static Properties contextProperties = new Properties();
 
+  
   @BeforeMethod
   public void begin() {
   }

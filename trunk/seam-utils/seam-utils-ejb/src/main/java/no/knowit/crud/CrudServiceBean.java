@@ -49,10 +49,8 @@ import org.apache.log4j.Logger;
  */
 @Stateless(name = CrudService.NAME)
 public class CrudServiceBean implements CrudService {
-  private final static String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
-
-	//protected Logger log = Logger.getLogger(this.getClass());
-	protected static Logger log = Logger.getLogger(CrudServiceBean.class);
+  private static final Logger log = Logger.getLogger(CrudServiceBean.class);
+  private static final String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
 
 	@PersistenceContext
 	protected EntityManager entityManager;
