@@ -368,6 +368,16 @@
                 </goals>
                 <configuration>
                   <source>
+                    def profiles = project.getActiveProfiles();
+                    if(profiles.size > 0) {
+                      log.info "========================================================================"
+                      log.info "Active profiles:"
+                      log.info "========================================================================"
+                      profiles.each{ profile ->
+                        log.info profile.id;
+                      }
+                    }
+                    
                     // Pattern to match ${property} placeholders
                     def placeholderPattern = ~/\$\{(.*?)\}/;  
 
@@ -428,54 +438,54 @@
       <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>g-validate</id>
-              <phase>validate</phase>
-              <goals>
-                <goal>execute</goal>
-              </goals>
-              <configuration>
-                <source>
-                  // Read properties from each file in Maven's filters tag
-                  project.filters.each { filter ->
-                    log.info "Reading properties from: " + new File(filter).canonicalPath;
+        <executions>
+          <execution>
+            <id>g-read-properties</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>
+                // Read properties from each file in Maven's filters tag
+                project.filters.each { filter ->
+                  log.info "Reading properties from: " + new File(filter).canonicalPath;
 
-                    Properties properties = new Properties();
-                    properties.load(new FileInputStream(filter));
-                    
-                    // Flatten configuration for easy access keys with dotted notation.
-                    def burp = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
+                  Properties properties = new Properties();
+                  properties.load(new FileInputStream(filter));
+                  
+                  // Flatten configuration for easy access keys with dotted notation.
+                  def burp = new ConfigSlurper().parse(properties).flatten(); //.toProperties();
 
-                    // Add flattened map to project.properties
-                    project.properties.putAll(burp);
-                  }
-                  
-                  // Pattern to match ${property} placeholders
-                  def placeholderPattern = ~/\$\{(.*?)\}/;  
-                  
-                  // Replace ${property} placeholders with real value
-                  project.properties.each { key, value ->
-                    def matcher = placeholderPattern.matcher(value);
-                    if(matcher.count > 0) {
-                      matcher.each { placeholder, property ->
-                        def placeholderValue = project.properties.getProperty(property);
-                        if(placeholderValue) value = value.replace(placeholder, placeholderValue);
-                      }
-                      project.properties[key] = value;
+                  // Add flattened map to project.properties
+                  project.properties.putAll(burp);
+                }
+                
+                // Pattern to match ${property} placeholders
+                def placeholderPattern = ~/\$\{(.*?)\}/;  
+                
+                // Replace ${property} placeholders with real value
+                project.properties.each { key, value ->
+                  def matcher = placeholderPattern.matcher(value);
+                  if(matcher.count > 0) {
+                    matcher.each { placeholder, property ->
+                      def placeholderValue = project.properties.getProperty(property);
+                      if(placeholderValue) value = value.replace(placeholder, placeholderValue);
                     }
+                    project.properties[key] = value;
                   }
-                  
-                  // Warn for dangling placholders
-                  project.properties.each { key, value ->
-                    def matcher = placeholderPattern.matcher(value);
-                    if(matcher)
-                      log.warn "NON EXISTING PROPERTY IN PLACEHOLDER: $key = $value"
-                  }
-                </source>
-              </configuration>                
-            </execution>
-          </executions>
+                }
+                
+                // Warn for dangling placholders
+                project.properties.each { key, value ->
+                  def matcher = placeholderPattern.matcher(value);
+                  if(matcher)
+                    log.warn "NON EXISTING PROPERTY IN PLACEHOLDER: $key = $value"
+                }
+              </source>
+            </configuration>                
+          </execution>
+        </executions>
       </plugin>      
     </plugins>
   </build>
