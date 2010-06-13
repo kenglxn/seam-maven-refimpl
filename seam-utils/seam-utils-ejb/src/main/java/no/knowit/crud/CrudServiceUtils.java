@@ -42,8 +42,12 @@ public class CrudServiceUtils {
   }
 
   /**
-   * Get entity name.
+   * Get the entity name. <br/>
+   * The entity name may be explicitly specified for any entity by using the 
+   * name element in the @Entity annotation, as in  @Entity(name="Emp"). If
+   * this is the case then any EJB QL must be constructed using this name element.
    * Copy from org.crank.crud.GenericDaoUtils
+   * @param entityClass the entity class to check for the name element
    * @return the entity name
    */
   public static String getEntityName(final Class<?> entityClass) {
@@ -197,7 +201,8 @@ public class CrudServiceUtils {
   public static String createJpql(final Object exampleEntity, final Map<String, Member> attributes, 
       boolean select, boolean distinct, boolean any) {
 
-    final String entityClassName = exampleEntity.getClass().getName();
+    final String entityClassName = getEntityName(exampleEntity.getClass());
+    
     final StringBuilder jpql = new StringBuilder(
       (select ? distinct ? "SELECT DISTINCT e" : "SELECT e" : "DELETE"))
       .append(String.format(" FROM %s e", entityClassName));
@@ -240,6 +245,15 @@ public class CrudServiceUtils {
     return jpql.toString();
   }
 
+  /**
+   * 
+   * @param entityClass the entity class to create the count query for
+   * @return the count query
+   */
+  public static String createCountJpql(final Class<?> entityClass) {
+    return "SELECT count(*) FROM " + getEntityName(entityClass);
+  }
+  
   private static Map<String, Field> findQueryableFields(final Class<?> entityClass) {
     Map<String, Field> fields = new HashMap<String, Field>();
     for (Class<?> clazz = entityClass; clazz != Object.class; clazz = clazz.getSuperclass()) {

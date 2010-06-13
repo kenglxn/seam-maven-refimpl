@@ -9,6 +9,7 @@ import javax.transaction.UserTransaction;
 
 import no.knowit.openejb.mock.OpenEjbTest;
 import no.knowit.testsupport.model.Movie;
+import no.knowit.testsupport.model.NamedEntity;
 
 import org.apache.log4j.Logger;
 import org.apache.openejb.api.LocalClient;
@@ -182,11 +183,12 @@ public class CrudServiceTest extends OpenEjbTest {
 	@Test
 	public void deleteByExample() throws Exception {
 
+    final int expectedCount = crudService.count(Movie.class);
+    log.debug("deleteByExample: Also testing transaction Rollback. # of movies before transaction: " + expectedCount);
+    
     Movie exampleMovie = new Movie();
     exampleMovie.setDirector("Joel Coen");
     exampleMovie.setYear(1930);
-    
-    log.debug("Testing transaction Rollback");
     
 	  userTransaction.begin();
 	  try {
@@ -197,5 +199,15 @@ public class CrudServiceTest extends OpenEjbTest {
 	  finally {
 	    userTransaction.rollback();
 	  }
+    log.debug("deleteByExample: # of movies after transaction rollback: " + expectedCount);
+    Assert.assertEquals(crudService.count(Movie.class), expectedCount, "List.size()");
 	}
+	
+	@Test
+  public void shouldQueryANamedEntity() throws Exception {
+	  crudService.persist(new NamedEntity(100));
+	  assert crudService.find(NamedEntity.class).size() > 0;
+    assert crudService.count(NamedEntity.class) > 0;
+	}
+	
 }

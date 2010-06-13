@@ -205,6 +205,17 @@ public class CrudServiceBean implements CrudService {
 	}
   // end C.R.U.D
 
+	public int count(final Class<?> entityClass) {
+    if(entityClass == null) {
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
+    }
+	  
+    Long result = (Long) getEntityManager().createQuery(
+        CrudServiceUtils.createCountJpql(entityClass)).getSingleResult();
+
+    return result.intValue();
+	}
+	
 	public <T> T refresh(T transientEntity) {
 		EntityManager em = getEntityManager();
 		T managedEntity = em.contains(transientEntity) ? transientEntity : em.merge(transientEntity);

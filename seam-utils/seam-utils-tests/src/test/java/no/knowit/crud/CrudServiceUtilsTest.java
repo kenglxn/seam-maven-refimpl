@@ -11,6 +11,7 @@ import no.knowit.testsupport.bean.SimpleBean;
 import no.knowit.testsupport.model.ConcreteEntityFieldAnnotated;
 import no.knowit.testsupport.model.ConcreteEntityPropertyAnnotated;
 import no.knowit.testsupport.model.FieldAnnotatedEntity;
+import no.knowit.testsupport.model.Movie;
 import no.knowit.testsupport.model.NamedEntity;
 import no.knowit.testsupport.model.PropertyAnnotatedEntity;
 import no.knowit.testsupport.model.inheritance.ContractEmployee;
@@ -19,16 +20,10 @@ import no.knowit.testsupport.model.inheritance.PartTimeEmployee;
 import no.knowit.util.ReflectionUtils;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-public class CrudServiceUtilsTest { //extends OpenEjbTest {
+public class CrudServiceUtilsTest {
 
-  @BeforeSuite
-  public void beforeSuite() throws Exception {
-    //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
-  }
-  
   @Test
   public void shouldBeAnEntity() throws Exception {
     Assert.assertTrue(CrudServiceUtils.isEntity(FieldAnnotatedEntity.class), 
@@ -43,7 +38,7 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
   
   @Test
   public void shouldGetEntityName() throws Exception {
-    final String expectedNameForNamedEntity = "aNamedEntity";
+    final String expectedNameForNamedEntity = "ANamedEntity";
     Assert.assertEquals(
         CrudServiceUtils.getEntityName(NamedEntity.class), expectedNameForNamedEntity);
     
@@ -126,12 +121,12 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
     
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity();
     String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
-    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    String expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(fe.getClass()));
     Assert.assertEquals(jpql, expectedJPQL);
 
     PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity();
     jpql = CrudServiceUtils.createJpql(pe, true, false, false);
-    expectedJPQL = String.format(expectedSelect, pe.getClass().getName());
+    expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(pe.getClass()));
     Assert.assertEquals(jpql, expectedJPQL);
   }
   
@@ -141,7 +136,7 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
     
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100);
     String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
-    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    String expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(fe.getClass()));
     Assert.assertEquals(jpql, expectedJPQL);
   }
 
@@ -151,12 +146,12 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(FieldAnnotatedEntity.Color.GREEN);
     String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
-    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    String expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(fe.getClass()));
     Assert.assertEquals(jpql, expectedJPQL);
     
     PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(PropertyAnnotatedEntity.Color.GREEN);
     jpql = CrudServiceUtils.createJpql(pe, true, false, false);
-    expectedJPQL = String.format(expectedSelect, pe.getClass().getName());
+    expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(pe.getClass()));
     Assert.assertEquals(jpql, expectedJPQL);
   }
   
@@ -166,7 +161,7 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
     
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
     String jpql = CrudServiceUtils.createJpql(fe, true, false, false);
-    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    String expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(fe.getClass()));
     boolean expected = jpql.startsWith(expectedJPQL) && 
       jpql.contains("e.baz = :baz") && jpql.contains("AND") && jpql.contains("e.foo = :foo");
     
@@ -179,7 +174,7 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
     String jpql = CrudServiceUtils.createJpql(fe, true, false, true);
-    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    String expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(fe.getClass()));
     boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") &&
       jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
@@ -192,7 +187,7 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
     String jpql = CrudServiceUtils.createJpql(fe, true, true, true);
-    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    String expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(fe.getClass()));
     boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
       jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
@@ -205,7 +200,7 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELL%");
     String jpql = CrudServiceUtils.createJpql(fe, true, false, true);
-    String expectedJPQL = String.format(expectedSelect, fe.getClass().getName());
+    String expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(fe.getClass()));
     boolean expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
       jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
@@ -213,7 +208,7 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
     
     PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(100, "HELL%");
     jpql = CrudServiceUtils.createJpql(pe, true, false, true);
-    expectedJPQL = String.format(expectedSelect, pe.getClass().getName());
+    expectedJPQL = String.format(expectedSelect, CrudServiceUtils.getEntityName(pe.getClass()));
     expected = jpql.startsWith(expectedJPQL) && jpql.contains("WHERE") && 
       jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
@@ -226,7 +221,7 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
 
     FieldAnnotatedEntity fe = new FieldAnnotatedEntity(100, "HELLO");
     String jpql = CrudServiceUtils.createJpql(fe, false, false, true);
-    String expectedJPQL = String.format(expectedDelete, fe.getClass().getName());
+    String expectedJPQL = String.format(expectedDelete, CrudServiceUtils.getEntityName(fe.getClass()));
     boolean expected = jpql.startsWith(expectedJPQL) && 
       jpql.contains("e.baz = :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
@@ -235,11 +230,21 @@ public class CrudServiceUtilsTest { //extends OpenEjbTest {
     
     PropertyAnnotatedEntity pe = new PropertyAnnotatedEntity(100, "HELL%");
     jpql = CrudServiceUtils.createJpql(pe, false, false, true);
-    expectedJPQL = String.format(expectedDelete, pe.getClass().getName());
+    expectedJPQL = String.format(expectedDelete, CrudServiceUtils.getEntityName(pe.getClass()));
     expected = jpql.startsWith(expectedJPQL) && 
       jpql.contains("e.baz LIKE :baz") && jpql.contains("OR") && jpql.contains("e.foo = :foo");
     
     Assert.assertTrue(expected, "Actual JPQL was not expected JPQL: [" + jpql + "]");
+  }
+  
+  @Test
+  public void shouldCreateCountJpql() throws Exception {
+    final String expected = "SELECT count(*) FROM %s";
+    String countJpql = CrudServiceUtils.createCountJpql(Movie.class);
+    Assert.assertEquals(countJpql, String.format(expected, "Movie"));
+    
+    countJpql = CrudServiceUtils.createCountJpql(NamedEntity.class);
+    Assert.assertEquals(countJpql, String.format(expected, "ANamedEntity"));
   }
   
 }
