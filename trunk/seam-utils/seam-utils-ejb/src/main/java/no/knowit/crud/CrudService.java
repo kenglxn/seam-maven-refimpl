@@ -225,6 +225,13 @@ public interface CrudService {
 
 
 	/**
+	 * <p>Count entity instances</p> 
+   * @param entityClass the entity class to count instances of
+	 * @return the number of entities
+	 */
+	public int count(final Class<?> entityClass);
+
+	/**
 	 * Refresh an entity that may have changed in another
 	 * thread/transaction.  If the entity is not in the 
 	 * 'managed' state, it is first merged into the persistent
