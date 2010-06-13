@@ -208,6 +208,7 @@ public class CrudServiceTest extends OpenEjbTest {
 	  crudService.persist(new NamedEntity(100));
 	  assert crudService.find(NamedEntity.class).size() > 0;
     assert crudService.count(NamedEntity.class) > 0;
+    crudService.remove(NamedEntity.class);
 	}
 	
 }
