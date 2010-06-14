@@ -60,10 +60,17 @@
     <a href="http://issues.apache.org/jira/browse/OPENEJB-1131">due to problems with OpenEJB-3.1.2</a>!
   </li>
   <li>
-    <a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later.<br/>
-    <strong>Note:</strong> The <a href="http://mojo.codehaus.org/properties-maven-plugin/">
-    org.codehaus.mojo:properties-maven-plugin</a> does not yet work with Maven3; there is a problem 
-    building the EAR. It works fine with Maven 2.2.1.
+    <a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later 2.x.<br/>
+    <strong>Note:</strong> You can not use Maven 3! The latest Maven3.0-beta1 does not evaluate 
+    external properties during the <code>"ear:generate-application-xml"</code> goal. You will get 
+    the following error message:<br/>
+    <pre style="margin-top:.5em; margin-bottom:.5em">
+    [ERROR] Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.2:generate-application-xml 
+    (default-generate-application-xml) on project mvn3-problem-ear: Failed to initialize JBoss configuration: 
+    Invalid JBoss configuration, version[${as.version}] is not supported. -> [Help 1]</pre>
+    The project externalizes some properties that is used to generate the correct 
+    <code>jboss-app.xml</code> dependent on the targeted JBoss Application Server. This works fine 
+    with Maven 2.2.1, but fails in Maven 3.
   </li>
   <li>
     <a href="http://www.eclipse.org/downloads/">
@@ -1337,7 +1344,10 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
     You should now have access to the complete trunk from Eclipse.
     <img class="screenshot" src="img/eclipse-checkout-projects-from-svn-completed.png		" style="width:250px; display:block;" />
   </li>
-  
+  <li>
+    You must of course import the project(s) into Eclipse as described 
+    <a href="#import-project-into-eclipse">earlier in the tutorial</a>.
+  </li>
 </ol>
 
 <h3 id="how-to-configure-maven-eclipse-plugin-correctly">

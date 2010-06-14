@@ -36,11 +36,13 @@ var IframeHelper = ( function() {
 
   getIframeDocumentHeight = function( iframe ) {
     if( iframe ) {
-      return iframe.contentDocument && iframe.contentDocument.body.scrollHeight // W3C DOM document syntax
-           ? iframe.contentDocument.body.scrollHeight 
-           : iframe.Document && iframe.Document.body.scrollHeight               // IE DOM syntax
-           ? iframe.Document.body.scrollHeight 
-           : 0;
+      /* Fails in Chrome when executed in a local file system (due to security reasons), 
+       * see: http://www.chromeplugins.org/google/plugins-development/access-iframe-contentwindow-8832.html
+       * Works in ie8, ff3.6, Opera10.53, Safari4, Chrome
+       */
+      var d = (iframe.contentWindow || iframe.contentDocument);
+      if (d.document) d = d.document;
+      return d.body.offsetHeight || d.body.scrollHeight;
     }
     return 0;
   };
