@@ -81,18 +81,12 @@ public class CrudServiceBean implements CrudService {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass) {
-		if(entityClass == null) {
-		  throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
-		}
-		return getEntityManager().createQuery("from " + entityClass.getName()).getResultList();
+		return getEntityManager().createQuery(CrudServiceUtils.createSelectJpql(entityClass)).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult) {
-    if(entityClass == null) {
-      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
-    }
-		return getEntityManager().createQuery("from " + entityClass.getName())
+		return getEntityManager().createQuery(CrudServiceUtils.createSelectJpql(entityClass))
 			.setFirstResult(startPosition).setMaxResults(maxResult).getResultList();
 	}
 
@@ -132,10 +126,7 @@ public class CrudServiceBean implements CrudService {
 	}
 
   public void remove(Class<?> entityClass) {
-    if(entityClass == null) {
-      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
-    }
-    getEntityManager().createQuery("delete from " + entityClass.getName()).executeUpdate();
+    getEntityManager().createQuery(CrudServiceUtils.createDeleteJpql(entityClass)).executeUpdate();
   }
   
 	public void remove(Class<?> entityClass, Object id) {
@@ -206,10 +197,6 @@ public class CrudServiceBean implements CrudService {
   // end C.R.U.D
 
 	public int count(final Class<?> entityClass) {
-    if(entityClass == null) {
-      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entityClass"));
-    }
-	  
     Long result = (Long) getEntityManager().createQuery(
         CrudServiceUtils.createCountJpql(entityClass)).getSingleResult();
 
