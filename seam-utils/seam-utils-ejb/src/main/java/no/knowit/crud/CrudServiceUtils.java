@@ -246,12 +246,19 @@ public class CrudServiceUtils {
   }
 
   /**
-   * 
    * @param entityClass the entity class to create the count query for
    * @return the count query
    */
   public static String createCountJpql(final Class<?> entityClass) {
     return "SELECT count(*) FROM " + getEntityName(entityClass);
+  }
+
+  public static String createDeleteJpql(final Class<?> entityClass) {
+    return "DELETE FROM " + getEntityName(entityClass);
+  }
+  
+  public static String createSelectJpql(final Class<?> entityClass) {
+    return "FROM " + CrudServiceUtils.getEntityName(entityClass);
   }
   
   private static Map<String, Field> findQueryableFields(final Class<?> entityClass) {
