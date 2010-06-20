@@ -99,7 +99,7 @@
     <strong>Note:</strong> You can not use Maven 3! The latest Maven3.0-beta1 does not evaluate 
     external properties during the <code>"ear:generate-application-xml"</code> goal. You will get 
     the following error message:<br/>
-    <pre style="margin-top:.5em; margin-bottom:.5em">
+    <pre style="margin-top:.5em; margin-bottom:.5em; color:red">
     [ERROR] Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.2:generate-application-xml 
     (default-generate-application-xml) on project mvn3-problem-ear: Failed to initialize JBoss configuration: 
     Invalid JBoss configuration, version[${as.version}] is not supported. -> [Help 1]</pre>
@@ -429,12 +429,12 @@ personal taste. To achieve this we will use a combination of property files and 
 <p>To activate development mode:
 </p>
 <ol class="vspace">
-  <li>
+  <li>Copy <code>filter-prod.properties</code> to <code>filter-dev.properties</code>:<br/>
     The filter properties file has a variable portion <code>${env}</code>, which in our case will 
     come from the activated profile or from the default <code>${env}</code> setting in the parent
-    POM. The <code>${env}</code> property value is <code><strong>dev</strong></code> when we 
-    activate the development profile - so we'll name the property file 
-    <code>filter-dev.properties</code>.
+    POM if neither the <code>dev</code> nor the <code>prod</code> profile is activated. <br/>
+    The <code>${env}</code> property value is <code><strong>dev</strong></code> when we activate the 
+    development profile - so we'll name the property file <code>filter-dev.properties</code>.
     <br />
     Copy <code>${SEAM_TUTORIAL}/src/main/filters/filter-prod.properties</code> to 
     <code>${SEAM_TUTORIAL}/src/main/filters/filter-dev.properties</code> (add the 
@@ -442,7 +442,7 @@ personal taste. To achieve this we will use a combination of property files and 
     <img src="img/filter-dev.png" longdesc="img/filter-dev.png" 
       class="screenshot" style="width:350px;" />
   </li>
-  <li>
+  <li>Modify <code>filter-dev.properties</code>:<br/>
     To get some support for incremental hot deployment at development time, we want to deploy our 
     application as an 
     <a href="http://maven.apache.org/plugins/maven-ear-plugin/examples/unpacking-a-module.html">
@@ -451,92 +451,51 @@ personal taste. To achieve this we will use a combination of property files and 
     modules during the Maven compile phase. Open the <code>filter-dev.properties</code> file in 
     your favourite editor and make the following changes:
     <ul>
-      <li>
-        Set the property <code>jdk.debug</code> to <strong>true</strong>.
-      </li>
-      <li>
-        Set the property <code>jdk.optimize</code> to <strong>false</strong>.
-      </li>
-      <li>
-        Set the property <code>app.debug</code> to <strong>true</strong>.
-      </li>
-      <li>
-        Set the property <code>app.unpack.modules</code> to <strong>true</strong>.
-      </li>
-      <li>
-        Point the <code>as.home</code> property to the directory where you installed JBoss AS.
-      </li>
+      <li>Set the property <code>jdk.debug</code> to <strong>true</strong>.</li>
+      <li>Set the property <code>jdk.optimize</code> to <strong>false</strong>.</li>
+      <li>Set the property <code>app.debug</code> to <strong>true</strong>.</li>
+      <li>Set the property <code>app.unpack.modules</code> to <strong>true</strong>.</li>
+      <li>Point the <code>as.home</code> property to the directory where you installed JBoss AS.</li>
     </ul>
     <pre>
-
-jdk.debug         =<font color="blue"><strong>true</strong></font>
-jdk.optimize      =<font color="blue"><strong>false</strong></font>
-app.debug         =<font color="blue"><strong>true</strong></font>
-app.unpack.modules=<font color="blue"><strong>true</strong></font>
-as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
-
+  jdk.debug         =<font color="blue"><strong>true</strong></font>
+  jdk.optimize      =<font color="blue"><strong>false</strong></font>
+  app.debug         =<font color="blue"><strong>true</strong></font>
+  app.unpack.modules=<font color="blue"><strong>true</strong></font>
+  as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
   </li>
   <li>
-    The <code>prod</code> profile is activated by default when you execute a Maven command. To 
-    activate the <code>dev</code> profile you could type <code style="white-space:nowrap;">
-    mvn install -Penv-dev</code>, or you can remove the <code><strong>activeByDefault</strong></code> 
-    tag from the <code>prod</code> profile. Open each POM in the project and remove the 
-    <code>activeByDefault</code> tag from the <code>prod</code> profile:
+    Remove the <code>activeByDefault</code> tag from the <code>env-prod</code> profile:<br/>
+    The <code>env-prod</code> profile is activated by default, unless another profile in the same 
+    pom is activated, when you execute a Maven command. To activate the <code>env-dev</code> profile 
+    you could type <code style="white-space:nowrap;">mvn install -Penv-dev</code> - but the most 
+    convenient is to remove the <code><strong>activeByDefault</strong></code> tag from the 
+    <code>env-prod</code> profile.<br/>
+    Open each POM in the project and remove the <code>activeByDefault</code> tag from the 
+    <code>env-prod</code> profile:
     <pre>
     
-&lt;profile&gt;
-  &lt;id&gt;env-dev&lt;/id&gt;
-  &lt;activation&gt;
-    &lt;property&gt;
-      &lt;name&gt;env&lt;/name&gt;
-      &lt;value&gt;dev&lt;/value&gt;
-    &lt;/property&gt;
-  &lt;/activation&gt;
-  &lt;properties&gt;
-    &lt;env&gt;dev&lt;/env&gt;
-  &lt;/properties&gt;
-&lt;/profile&gt;
+  &lt;profile&gt;
+    &lt;id&gt;env-dev&lt;/id&gt;
+    &lt;properties&gt;
+      &lt;env&gt;dev&lt;/env&gt;
+    &lt;/properties&gt;
+  &lt;/profile&gt;
 
-&lt;profile&gt;
-  &lt;id&gt;env-prod&lt;/id&gt;
-  &lt;activation&gt;
-    &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
-  &lt;/activation&gt;
-  &lt;properties&gt;
-    &lt;env&gt;prod&lt;/env&gt;
-  &lt;/properties&gt;
-&lt;/profile&gt;</pre>
-  </li>
-  <li>
-    Remove the activeByDefault tag from the <code>env-prod</code> profile:
-  <pre>
-&lt;profile&gt;
-  &lt;id&gt;env-dev&lt;/id&gt;
-  &lt;activation&gt;
-    &lt;property&gt;
-      &lt;name&gt;env&lt;/name&gt;
-      &lt;value&gt;dev&lt;/value&gt;
-    &lt;/property&gt;
-  &lt;/activation&gt;
-  &lt;properties&gt;
-    &lt;env&gt;dev&lt;/env&gt;
-  &lt;/properties&gt;
-&lt;/profile&gt;
-    <font color="blue">    
-&lt;profile&gt;
-  &lt;id&gt;env-prod&lt;/id&gt;
-  &lt;properties&gt;
-    &lt;env&gt;prod&lt;/env&gt;
-  &lt;/properties&gt;
-&lt;/profile&gt;
-  </font></pre>
-  The profile definition is sparse, the sole purpose of the profile is to set the 
-  value for the <code>${env}</code> variable. Notice also the default setting for <code>${env}</code>
-  in the parent POM, which is used in case a profile is not specified and  Maven commands will 
-  execute with the <code>${env}</code> property value <code><strong>dev</strong></code>. You'll need 
-  to run e.g. <code style="white-space:nowrap">mvn install -Penv-prod</code> to activate the 
-  <code>prod</code> profile - which is more convenient since most of your build cycles are 
-  connected to coding, compiling, unit tests and deployment to your local app server.
+  <font color="green">&lt;profile&gt;
+    &lt;id&gt;env-prod&lt;/id&gt;</font><font color="blue">    
+    &lt;activation&gt;
+      &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+    &lt;/activation&gt;</font><font color="green">
+    &lt;properties&gt;
+      &lt;env&gt;prod&lt;/env&gt;
+    &lt;/properties&gt;
+  &lt;/profile&gt;</font>
+  </pre>
+    With this profile configuration the <code>env</code> property value is set in the parent POM 
+    and will be used in cases where the <code>env-dev</code> or <code>env-prod</code> profile is not 
+    specified - which is more convenient since most of your build cycles are connected to coding, 
+    compiling, unit tests and deployment to your local app server.
   </li>
   <li>
     Install and deploy the exploded EAR to the application server.
@@ -689,11 +648,6 @@ The resources to be filtered are defined by the "resources" build element. For e
       &lt;filtering&gt;true&lt;/filtering&gt;
     &lt;/resource&gt;
   &lt;/resources&gt;</pre>
-  
-<p><strong>Note:</strong> The <a href="http://mojo.codehaus.org/properties-maven-plugin/">
-org.codehaus.mojo:properties-maven-plugin</a> does not yet work with Maven3; there is a problem 
-building the EAR. It works fine with Maven 2.2.1.
-</p>
   
 <h4>Filtering Example</h4>
 <p>The filtering take place during the process-resources phase and the filtered resource is then 

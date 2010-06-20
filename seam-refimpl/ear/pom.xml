@@ -19,28 +19,23 @@
 
   <profiles>
     <!--
-    	We select profile "env-dev" or "env-prod", based on file "filter-dev.properties" exist/missing. 
-    	So when you create "filter-dev.properties" the default active profile will be "env-dev".
-	  	You may of course still manually activate "env-prod" this way: mvn install -Penv-prod 
+      More than one profile can be active at once. Since profiles can contain the same types of 
+      configuration there can be clashes. If two profiles clash the last to be activated will 
+      override configurations in those activated earlier. 
+      Note: Any activeByDefault profile will be deactivated if you activate another profile. 
+      E.g. running "mvn install -Penv-dev" deactivates the "prod" profile.
      -->
     <profile>
       <id>env-dev</id>
-      <activation>
-        <file>
-          <exists>${basedir}/../src/main/filters/filter-dev.properties</exists>
-        </file>
-      </activation>
       <properties>
         <env>dev</env>
       </properties>
     </profile>
-  
+
     <profile>
       <id>env-prod</id>
       <activation>
-        <file>
-          <missing>${basedir}/../src/main/filters/filter-dev.properties</missing>
-        </file>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <env>prod</env>
@@ -49,16 +44,10 @@
     
     <profile>
       <!--
-        Explode ear to appserver deploy folder. execute e.g. 
-        "mvn package -Pexplode" or "mvn package -Denv=dev"
+        Explode ear to appserver deploy folder. 
+        Execute e.g."mvn package -Pexplode"
       -->
       <id>explode</id>
-      <activation>
-        <property>
-          <name>env</name>
-          <value>dev</value>
-        </property>
-      </activation>
       <build>
         <plugins>
           <plugin>
