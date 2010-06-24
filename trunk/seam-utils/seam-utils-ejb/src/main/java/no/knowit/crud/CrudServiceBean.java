@@ -32,6 +32,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -75,27 +77,32 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	// 'R'
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public <T> T find(Class<T> entityClass, Object id) {
 		return (T) getEntityManager().find(entityClass, id);
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass) {
 		return getEntityManager().createQuery(CrudServiceUtils.createSelectJpql(entityClass)).getResultList();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult) {
 		return getEntityManager().createQuery(CrudServiceUtils.createSelectJpql(entityClass))
 			.setFirstResult(startPosition).setMaxResults(maxResult).getResultList();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(T example, boolean distinct, boolean any) {
 		Query query = createExampleQuery(example, true, distinct, any);
 		return query.getResultList();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
 	public <T> List<T> find(T example, boolean distinct, boolean any,	int startPosition, int maxResult) {
 		Query query = createExampleQuery(example, true, distinct, any);
@@ -196,6 +203,7 @@ public class CrudServiceBean implements CrudService {
 	}
   // end C.R.U.D
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public int count(final Class<?> entityClass) {
     Long result = (Long) getEntityManager().createQuery(
         CrudServiceUtils.createCountJpql(entityClass)).getSingleResult();
@@ -203,6 +211,7 @@ public class CrudServiceBean implements CrudService {
     return result.intValue();
 	}
 	
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public <T> T refresh(T transientEntity) {
 		EntityManager em = getEntityManager();
 		T managedEntity = em.contains(transientEntity) ? transientEntity : em.merge(transientEntity);
@@ -210,6 +219,7 @@ public class CrudServiceBean implements CrudService {
 		return managedEntity;
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public <T> T refresh(Class<T> entityClass, Object id) {
 		EntityManager em = getEntityManager();
 		T managedEntity = em.find(entityClass, id);
@@ -217,6 +227,7 @@ public class CrudServiceBean implements CrudService {
 		return managedEntity;
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public <T> Collection<T> refresh(Collection<T> entities) {
     if(entities == null) { 
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
@@ -228,6 +239,7 @@ public class CrudServiceBean implements CrudService {
 		return refreshedResults;
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public boolean isManaged(Object entity) {
 		return entity != null && getEntityManager().contains(entity);
 	}
@@ -236,31 +248,37 @@ public class CrudServiceBean implements CrudService {
 		getEntityManager().flush();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public void clear() {
 		getEntityManager().clear();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public void flushAndClear() {
 		EntityManager em = getEntityManager();
 		em.flush();
 		em.clear();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
   public List findWithNamedQuery(String namedQueryName) {
 		return this.entityManager.createNamedQuery(namedQueryName).getResultList();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
   public List findWithNamedQuery(String namedQueryName, Map<String, Object> parameters) {
 		return findWithNamedQuery(namedQueryName, parameters, 0);
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
   public List findWithNamedQuery(String queryName, int resultLimit) {
 		return this.entityManager.createNamedQuery(queryName).setMaxResults(resultLimit).getResultList();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
   public List findWithNamedQuery(String namedQueryName, Map<String, Object> parameters, int resultLimit) {
 		Set<Entry<String, Object>> rawParameters = parameters.entrySet();
@@ -274,6 +292,7 @@ public class CrudServiceBean implements CrudService {
 		return query.getResultList();
 	}
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	@SuppressWarnings("unchecked")
   public <T> List<T> findByNativeQuery(String sql, Class<T> type) {
 		return this.entityManager.createNativeQuery(sql, type).getResultList();
