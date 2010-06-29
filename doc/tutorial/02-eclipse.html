@@ -56,21 +56,25 @@
 <ul class="vspace">
   <li>
     <a href="http://java.sun.com/javase/downloads/index.jsp">jdk-6</a>.<br/>
-    <strong>Note:</strong> Do not use jdk1.6.0 update18 
-    <a href="http://issues.apache.org/jira/browse/OPENEJB-1131">due to problems with OpenEJB-3.1.2</a>!
+    <strong>Note:</strong> OpenEJB-3.1.2 and jdk-1.6.0 update18 or later has a known bug: 
+    <a href="http://issues.apache.org/jira/browse/OPENEJB-1131">JDK 1.6.0 u18 has a 
+      ClassCastException in ClassLoaderUtil.clearSunJarFileFactoryCache
+    </a>. But according to this answer, 
+    <a href="http://apache-geronimo.328035.n3.nabble.com/G2-2-Unable-to-clear-Sun-JarFileFactory-cache-td340698.html#a340698">
+      G2.2 Unable to clear Sun JarFileFactory cache
+    </a>, you should not see any functional problems connected to this bug.
   </li>
   <li>
     <a href="http://maven.apache.org/download.html">Maven 2.2.1</a> or later 2.x.<br/>
-    <strong>Note:</strong> You can not use Maven 3! The latest Maven3.0-beta1 does not evaluate 
-    external properties during the <code>"ear:generate-application-xml"</code> goal. You will get 
-    the following error message:<br/>
-    <pre style="margin-top:.5em; margin-bottom:.5em">
+    <strong>Note:</strong> You can not use Maven 3! The project externalizes some properties that is 
+    used to generate the correct <code>jboss-app.xml</code> dependent on the targeted JBoss 
+    Application Server. This works fine with Maven 2.2.1, but fails in Maven 3. The latest 
+    Maven3.0-beta1 does not evaluate external properties during the 
+    <code>"ear:generate-application-xml"</code> goal and you will get the following error message:<br/>
+    <pre style="margin-top:.5em; margin-bottom:.5em; color:red">
     [ERROR] Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.2:generate-application-xml 
     (default-generate-application-xml) on project mvn3-problem-ear: Failed to initialize JBoss configuration: 
     Invalid JBoss configuration, version[${as.version}] is not supported. -> [Help 1]</pre>
-    The project externalizes some properties that is used to generate the correct 
-    <code>jboss-app.xml</code> dependent on the targeted JBoss Application Server. This works fine 
-    with Maven 2.2.1, but fails in Maven 3.
   </li>
   <li>
     <a href="http://www.eclipse.org/downloads/">
@@ -138,7 +142,7 @@ org.eclipse.platform
     <code style="white-space:nowrap">C:/dev/workspaces/seam</code><br/>
     <font color="red"><strong>Note:</strong> Do not add Maven projects under your workspace 
     directory.</font> There are some issues regarding use of the m2eclipse plugin when projects are 
-    placed under the workspace directory, e.g. <code style="white-space:nowrap">
+    placed under the workspace directory, e.g. <code style="white-space:nowrap;">
     C:/dev/workspaces/seam/myproject</code>: You will not be able to run Maven Eclipse 
     goals from a command shell if your project is placed under the workspace directory; the 
     <code>mvn eclipse:eclipse and mvn eclipse:clean</code> goals will fail to 
@@ -157,18 +161,27 @@ org.eclipse.platform
   </li>
 </ol>
 
-<h2  id="configure-workspace">Configure Workspace</h2>
+<h2  id="configure-workspace">Install Plugins and Configure Workspace</h2>
 <ol = class="vspace">  
   <li><strong>JDK:</strong><br/>
     Make sure that Eclipse is running on a JDK and not a JRE.<br/>
     Select <code><strong>Window>Preferences</strong></code> and browse to the 
     <code><strong>Java>Installed JREs</strong></code> section. 
-    <div style="width:102%;overflow:hidden;">
+    <div style="width:102%;overflow:hidden;margin-bottom:0.5em;">
       <img src="img/eclipse-installed-jres.png" longdesc="img/eclipse-installed-jres.png" 
         class="inline-block" style="width:49%;" />
       <img src="img/eclipse-compiler.png" longdesc="img/eclipse-compiler.png" 
         class="inline-block" style="width:49%;" />
     </div>
+  </li>
+  <li id="subclipse"><strong>SubClipse:</strong>
+    <ul class="vspace">
+    <li>
+      Install <a href="http://subclipse.tigris.org/">
+      SubClipse-1.6.x, Team Provider plug-in providing support for Subversion within the Eclipse IDE
+      </a>.
+    </li>
+    </ul>
   </li>
   <li id="m2eclipse"><strong>m2eclipse:</strong>
     <ul class="vspace">
@@ -183,14 +196,8 @@ org.eclipse.platform
       </li>
       <li>
         Configure Eclipse to use an <strong>external</strong> Maven-2.2.1 installation.<br/>
-        The seam-refimpl project template uses the <a href="http://mojo.codehaus.org/properties-maven-plugin/">
-        <code>org.codehaus.mojo:properties-maven-plugin</code></a> to 
-        <a href="01-gettingstarted.html#filters">read properties from an external file</a>.
-        The <code>org.codehaus.mojo:properties-maven-plugin</code> does not yet work with Maven3; 
-        there is a problem building the EAR. It works fine with Maven 2.2.1, so we need to configure 
-        Eclipse to use an external Maven installation. In Preferences, navigate to 
-        <code><strong>Maven>Installations</strong></code>. Click <code><strong>Add...</strong></code> 
-        and select your Maven-2.2.1 home directory.
+        In Preferences, navigate to <code><strong>Maven>Installations</strong></code>. 
+        Click <code><strong>Add...</strong></code> and select your Maven-2.2.1 home directory.
         <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
           class="screenshot" style="width:500px;" />
       </li>
