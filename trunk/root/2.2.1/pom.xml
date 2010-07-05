@@ -108,7 +108,7 @@
             <artifactId>jsf-facelets</artifactId>
           </exclusion>
           <exclusion>
-            <groupId>xstream</groupId>
+            <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
           </exclusion>
           <exclusion>
