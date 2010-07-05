@@ -81,7 +81,7 @@
 			Strip html comments from the page before it is rendred - meaning that you will 
 			no longer be bugged down by EL evaluating expressions inside a comment tag  
 		</description>
-		<param-name>facelets.SKIP_COMMENTS</param-name>
+		<param-name>javax.faces.SKIP_COMMENTS</param-name>
 		<param-value>true</param-value>
 	</context-param>
 	 
