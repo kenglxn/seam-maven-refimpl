@@ -336,7 +336,7 @@
               <!--
                 Comment out this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
               -->
-              <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+              <outputDirectory>${project.build.directory}/${project.build.finalName}/META-INF/ds</outputDirectory>
 
               <!--
                 Uncomment this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
@@ -393,7 +393,7 @@
               Comment out this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
             -->
             <data-sources>
-              <data-source>${ds.xml}</data-source>
+              <data-source>META-INF/ds/${ds.xml}</data-source>
             </data-sources>
           </jboss>
 
