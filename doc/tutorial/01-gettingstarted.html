@@ -125,11 +125,11 @@
     used to generate the correct <code>jboss-app.xml</code> dependent on the targeted JBoss 
     Application Server. This works fine with Maven 2.2.1, but fails in Maven 3. The latest 
     Maven3.0-beta1 does not evaluate external properties during the 
-    <code>"ear:generate-application-xml"</code> goal and you will get the following error message:<br/>
+    <code>&quot;ear:generate-application-xml&quot;</code> goal and you will get the following error message:<br/>
     <pre style="margin-top:.5em; margin-bottom:.5em; color:red">
     [ERROR] Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.2:generate-application-xml 
     (default-generate-application-xml) on project mvn3-problem-ear: Failed to initialize JBoss configuration: 
-    Invalid JBoss configuration, version[${as.version}] is not supported. -> [Help 1]</pre>
+    Invalid JBoss configuration, version[${as.version}] is not supported. -&gt; [Help 1]</pre>
   </li>
   <li>
     <a href="http://tortoisesvn.tigris.org/">Tortoise SVN</a> or a SVN client of your choice.<br/> 
@@ -342,7 +342,7 @@ own project.
       Properties for production are located in src/main/filters/filter-prod.properties
       Properties to be modified by developer are located in src/main/filters/filter-dev.properties
       Copy filter-prod.properties to filter-dev.properties and add filter-dev.properties to svn:ignore
-      Type e.g "mvn -Penv-dev" to activate the development profile.  
+      Type e.g &quot;mvn -Penv-dev&quot; to activate the development profile.  
     --&gt;
   &lt;/properties&gt;
   .<font color="blue">  
@@ -624,14 +624,14 @@ file and specify one or more filesets to apply the substitutions in the properti
   &lt;filter&gt;src/main/filters/filter-${env}.properties&lt;/filter&gt;
 &lt;/filters&gt;</pre>
 
-<h3>The "Problem" with Filters</h3>
+<h3>The &quot;Problem&quot; with Filters</h3>
 <p>Maven filter properties are ony visible to resources and can not be accessed from the POM. 
 This is where the <strong><a href="http://mojo.codehaus.org/properties-maven-plugin/">Properties 
 Maven Plugin</a></strong> makes our life a little easier when dealing with properties that we need 
 to access inside our POM. It provides goals to read and write properties from and to files, and 
 also to set system properties. It's main use-case is loading properties	from files instead of 
 declaring them in pom.xml, something that comes in handy when dealing with different environments. 
-The plugin read properties during the	"initialize" phase and the properties are then accessible 
+The plugin read properties during the	&quot;initialize&quot; phase and the properties are then accessible 
 from the pom. The Properties Maven Plugin is not inheritable from the parent POM and and you must 
 therefore configure it in each sub POM. For example:
 </p>
@@ -655,7 +655,7 @@ therefore configure it in each sub POM. For example:
 our case will come from the activated profile or from the default setting for ${env} in the parent 
 POM if no profile is specified. When resources are filtered, the project replaces 
 all matching property names with their corresponding values, taking the filter list into account. 
-The resources to be filtered are defined by the "resources" build element. For example: 
+The resources to be filtered are defined by the &quot;resources&quot; build element. For example: 
 </p>
 <pre>
 
@@ -774,7 +774,7 @@ increase our productivity.
 </p>
 <p>As programmers we want to have good code quality, which means good unit test test coverage.
 EJB 3 and Seam components are just annotated classes - so it is straight forward to unit-test them 
-the "traditional" way. However, you will have to "emulate" the Dependency Injection, boot the 
+the &quot;traditional&quot; way. However, you will have to &quot;emulate&quot; the Dependency Injection, boot the 
 EntityManager and manage transactions by yourself , someting that will cost you few additional 
 lines of boilerplate code. With <a href="http://openejb.apache.org/">Apache OpenEJB</a>, which 
 boots the entire container in less than one second, we can move a lot of our traditional 
@@ -982,7 +982,7 @@ from the application server.
       mysql-connector-java-*-bin.jar file if exist).
   </li>
   <li>
-    Start the database server and create schema, e.g. <code>"tutorial_db"</code> using the MySql 
+    Start the database server and create schema, e.g. <code>&quot;tutorial_db&quot;</code> using the MySql 
     Administrator GUI.<br/>
     Or, if you are a MySql macho, open a MySql console and type the following SQL DDL by hand:<br/><br/>
     <code style="white-space:nowrap"><strong>
@@ -1131,7 +1131,7 @@ from the application server.
 </ol>
 
 <h3>How to Enable Logging in JBoss AS</h3>
-<p>For those who had a hard time configuring "their own" log4j.properties or log4j.xml within their 
+<p>For those who had a hard time configuring &quot;their own&quot; log4j.properties or log4j.xml within their 
 application on JBoss, see: 
 <a href="http://jaitechwriteups.blogspot.com/2008/04/how-do-i-use-my-own-log4j-properties-or.html">
   My Wiki: How do i use my own log4j properties or xml file in JBoss</a> and 
@@ -1173,7 +1173,7 @@ not be under revision control. This are the files found so far using Eclipse wit
 JBoss Tools plugin. There will be more IDE spesific files to add as other IDEs are put to use. 
 IDE spesific files should be added to the global <strong>svn ignore</strong>!
 </p>
-<code>
+
 <ul class="vspace">
   <li>
     In project root directory
@@ -1232,7 +1232,6 @@ IDE spesific files should be added to the global <strong>svn ignore</strong>!
     </ul>
   </li>
 </ul>
-</code>
 
 <h3>Useful Links</h3>
 <ul>
