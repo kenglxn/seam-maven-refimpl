@@ -95,11 +95,11 @@
     used to generate the correct <code>jboss-app.xml</code> dependent on the targeted JBoss 
     Application Server. This works fine with Maven 2.2.1, but fails in Maven 3. The latest 
     Maven3.0-beta1 does not evaluate external properties during the 
-    <code>"ear:generate-application-xml"</code> goal and you will get the following error message:<br/>
+    <code>ear:generate-application-xml</code> goal and you will get the following error message:<br/>
     <pre style="margin-top:.5em; margin-bottom:.5em; color:red">
     [ERROR] Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.2:generate-application-xml 
     (default-generate-application-xml) on project mvn3-problem-ear: Failed to initialize JBoss configuration: 
-    Invalid JBoss configuration, version[${as.version}] is not supported. -> [Help 1]</pre>
+    Invalid JBoss configuration, version[${as.version}] is not supported. -&gt; [Help 1]</pre>
   </li>
   <li>
     <a href="http://www.eclipse.org/downloads/">
@@ -190,8 +190,8 @@ org.eclipse.platform
 <ol class="vspace">  
   <li><strong>JDK:</strong><br/>
     Make sure that Eclipse is running on a JDK and not a JRE.<br/>
-    Select <code><strong>Window>Preferences</strong></code> and browse to the 
-    <code><strong>Java>Installed JREs</strong></code> section. 
+    Select <code><strong>Window&gt;Preferences</strong></code> and browse to the 
+    <code><strong>Java&gt;Installed JREs</strong></code> section. 
     <div style="width:102%;overflow:hidden;margin-bottom:0.5em;">
       <img src="img/eclipse-installed-jres.png" longdesc="img/eclipse-installed-jres.png" 
         class="inline-block" style="width:49%;" />
@@ -221,7 +221,7 @@ org.eclipse.platform
       </li>
       <li>
         Configure Eclipse to use an <strong>external</strong> Maven-2.2.1 installation.<br/>
-        In Preferences, navigate to <code><strong>Maven>Installations</strong></code>. 
+        In Preferences, navigate to <code><strong>Maven&gt;Installations</strong></code>. 
         Click <code><strong>Add...</strong></code> and select your Maven-2.2.1 home directory.
         <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
           class="screenshot" style="width:500px;" />
@@ -259,7 +259,7 @@ org.eclipse.platform
     screenshots below outlines the steps needed to configure a WTP server reference for JBoss 4.2.3.
     <ul class="vspace">	
       <li>
-        In Preferences, navigate to <strong>Server>Runtime Environments</strong>. Click 
+        In Preferences, navigate to <strong>Server&gt;Runtime Environments</strong>. Click 
         <strong>Add...</strong>. Browse to the directory named <strong>JBoss Community</strong> 
         and select <strong>JBoss 4.2 Runtime</strong>.
         <img src="img/eclipse-server-runtime-01.png" longdesc="img/eclipse-server-runtime-01.png"
@@ -394,7 +394,7 @@ in the project and provides a hierarchical list of them.</p>
     exceptions and import them again.
   </li>
   <li>
-    Import the project: In Eclipse select <code><strong>File>Import</strong></code> to import the project:
+    Import the project: In Eclipse select <code><strong>File&gt;Import</strong></code> to import the project:
     <img class="screenshot" src="img/eclipse-import.png" longdesc="img/eclipse-import.png" 
       style="width:300px" />
   </li>
@@ -421,7 +421,7 @@ in the project and provides a hierarchical list of them.</p>
     configuration</font></code><br/><br/>
     This is an m2eclipse bug that is fixed by excluding the eclipse generated application.xml during 
     mvn package. The <code>maven-ear-plugin</code> is preconfigured with the actual configuration in 
-    the project templates "root" POM - so you don't need to worry about this error. For further details see: 
+    the project templates &quot;root&quot; POM - so you don't need to worry about this error. For further details see: 
     <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a> and 
     <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>.
   </li>
@@ -585,13 +585,13 @@ and then import the project all over again.
 
 <h2 id="running-tests">Running Tests</h2>
 <p>Running tests are trivial. Open a test class, right click in the editor and select 
-<code><strong>Run As > TestNG Test</strong></code>.
+<code><strong>Run As &gt; TestNG Test</strong></code>.
 </p>
 <img class="inline-block" style="width:49%;" 
   src="img/eclipse-testng-01.png" longdesc="img/eclipse-testng-01.png" />
 <img class="inline-block" style="width:49%;" 
   src="img/eclipse-testng-02.png" longdesc="img/eclipse-testng-02.png" />
-<p>The tests should go "green".
+<p>The tests should go &quot;green&quot;.
 </p>
 
 <h2 id="edit-compile-deploy-cycle">The Edit Compile Deploy Cycle</h2>
@@ -668,7 +668,7 @@ org.jboss.deployment.DeploymentInfo@716583c1 { url=file:/C:/dev/server/jboss-4.2
       src="img/eclipse-wtp-04.png" longdesc="img/eclipse-wtp-04.png" />
   </li>
   <li>
-    Select the parent project and run <code>mvn install -Pexplode</code> to fix the incorrect deploy.</br>
+    Select the parent project and run <code>mvn install -Pexplode</code> to fix the incorrect deploy.<br/>
     <img class="screenshot" style="width:550px;" 
       src="img/eclipse-run-configurations-03.png" longdesc="img/eclipse-run-configurations-03.png" />
     <img class="screenshot" style="width:330px;" 
@@ -721,7 +721,7 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
   <li>
     Configure the Maven Builder.<br/>
     The Maven builder executes the <code>explode</code> profile on the <code>process-classes</code> 
-    goal. The child poms will "inherit" this builder, so you only need to define the builder on the
+    goal. The child poms will &quot;inherit&quot; this builder, so you only need to define the builder on the
     parent project.
     <img class="screenshot" style="width:350px;" 
       src="img/eclipse-import-maven-07.png" longdesc="img/eclipse-import-maven-07.png" />
@@ -737,7 +737,7 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
       src="img/eclipse-maven-builder-03.png" longdesc="img/eclipse-maven-builder-03.png" />
   </li>
   <li>
-    Select the parent project and run <code>mvn install -Pexplode</code> to do an initial deploy.</br>
+    Select the parent project and run <code>mvn install -Pexplode</code> to do an initial deploy.<br/>
     <img class="screenshot" style="width:350px;" 
       src="img/eclipse-run-configurations-04.png" longdesc="img/eclipse-run-configurations-04.png" />
   </li>
@@ -769,13 +769,13 @@ goal you will have a complete <strong>compile- build- deploy</strong> environmen
 ... Maven Builder: AUTO_BUILD 
 ... C:\ide\projects\seam-tutorial
 ... Build type auto : process-classes
-...  mvn -Pexplode -B -Dmaven.test.skip=true -s "C:\Documents and Settings\Leif\.m2\settings.xml" process-classes
+...  mvn -Pexplode -B -Dmaven.test.skip=true -s &quot;C:\Documents and Settings\Leif\.m2\settings.xml&quot; process-classes
 ... Build type auto : process-classes
 ... Maven Builder: AUTO_BUILD 
 ... Maven Builder: AUTO_BUILD 
 ... C:\ide\projects\seam-tutorial
 ... Build type auto : process-classes
-...  mvn -Pexplode -B -Dmaven.test.skip=true -s "C:\Documents and Settings\Leif\.m2\settings.xml" process-classes
+...  mvn -Pexplode -B -Dmaven.test.skip=true -s &quot;C:\Documents and Settings\Leif\.m2\settings.xml&quot; process-classes
 ... Build type auto : process-classes</pre>
     </div>
   </li>
@@ -824,7 +824,7 @@ setting up the tools. Play with the tools and study the code that the various to
 
 <h3>Configure Workspace</h3>
 <p>Unpack <a href="http://www.seamframework.org/Download">JBoss Seam</a> to a directory of your 
-choice, e.g. <code>C:/ide/libs/jboss-seam-2.2.0.GA</code>. Select <code><strong>Window > Prefereneces
+choice, e.g. <code>C:/ide/libs/jboss-seam-2.2.0.GA</code>. Select <code><strong>Window &gt; Prefereneces
 </strong></code> and follow the screenshots.
 </p>
 <div style="width:99%;overflow:hidden;">
@@ -895,7 +895,7 @@ the main source of configuration, so we'll start with the WAR.</p>
 </li>
 <li>
   In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
-  select <code><strong>New>Seam Entity</strong></code>
+  select <code><strong>New&gt;Seam Entity</strong></code>
   <img class="screenshot" style="width:500px;" 
     src="img/eclipse-seam-entity-01.png" longdesc="img/eclipse-seam-entity-01.png" />
 </li>
@@ -942,7 +942,7 @@ the main source of configuration, so we'll start with the WAR.</p>
 <li>
   We're almost there. We configured <strong>Seam Settings</strong> to generate <code>xhtml</code> 
   files to the <code>webapp/view</code> directory, but the code generator does not take this into 
-  account. The links in the generated <code>xhtml</code> code "assumes" that the code is generated
+  account. The links in the generated <code>xhtml</code> code &quot;assumes&quot; that the code is generated
   to the <code>webapp</code> directory. So, to finish up, we fix this flaw by making some small changes 
   to the genereated <code>xhtml</code> code. Also add a link to <code>myEntityList.xhtml</code> in 
   <code>menu.xhtml</code> (<font color="blue">see the blue text</font>).
@@ -1162,7 +1162,7 @@ complete that tutorial first.</p>
 </li>
 <li>
   Right click inside explorer and select <code><strong>Add Configuration...</strong></code>
-  <img class="screenshot" style="width:300px;" src="img/eclipse-seam-db-entity-22.png" longdesc="img/eclipse-seam-db-entity-22.png" //>
+  <img class="screenshot" style="width:300px;" src="img/eclipse-seam-db-entity-22.png" longdesc="img/eclipse-seam-db-entity-22.png" />
 </li>
 <li>
   Add the newly created connection and define a Database dialect.<br/><br/>
@@ -1304,7 +1304,7 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
 </li>
 <li>
   In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
-  select <code><strong>New>Seam Generate Entities</strong></code>
+  select <code><strong>New&gt;Seam Generate Entities</strong></code>
   <img class="screenshot" style="width:650px;" src="img/eclipse-seam-db-entity-31.png" longdesc="img/eclipse-seam-db-entity-31.png" />
   <br/>
   <img src="img/eclipse-seam-db-entity-32.png" longdesc="img/eclipse-seam-db-entity-32.png" style="width:450px;" class="inline-block" />
@@ -1340,7 +1340,7 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
 <h3 id="checkout-trunk-from-eclipse">How To Checkout Trunk From Eclipse</h3>
 <ol>
   <li>
-    In Eclipse select <code><strong>File>Import</strong></code> to import the trunk:
+    In Eclipse select <code><strong>File&gt;Import</strong></code> to import the trunk:
     <img class="screenshot" src="img/eclipse-import.png" style="width:250px; display:block;" />
   </li>
   <li>
@@ -1479,7 +1479,7 @@ workspace directory, e.g. <code style="white-space:nowrap">C:/dev/projects</code
 </p>
 
 <h3>How To Browse (ctrl+clik) Into Java Code From a Visual Editor</h3>
-<p>The WAR pom must list all Java modules you want to browse into:
+<p>The WAR pom must list all Java modules you want to browse into:</p>
 <pre>
 
   &lt;dependencies&gt;
@@ -1506,13 +1506,12 @@ workspace directory, e.g. <code style="white-space:nowrap">C:/dev/projects</code
   &lt;/dependencies&gt;
 </pre>
 
-</p>
 
 <h3>How To Get JBoss Tools To Work In Vista 64 bit</h3>
 <p>It only works partially! It seems that everything except for the visual editors (VPE) works fine. 
-You will see the following message in the visual editor: <strong>"The VPE editor can't be run because 
+You will see the following message in the visual editor: <strong>&quot;The VPE editor can't be run because 
 your system environment needs to be changed slightly. 
-<a href='http://www.jboss.org/community/wiki/JBosstoolsVisualEditorFAQ'>Find out more</a>"</strong>.
+<a href='http://www.jboss.org/community/wiki/JBosstoolsVisualEditorFAQ'>Find out more</a>&quot;</strong>.
 The link points to a page with no information regarding how to fix this for Vista64 with Jdk-6 64 bit 
 and Eclipse-3.4 64 bit. You will also find that you are not able to browse into java code from the 
 visual editor, which for me is the most essential feature of the VPE. The only workaround I have 
@@ -1520,10 +1519,11 @@ found so far is to download and install 32 bit versions of Jdk-6 and Eclipse-3.4
 required plugins in the Eclipse-3.5 32 bit environment. The visual editors works as expected with 
 the 32 bit configuration.</p>
 
-<p>After installation of Jdk-6 32 bit and Eclipse-3.4 32 bit, ensure that Eclipse uses the "correct" 
+<p>After installation of Jdk-6 32 bit and Eclipse-3.4 32 bit, ensure that Eclipse uses the &quot;correct&quot; 
 jdk. Open the <code>eclipse.ini</code> file and add path to the 32 bit Jdk version as emphasized in 
 text below:
 <pre>
+</p>
 <strong><font color="blue">-vm
 C:/Program Files (x86)/Java/jdk1.6.0_16/bin</font></strong>
 -showsplash
@@ -1537,7 +1537,6 @@ plugins\org.eclipse.osgi_3.4.3.R34x_v20081215-1030.jar
 -Xms128m
 -Xmx512m
 </pre>
-</p>
 
 <h2>Useful Links</h2>
 <ul>
