@@ -1,4 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -76,13 +78,14 @@
     paths over and over again in this document.</p>
   <ul class="vspace">
     <li><code>${JBOSS_HOME}</code>  - refers to Jboss installation directory, e.g. C:\servers\jboss-4.2.3.GA</li>
-    <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
+    <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default</li>
     <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy directory, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
     <li><code>${TRUNK}</code> - the project root directory, i.e. seam-maven-refimpl</li>
     <li><code>${SEAM_REFIMPL}</code> - the directory where the reference project, i.e. seam-refimpl, is installed on your computer</li>
     <li><code>${SEAM_TUTORIAL}</code> - the directory where the tutorial project, i.e. seam-tutorial, is installed on your computer</li>
   </ul>
 </div>
+
 <div class="inline-block" style="width:32%;padding-left:2%;">
   <img src="img/maven-project-structure.png" style="width:100%; margin-left:1.5em;" />
 </div>
@@ -125,11 +128,7 @@
 <p>Install the required software.</p>
 
 <h2 id="checkout-install">Check Out, Install and Run the Project</h2>
-<p>In the tutorial we use Tortoise SVN to check out the project.<br/>
-  <!--
-  <strong>Note:</strong> If you downloaded this project as a zip-file then unzip the file to a 
-  directory of your choice and <a href="#install-and-run">jump to step 4</a> of this section.</p>
-  -->
+<p>In the tutorial we'll use Tortoise SVN to check out the project.</p>
 <ol class="vspace">
   <li>
     Create a project directory, e.g. <code>C:/dev/projects/seam-maven-refimpl</code>
@@ -167,8 +166,8 @@
     (Command-line access to svn is described here: 
     <a href="http://code.google.com/p/seam-maven-refimpl/source/checkout">http://code.google.com/p/seam-maven-refimpl/source/checkout</a>)
   </li>
-  <li><a name="install-and-run">
-    Open a command shell and navigate to your checkout directory.</a>
+  <li>
+    Open a command shell and navigate to your checkout directory.
     <img src="img/trunk-clean-install.png" longdesc="img/trunk-clean-install.png" 
       class="screenshot" style="width:500px;" />
     Run: <code>mvn clean install</code>
@@ -250,10 +249,8 @@
   </li>
   <li>
     Delete the <code>seam-refimpl-ear.ear</code> file from the <code>${JBOSS_DEPLOY}</code> directory.
-   </li>
   </li>
 </ol>
-
 
 <h2 id="use-as-template">Use the <code>seam-refimpl</code> Project as a Template for Your Own Project</h2>
 <p>This section explains how to use the <strong>seam-refimpl</strong> project as a template for your
@@ -430,8 +427,7 @@ the project and it's required utilities, like the application server, to directo
 personal taste. To achieve this we will use a combination of property files and profiles. 
 </p>
 
-<p>To activate development mode:
-</p>
+<p>To activate development mode:</p>
 <ol class="vspace">
   <li>Copy <code>filter-prod.properties</code> to <code>filter-dev.properties</code>:<br/>
     The filter properties file has a variable portion <code>${env}</code>, which in our case will 
@@ -561,13 +557,13 @@ personal taste. To achieve this we will use a combination of property files and 
 &lt;plugin&gt;
   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
   &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
-  <font color="blue" style=""><s>&lt;configuration&gt;</s>
-    <s>&lt;suiteXmlFiles&gt;</s>
-      <s>&lt;suiteXmlFile&gt;</s>
-        <s>testng.xml</s>
-      <s>&lt;/suiteXmlFile&gt;</s>
-    <s>&lt;/suiteXmlFiles&gt;</s>
-  <s>&lt;/configuration&gt;</s></font>
+  <font color="blue" style=""><strike>&lt;configuration&gt;</strike>
+    <strike>&lt;suiteXmlFiles&gt;</strike>
+      <strike>&lt;suiteXmlFile&gt;</strike>
+        <strike>testng.xml</strike>
+      <strike>&lt;/suiteXmlFile&gt;</strike>
+    <strike>&lt;/suiteXmlFiles&gt;</strike>
+  <strike>&lt;/configuration&gt;</strike></font>
 &lt;/plugin&gt;
         </pre>
       </li>
@@ -698,9 +694,9 @@ ds.server.name   =
 &lt;datasources&gt;
   &lt;local-tx-datasource&gt;
     &lt;jndi-name&gt;<font color="blue">refimplDatabase</font>&lt;/jndi-name&gt;
-    &lt;use-java-context&gt;true&lt;/use-java-context</font>&gt;
+    &lt;use-java-context&gt;true&lt;/use-java-context&gt;
     &lt;connection-url&gt;<font color="blue">jdbc:hsqldb:mem:refimpl_db</font>&lt;/connection-url&gt;
-    &lt;driver-class&gt;<font color="blue">org.hsqldb.jdbcDriver&lt</font>;/driver-class&gt;
+    &lt;driver-class&gt;<font color="blue">org.hsqldb.jdbcDriver</font>&lt;/driver-class&gt;
     &lt;user-name&gt;<font color="blue">sa</font>&lt;/user-name&gt;
     &lt;password&gt;&lt;/password&gt;
   &lt;/local-tx-datasource&gt;
@@ -729,6 +725,7 @@ into details about the properties usage here.
     Sonatype: Chapter 9. Properties and Resource Filtering
   </a>
 </p>
+
 
 <h2>Testing</h2>
 
@@ -798,8 +795,8 @@ OpenEJB embedded container:
   pu.hibernate.transaction.manager_lookup_class.test=org.apache.openejb.hibernate.TransactionManagerLookup
   </pre>
   
-<p>The <code>jndi.properties</code> file has the corresponding placeholders:
-</p>
+<p>The <code>jndi.properties</code> file has the corresponding placeholders:</p>
+
 <div class="code-frame">
   <a href="">Show or Hide Code</a>
   <iframe scrolling="auto" frameborder="0" style="min-height:30em;" src="./code-listings/openejb-jndi.properties.html"></iframe>
@@ -829,7 +826,7 @@ directory to the parent project and modify POMs accordingly, e.g:
   &lt;/testResource&gt;
 &lt;/testResources&gt;
 </pre>
-  
+
 <h3>Test Examples</h3>
 <p>I you haven't done so yet, read trough <a href="http://docs.jboss.org/seam/2.2.0.GA/reference/en-US/html/testing.html">
 Chapter 37. Testing Seam applications</a> in the Seam reference manual.
@@ -869,10 +866,12 @@ set up the fixture needed to boot the OpenEJB embedded container.
 
 <div class="code-frame">
   <a href="">Show or Hide Code</a>
-  <iframe scrolling='no' frameborder="0" style="max-height:70em;" src="./code-listings/HelloSeamTest.java.html"></iframe>
+  <iframe scrolling='no' frameborder="0" style="max-height:70em;" 
+	src="./code-listings/HelloSeamTest.java.html"></iframe>
 </div>
 <div class="code-frame">
-  <iframe scrolling='no' frameborder="0" style="min-height:19em;" src="./code-listings/HelloSeam.java.html"></iframe>
+  <iframe scrolling='no' frameborder="0" style="min-height:19em;" 
+	src="./code-listings/HelloSeam.java.html"></iframe>
 </div>
 <img src="img/mvn-test-helloseamtest.png"  longdesc="img/mvn-test-helloseamtest.png" 
   class="screenshot" style="width:500px;" />
@@ -944,8 +943,8 @@ from the application server.
   </li>
 </ol>
 
-<p>This completes the getting started tutorial.
-</p>
+<p>This completes the getting started tutorial.</p>
+
 
 <h2>How To's</h2>
 <h3><a name="configure-database-connection">How to Configure Database Connection</a></h3>
@@ -1146,8 +1145,8 @@ jdk.target        =1.6
 app.debug         =<font color="blue">${jdk.debug}</font>
 app.unpack.modules=true
 </pre>
-<p>
-  Open your browser and point to the following URL to see the debug page.
+
+<p>Open your browser and point to the following URL to see the debug page.
   <a href="http://localhost:8080/seam-tutorial/debug.seam">http://localhost:8080/seam-tutorial/debug.seam</a>
 </p>
 
@@ -1170,7 +1169,7 @@ IDE spesific files should be added to the global <strong>svn ignore</strong>!
       <li>profiles.xml</li>
       <li>.project</li>
       <li>.settings/</li>
-      <li>src/main/filters/filter-dev.properties
+      <li>src/main/filters/filter-dev.properties</li>
       <li>target/</li>
     </ul>
   </li>
@@ -1217,7 +1216,6 @@ IDE spesific files should be added to the global <strong>svn ignore</strong>!
   </li>
 </ul>
 </code>
-
 
 <h3>Useful Links</h3>
 <ul>
@@ -1419,8 +1417,9 @@ IDE spesific files should be added to the global <strong>svn ignore</strong>!
   </li>
 </ul>
 
-<br/>
+<p>&nbsp;</p>
     
+  
 </div> <!-- #page -->
 </div> <!-- #page-wrapper -->
 
@@ -1434,9 +1433,9 @@ IDE spesific files should be added to the global <strong>svn ignore</strong>!
   </ul>
 </div>
 </div> <!-- #footer -->
-
 </div> <!-- #expander -->
 </div> <!-- #sizer -->
+
 <script type="text/javascript">
         var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
         document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
