@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -45,7 +47,7 @@
   paths over and over again in this document.</p>
 <ul>
   <li><code>${JBOSS_HOME}</code> - refers to Jboss installation directory, e.g. C:\servers\jboss-4.2.3.GA</li>
-  <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default
+  <li><code>${JBOSS_CONFIG}</code> - refers to the configuration directory e.g. C:\servers\jboss-4.2.3.GA\default</li>
   <li><code>${JBOSS_DEPLOY}</code> - refers to the JBoss deploy directory, e.g. C:\servers\jboss-4.2.3.GA\default\deploy</li>
   <li><code>${PROJECT}</code> - the project root directory, i.e. seam-maven-refimpl</li>
   <li><code>${SEAM_REFIMPL}</code> - the directory where the reference project, i.e. seam-refimpl, is installed on your computer</li>
@@ -162,7 +164,7 @@ org.eclipse.platform
 </ol>
 
 <h2  id="configure-workspace">Install Plugins and Configure Workspace</h2>
-<ol = class="vspace">  
+<ol class="vspace">  
   <li><strong>JDK:</strong><br/>
     Make sure that Eclipse is running on a JDK and not a JRE.<br/>
     Select <code><strong>Window>Preferences</strong></code> and browse to the 
@@ -221,11 +223,11 @@ org.eclipse.platform
         Install the <a href="http://www.jboss.org/jbossas/">Jboss Application Server</a>
       </li>
       <li>
-        Install <a href="http://www.jboss.org/tools">Eclipse Plugins for JBoss and related Technology</a>
+        Install <a href="http://www.jboss.org/tools">Eclipse Plugins for JBoss and related Technology</a>. 
       </li>
       <li>
-        The <a href="http://seamframework.org/Documentation">
-        JBoss Seam documentation</a> explains these steps in detail.
+        The <a href="http://seamframework.org/Documentation">JBoss Seam documentation</a> and 
+		the <a href="http://docs.jboss.org/tools/">JBoss Tools documentation</a> explains these steps in detail.
       </li>
     </ul>
   </li>
@@ -293,7 +295,7 @@ org.eclipse.platform
   </li>
   <li><strong>Encoding:</strong><br/>
     Set encoding to UTF-8 (optional).<br/>
-    Make shure that all files are saved with UTF-8 encoding. This is essential if you're working	
+    Make shure that all files are saved with UTF-8 encoding. This is only essential if you're working	
     with i18n.
     <div style="width:103%;overflow:hidden;">
       <div class="inline-block" style="width:24%;">
@@ -362,10 +364,6 @@ in the project and provides a hierarchical list of them.</p>
     directory you selected for the WTP server).
   </li>
   <li>
-    <a href="#how-to-configure-maven-eclipse-plugin-correctly">Make shure that the maven-eclipse 
-    plugin is configured so that no extra code is generated during the import</a>.
-  </li>
-  <li>
     Open a command shell, navigate to your project directory and run: 
     <code><strong>mvn eclipse:eclipse</strong></code><br/>
     If you omit this step you will from time to time get a lot of null pointer exceptions while 
@@ -431,8 +429,9 @@ in the project and provides a hierarchical list of them.</p>
     <div class="inline-block" style="width:68.5%;">
       <img src="img/eclipse-annoyance-05.png" longdesc="img/eclipse-annoyance-05.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
-      Schema validation for some resource files fails due to use of filtered property values. The 
-      target resource files should be correct, so you can safely delete cvc and duplicate component erros.
+      Schema validation for some resource files fails due to use of Maven property placeholders. The 
+      target resource files should be correct, so you can safely delete cvc and duplicate component 
+	  erros.
     </div>
     
     <div class="inline-block" style="width:19.7%;">
@@ -806,17 +805,12 @@ choice, e.g. <code>C:/ide/libs/jboss-seam-2.2.0.GA</code>. Select <code><strong>
 </strong></code> and follow the screenshots.
 </p>
 <div style="width:99%;overflow:hidden;">
-  <div class="inline-block" style="width:33%;">
-    <img class="screenshot" style="width:100%; margin-bottom:.1em;" 
-      src="img/eclipse-jboss-tools-01.png" longdesc="img/eclipse-jboss-tools-01.png" />
-    <p>JSF</p>
-  </div>
-  <div class="inline-block" style="width:33%;">
+  <div class="inline-block" style="width:49.5%;">
     <img class="screenshot" style="width:100%; margin-bottom:.1em;" 
       src="img/eclipse-jboss-tools-02.png" longdesc="img/eclipse-jboss-tools-02.png" />
     <p>Seam runtime</p>
   </div>
-  <div class="inline-block" style="width:33%;">
+  <div class="inline-block" style="width:49.5%;">
     <img class="screenshot" style="width:100%; margin-bottom:.1em;" 
       src="img/eclipse-jboss-tools-03.png" longdesc="img/eclipse-jboss-tools-03.png" />
     <p>Seam runtime</p>
@@ -885,9 +879,9 @@ the main source of configuration, so we'll start with the WAR.</p>
 <li>
   Fill in the <strong>Seam entity class name</strong>, e.g. <code>MyEntity</code>, and click 
   <strong>Finish</strong>.<br/>
-  <img style="width:400px;" class="inline-block" 
+  <img style="width:40%;" class="inline-block" 
     src="img/eclipse-seam-entity-02.png" longdesc="img/eclipse-seam-entity-02.png" />
-  <img style="width:400px;" class="inline-block" 
+  <img style="width:40%;" class="inline-block" 
     src="img/eclipse-seam-entity-03.png" longdesc="img/eclipse-seam-entity-03.png" />
 </li>
 <li>
@@ -1212,13 +1206,13 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
 &lt;plugin&gt;
   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
   &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
-  <font color="blue" style=""><s>&lt;configuration&gt;</s>
-    <s>&lt;suiteXmlFiles&gt;</s>
-      <s>&lt;suiteXmlFile&gt;</s>
-        <s>src/test/resources/testng.xml</s>
-      <s>&lt;/suiteXmlFile&gt;</s>
-    <s>&lt;/suiteXmlFiles&gt;</s>
-  <s>&lt;/configuration&gt;</s></font>
+  <font color="blue" style=""><strike>&lt;configuration&gt;</strike>
+    <strike>&lt;suiteXmlFiles&gt;</strike>
+      <strike>&lt;suiteXmlFile&gt;</strike>
+        <strike>src/test/resources/testng.xml</strike>
+      <strike>&lt;/suiteXmlFile&gt;</strike>
+    <strike>&lt;/suiteXmlFiles&gt;</strike>
+  <strike>&lt;/configuration&gt;</strike></font>
 &lt;/plugin&gt;</pre>
   </li>
   </ul>
@@ -1285,6 +1279,7 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
   Open the <strong>Seam</strong> perspective.
   <img class="screenshot" style="width:250px;" src="img/eclipse-perspective-seam.png" longdesc="img/eclipse-perspective-seam.png" />
 </li>
+<li>
   In Package Explorer, right click on the <strong>war</strong> or <strong>ejb</strong> project and 
   select <code><strong>New>Seam Generate Entities</strong></code>
   <img class="screenshot" style="width:650px;" src="img/eclipse-seam-db-entity-31.png" longdesc="img/eclipse-seam-db-entity-31.png" />
@@ -1304,18 +1299,17 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
   <img class="screenshot" style="width:700px;" src="img/eclipse-seam-db-entity-36.png" longdesc="img/eclipse-seam-db-entity-36.png" />
 </li>
 <li>
-  A full enterprise CRUD application with basic security generated, deployed and up an running in 
+  A full enterprise CRUD application with basic security -  generated, deployed and up and running in 
   about 60 seconds.	That's impressing! 
 </li>
 <li>
-  As you browse trough the pages you will find that that the <code></strong>TeeList</strong></code>
+  As you browse trough the pages you will find that that the <code><strong>TeeList</strong></code>
   page fails to load. The problem is desctibed here: 
   <a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04/chapter-developments.txt">
   http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04/chapter-developments.txt</a>.
   A solution is found here: 
   <a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch05/chapter-developments.txt">
   http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch05/chapter-developments.txt</a>.
-  </p>
 </li>
 </ol>
 
@@ -1359,41 +1353,6 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
     <a href="#import-project-into-eclipse">earlier in the tutorial</a>.
   </li>
 </ol>
-
-<h3 id="how-to-configure-maven-eclipse-plugin-correctly">
-  How To Configure the <code>maven-eclipse</code> Plugin "Correctly" For An Existing Project
-</h3>
-<p>Configure the 
-<a href="http://maven.apache.org/plugins/maven-eclipse-plugin/">maven-eclipse plugin</a> so that no 
-extra code is generated during the import. Open the pom that contains your 
-<code>&lt;pluginManagement&gt;</code> section (your root pom or parent pom) and locate the 
-<code>maven-eclipse-plugin</code>. The configuration should be:
-<pre>
-
-  &lt;pluginManagement&gt;
-    &lt;plugins&gt;
-      .
-      .
-      &lt;plugin&gt;
-        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-        &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
-        &lt;version&gt;2.8&lt;/version&gt;
-        &lt;configuration&gt;
-          &lt;downloadSources&gt;true&lt;/downloadSources&gt;
-          &lt;downloadJavadocs&gt;true&lt;/downloadJavadocs&gt;
-          &lt;addVersionToProjectName&gt;false&lt;/addVersionToProjectName&gt;
-          &lt;projectNameTemplate&gt;[artifactId]&lt;/projectNameTemplate&gt;
-          &lt;wtpmanifest&gt;false&lt;/wtpmanifest&gt;
-          &lt;wtpapplicationxml&gt;false&lt;/wtpapplicationxml&gt;
-          &lt;wtpversion&gt;2.0&lt;/wtpversion&gt;
-        &lt;/configuration&gt;
-      &lt;/plugin&gt;
-      .
-      .
-    &lt;/plugins&gt;
-  &lt;/pluginManagement&gt;
-</pre>
-</p>
 
 <h3>How To Download Sources and Javadocs for Maven Dependencies</h3>
 <p>
@@ -1535,8 +1494,9 @@ The link points to a page with no information regarding how to fix this for Vist
 and Eclipse-3.4 64 bit. You will also find that you are not able to browse into java code from the 
 visual editor, which for me is the most essential feature of the VPE. The only workaround I have 
 found so far is to download and install 32 bit versions of Jdk-6 and Eclipse-3.4 and install the 
-required plugins in the Eclipse-3.4 32 bit environment. The visual editors works as expected with 
+required plugins in the Eclipse-3.5 32 bit environment. The visual editors works as expected with 
 the 32 bit configuration.</p>
+
 <p>After installation of Jdk-6 32 bit and Eclipse-3.4 32 bit, ensure that Eclipse uses the "correct" 
 jdk. Open the <code>eclipse.ini</code> file and add path to the 32 bit Jdk version as emphasized in 
 text below:
@@ -1615,6 +1575,7 @@ plugins\org.eclipse.osgi_3.4.3.R34x_v20081215-1030.jar
 </div> <!-- #footer -->
 </div> <!-- #expander -->
 </div> <!-- #sizer -->
+
 <!--
   <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
