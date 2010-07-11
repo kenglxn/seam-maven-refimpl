@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" href="../styles/base/base.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../styles/page-layout/page-layout.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../styles/site/site.css" type="text/css" media="screen" />
+
+<link href="../js/fullsize/fullsize.css" media="screen" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="../js/jquery-min.js"></script>
+<script type="text/javascript" src="../js/fullsize/jquery.fullsize.minified.js"></script>
+
+<script type="text/javascript" src="../js/site.js"></script>
+
+<script type="text/javascript">/* <![CDATA[ */
+  $(document).ready(function() {
+    $(".code-frame a").click(function( event ) {
+      event.preventDefault(); 
+      IframeHelper.toggle(this);
+    });
+    
+    $('img').fullsize();
+  });
+/* ]]> */</script>
+
+<title>Maven, Seam 2.2, Eclipse 3.6 and JBoss Tools Work Log</title>
+</head>
+
+<body>
+<div id="sizer">
+<div id="expander">
+<div id="page-wrapper">
+
+<div id="header">
+<div class="header">
+  <h1>Maven, Seam 2.2, Eclipse 3.6 and JBoss Tools Work Log</h1>
+</div>
+</div> 
+
+<div id="page">
+
+<ol>
+	<li><a href="01-gettingstarted.html#checkout-install">Check Out, Install, Build and Run the Project</a></li>
+	<li><a href="01-gettingstarted.html#use-as-template">Use the seam-refimpl Project as a Template for Your Own Project</a></li>
+	<li><a href="01-gettingstarted.html#activate-development-mode">Activate Development Mode</a></li>
+  <li><a href="02-eclipse.html#configure-eclipse">Configure Eclipse and Create Workspace</a></li>
+  <li>
+  	<a href="02-eclipse.html#configure-workspace">Install Plugins and Configure Workspace</a><br/>
+    <strong>Note:</strong> You can not use Maven 3! The project externalizes some properties that is 
+    used to generate the correct <code>jboss-app.xml</code> dependent on the targeted JBoss 
+    Application Server. This works fine with Maven 2.2.1, but fails in Maven 3. The latest 
+    Maven3.0-beta1 does not evaluate external properties during the 
+    <code>ear:generate-application-xml</code> goal and you will get the following error message:<br/>
+    <pre style="margin-top:.5em; margin-bottom:.5em; color:red">
+    [ERROR] Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.2:generate-application-xml 
+    (default-generate-application-xml) on project mvn3-problem-ear: Failed to initialize JBoss configuration: 
+    Invalid JBoss configuration, version[${as.version}] is not supported. -&gt; [Help 1]</pre>
+    
+    <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
+      class="screenshot" style="width:500px;" />
+  </li>
+  <li><a href="02-eclipse.html#import-project-into-eclipse">Import a Mavenized Seam Project into Eclipse</a></li>
+  
+  <li>Annoyance: web.xml is stripped for comments, must restore restore original from svn.</li>
+</ol>
+
+</div> <!-- #page -->
+
+</div> <!-- #page-wrapper -->
+
+<div id="footer">  
+<div class="footer">
+  <ul class="links" style="text-align: center;">
+    <li><a href="01-gettingstarted.html"><strong>Getting started</strong> tutorial</a></li>
+    <li><a href="02-eclipse.html"><strong>Eclipse 3.5</strong> tutorial</a></li>
+    <li><a href="03-intellij.html"><strong>IntelliJ</strong> tutorial</a></li>
+    <li><a href="04-netbeans.html"><strong>NetBeans</strong> tutorial</a></li>
+  </ul>
+</div>
+</div> <!-- #footer -->
+</div> <!-- #expander -->
+</div> <!-- #sizer -->
+
+</body>
+</html>
