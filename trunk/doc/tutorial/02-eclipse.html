@@ -423,7 +423,9 @@ in the project and provides a hierarchical list of them.</p>
     mvn package. The <code>maven-ear-plugin</code> is preconfigured with the actual configuration in 
     the project templates &quot;root&quot; POM - so you don't need to worry about this error. For further details see: 
     <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a> and 
-    <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>.
+    <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>.<br/><br/>
+    m2eclipse uses Maven3 internally even if we have configured Eclipse to use en external Maven 2.2.x  installation,
+    so the build error is connected to this as well.
   </li>
   <li>
     Fix annoyances.<br/>
@@ -458,38 +460,44 @@ in the project and provides a hierarchical list of them.</p>
     </div>
   </li>
   <li>EAR Module Assembly<br/>
-  	<!--
-    <div class="inline-block" style="width:14.4%;">
-      <img src="img/eclipse-annoyance-08.png" longdesc="img/eclipse-annoyance-08.png" 
-        class="screenshot" style="width:100%; margin-bottom:.3em;" />
-        Wrong EAR Module Assembly
-    </div>
-    -->
     <div class="inline-block" style="width:48.5%;">
       <img src="img/eclipse-annoyance-06_1.png" longdesc="img/eclipse-annoyance-06_1.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
-      References seam-tutorial-ejb.<strong>ejb</strong>
+      <ul>
+      <li>Rename seam-tutorial-ejb.<strong>ejb</strong> to seam-tutorial-ejb.<strong>jar</strong></li>
+      <li>Delete <code>src/main/application</code></li>
+      <li>Add folder <code>target/seam-tutorial-ear-0.1-SNAPSHOT/META-INF</code></li>
+      </ul>
     </div>
     <div class="inline-block" style="width:48.5%;">
       <img src="img/eclipse-annoyance-07_1.png" longdesc="img/eclipse-annoyance-07_1.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
-      Must reference seam-tutorial-ejb.<strong>jar</strong>
+      <ul>
+      <li>&quot;Correct&quot; Module Assembly</li>
+      </ul>
     </div>
   </li>
   <li>WAR Module Assembly<br/>
     <div class="inline-block" style="width:48.5%;">
       <img src="img/eclipse-annoyance-09.png" longdesc="img/eclipse-annoyance-09.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      <ul>
+      <li>Add folder <code>target/seam-tutorial-war-0.1-SNAPSHOT/WEB-INF</code></li>
+      </ul>
     </div>
     <div class="inline-block" style="width:48.5%;">
       <img src="img/eclipse-annoyance-10.png" longdesc="img/eclipse-annoyance-10.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
+      <ul>
+      <li>&quot;Correct&quot; Module Assembly</li>
+      </ul>
     </div>
   </li>
   <li>
     Run Maven install.
-    <img src="img/eclipse-import-maven-09.png" longdesc="img/eclipse-import-maven-09.png" 
-      class="screenshot" style="width:500px;" />
+      <img src="img/eclipse-import-maven-09.png" longdesc="img/eclipse-import-maven-09.png" 
+      class="screenshot" style="width:500px;" /> 
+    This will fix the build error mentioned earlier. 
   </li>
 </ol>
 
