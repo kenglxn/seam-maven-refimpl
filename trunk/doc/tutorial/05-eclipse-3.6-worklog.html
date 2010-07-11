@@ -79,12 +79,12 @@
     Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.2:generate-application-xml 
     (default-generate-application-xml) on project seam-tutorial-jbt32-ear: Failed to initialize JBoss configuration</pre>
     
-		m2eclipse uses Maven3 internally even if we have configured Eclipse to use en external Maven 2.2.x  installation,
+    m2eclipse uses Maven3 internally even if we have configured Eclipse to use en external Maven 2.2.x  installation,
     so this the same build error as we will get running <code>mvn install</code> from a command shell using Maven 3.
   </li>
   <li>
   	<strong>Maven3 Issue:</strong><br />
-    Maven3 does not evaluate external properties during the "ear:generate-application-xml" goal. <br />
+    Maven3 does not evaluate external properties during the &quot;ear:generate-application-xml&quot; goal. <br />
     In a portable build we want Maven to generate the <code>application.xml</code> and <code>jboss.app.xml</code>
     resource files based on property values stored in an external properties file. This works perfect i in 
     Maven-2 but fails in Maven-3:
@@ -262,20 +262,23 @@
   </li>
   <li>
   	Publish<br />
-  	<strong>JBoss Tools 3.2 Issue:</strong><br />
-    Seam jar is published to a separate folder.
     <img src="img/jbt32-tutorial-wtp-full-publish.png" longdesc="img/jbt32-tutorial-wtp-full-publish.png" 
       class="screenshot" style="width:400px;" />
 
+  	<strong>JBoss Tools 3.2 Issue:</strong><br />
+    Seam jar is published to a separate folder but should be published to ear root folder.
     <img src="img/jbt32-tutorial-wtp-incorrect-publish.png" longdesc="img/jbt32-tutorial-wtp-incorrect-publish.png" 
       class="screenshot" style="width:400px;" />
-      
+    
+    We must correct this before we can start the server.  
     <img src="img/jbt32-tutorial-wtp-corrected-publish.png" longdesc="img/jbt32-tutorial-wtp-corrected-publish.png" 
       class="screenshot" style="width:400px;" />
-      
+
+		The server starts without erros.      
     <img src="img/jbt32-tutorial-wtp-server-started.png" longdesc="img/jbt32-tutorial-wtp-server-started.png" 
       class="screenshot" style="width:400px;" />
 
+		Browse the application at <a href="http://localhost:8080/jbt32tutorial/">http://localhost:8080/jbt32tutorial/</a>.
     <img src="img/jbt32-tutorial-welcome.png" longdesc="img/jbt32-tutorial-welcome.png" 
       class="screenshot" style="width:400px;" />
   </li>
