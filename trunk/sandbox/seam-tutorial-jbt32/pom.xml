@@ -12,7 +12,7 @@
     <relativePath></relativePath> <!-- To avoid m3 warning -->
   </parent>
 
-  <groupId>no.knowit.seam</groupId>
+  <groupId>no.knowit.seam.examples</groupId>
   <artifactId>seam-tutorial-jbt32</artifactId> <!-- m2eclipse does not like: ${app.context} -->
   <version>0.1-SNAPSHOT</version>
   <name>${project.artifactId} : ${project.version}</name>
