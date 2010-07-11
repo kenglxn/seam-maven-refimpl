@@ -215,15 +215,23 @@
   </li>
   <li>
     EAR Deployment assembly<br />
-  	<strong>JBoss Tools 3.2 Issue:</strong><br />
-    Resource files should be published from the EAR target folder due to filtering of resource 
-    files and generating of <code>application.xml</code> and  <code>jboss.app.xml</code> 
-    during the Maven <code>generate-sources</code> goal.<br />
+  	<strong>JBoss Tools 3.2 Issues:</strong>
+    <ul>
+      <li>
+        <code>seam-tutorial-ejb</code> module has wrong naming: <code>seam-tutorial-ejb.<strong>ejb</strong></code>.
+        Should be named <code>seam-tutorial-ejb.<strong>jar</strong></code><br />
+      </li>
+      <li>
+        Resource files should be published from the EAR target folder due to filtering of resource 
+        files and generating of <code>application.xml</code> and  <code>jboss.app.xml</code> 
+        during the Maven <code>generate-sources</code> goal.<br />
+      </li>
+    </ul>
     
     <div class="inline-block" style="width:48.5%;">
       <img src="img/jbt32-tutorial-ear-deployment-assembly.png" longdesc="img/jbt32-tutorial-ear-deployment-assembly.png" 
         class="screenshot" style="width:100%;" />
-      Rename seam-tutorial-ejb.<strong>ejb</strong> to seam-tutorial-ejb.<strong>jar</strong><br />
+      Rename <code>seam-tutorial-ejb.<strong>ejb</strong></code> to <code>seam-tutorial-ejb.<strong>jar</strong></code><br />
       Delete <code>src/main/application</code><br />
       Add folder <code>target/seam-tutorial-jbt32-ear-0.1-SNAPSHOT/META-INF</code>
     </div>
