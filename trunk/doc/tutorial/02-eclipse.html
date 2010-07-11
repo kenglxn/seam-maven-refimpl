@@ -16,7 +16,7 @@
 
 <script type="text/javascript" src="../js/site.js"></script>
 
-<script type="text/javascript">
+<script type="text/javascript">/* <![CDATA[ */
   $(document).ready(function() {
     $(".code-frame a").click(function( event ) {
       event.preventDefault(); 
@@ -25,7 +25,7 @@
     
     $('img').fullsize();
   });
-</script>
+/* ]]> */</script>
 
 <title>Seam Maven reference Implentation - Eclipse 3.5 and JBoss Tools Tutorial</title>
 </head>
@@ -427,50 +427,63 @@ in the project and provides a hierarchical list of them.</p>
   </li>
   <li>
     Fix annoyances.<br/>
-    <div class="inline-block" style="width:31%;">
+    <div class="inline-block" style="width:30.3%;">
       <img src="img/eclipse-annoyance-01.png" longdesc="img/eclipse-annoyance-01.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1752">MNGECLIPSE-1752</a>
     </div>
-    <div class="inline-block" style="width:40.4%;">
+    <div class="inline-block" style="width:39.4%;">
       <img src="img/eclipse-annoyance-02.png" longdesc="img/eclipse-annoyance-02.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       Select Workspace default JRE
     </div>
-    <div class="inline-block" style="width:27.6%;">
+    <div class="inline-block" style="width:27%;">
       <img src="img/eclipse-annoyance-03.png" longdesc="img/eclipse-annoyance-03.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       Delete Eclipse generated <code>application.xml</code>
       <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a>, 
       <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>
     </div>
-    <div class="inline-block" style="width:31%;">
+    <div class="inline-block" style="width:30.2%;">
       <img src="img/eclipse-annoyance-04.png" longdesc="img/eclipse-annoyance-04.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       <code>ear/src/main/application</code> should be source folder.
     </div>
-    <div class="inline-block" style="width:68.5%;">
+    <div class="inline-block" style="width:67.1%;">
       <img src="img/eclipse-annoyance-05.png" longdesc="img/eclipse-annoyance-05.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       Schema validation for some resource files fails due to use of Maven property placeholders. The 
       target resource files should be correct, so you can safely delete cvc and duplicate component 
-	  erros.
+	  	erros.
     </div>
-    
-    <div class="inline-block" style="width:19.7%;">
+  </li>
+  <li>EAR Module Assembly<br/>
+  	<!--
+    <div class="inline-block" style="width:14.4%;">
       <img src="img/eclipse-annoyance-08.png" longdesc="img/eclipse-annoyance-08.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
         Wrong EAR Module Assembly
     </div>
-    <div class="inline-block" style="width:39.6%;">
-      <img src="img/eclipse-annoyance-06.png" longdesc="img/eclipse-annoyance-06.png" 
+    -->
+    <div class="inline-block" style="width:48.5%;">
+      <img src="img/eclipse-annoyance-06_1.png" longdesc="img/eclipse-annoyance-06_1.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       References seam-tutorial-ejb.<strong>ejb</strong>
     </div>
-    <div class="inline-block" style="width:39.6%;">
-      <img src="img/eclipse-annoyance-07.png" longdesc="img/eclipse-annoyance-07.png" 
+    <div class="inline-block" style="width:48.5%;">
+      <img src="img/eclipse-annoyance-07_1.png" longdesc="img/eclipse-annoyance-07_1.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       Must reference seam-tutorial-ejb.<strong>jar</strong>
+    </div>
+  </li>
+  <li>WAR Module Assembly<br/>
+    <div class="inline-block" style="width:48.5%;">
+      <img src="img/eclipse-annoyance-09.png" longdesc="img/eclipse-annoyance-09.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
+    </div>
+    <div class="inline-block" style="width:48.5%;">
+      <img src="img/eclipse-annoyance-10.png" longdesc="img/eclipse-annoyance-10.png" 
+        class="screenshot" style="width:100%; margin-bottom:.3em;" />
     </div>
   </li>
   <li>
@@ -1598,17 +1611,16 @@ plugins\org.eclipse.osgi_3.4.3.R34x_v20081215-1030.jar
 </div> <!-- #expander -->
 </div> <!-- #sizer -->
 
-<!--
-  <script type="text/javascript">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-  </script>
-  <script type="text/javascript">
-    try {
-        var pageTracker = _gat._getTracker("UA-9570909-1");
-        pageTracker._trackPageview();
-    } catch(err) {
-    }</script>
--->
+<script type="text/javascript">/* <![CDATA[ */
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+/* ]]> */</script>
+<script type="text/javascript">/* <![CDATA[ */
+		try {
+				var pageTracker = _gat._getTracker("UA-9570909-1");
+				pageTracker._trackPageview();
+		} catch(err) {
+		}
+/* ]]> */</script>
 </body>
 </html>
