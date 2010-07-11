@@ -27,7 +27,7 @@
   });
 /* ]]> */</script>
 
-<title>Maven, Seam 2.2, Eclipse 3.6 and JBoss Tools Work Log</title>
+<title>Maven, Seam 2.2, Eclipse 3.6 and JBoss Tools 3.2 Work Log</title>
 </head>
 
 <body>
@@ -37,7 +37,7 @@
 
 <div id="header">
 <div class="header">
-  <h1>Maven, Seam 2.2, Eclipse 3.6 and JBoss Tools Work Log</h1>
+  <h1>Maven, Seam 2.2, Eclipse 3.6 and JBoss Tools 3.2 Work Log</h1>
 </div>
 </div> 
 
@@ -62,10 +62,98 @@
     
     <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
       class="screenshot" style="width:500px;" />
+
+  	<strong>Maven3 Issue:</strong><br />
+    Maven3 does not evaluate external properties during the "ear:generate-application-xml" goal. <br />
+    In a portable build we want Maven to gernerate <code>application.xml</code> and <code>jboss.app.xml</code>
+    based on property values stored in an external properties file. This works perfect i in Maven-2 but 
+    not in Maven-3:
+    
+    <pre>
+    
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-ear-plugin&lt;/artifactId&gt;
+      &lt;version&gt;2.4.2&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;finalName&gt;${app.context}-ear&lt;/finalName&gt;
+        &lt;displayName&gt;${app.display.name}&lt;/displayName&gt;
+        &lt;description&gt;${app.description}&lt;/description&gt;
+        
+        &lt;!-- 
+          MNGECLIPSE-1541:
+          During the import of a mavenized ear project (File &gt; Import... &gt; General &gt; Maven Projects) 
+          an application.xml file is generated in src/main/application/META-INF/application.xml.
+          https://issues.sonatype.org/browse/MNGECLIPSE-1541
+          
+          MNGECLIPSE-2145: 
+          Generated application.xml doesn't contain final names
+          https://issues.sonatype.org/browse/MNGECLIPSE-2145
+          
+          To fix this we excludes the eclipse generated application.xml during mvn package
+        --&gt;
+        &lt;earSourceExcludes&gt;**/application.xml&lt;/earSourceExcludes&gt;
+        
+        &lt;!-- Use maven generated application.xml --&gt;
+        &lt;generateApplicationXml&gt;true&lt;/generateApplicationXml&gt;
+        
+        &lt;version&gt;5&lt;/version&gt;
+        &lt;defaultLibBundleDir&gt;lib&lt;/defaultLibBundleDir&gt;
+        &lt;encoding&gt;UTF-8&lt;/encoding&gt;
+        
+        &lt;jboss&gt;
+          &lt;!--
+            To trigger the generation of the jboss-app.xml file you need to
+            configure the 'jboss' element. see:
+            http://maven.apache.org/plugins/maven-ear-plugin/usage.html and:
+            http://maven.apache.org/plugins/maven-ear-plugin/examples/generating-jboss-app.html
+          --&gt;
+          &lt;version&gt;${as.version}&lt;/version&gt;
+
+          &lt;loader-repository&gt;
+            &lt;!--
+              seam.jboss.org is a Seam-specific scoped classloader. It acts as
+              a way for Seam to disassociate artifacts bundled with the
+              application from those that exist within the JBoss application
+              server's shared artifacts or JARs (for example, those that
+              reside in the default server's lib directory or in JBoss's
+              general lib directory). 
+              The classloader is referenced in jboss-app.xml for EAR deployment and and in 
+              jboss-web.xml for WAR deployment (SiA-2.5.3-p63).
+              see: http://www.jboss.org/community/wiki/classloadingconfiguration
+              see: http://www.mastertheboss.com/en/jboss-application-server/141-jboss-classloader.html
+            --&gt;
+            seam.jboss.org:loader=${app.context}-ear
+          &lt;/loader-repository&gt;
+
+          &lt;data-sources&gt;
+            &lt;data-source&gt;META-INF/ds/${ds.xml}&lt;/data-source&gt;
+          &lt;/data-sources&gt;
+        &lt;/jboss&gt;
+        
+        &lt;archive&gt;
+          &lt;manifest&gt;
+            &lt;addClasspath&gt;true&lt;/addClasspath&gt;
+            &lt;addDefaultImplementationEntries&gt;true&lt;/addDefaultImplementationEntries&gt;
+          &lt;/manifest&gt;
+          &lt;manifestEntries&gt;
+            &lt;Build-Machine&gt;${env.COMPUTERNAME}&lt;/Build-Machine&gt;
+            &lt;Url&gt;${project.url}&lt;/Url&gt;
+          &lt;/manifestEntries&gt;
+        &lt;/archive&gt;
+
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;   
+    </pre>
+    
+    Properties are externalized to filter-*.properties file and read into maven using  
+    <code><a href="http://mojo.codehaus.org/properties-maven-plugin/">org.codehaus.mojo:properties-maven-plugin</a></code>.
   </li>
-  <li><a href="02-eclipse.html#import-project-into-eclipse">Import a Mavenized Seam Project into Eclipse</a></li>
-  
-  <li>Annoyance: web.xml is stripped for comments, must restore restore original from svn.</li>
+  <li>
+  	<a href="02-eclipse.html#import-project-into-eclipse">Import a Mavenized Seam Project into Eclipse</a><br/>
+  	<strong>JBoss Tools 3.2 Issue:</strong><br />
+   	web.xml is stripped for comments after project import, must restore original web.xml from svn (not an issue in JBoss Tools 3.1).
+  </li>
 </ol>
 
 </div> <!-- #page -->
