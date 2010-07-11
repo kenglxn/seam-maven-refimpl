@@ -14,7 +14,7 @@
 
   <artifactId>seam-tutorial-jbt32-war</artifactId> <!-- m2eclipse does not like: ${app.context}-ear -->
   <name>${project.artifactId} : ${project.version}</name>
-  <description>Eclipse-3.6, Maven2, Seam2, JBossTools-3.2 tutorial - WAR module</description>
+  <description>Eclipse-3.6, Maven 2, Seam 2.2, JBoss Tools 3.2 work log tutorial - WAR module</description>
   <packaging>war</packaging>
 
   <profiles>
