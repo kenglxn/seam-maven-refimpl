@@ -419,20 +419,15 @@ in the project and provides a hierarchical list of them.</p>
     Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.1:generate-application-xml 
     (default-generate-application-xml) on project seam-tutorial-ear: Failed to initialize JBoss 
     configuration</font></code><br/><br/>
-    This is an m2eclipse bug that is fixed by excluding the eclipse generated application.xml during 
-    mvn package. The <code>maven-ear-plugin</code> is preconfigured with the actual configuration in 
-    the project templates &quot;root&quot; POM - so you don't need to worry about this error. For further details see: 
-    <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a> and 
-    <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>.<br/><br/>
     m2eclipse uses Maven3 internally even if we have configured Eclipse to use en external Maven 2.2.x  installation,
-    so the build error is connected to this as well.
+    so this the same build error as we will get running <code>mvn install</code> from a command shell using Maven 3.
   </li>
   <li>
     Fix annoyances.<br/>
     <div class="inline-block" style="width:30.3%;">
       <img src="img/eclipse-annoyance-01.png" longdesc="img/eclipse-annoyance-01.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
-      <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1752">MNGECLIPSE-1752</a>
+      Incorrect JRE, see: <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1752">MNGECLIPSE-1752</a>
     </div>
     <div class="inline-block" style="width:39.4%;">
       <img src="img/eclipse-annoyance-02.png" longdesc="img/eclipse-annoyance-02.png" 
@@ -442,7 +437,7 @@ in the project and provides a hierarchical list of them.</p>
     <div class="inline-block" style="width:27%;">
       <img src="img/eclipse-annoyance-03.png" longdesc="img/eclipse-annoyance-03.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
-      Delete Eclipse generated <code>application.xml</code>
+      Delete Eclipse generated <code>application.xml</code>, see:
       <a href="https://issues.sonatype.org/browse/MNGECLIPSE-1541">MNGECLIPSE-1541</a>, 
       <a href="https://issues.sonatype.org/browse/MNGECLIPSE-2145">MNGECLIPSE-2145</a>
     </div>
@@ -473,11 +468,11 @@ in the project and provides a hierarchical list of them.</p>
       <img src="img/eclipse-annoyance-07_1.png" longdesc="img/eclipse-annoyance-07_1.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       <ul>
-      <li>&quot;Correct&quot; Module Assembly</li>
+      <li>Corrected Module Assembly</li>
       </ul>
     </div>
   </li>
-  <li>WAR Module Assembly<br/>
+  <li>Web Module Assembly<br/>
     <div class="inline-block" style="width:48.5%;">
       <img src="img/eclipse-annoyance-09.png" longdesc="img/eclipse-annoyance-09.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
@@ -489,7 +484,7 @@ in the project and provides a hierarchical list of them.</p>
       <img src="img/eclipse-annoyance-10.png" longdesc="img/eclipse-annoyance-10.png" 
         class="screenshot" style="width:100%; margin-bottom:.3em;" />
       <ul>
-      <li>&quot;Correct&quot; Module Assembly</li>
+      <li>Corrected Module Assembly</li>
       </ul>
     </div>
   </li>
