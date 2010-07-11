@@ -44,10 +44,18 @@
 <div id="page">
 
 <ol>
-	<li><a href="01-gettingstarted.html#checkout-install">Check Out, Install, Build and Run the Project</a></li>
-	<li><a href="01-gettingstarted.html#use-as-template">Use the seam-refimpl Project as a Template for Your Own Project</a></li>
-	<li><a href="01-gettingstarted.html#activate-development-mode">Activate Development Mode</a></li>
-  <li><a href="02-eclipse.html#configure-eclipse">Configure Eclipse and Create Workspace</a></li>
+	<li>
+  	<a href="01-gettingstarted.html#checkout-install">Check Out, Install, Build and Run the Project</a>
+  </li>
+	<li>
+  	<a href="01-gettingstarted.html#use-as-template">Use the seam-refimpl Project as a Template for Your Own Project</a>
+  </li>
+	<li>
+  	<a href="01-gettingstarted.html#activate-development-mode">Activate Development Mode</a>
+  </li>
+  <li>
+  	<a href="02-eclipse.html#configure-eclipse">Configure Eclipse and Create Workspace</a>
+  </li>
   <li>
   	<a href="02-eclipse.html#configure-workspace">Install Plugins and Configure Workspace</a><br/>
     <strong>Note:</strong> You can not use Maven 3! The project externalizes some properties that is 
@@ -151,8 +159,44 @@
   </li>
   <li>
   	<a href="02-eclipse.html#import-project-into-eclipse">Import a Mavenized Seam Project into Eclipse</a><br/>
+  </li>
+  <li>
   	<strong>JBoss Tools 3.2 Issue:</strong><br />
-   	web.xml is stripped for comments after project import, must restore original web.xml from svn (not an issue in JBoss Tools 3.1).
+   	<code>web.xml</code> is stripped for comments after project import, must restore original <code>web.xml</code> 
+    from svn (not an issue in JBoss Tools 3.1).
+  </li>
+  <li>
+  	<strong>m2eclipse issue:</strong><br />
+    Incorrect JRE in EAR module after import.
+  </li>
+  <li>
+  	<strong>m2eclipse issue:</strong><br />
+    The EAR module's <code>src/application</code> folder should be source folder after import.
+  </li>
+  <li>
+    EAR Deployment assembly<br />
+  	<strong>JBoss Tools 3.2 Issue:</strong><br />
+    Resource files should be published from the EAR target folder due to filtering of resource 
+    files and generating of <code>application.xml</code> and  <code>jboss.app.xml</code> 
+    during the Maven <code>generate-sources</code> goal.
+  </li>
+  <li>
+    WAR Deployment assembly<br />
+  	<strong>JBoss Tools 3.2 Issue:</strong><br />
+    Resource files should be published from WAR target folder due to filtering of resource 
+    files during the Maven <code>generate-sources</code> goal.
+  </li>
+  <li>
+    EJB Deployment assembly<br />
+    Do we need to make any modifications here? Looks like resource files are published from target?
+  </li>
+  <li>
+  	Add EAR project to WTP server
+  </li>
+  <li>
+  	Publish<br />
+  	<strong>JBoss Tools 3.2 Issue:</strong><br />
+    Seam jar is published to a separate folder.
   </li>
 </ol>
 
