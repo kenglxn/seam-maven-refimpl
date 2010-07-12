@@ -100,6 +100,7 @@
     [ERROR] Failed to execute goal org.apache.maven.plugins:maven-ear-plugin:2.4.2:generate-application-xml 
     (default-generate-application-xml) on project mvn3-problem-ear: Failed to initialize JBoss configuration: 
     Invalid JBoss configuration, version[${as.version}] is not supported. -&gt; [Help 1]</pre>
+    The bug is reported in JIRA: <a href="http://jira.codehaus.org/browse/MNG-2971">http://jira.codehaus.org/browse/MNG-2971</a>.
   </li>
   <li>
     <a href="http://www.eclipse.org/downloads/">
@@ -388,7 +389,7 @@ in the project and provides a hierarchical list of them.</p>
   </li>
   <li>
     Open a command shell, navigate to your project directory and run: 
-    <code><strong>mvn eclipse:eclipse</strong></code><br/>
+    <code><strong>mvn install eclipse:eclipse</strong></code><br/>
     If you omit this step you will from time to time get a lot of null pointer exceptions while 
     importing the project into Eclipse! You can also delete the modules that caused the null pointer 
     exceptions and import them again.
@@ -421,6 +422,7 @@ in the project and provides a hierarchical list of them.</p>
     configuration</font></code><br/><br/>
     m2eclipse uses Maven3 internally even if we have configured Eclipse to use en external Maven 2.2.x  installation,
     so this the same build error as we will get running <code>mvn install</code> from a command shell using Maven 3.
+     The bug is reported in JIRA: <a href="http://jira.codehaus.org/browse/MNG-2971">http://jira.codehaus.org/browse/MNG-2971</a>.
   </li>
   <li>
     Fix annoyances.<br/>
