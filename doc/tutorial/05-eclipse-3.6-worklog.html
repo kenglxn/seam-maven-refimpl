@@ -43,7 +43,7 @@
 
 <div id="page">
 
-<ol>
+<ol class="vspace">
 	<li>
   	<a href="01-gettingstarted.html#checkout-install">Check Out and Build Trunk</a>
   </li>
@@ -72,11 +72,15 @@
     as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
   </li>
   <li>
+    Open a command shell, navigate to your project directory and run: <br />
+    <code><strong>mvn install eclipse:eclipse</strong></code>
+  </li>
+  <li>
   	<a href="02-eclipse.html#configure-eclipse">Configure Eclipse and Create Workspace</a>
   </li>
   <li>
   	<a href="02-eclipse.html#configure-workspace">Install Plugins and Configure Workspace</a><br/>
-    <strong>Note:</strong> You can not use Maven 3, see Maven 3 issue later in work log.
+    <strong>Note:</strong> You can not use Maven 3, see Maven 3 issue later in this work log.
     
     <img src="img/eclipse-maven-installations.png" longdesc="img/eclipse-maven-installations.png"
       class="screenshot" style="width:400px;" />
@@ -95,6 +99,7 @@
     
     m2eclipse uses Maven3 internally even if we have configured Eclipse to use en external Maven 2.2.x  installation,
     so this the same build error as we will get running <code>mvn install</code> from a command shell using Maven 3.
+    The bug is reported in JIRA: <a href="http://jira.codehaus.org/browse/MNG-2971">http://jira.codehaus.org/browse/MNG-2971</a>.
   </li>
   <li>
   	<strong>Maven3 Issue:</strong><br />
