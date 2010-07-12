@@ -55,7 +55,21 @@
   </li>
 	<li>
   	<a href="01-gettingstarted.html#activate-development-mode">Activate Development Mode</a><br/>
-    Remember to copy <code>src/main/filters/filter-prod.properties</code> to <code>src/main/filters/filter-dev.properties</code>
+    In brief: Copy <code>src/main/filters/filter-prod.properties</code> to <code>src/main/filters/filter-dev.properties</code>.
+    Modify <code>filter-dev.properties</code>:
+    <ul>
+      <li>Set the property <code>jdk.debug</code> to <strong>true</strong>.</li>
+      <li>Set the property <code>jdk.optimize</code> to <strong>false</strong>.</li>
+      <li>Set the property <code>app.debug</code> to <strong>true</strong>.</li>
+      <li>Set the property <code>app.unpack.modules</code> to <strong>true</strong>.</li>
+      <li>Point the <code>as.home</code> property to the directory where you installed JBoss AS.</li>
+    </ul>
+    <pre>
+    jdk.debug         =<font color="blue"><strong>true</strong></font>
+    jdk.optimize      =<font color="blue"><strong>false</strong></font>
+    app.debug         =<font color="blue"><strong>true</strong></font>
+    app.unpack.modules=<font color="blue"><strong>true</strong></font>
+    as.home           =<font color="blue"><strong>C:/dev/server/jboss-4.2.3.GA-jdk6</strong></font></pre>
   </li>
   <li>
   	<a href="02-eclipse.html#configure-eclipse">Configure Eclipse and Create Workspace</a>
