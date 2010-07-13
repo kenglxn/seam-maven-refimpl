@@ -1345,12 +1345,22 @@ pu.jboss.entity.manager.factory.jndi.name    =java:/${app.context}EntityManagerF
 </li>
 <li>
   As you browse trough the pages you will find that that the <code><strong>TeeList</strong></code>
-  page fails to load. The problem is desctibed here: 
-  <a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04/chapter-developments.txt">
-  http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch04/chapter-developments.txt</a>.
-  A solution is found here: 
-  <a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch05/chapter-developments.txt">
-  http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch05/chapter-developments.txt</a>.
+  page fails to load. <br/><br/>
+  The <a href="http://code.google.com/p/seam-maven-refimpl/issues/detail?id=4">solution</a> is to
+  add the following override method to <code>org.domain.seamtutorial.session.TeeList</code>
+  <pre>
+     @Override
+     protected String getCountEjbql()
+     {
+        String before = super.getCountEjbql();
+        String after = before.replace("select count(tee) ", "select count(*) ");
+        return(after);
+     }
+  </pre>
+  
+  Also check comments i code 
+  <a href="http://seam-maven-refimpl.googlecode.com/svn/trunk/samples/seaminaction/stages/projects-ch06/action/src/main/java/org/open18/action/TeeList.java">
+  here</a>.
 </li>
 </ol>
 
