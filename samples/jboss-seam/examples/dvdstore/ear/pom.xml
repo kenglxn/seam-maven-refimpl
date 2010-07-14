@@ -159,14 +159,22 @@
     </dependency>
 
     <!-- hibernate -->
-    <!--
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-commons-annotations</artifactId>
-      <scope>provided</scope>
     </dependency>
-    -->
     
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search</artifactId>
+    </dependency>
+    
+    <!-- lucene -->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+    </dependency>
+
     <!-- commons -->
     <dependency>
       <groupId>commons-beanutils</groupId>

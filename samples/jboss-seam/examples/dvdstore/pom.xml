@@ -99,6 +99,61 @@
         <version>1.0-SNAPSHOT</version>
         <type>ejb</type>
       </dependency>
+      
+      
+      
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-commons-annotations</artifactId>
+        <version>3.3.0.ga</version>
+        <exclusions>
+          <!-- ** -->
+          <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-search</artifactId>
+        <version>3.1.1.GA</version>
+        <exclusions>
+          <!-- ** -->
+          <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>ejb3-persistence</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-commons-annotations</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-core</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -150,6 +205,20 @@
       <artifactId>hibernate-commons-annotations</artifactId>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+    <!-- lucene -->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
 
     <!-- jee -->
     <dependency>
