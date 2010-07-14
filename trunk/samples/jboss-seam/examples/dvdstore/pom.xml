@@ -101,7 +101,7 @@
       </dependency>
       
       
-      
+      <!-- Begin: This should go into our root pom -->
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-commons-annotations</artifactId>
@@ -153,6 +153,7 @@
         <artifactId>lucene-core</artifactId>
         <version>2.4.0</version>
       </dependency>
+      <!-- End: This should go into our root pom -->
 
     </dependencies>
   </dependencyManagement>

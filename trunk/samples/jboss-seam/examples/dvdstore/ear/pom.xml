@@ -255,12 +255,10 @@
     -->
 
     <!-- JBoss jBPM -->
-    <!-- 
     <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-jpdl</artifactId>
     </dependency>
-    -->
   </dependencies>
 
   <build>
