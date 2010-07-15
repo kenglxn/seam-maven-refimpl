@@ -11,6 +11,7 @@
   xmlns:transaction="http://jboss.com/products/seam/transaction"
   xmlns:jms="http://jboss.com/products/seam/jms"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:framework="http://jboss.com/products/seam/framework"
   xsi:schemaLocation="
 		http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
 		http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd
@@ -22,6 +23,7 @@
 		http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
 		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd
 		http://jboss.com/products/seam/transaction http://jboss.com/products/seam/jms-2.2.xsd
+		http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.2.xsd
 ">
      
   <!-- 
