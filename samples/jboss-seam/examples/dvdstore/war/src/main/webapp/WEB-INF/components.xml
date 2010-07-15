@@ -100,24 +100,6 @@
 	-->
   <transaction:ejb-transaction />
 
-	<!--
-		There are two rewrite options in Seam, you can choose to either use the org.tuckey 
-		UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both. 
-		The native Seam rewriting does not use the org.tuckey rewrite engine at all. 
-		If you are going to use Seam's native rewriting, then remove the org.tuckey
-		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file.
-		
-		This filter allows Seam to apply URL rewriting for views based on configuration in the 
-		pages.xml file. The view-mapping parameter must match the servlet mapping defined for the 
-		Faces Servlet in the web.xml file. If ommitted, the rewrite filter assumes the pattern *.seam.
- 
-		With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine, see:
-			http://docs.jboss.org/seam/latest/reference/en-US/html/configuration.html
-		
-		<web:rewrite-filter view-mapping="/seam/*" />
-	 -->
-	<web:rewrite-filter />
-	
   <web:hot-deploy-filter 
   	url-pattern="*.seam" />
 
@@ -127,61 +109,54 @@
 		override-client="true"  
 		url-pattern="*.seam" />
 					  
-	<!-- 
-  <mail:mail-session 
-  	host="localhost" 
-  	port="25" 
-  	username="user" 
-  	password="test" />
-	-->
-
-  <!-- For use with jBPM pageflow or process management
+  <!-- For use with jBPM pageflow or process management -->
   <bpm:jbpm>
-    <bpm:process-definitions></bpm:process-definitions>
-    <bpm:pageflow-definitions></bpm:pageflow-definitions>
+    <bpm:process-definitions>
+      <value>ordermanagement1.jpdl.xml</value>
+    </bpm:process-definitions>
   </bpm:jbpm>
-  -->
-
 
   <security:identity 
-	  authenticate-method="#{authenticator.authenticate}" 
-	  remember-me="true" />
+	  authenticate-method="#{authenticator.authenticate}" />
 	
-	<!-- 
-		Seam Identity Management.
-		see: seam_reference-15.0 
-		see: http://blog.hibernate.org/10904.lace
-	-->
- 
-	<!-- 
-	<security:identity />
+  <factory 
+    name="order" 
+    value="#{orderHome.instance}" 
+    scope="stateless" 
+    auto-create="true" />
+           
+  <framework:entity-home 
+      name="orderHome" 
+      entity-class="com.jboss.dvd.seam.Order" 
+      scope="conversation" 
+      auto-create="true">
+      
+    <framework:id>#{orderId}</framework:id>
+  </framework:entity-home>
+                                    
 
-	<security:remember-me 
-		enabled="true" />
-	
-	<security:jpa-identity-store
-		user-class="no.knowit.example.security.model.UserAccount"
-		role-class="no.knowit.example.security.model.UserRole" />
+  <framework:entity-query 
+    name="allCategories"
+    ejbql="select c from Category c"
+    order="c.name">
+                          
+    <!--  waiting for hibernate issue EJB-277
+    <framework:hints>
+        <key>org.hibernate.cacheable</key>
+        <value>true</value>
+    </framework:hints>
+     -->
+   
+  </framework:entity-query>    
+      
 
-	<security:jpa-permission-store 
-		user-permission-class="no.knowit.example.security.model.UserPermission" />
+  <factory name="topProducts" 
+           value="#{topQuery.resultList}" />
 
-  <drools:rule-base name="securityRules">
-    <drools:rule-files>
-       <value>/META-INF/security.drl</value>
-    </drools:rule-files>
-  </drools:rule-base>
-
-  <security:rule-based-permission-resolver 
-  	security-rules="#{securityRules}" />
-	--> 
-
-  <event type="org.jboss.seam.security.notLoggedIn">
-    <action execute="#{redirect.captureCurrentView}" />
-  </event>
-
-  <event type="org.jboss.seam.security.loginSuccessful">
-    <action execute="#{redirect.returnToCapturedView}" />
-  </event>
+  <framework:entity-query 
+    name="topQuery"
+    ejbql="select p from Product p"
+    order="p.inventory.sales desc" 
+    max-results="8" />    
 
 </components>
