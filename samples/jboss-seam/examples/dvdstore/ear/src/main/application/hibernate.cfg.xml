@@ -8,6 +8,8 @@
   <session-factory>
 
     <property name="show_sql">false</property>
+    
+    <!-- LOO20100715 TODO: Parametrize this and check w. persistence.xml -->
     <property name="connection.datasource">java:/dvdstoreDatasource</property>
     <property name="transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</property>
     <property name="transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
