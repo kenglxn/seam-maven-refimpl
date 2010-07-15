@@ -15,34 +15,6 @@
 		<location>/404.xhtml</location>
 	</error-page>
 	
-  <!-- RichFaces  -->
-	<context-param>
-		<param-name>org.richfaces.SKIN</param-name>
-		<param-value>glassX</param-value>
-	</context-param>
-
-	<!-- Suppress spurious stylesheets -->
-	<context-param>
-		<param-name>org.richfaces.CONTROL_SKINNING</param-name>
-		<param-value>disable</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>org.richfaces.CONTROL_SKINNING_CLASSES</param-name>
-		<param-value>disable</param-value>
-	</context-param>
-
-	<!-- Change load strategy to DEFAULT to disable sending scripts/styles as packs -->
-	<context-param>
-		<param-name>org.richfaces.LoadStyleStrategy</param-name>
-		<param-value>ALL</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>org.richfaces.LoadScriptStrategy</param-name>
-		<param-value>ALL</param-value>
-	</context-param>
-
   <!-- Seam -->
 	<listener>
 		<listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
@@ -115,26 +87,6 @@
 		<url-pattern>*.seam</url-pattern>
 	</servlet-mapping>
 
-	<!-- Not shure if this is needed
-	<context-param>
-		<description>
-			JSF 1.2 detects the ViewHandler/StateManager version from the
-			faces-config.xml DTD/XML schema name. The faces-config.xml files in
-			the RichFaces JARs use the JSF 1.1 DTDs, causing JSF to use 1.1
-			behavior. Setting this flag to false ignores the version of the DTD
-			used in these files, thus ensuring that JSF uses 1.2 behavior.
-			
-			One of the critical improvements in JSF 1.2 is that it throws a
-			ViewExpiredException on a session timeout.
-			
-			See http://jira.jboss.com/jira/browse/RF-2294 and
-			http://lists.jboss.org/pipermail/seam-dev/2008-February/000024.html.
-		</description>
-		<param-name>com.sun.faces.disableVersionTracking</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	-->
-	
 	<!-- URL Rewrite Filter - declare after seam filter -->
 	<!--
 		There are two rewrite options in Seam, you can choose to either use the org.tuckey 
@@ -144,30 +96,43 @@
 		UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file. 
 		With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine.
 	 -->
-	<!--	
-	<filter>
-		<filter-name>UrlRewriteFilter</filter-name>
-		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>UrlRewriteFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	-->
+  <filter>
+    <filter-name>UrlRewriteFilter</filter-name>
+    <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+
+    <!--
+    <init-param>
+        <param-name>logLevel</param-name>
+        <param-value>DEBUG</param-value>
+    </init-param>
+    <init-param>
+        <param-name>statusPath</param-name>
+        <param-value>/status</param-value>
+    </init-param>
+    -->
+    
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>UrlRewriteFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
 	
 	<session-config>
 		<session-timeout>10</session-timeout> 
 	</session-config>
   
 	<!-- -->
-	<security-constraint>
-		<display-name>Restrict raw XHTML Documents</display-name>
-		<web-resource-collection>
-			<web-resource-name>XHTML</web-resource-name>
-			<url-pattern>*.xhtml</url-pattern>
-		</web-resource-collection>
-		<auth-constraint/>
-	</security-constraint>
-
+  <security-constraint> 
+    <display-name>Restrict XHTML Documents</display-name>
+    <web-resource-collection>
+      <web-resource-name>XHTML</web-resource-name>
+      <url-pattern>*.xhtml</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>NONE</role-name>
+    </auth-constraint>
+  </security-constraint>
+  
 </web-app>

@@ -32,6 +32,16 @@
         as is the case in JBoss AS 5. 
       -->       
       <property name="jboss.entity.manager.factory.jndi.name" value="${pu.jboss.entity.manager.factory.jndi.name}" />
+
+      <!-- Hibernate Search -->      
+      <!-- use a file system based index -->
+      <property name="hibernate.search.default.directory_provider" value="org.hibernate.search.store.FSDirectoryProvider"/>
+      <!-- directory where the indexes will be stored -->
+      <property name="hibernate.search.default.indexBase" value="./dvdindexes"/>  
+      <!-- Not needed with HA 3.3 -->
+      <property name="hibernate.ejb.event.post-insert" value="org.hibernate.search.event.FullTextIndexEventListener"/>
+      <property name="hibernate.ejb.event.post-update" value="org.hibernate.search.event.FullTextIndexEventListener"/>
+      <property name="hibernate.ejb.event.post-delete" value="org.hibernate.search.event.FullTextIndexEventListener"/>         
     </properties>
     
     <!--

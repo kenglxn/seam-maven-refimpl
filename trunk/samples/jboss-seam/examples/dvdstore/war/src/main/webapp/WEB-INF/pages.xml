@@ -7,88 +7,89 @@
 	login-view-id="/login.xhtml"
 >
 
-	<page view-id="/home.xhtml">
-		<rewrite pattern="/" />
-		<rewrite pattern="/index{.*}" />
-		<rewrite pattern="/home{.*}" />
-		<rewrite pattern="/default{.*}" />
-		<rewrite pattern="/welcome{.*}" />
-	</page>
-	
-	<page view-id="/login.seam">
-		<rewrite pattern="/login"/> 
-	</page>
+  <page view-id="/dvd.xhtml" 
+        action="#{search.selectFromRequest}"> 
 
-	<page view-id="*">
-		<navigation from-action="#{identity.logout}">
-			<redirect view-id="/home.xhtml"/>
-		</navigation>
-   
-		<navigation>
-			<rule if-outcome="home">
-				<redirect view-id="/home.xhtml" />
-			</rule>
-		</navigation>
-	</page>
-	
-	<exception class="org.jboss.seam.framework.EntityNotFoundException">
-		<redirect view-id="/error.xhtml">
-			<message severity="warn">Record not found</message>
-		</redirect>
-	</exception>
-	
-	<exception class="javax.persistence.EntityNotFoundException">
-	  <redirect view-id="/error.xhtml">
-	    <message severity="warn">Record not found</message>
-	  </redirect>
-	</exception>
-	
-	<exception class="javax.persistence.EntityExistsException">
-	  <redirect view-id="/error.xhtml">
-	    <message severity="warn">Duplicate record</message>
-	  </redirect>
-	</exception>
-	
-	<exception class="javax.persistence.OptimisticLockException">
-	  <end-conversation/>
-	  <redirect view-id="/error.xhtml">
-	    <message severity="warn">Another user changed the same data, please try again</message>
-	  </redirect>
-	</exception>
-	
-	<exception class="javax.persistence.PersistenceException">
-		<redirect view-id="/error.xhtml">
-			<message>The operation failed, please try again</message>
-		</redirect>
-	</exception>
-	
-	<exception class="org.jboss.seam.security.AuthorizationException">
-		<end-conversation />
-		<redirect view-id="/security_error.xhtml">
-			<message severity="error">You do not have permission to access this resource</message>
-		</redirect>
-	</exception>
-	
-	<exception class="org.jboss.seam.security.NotLoggedInException">
-	  <redirect view-id="/login.xhtml">
-	    <message severity="warn">#{messages['org.jboss.seam.NotLoggedIn']}</message>
-	  </redirect>
-	</exception>
-	
-	<exception class="javax.faces.application.ViewExpiredException">
-	  <redirect view-id="/error.xhtml">
-	    <message severity="warn">Your session has timed out, please try again</message>
-	  </redirect>
-	</exception>
-	
-	<exception class="org.jboss.seam.ConcurrentRequestTimeoutException">
-	  <http-error error-code="503" />
-	</exception>
-	 
-	<exception>
-	  <redirect view-id="/error.xhtml">
-	    <message severity="error">Unexpected error, please try again</message>
-	  </redirect>
-	</exception>
+      <param name="id" value="#{search.selectedId}"/> 
+
+      <navigation from-action="#{search.addToCart}">
+          <redirect view-id="/dvd.xhtml"/>
+      </navigation>
+  </page>
+
+  <page view-id="/admin/ship.xhtml"
+        no-conversation-view-id="/admin/admin.xhtml"/>
+  
+  <page view-id="/admin/accept.xhtml"
+        no-conversation-view-id="/admin/admin.xhtml"/>
+  
+  <page view-id="/admin/admin.xhtml">
+      <navigation>
+          <rule if-outcome="ship">
+              <redirect view-id="/admin/ship.xhtml"/>
+          </rule>
+          <rule if-outcome="accept">
+              <redirect view-id="/admin/accept.xhtml"/>
+          </rule>
+      </navigation>
+  </page>
+
+  <!-- this action ensures that only admin users can access anything under /admin" -->
+  <page view-id="/admin/*">
+      <restrict>#{s:hasRole('admin')}</restrict>
+  </page>
+  
+  <page view-id="*">    
+      <navigation from-action="#{identity.logout}">
+          <redirect view-id="/home.xhtml"/>
+      </navigation>
+
+      <navigation from-action="#{identity.login}">
+          <rule if="#{s:hasRole('admin')}">
+              <redirect view-id="/admin/admin.xhtml"/>
+          </rule>
+      </navigation>
+
+      <navigation>
+          <rule if-outcome="home">
+              <redirect view-id="/home.xhtml"/>
+          </rule>
+          
+          <rule if-outcome="browse">
+              <redirect view-id="/browse.xhtml"/>
+          </rule>
+
+          <rule if-outcome="checkout">
+              <redirect view-id="/checkout.xhtml"/>
+          </rule>
+
+          <rule if-outcome="showorders">
+              <redirect view-id="/showorders.xhtml"/>
+          </rule>
+
+          <rule if-outcome="admin">
+              <redirect view-id="/admin/admin.xhtml"/>
+          </rule>            
+      </navigation>
+  </page>
+  
+
+  <exception class="org.jboss.seam.security.NotLoggedInException"> 
+      <redirect view-id="/home.xhtml"> 
+          <message>You must be logged in to access administrative pages.</message> 
+      </redirect> 
+  </exception> 
+
+  <exception class="org.jboss.seam.security.AuthorizationException"> 
+      <redirect view-id="/home.xhtml"> 
+          <message>You are not authorized to access administrative pages.</message> 
+      </redirect> 
+  </exception> 
+
+  <exception class="javax.faces.application.ViewExpiredException">
+      <redirect view-id="/home.xhtml">
+          <message>The page you tried to access is no longer available.</message>
+      </redirect>
+  </exception>
     
 </pages>
