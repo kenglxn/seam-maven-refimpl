@@ -168,6 +168,52 @@
       <artifactId>lucene-core</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-highlighter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-memory</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-misc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-queries</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-snowball</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-spatial</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-spellchecker</artifactId>
+    </dependency>
+
+    <!-- Solr's Analyzer Framework -->
+    <dependency>
+      <groupId>org.apache.solr</groupId>
+      <artifactId>solr-core</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.solr</groupId>
+      <artifactId>solr-solrj</artifactId>
+    </dependency>
+    
     <!-- commons -->
     <dependency>
       <groupId>commons-beanutils</groupId>
@@ -180,72 +226,6 @@
       <artifactId>commons-digester</artifactId>
       <type>jar</type>
     </dependency>
-
-    <!-- 
-      JBoss Rules. Needed if you implement drools functionality, e.g. Seam Idendity 
-      see: samples/jboss-seam/examlpes/seamspace 
-    -->
-    <!-- 
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-compiler</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-decisiontables</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-templates</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3_min</artifactId>
-    </dependency>
-    -->
-    
-    <!-- rules + groovy -->
-    <!-- 
-    <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr-runtime</artifactId>
-    </dependency>
-    --> 
-    
-    <!-- Added transient by JBoss Rules 
-    <dependency>
-      <groupId>org.mvel</groupId>
-      <artifactId>mvel2</artifactId>
-    </dependency> 
-
-    <dependency>
-      <groupId>janino</groupId>
-      <artifactId>janino</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jdt</groupId>
-      <artifactId>core</artifactId>
-    </dependency>
-    -->
 
     <!-- JBoss jBPM -->
     <dependency>
@@ -332,15 +312,12 @@
               <!--
                 Comment out this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
               -->
-              <!--
               <outputDirectory>${project.build.directory}/${project.build.finalName}/META-INF/ds</outputDirectory>
-              -->
               
               <!--
                 Uncomment this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
+                <outputDirectory>${project.build.directory}</outputDirectory>
               -->
-              <outputDirectory>${project.build.directory}</outputDirectory>
-              
               <resources>
                 <resource>
                   <directory>src/main/resources</directory>
@@ -391,11 +368,9 @@
             <!--
               Comment out this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
             -->
-            <!--
             <data-sources>
               <data-source>META-INF/ds/${ds.xml}</data-source>
             </data-sources>
-            -->
           </jboss>
 
           <archive>
