@@ -151,13 +151,6 @@
       <type>jar</type>
     </dependency>
 
-    <!-- richfaces -->
-    <dependency>
-      <groupId>org.richfaces.framework</groupId>
-      <artifactId>richfaces-api</artifactId>
-      <type>jar</type>
-    </dependency>
-
     <!-- hibernate -->
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -339,12 +332,15 @@
               <!--
                 Comment out this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
               -->
+              <!--
               <outputDirectory>${project.build.directory}/${project.build.finalName}/META-INF/ds</outputDirectory>
-
+              -->
+              
               <!--
                 Uncomment this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
-                <outputDirectory>${project.build.directory}</outputDirectory>
               -->
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              
               <resources>
                 <resource>
                   <directory>src/main/resources</directory>
@@ -364,7 +360,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-ear-plugin</artifactId>
         <configuration>
-          <finalName>${app.context}-ear</finalName>
+          <finalName>${app.context}</finalName>
           <displayName>${app.display.name}</displayName>
           <description>${app.description}</description>
           <jboss>
@@ -389,15 +385,17 @@
                 see: http://www.jboss.org/community/wiki/classloadingconfiguration
                 see: http://www.mastertheboss.com/en/jboss-application-server/141-jboss-classloader.html
               -->
-              seam.jboss.org:loader=${app.context}-ear
+              seam.jboss.org:loader=seam-dvd
             </loader-repository>
 
             <!--
               Comment out this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
             -->
+            <!--
             <data-sources>
               <data-source>META-INF/ds/${ds.xml}</data-source>
             </data-sources>
+            -->
           </jboss>
 
           <archive>
