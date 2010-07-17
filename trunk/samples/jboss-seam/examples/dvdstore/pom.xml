@@ -213,6 +213,10 @@
         <exclusions>
           <!-- ** -->
           <exclusion>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+          </exclusion>
+          <exclusion>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
           </exclusion>
@@ -245,6 +249,10 @@
         <version>1.4.0</version>
         <exclusions>
           <!-- ** -->
+          <exclusion>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+          </exclusion>
           <exclusion>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
