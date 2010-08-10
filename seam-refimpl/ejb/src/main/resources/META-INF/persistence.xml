@@ -127,6 +127,10 @@
     default_catalog   	    : Qualify unqualified table names with the given catalog in generated 
                               SQL. eg. CATALOG_NAME 
     hibernate.
+    session_factory_name    : The org.hibernate.SessionFactory will be automatically bound to this 
+                              name in JNDI after it has been created.
+                              e.g. jndi/composite/name
+    hibernate.
     generate_statistics     : If enabled, Hibernate will collect statistics useful for performance 
                               tuning. eg. true | false 
     hibernate.
