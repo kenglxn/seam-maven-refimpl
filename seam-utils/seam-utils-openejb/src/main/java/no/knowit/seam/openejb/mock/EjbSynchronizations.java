@@ -2,6 +2,7 @@ package no.knowit.seam.openejb.mock;
 
 import static org.jboss.seam.annotations.Install.MOCK;
 
+import javax.ejb.Remove;
 import javax.ejb.SessionSynchronization;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -45,4 +46,8 @@ public class EjbSynchronizations
 	extends org.jboss.seam.transaction.EjbSynchronizations 
 	implements org.jboss.seam.transaction.LocalEjbSynchronizations, SessionSynchronization {
 	
+  @Remove
+  public void destroy() {
+  }
 }
+
