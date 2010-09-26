@@ -25,13 +25,16 @@ public class ToStringBuilderTest {
   private static Logger log = Logger.getLogger(ToStringBuilderTest.class);
   
   private static final String EXPECTED_INTARRAY_TOSTRING = "{ [1, 2, 3]\n}";
+  private static final String EXPECTED_FLOATVALUE_TOSTRING = 
+    "{ \"Float\" : {\n    \"value\" : 12.0\n  }\n}";
+  
   private static final String EXPECTED_STRINGARRAY_TOSTRING = 
     "{ [\"Array\", \"or\", \"List\", \"of\", \"strings\"]\n}";
   
   private static final String EXPECTED_STRINGMAP_TOSTRING = 
     "{ {\n" +
-    "    \"finland\" : \"the land of a thousand lakes\",\n" +
-    "    \"norway\" : \"the land of the midnight sun\"\n" +
+    "    \"Finland\" : \"the land of a thousand lakes\",\n" +
+    "    \"Norway\" : \"the land of the midnight sun\"\n" +
     "  }\n" +
     "}";
 
@@ -46,71 +49,107 @@ public class ToStringBuilderTest {
   private static final String EXPECTED_NESTEDBEAN_FRAGMENT_1 = "{ \"NestedBean\" : {";
 
   private static final String EXPECTED_NESTEDBEAN_FRAGMENT_2 = 
-    "\"norway\" : \"the land of the midnight sun\"";
+    "\"Norway\" : \"the land of the midnight sun\"";
     
     
   private static final String ASSERT_MESSAGE_FORMAT = "Actual: [%s]. Expected: [%s].";
-  private final DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  private final DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
   private Date expectedDate;
   
   
   @BeforeSuite
   public void beforeSuite() throws Exception {
-    //System.out.println("******* " + this.getClass().getSimpleName() + ".beforeSuite()");
-
-    dateformat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-    expectedDate = dateformat.parse("2010-04-11 15:11:28");
+    //dateformat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+    expectedDate = dateformat.parse("2010-04-11 15:11:28 +0200");
   }
 
   @Test
-  public void anythingToString() throws Exception {
-    
-    int[] intArray = new int[]{1,2,3};
-    String actual = ToStringBuilder.build(intArray).toString(); 
-    assert actual.equals(EXPECTED_INTARRAY_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
-    
-    String[] stringArray = new String[]{"Array", "or", "List", "of", "strings"};
-    actual = ToStringBuilder.build(stringArray).toString(); 
-    assert actual.equals(EXPECTED_STRINGARRAY_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGARRAY_TOSTRING);
-
-    List<Integer> integerList = Arrays.asList(new Integer(1), new Integer(2), new Integer(3));
-    actual = ToStringBuilder.build(integerList).toString(); 
-
-    log.debug("\n"+actual);
-    
-    assert actual.equals(EXPECTED_INTARRAY_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
-
-    List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
-    actual = ToStringBuilder.build(stringList).toString(); 
-    assert actual.equals(EXPECTED_STRINGARRAY_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGARRAY_TOSTRING);
-    
-    Map<String, String> stringMap = new HashMap<String, String>();
-    stringMap.put("finland", "the land of a thousand lakes");
-    stringMap.put("norway",  "the land of the midnight sun");
-    actual = ToStringBuilder.build(stringMap).toString(); 
-    assert actual.equals(EXPECTED_STRINGMAP_TOSTRING)  
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGMAP_TOSTRING);
-
+  public void should() throws Exception {
     SimpleBean simpleBean = createSimpleBean();
-    actual = ToStringBuilder.build(simpleBean).toString();
-    assert actual.startsWith(EXPECTED_SIMPLEBEAN_FRAGMENT)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLEBEAN_FRAGMENT);
-    
+    String actual = ToStringBuilder.builder(simpleBean)
+      .withPublicOnly(true)
+      .toString();
     log.debug("\n"+actual);
 
     NestedBean nestedBean = createNestedBean(simpleBean);
-    actual = ToStringBuilder.build(nestedBean).toString();
-    assert actual.startsWith(EXPECTED_NESTEDBEAN_FRAGMENT_1) && 
-      actual.contains(EXPECTED_NESTEDBEAN_FRAGMENT_2)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, 
-          EXPECTED_NESTEDBEAN_FRAGMENT_1 + "\n" + EXPECTED_NESTEDBEAN_FRAGMENT_2);
+    actual = ToStringBuilder
+      .builder(nestedBean)
+      .withPublicOnly(false)
+      .toString();
+    log.debug("\n"+actual);
+
+    actual = ToStringBuilder
+      .builder(simpleBean)
+      .withIndentation(1)
+      .withAttribute("id")
+      .withAttribute("color")
+      .withAttribute("baz")
+      .toString();
+    log.debug("\n"+actual);
     
+    actual = ToStringBuilder.builder(nestedBean)
+      .withIndentation(2)
+      .withAttribute("animalList")
+      .withAttribute("catArray")
+      .withPrettyPrint(false)
+      .toString();
     log.debug("\n"+actual);
   }
+  
+//  @Test
+//  public void anythingToString() throws Exception {
+//    
+//    int[] intArray = new int[]{1,2,3};
+//    String actual = ToStringBuilder.build(intArray).toString(); 
+//    assert actual.equals(EXPECTED_INTARRAY_TOSTRING)  
+//      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
+//    
+//    String[] stringArray = new String[]{"Array", "or", "List", "of", "strings"};
+//    actual = ToStringBuilder.build(stringArray).toString(); 
+//    assert actual.equals(EXPECTED_STRINGARRAY_TOSTRING)  
+//      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGARRAY_TOSTRING);
+//
+//    List<Integer> integerList = Arrays.asList(new Integer(1), new Integer(2), new Integer(3));
+//    actual = ToStringBuilder.build(integerList).toString(); 
+//    log.debug("\n"+actual);
+//    assert actual.equals(EXPECTED_INTARRAY_TOSTRING)  
+//      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
+//    
+//    Float floatValue = 12.0F;
+//    actual = ToStringBuilder.build(floatValue).toString(); 
+//    log.debug("\n"+actual);
+//    assert actual.equals(EXPECTED_FLOATVALUE_TOSTRING)  
+//      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_FLOATVALUE_TOSTRING);
+//
+//
+//    List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
+//    actual = ToStringBuilder.build(stringList).toString(); 
+//    assert actual.equals(EXPECTED_STRINGARRAY_TOSTRING)  
+//      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGARRAY_TOSTRING);
+//    
+//    Map<String, String> stringMap = new HashMap<String, String>();
+//    stringMap.put("Finland", "the land of a thousand lakes");
+//    stringMap.put("Norway",  "the land of the midnight sun");
+//    actual = ToStringBuilder.build(stringMap).toString(); 
+//    assert actual.equals(EXPECTED_STRINGMAP_TOSTRING)  
+//      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGMAP_TOSTRING);
+//
+//    SimpleBean simpleBean = createSimpleBean();
+//    actual = ToStringBuilder.build(simpleBean).toString();
+//    assert actual.startsWith(EXPECTED_SIMPLEBEAN_FRAGMENT)
+//      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLEBEAN_FRAGMENT);
+//    
+//    log.debug("\n"+actual);
+//
+//    NestedBean nestedBean = createNestedBean(simpleBean);
+//    actual = ToStringBuilder.build(nestedBean).toString();
+//    assert actual.startsWith(EXPECTED_NESTEDBEAN_FRAGMENT_1) && 
+//      actual.contains(EXPECTED_NESTEDBEAN_FRAGMENT_2)
+//      : String.format(ASSERT_MESSAGE_FORMAT, actual, 
+//          EXPECTED_NESTEDBEAN_FRAGMENT_1 + "\n" + EXPECTED_NESTEDBEAN_FRAGMENT_2);
+//    
+//    log.debug("\n"+actual);
+//  }
 
   private SimpleBean createSimpleBean() {
     SimpleBean simpleBean = new SimpleBean();
@@ -126,6 +165,7 @@ public class ToStringBuilderTest {
 
   private NestedBean createNestedBean(SimpleBean simpleBean) {
     NestedBean nestedBean = new NestedBean(99, simpleBean);
+    MetaCache.set("floatValue",  nestedBean, 12.0F);
     MetaCache.set("intArray",    nestedBean, new int[]{1,2,3});
     MetaCache.set("stringArray", nestedBean, new String[]{"Array", "or", "List", "of", "strings"});
 
@@ -144,11 +184,11 @@ public class ToStringBuilderTest {
     MetaCache.set("animalList", nestedBean, animalsList);
     
     Map<String, String> stringMap = new HashMap<String, String>();
-    stringMap.put("finland", "the land of a thousand lakes");
-    stringMap.put("norway",  "the land of the midnight sun");
-    stringMap.put("denmark", "the land of fairy-tales and mermaids");
-    stringMap.put("sweden",  "one upon a time they had Volvo and Saab");
-    stringMap.put("iceland", "the land of volcanoes and geysirs");
+    stringMap.put("Finland", "the land of a thousand lakes");
+    stringMap.put("Norway",  "the land of the midnight sun");
+    stringMap.put("Denmark", "the land of fairy-tales and mermaids");
+    stringMap.put("Sweden",  "one upon a time they had Volvo and Saab");
+    stringMap.put("Iceland", "the land of volcanoes and geysirs");
     MetaCache.set("stringMap", nestedBean, stringMap);
       
     Map<String, Dog> dogMap = new HashMap<String, Dog>();

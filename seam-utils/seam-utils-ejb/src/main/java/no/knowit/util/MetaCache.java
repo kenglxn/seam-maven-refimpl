@@ -36,12 +36,10 @@ public class MetaCache {
     if(method != null) {
       return ReflectionUtils.get(method, target);
     }
-    
     Field field = meta.fields.get(attribute);
     if(field != null) {
       return ReflectionUtils.get(field, target);
     }
-
     throw new IllegalArgumentException(String.format(
         ATTRIBUTE_NOT_FOUND, target.getClass().getName(), attribute));
   }
@@ -50,20 +48,17 @@ public class MetaCache {
     if(target == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "target"));
     }
-    
     Meta meta = getMeta(target.getClass());
     Method method = meta.setters.get(attribute);
     if(method != null) {
       ReflectionUtils.set(method, target, value);
       return;
     }
-    
     Field field = meta.fields.get(attribute);
     if(field != null) {
       ReflectionUtils.set(field, target, value);
       return;
     }
-    
     throw new IllegalArgumentException(String.format(
         ATTRIBUTE_NOT_FOUND, target.getClass().getName(), attribute));
   }
@@ -129,12 +124,14 @@ public class MetaCache {
           Class<?>[] types = method.getParameterTypes();
           
           if((methodName.startsWith("get") || methodName.startsWith("is"))) {
-            if((types == null || types.length == 0) && !getters.containsKey(propertyName)) 
+            if((types == null || types.length == 0) && !getters.containsKey(propertyName)) { 
               getters.put(propertyName, method);
+            }
           }
           else {
-            if((types != null && types.length == 1) && !setters.containsKey(propertyName)) 
+            if((types != null && types.length == 1) && !setters.containsKey(propertyName)) { 
               setters.put(propertyName, method);
+            }
           }
         }
       }

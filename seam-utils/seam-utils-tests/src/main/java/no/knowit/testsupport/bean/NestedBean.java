@@ -6,6 +6,7 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class NestedBean {
   private Integer id;
+  private Float floatValue;
   private SimpleBean simpleBean;
   private int[] intArray;
   private String[] stringArray;
@@ -24,5 +25,10 @@ public class NestedBean {
     this.id = id;
     this.simpleBean = simpleBean;
   }
+  
+  public List<Animal> getAnimalList() {
+    return animalList;
+  }
+
 }
 
