@@ -17,6 +17,10 @@ public class SimpleBean {
     this.foo = foo * 2;
   }
   
+  public int getFoo() {
+    return foo;
+  }
+  
   protected void setBar(final String bar) {
     this.bar = "setBar -> " + bar;
   }

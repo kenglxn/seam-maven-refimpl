@@ -27,13 +27,15 @@ public class ReflectionUtils {
       java.sql.Date.class,       java.sql.Time.class,      java.sql.Timestamp.class
   );
   
-  public static final List<String> OBJECT_PRIMITIVES_AS_STRING = Arrays.asList(
-      "java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
-      "java.lang.Character", "java.lang.Double",   "java.lang.Float",
-      "java.lang.Integer",   "java.lang.Long",     "java.lang.Number",
-      "java.lang.Short",     "java.util.Currency", "java.util.Date",
-      "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" 
-  );
+//  public static final List<Class<? extends Serializable>> DATE_PRIMITIVES = OBJECT_PRIMITIVES.subList(11, 14);
+  
+//  public static final List<String> OBJECT_PRIMITIVES_AS_STRING = Arrays.asList(
+//      "java.lang.String",    "java.lang.Boolean",  "java.lang.Byte",
+//      "java.lang.Character", "java.lang.Double",   "java.lang.Float",
+//      "java.lang.Integer",   "java.lang.Long",     "java.lang.Number",
+//      "java.lang.Short",     "java.util.Currency", "java.util.Date",
+//      "java.sql.Date",       "java.sql.Time",      "java.sql.Timestamp" 
+//  );
   
   private static final String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
 
@@ -264,6 +266,6 @@ public class ReflectionUtils {
   }
   
   public static boolean isPrimitive(final Class<?> type) {
-    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
+    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) != -1);
   }
 }
