@@ -67,31 +67,40 @@ public class ToStringBuilderTest {
   public void should() throws Exception {
     SimpleBean simpleBean = createSimpleBean();
     String actual = ToStringBuilder.builder(simpleBean)
-      .withPublicOnly(true)
+      .withPublicFields(true)
+      .withPrettyFormat(false)
+      .withFormatter(new ToStringBuilder.Formatter() {
+        @Override
+        public String format(Object value) {
+          return value.toString();
+        }
+      })
       .toString();
     log.debug("\n"+actual);
 
     NestedBean nestedBean = createNestedBean(simpleBean);
     actual = ToStringBuilder
       .builder(nestedBean)
-      .withPublicOnly(false)
+      .withPublicFields(false)
       .toString();
     log.debug("\n"+actual);
 
     actual = ToStringBuilder
       .builder(simpleBean)
       .withIndentation(1)
-      .withAttribute("id")
-      .withAttribute("color")
-      .withAttribute("baz")
+      .withField("id")
+      .withField("color")
+      .withField("baz")
       .toString();
     log.debug("\n"+actual);
     
     actual = ToStringBuilder.builder(nestedBean)
       .withIndentation(2)
-      .withAttribute("animalList")
-      .withAttribute("catArray")
-      .withPrettyPrint(false)
+      .withField("animalList")
+      .withField("catArray")
+      .withField("Animal.name")
+      .withField("Animal.says")
+      .withPrettyFormat(false)
       .toString();
     log.debug("\n"+actual);
   }
