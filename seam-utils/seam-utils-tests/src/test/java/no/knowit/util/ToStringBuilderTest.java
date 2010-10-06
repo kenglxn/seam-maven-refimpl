@@ -67,12 +67,19 @@ public class ToStringBuilderTest {
   public void should() throws Exception {
     SimpleBean simpleBean = createSimpleBean();
     String actual = ToStringBuilder.builder(simpleBean)
-      .withPublicFields(true)
-      .withPrettyFormat(false)
-      .withFormatter(new ToStringBuilder.Formatter() {
+      .withPublicFieldsOnly(true)
+      .withPrettyFormat(true)
+      .withIndentation(1)
+      .withFieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
         @Override
-        public String format(Object value) {
-          return value.toString();
+        public String format(Object Owner, String name) {
+          return name + ":";
+        }
+      })
+      .withValueFormatter(new ToStringBuilder.ValueFormatter() {
+        @Override
+        public String format(final Object Owner, final Object value) {
+          return "@" + value.toString();
         }
       })
       .toString();
@@ -81,7 +88,7 @@ public class ToStringBuilderTest {
     NestedBean nestedBean = createNestedBean(simpleBean);
     actual = ToStringBuilder
       .builder(nestedBean)
-      .withPublicFields(false)
+      .withPublicFieldsOnly(false)
       .toString();
     log.debug("\n"+actual);
 

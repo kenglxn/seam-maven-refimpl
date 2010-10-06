@@ -31,11 +31,17 @@ public class ToStringBuilder {
   private boolean prettyFormat = true;
   private boolean publicFields = false;
   private boolean allFields = false;
-  private Formatter formatter = null;
+  private FieldNameFormatter fieldNameFormatter = null;
+  private ValueFormatter valueFormatter = null;
   private final Set<String> fieldNames = new HashSet<String>();
   
-  public interface Formatter {
-    String format(Object value);
+  // Strategy interfaces
+  public interface FieldNameFormatter {
+    String format(final Object Owner, final String name);
+  }
+  
+  public interface ValueFormatter {
+    String format(final Object Owner, final Object value);
   }
 
   private ToStringBuilder() {}
@@ -46,8 +52,7 @@ public class ToStringBuilder {
   
   public static ToStringBuilder builder(final Object target) {
     if(target == null) {
-      throw new IllegalArgumentException(
-        String.format(PARAM_NOT_NULL, "target"));
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "target"));
     }
     return new ToStringBuilder(target);
   }
@@ -57,7 +62,7 @@ public class ToStringBuilder {
     return this;
   }
   
-  public ToStringBuilder withPublicFields(final boolean publicFields) {
+  public ToStringBuilder withPublicFieldsOnly(final boolean publicFields) {
     this.publicFields = publicFields;
     return this;
   }
@@ -76,8 +81,13 @@ public class ToStringBuilder {
     return this;
   }
   
-  public ToStringBuilder withFormatter(Formatter formatter) {
-    this.formatter = formatter;
+  public ToStringBuilder withFieldNameFormatter(FieldNameFormatter fieldNameFormatter) {
+    this.fieldNameFormatter = fieldNameFormatter;
+    return this;
+  }
+  
+  public ToStringBuilder withValueFormatter(ValueFormatter valueFormatter) {
+    this.valueFormatter = valueFormatter;
     return this;
   }
   
@@ -92,92 +102,33 @@ public class ToStringBuilder {
   @Override
   public String toString() {
     
-    final Meta meta = MetaCache.getMeta(target.getClass());
-    
     if(fieldNames.size() < 1) {
+      final Meta meta = MetaCache.getMeta(target.getClass());
       fieldNames.addAll(meta.fields.keySet());
       allFields = true;
     }
-    StringBuilder sb = new StringBuilder(128)
+    StringBuilder sb = new StringBuilder(64)
       .append("{ ")
-      .append(quote(target.getClass().getSimpleName()))
-      .append(" : {\n");
-
-    for (String fieldName : fieldNames) {
-      final Field field = meta.fields.get(fieldName);
-      if(field == null) {
-        continue;
-      }
-      final Method getter = meta.getters.get(fieldName);
-      if( !publicFields || 
-        ( Modifier.isPublic(field.getModifiers()) ||
-            ( getter != null && Modifier.isPublic(getter.getModifiers()) ) ) ) {
-      
-        final Object value = MetaCache.get(fieldName, target);
-        final Class<?> type = field.getType();
-        
-        sb.append(indentation > 0 ? String.format("%" + (indentation*2) + "s", "") : "")
-          .append(quote(fieldName)).append(" : ");
-        
-        if(isPrimitive(type)) {
-          if(formatter != null) {
-            sb.append(formatter.format(value)); 
-          }
-          else {
-            sb.append(primitiveToString(value));
-          }
-        }
-        else {
-          sb.append(build(value, indentation*2));
-        }
-        sb.append(",\n");
-      }
-    }
-    
-    // Delete trailing ','
-    int n = sb.length()-2;
-    if(sb.charAt(n) == ',') {
-      sb.deleteCharAt(n);
-    }
-    sb.append(indentation > 0 ? String.format("%" + (indentation) + "s", "") : "")
-      .append("}\n}");
+      .append(build(target, indentation))
+      .append(indentation > 0 ? String.format("%" + (indentation) + "s", "") : "")
+      .append("\n}");
     
     return prettyFormat ? sb.toString() : sb.toString().replaceAll("\\s+", " ");
   }
-  
-  /**
-   * Creates a string representation of an object
-   * @param target the object to create a string representation of
-   * @return a string representation of the objects' field values
-   */
-//  public static String toString(final Object target) {
-//    return build(target).toString();
-//  }
-  
-  /**
-   * Creates a string representation of an object
-   * @param target the object to create a string representation of
-   * @return a string buffer representation of the objects' field values
-   */
-//  public static StringBuilder build(final Object target) {
-//    return new StringBuilder("{ ")
-//      .append(toStringBuilder(target, 2))
-//      .append("\n}");
-//  }
 
-  private StringBuilder build(final Object target, int indent) {
+  private StringBuilder build(final Object owner, int indent) {
     
     final StringBuilder sb = new StringBuilder(32);
-    if(target == null) {
+    if(owner == null) {
       return sb;
     }
-    if(target instanceof Collection<?>) {
+    if(owner instanceof Collection<?>) {
       sb.append("[");
-      final Collection<?> c = (Collection<?>)target;
+      final Collection<?> c = (Collection<?>)owner;
       int i = 0, l = c.size();
       for (Object v : c) {
         if(v != null && isPrimitive(v.getClass())) {
-          sb.append(primitiveToString(v));
+          sb.append(formatValue(owner, v));
         } 
         else {
           sb.append('\n')
@@ -188,36 +139,37 @@ public class ToStringBuilder {
       }
       sb.append(']');
     }
-    else if(target instanceof Map<?, ?>) {
+    else if(owner instanceof Map<?, ?>) {
       sb.append("{\n");
-      for (Iterator<?> i = ((Map<?, ?>) target).entrySet().iterator(); i.hasNext();) {
+      for (Iterator<?> i = ((Map<?, ?>) owner).entrySet().iterator(); i.hasNext();) {
         final Entry<?, ?> e = (Entry<?, ?>)i.next();
         final Object v = e.getValue();
         
         sb.append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
-          .append(quote(e.getKey().toString()) + " : ");
+          .append(formatFieldName(owner, e.getKey().toString()));
         
         if(v != null) {
-          sb.append(isPrimitive(v.getClass()) ? primitiveToString(v) : build(v, indent+indentation));
+          sb.append(isPrimitive(v.getClass()) ? formatValue(owner, v) : build(v, indent+indentation));
         }
         sb.append(i.hasNext() ? ",\n" : '\n');
       }
       sb.append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
         .append("}");
     }
-    else if(target.getClass().isArray()) {
+    else if(owner.getClass().isArray()) {
       sb.append("[");
-      int l = Array.getLength(target);
+      int l = Array.getLength(owner);
       for (int i = 0; i < l; i++) {
-        Object v = Array.get(target, i);
+        Object v = Array.get(owner, i);
         if(v != null && isPrimitive(v.getClass())) {
-          sb.append(primitiveToString(v));
+          sb.append(formatValue(owner, v));
         }
         else {
           sb.append('\n')
             .append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
             .append(build(v, indent+indentation));
         }
+        // Delete trailing LF
         int n = sb.length()-1;
         if(sb.charAt(n) == '\n') {
           sb.deleteCharAt(n);
@@ -226,9 +178,9 @@ public class ToStringBuilder {
       }
       sb.append(']');
     }
-    else if(target instanceof Object) {
-      sb.append(quote(target.getClass().getSimpleName()) + " : {\n");
-      final Meta meta = MetaCache.getMeta(target.getClass());
+    else if(owner instanceof Object) {
+      sb.append(quote(owner.getClass().getSimpleName()) + " : {\n");
+      final Meta meta = MetaCache.getMeta(owner.getClass());
       for (Entry<String, Field> entry : meta.fields.entrySet()) {
         final Field field = entry.getValue();
         if(field == null) {
@@ -239,16 +191,15 @@ public class ToStringBuilder {
             ( getter != null && Modifier.isPublic(getter.getModifiers()) ) ) ) {
         
           final String fieldName = entry.getKey();
-          if(allFields || isFieldNameInFieldNames(target, fieldName)) {
-            final Object value = MetaCache.get(entry.getKey(), target);
+          if( allFields || isFieldNameInFieldNames(owner, fieldName) ) {
+            final Object value = MetaCache.get(entry.getKey(), owner);
             final Class<?> type = field.getType();
               
             sb.append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
-              .append(quote(fieldName))
-              .append(" : ");
+              .append(formatFieldName(owner, fieldName));
             
             if(isPrimitive(type)) {
-              sb.append(primitiveToString(value));
+              sb.append(formatValue(owner, value));
             }
             else {
               sb.append(build(value, indent+indentation));
@@ -269,28 +220,36 @@ public class ToStringBuilder {
     return sb;
   }
 
-  private String primitiveToString(final Object primitive) {
-    return primitive == null 
-      ? "" : primitive instanceof String 
-      ? quote((String)primitive) : primitive instanceof java.util.Date
-      ? dateFormat.format(primitive) : primitive.toString();
+  private String formatFieldName(final Object owner, final String name) {
+    if(fieldNameFormatter != null) {
+      return fieldNameFormatter.format(owner, name); 
+    }
+    return quote(name) + " : ";
   }
-
-  private boolean isFieldNameInFieldNames(final Object target, final String fieldName) {
-    for (Class<?> clazz = target.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
-      if(fieldNames.contains(String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
+  
+  private String formatValue(final Object owner, final Object value) {
+    if(valueFormatter != null) {
+      return valueFormatter.format(owner, value); 
+    }
+    return value == null 
+      ? "" : value instanceof String 
+      ? quote((String)value) : value instanceof java.util.Date 
+      ? dateFormat.format(value) : value.toString();
+  }
+  
+  private boolean isFieldNameInFieldNames(final Object owner, final String fieldName) {
+    for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
+      if(fieldNames.contains( 
+        target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))
+      ) {
         return true;
       }
     }
     return false;
   }
-  
-  private static boolean isPrimitive(final Class<?> type) {
-    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
-  }
-  
+
   /**
-   * Copy from: org.json.JSONObject\n
+   * Copy from: org.json.JSONObject<br/>
    * Produce a string in double quotes with backslash sequences in all the
    * right places. A backslash will be inserted within </, allowing JSON
    * text to be delivered in HTML. In JSON text, a string cannot contain a
@@ -298,7 +257,7 @@ public class ToStringBuilder {
    * @param string A String
    * @return  A String correctly formatted for insertion in a JSON text.
    */
-  private static String quote(String string) {
+  public static String quote(String string) {
     if (string == null || string.trim().length() == 0) {
       return "\"\"";
     }
@@ -352,4 +311,30 @@ public class ToStringBuilder {
     sb.append('"');
     return sb.toString();
   }
+  
+  private static boolean isPrimitive(final Class<?> type) {
+    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
+  }
+  
+  /**
+   * Creates a string representation of an object
+   * @param target the object to create a string representation of
+   * @return a string representation of the objects' field values
+   */
+//  public static String toString(final Object target) {
+//    return build(target).toString();
+//  }
+  
+  /**
+   * Creates a string representation of an object
+   * @param target the object to create a string representation of
+   * @return a string buffer representation of the objects' field values
+   */
+//  public static StringBuilder build(final Object target) {
+//    return new StringBuilder("{ ")
+//      .append(toStringBuilder(target, 2))
+//      .append("\n}");
+//  }
+
+
 }
