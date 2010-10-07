@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import no.knowit.util.MetaCache.Meta;
 
 /**
@@ -32,16 +34,16 @@ public class ToStringBuilder {
   private boolean publicFields = false;
   private boolean allFields = false;
   private FieldNameFormatter fieldNameFormatter = null;
-  private ValueFormatter valueFormatter = null;
+  private FieldValueFormatter fieldValueFormatter = null;
   private final Set<String> fieldNames = new HashSet<String>();
   
   // Strategy interfaces
   public interface FieldNameFormatter {
-    String format(final Object Owner, final String name);
+    String format(final Object owner, final String name);
   }
   
-  public interface ValueFormatter {
-    String format(final Object Owner, final Object value);
+  public interface FieldValueFormatter {
+    String format(final Object owner, final Object value);
   }
 
   private ToStringBuilder() {}
@@ -86,8 +88,8 @@ public class ToStringBuilder {
     return this;
   }
   
-  public ToStringBuilder withValueFormatter(ValueFormatter valueFormatter) {
-    this.valueFormatter = valueFormatter;
+  public ToStringBuilder withFieldValueFormatter(FieldValueFormatter fieldValueFormatter) {
+    this.fieldValueFormatter = fieldValueFormatter;
     return this;
   }
   
@@ -102,11 +104,36 @@ public class ToStringBuilder {
   @Override
   public String toString() {
     
+    ToStringStyle s;
+    org.apache.commons.lang.builder.ToStringBuilder ts;
+    
+    if(fieldNameFormatter == null) {
+      fieldNameFormatter = new FieldNameFormatter() {
+        @Override
+        public String format(final Object owner, final String name) {
+          return quote(name) + " : ";
+        }
+      };  
+    }
+
+    if(fieldValueFormatter == null) {
+      fieldValueFormatter = new FieldValueFormatter() {
+        @Override
+        public String format(final Object owner, final Object value) {
+          return value == null 
+            ? "" : value instanceof String 
+            ? quote((String)value) : value instanceof java.util.Date 
+            ? dateFormat.format(value) : value.toString();
+        }
+      };
+    }
+    
     if(fieldNames.size() < 1) {
       final Meta meta = MetaCache.getMeta(target.getClass());
       fieldNames.addAll(meta.fields.keySet());
       allFields = true;
     }
+    
     StringBuilder sb = new StringBuilder(64)
       .append("{ ")
       .append(build(target, indentation))
@@ -123,12 +150,12 @@ public class ToStringBuilder {
       return sb;
     }
     if(owner instanceof Collection<?>) {
-      sb.append("[");
+      sb.append('[');
       final Collection<?> c = (Collection<?>)owner;
       int i = 0, l = c.size();
       for (Object v : c) {
         if(v != null && isPrimitive(v.getClass())) {
-          sb.append(formatValue(owner, v));
+          sb.append(fieldValueFormatter.format(owner, v));
         } 
         else {
           sb.append('\n')
@@ -146,23 +173,24 @@ public class ToStringBuilder {
         final Object v = e.getValue();
         
         sb.append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
-          .append(formatFieldName(owner, e.getKey().toString()));
+          .append(fieldNameFormatter.format(owner, e.getKey().toString()));
         
         if(v != null) {
-          sb.append(isPrimitive(v.getClass()) ? formatValue(owner, v) : build(v, indent+indentation));
+          sb.append(isPrimitive(v.getClass()) 
+              ? fieldValueFormatter.format(owner, v) : build(v, indent+indentation));
         }
         sb.append(i.hasNext() ? ",\n" : '\n');
       }
       sb.append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
-        .append("}");
+        .append('}');
     }
     else if(owner.getClass().isArray()) {
-      sb.append("[");
+      sb.append('[');
       int l = Array.getLength(owner);
       for (int i = 0; i < l; i++) {
         Object v = Array.get(owner, i);
         if(v != null && isPrimitive(v.getClass())) {
-          sb.append(formatValue(owner, v));
+          sb.append(fieldValueFormatter.format(owner, v));
         }
         else {
           sb.append('\n')
@@ -179,7 +207,9 @@ public class ToStringBuilder {
       sb.append(']');
     }
     else if(owner instanceof Object) {
-      sb.append(quote(owner.getClass().getSimpleName()) + " : {\n");
+      sb.append(fieldNameFormatter.format(owner, owner.getClass().getSimpleName()))
+        .append("{\n");
+      
       final Meta meta = MetaCache.getMeta(owner.getClass());
       for (Entry<String, Field> entry : meta.fields.entrySet()) {
         final Field field = entry.getValue();
@@ -196,15 +226,10 @@ public class ToStringBuilder {
             final Class<?> type = field.getType();
               
             sb.append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
-              .append(formatFieldName(owner, fieldName));
-            
-            if(isPrimitive(type)) {
-              sb.append(formatValue(owner, value));
-            }
-            else {
-              sb.append(build(value, indent+indentation));
-            }
-            sb.append(",\n");
+              .append(fieldNameFormatter.format(owner, fieldName))
+              .append(isPrimitive(type) ? 
+                  fieldValueFormatter.format(owner, value) : build(value, indent+indentation))
+              .append(",\n");
           }
         }
       }
@@ -220,23 +245,6 @@ public class ToStringBuilder {
     return sb;
   }
 
-  private String formatFieldName(final Object owner, final String name) {
-    if(fieldNameFormatter != null) {
-      return fieldNameFormatter.format(owner, name); 
-    }
-    return quote(name) + " : ";
-  }
-  
-  private String formatValue(final Object owner, final Object value) {
-    if(valueFormatter != null) {
-      return valueFormatter.format(owner, value); 
-    }
-    return value == null 
-      ? "" : value instanceof String 
-      ? quote((String)value) : value instanceof java.util.Date 
-      ? dateFormat.format(value) : value.toString();
-  }
-  
   private boolean isFieldNameInFieldNames(final Object owner, final String fieldName) {
     for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
       if(fieldNames.contains( 

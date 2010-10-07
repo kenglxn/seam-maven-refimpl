@@ -72,13 +72,13 @@ public class ToStringBuilderTest {
       .withIndentation(1)
       .withFieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
         @Override
-        public String format(Object Owner, String name) {
-          return name + ":";
+        public String format(Object owner, String name) {
+          return name + "->";
         }
       })
-      .withValueFormatter(new ToStringBuilder.ValueFormatter() {
+      .withFieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
         @Override
-        public String format(final Object Owner, final Object value) {
+        public String format(final Object owner, final Object value) {
           return "@" + value.toString();
         }
       })
