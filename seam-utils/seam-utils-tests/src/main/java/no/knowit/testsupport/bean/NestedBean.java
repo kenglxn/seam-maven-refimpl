@@ -9,6 +9,7 @@ public class NestedBean {
   private Float floatValue;
   private SimpleBean simpleBean;
   private int[] intArray;
+  private int[][] twoDimensionalArray;
   private String[] stringArray;
   private Cat[] catArray;
   private List<Integer> integerList;
