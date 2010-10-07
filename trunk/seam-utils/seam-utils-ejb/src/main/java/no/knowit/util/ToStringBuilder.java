@@ -15,12 +15,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.builder.ToStringStyle;
-
 import no.knowit.util.MetaCache.Meta;
 
 /**
- * Utility methods to build a string representation of an objects' field values. 
+ * <p>Assists in implementing {@link Object#toString()} methods.</p>
+ * 
  * @author LeifOO
  */
 public class ToStringBuilder {
@@ -101,11 +100,14 @@ public class ToStringBuilder {
     return this;
   }
   
+  /**
+   * Creates a string representation of an object
+   * @param target the object to create a string representation of
+   * @return a string representation of the objects' field values
+   * @see {@link Object#toString()}
+   */
   @Override
   public String toString() {
-    
-    ToStringStyle s;
-    org.apache.commons.lang.builder.ToStringBuilder ts;
     
     if(fieldNameFormatter == null) {
       fieldNameFormatter = new FieldNameFormatter() {
@@ -202,7 +204,9 @@ public class ToStringBuilder {
         if(sb.charAt(n) == '\n') {
           sb.deleteCharAt(n);
         }
-        sb.append(i < l-1 ? ", " : "");
+        if(i < l-1) {
+          sb.append(", ");
+        }
       }
       sb.append(']');
     }

@@ -66,10 +66,11 @@ public class ToStringBuilderTest {
   @Test
   public void should() throws Exception {
     SimpleBean simpleBean = createSimpleBean();
+    
     String actual = ToStringBuilder.builder(simpleBean)
       .withPublicFieldsOnly(true)
       .withPrettyFormat(true)
-      .withIndentation(1)
+      .withIndentation(2)
       .withFieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
         @Override
         public String format(Object owner, String name) {
@@ -182,7 +183,9 @@ public class ToStringBuilderTest {
   private NestedBean createNestedBean(SimpleBean simpleBean) {
     NestedBean nestedBean = new NestedBean(99, simpleBean);
     MetaCache.set("floatValue",  nestedBean, 12.0F);
-    MetaCache.set("intArray",    nestedBean, new int[]{1,2,3});
+    int intArray[] = new int[]{1,2,3};
+    MetaCache.set("intArray", nestedBean, intArray);
+    MetaCache.set("twoDimensionalArray", nestedBean, new int[][]{intArray,{4,5,6},{7,8,9}});
     MetaCache.set("stringArray", nestedBean, new String[]{"Array", "or", "List", "of", "strings"});
 
     Cat cat1 = new Cat("Puss");
