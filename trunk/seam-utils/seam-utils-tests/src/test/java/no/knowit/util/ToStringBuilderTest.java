@@ -69,8 +69,10 @@ public class ToStringBuilderTest {
     
     String actual = ToStringBuilder.builder(simpleBean)
       .withPublicFieldsOnly(true)
-      .withPrettyFormat(true)
+      .withHierarchical(true)
       .withIndentation(2)
+      .withRootNameAlias("FOAA")
+      .withDropRootNode(false)
       .withFieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
         @Override
         public String format(Object owner, String name) {
@@ -108,7 +110,7 @@ public class ToStringBuilderTest {
       .withField("catArray")
       .withField("Animal.name")
       .withField("Animal.says")
-      .withPrettyFormat(false)
+      .withHierarchical(false)
       .toString();
     log.debug("\n"+actual);
   }
@@ -199,22 +201,24 @@ public class ToStringBuilderTest {
     List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
     MetaCache.set("stringList", nestedBean, stringList);
 
-    List<Animal> animalsList = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));;
+    List<Animal> animalsList = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));
     MetaCache.set("animalList", nestedBean, animalsList);
     
-    Map<String, String> stringMap = new HashMap<String, String>();
-    stringMap.put("Finland", "the land of a thousand lakes");
-    stringMap.put("Norway",  "the land of the midnight sun");
-    stringMap.put("Denmark", "the land of fairy-tales and mermaids");
-    stringMap.put("Sweden",  "one upon a time they had Volvo and Saab");
-    stringMap.put("Iceland", "the land of volcanoes and geysirs");
+    Map<String, String> stringMap = new HashMap<String, String>() {{
+      put("Finland", "the land of a thousand lakes");
+      put("Norway",  "the land of the midnight sun");
+      put("Denmark", "the land of fairy-tales and mermaids");
+      put("Sweden",  "one upon a time they had Volvo and Saab");
+      put("Iceland", "the land of volcanoes and geysirs");
+    }};
     MetaCache.set("stringMap", nestedBean, stringMap);
       
-    Map<String, Dog> dogMap = new HashMap<String, Dog>();
-    dogMap.put("Bonzo", new Dog("Bonzo"));
-    dogMap.put("Fido",  new Dog("Fido"));
-    dogMap.put("Lady",  new Dog("Lady"));
-    dogMap.put("Tramp", new Dog("Tramp"));
+    Map<String, Dog> dogMap = new HashMap<String, Dog>() {{
+      put("Bonzo", new Dog("Bonzo"));
+      put("Fido",  new Dog("Fido"));
+      put("Lady",  new Dog("Lady"));
+      put("Tramp", new Dog("Tramp"));
+    }};
     MetaCache.set("dogMap", nestedBean, dogMap);    
     
     return nestedBean;
