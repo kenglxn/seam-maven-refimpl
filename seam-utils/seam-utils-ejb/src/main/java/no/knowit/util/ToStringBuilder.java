@@ -18,7 +18,26 @@ import java.util.Map.Entry;
 import no.knowit.util.MetaCache.Meta;
 
 /**
- * <p>Assists in implementing {@link Object#toString()} methods.</p>
+ * <p>Assists in implementing {@link Object#toString()} methods. For example:<br/>
+ * <b>Given</b> an object that contains two member fields, {@code foo}, and {@code bar}:</p>
+ * <pre><tt>public class MyBean {
+ *     private int foo;
+ *     private String bar;
+ *     
+ *     public MyBean(int foo, String bar) { this.foo = foo; this.bar = bar; }
+ *     public String getBar() { return "Hello: " + bar}
+ *     
+ *     public String toString() {
+ *       <b>return ToStringBuilder
+ *           .builder(this)
+ *           .withHierarchical(false)
+ *           .toString();</b>
+ *     }
+ *   }</tt></pre>
+ * <p><b>When</b> the values of {@code foo} and {@code bar} are 101 and "My Bean!"
+ * <b>then</b> the <code>toString</code> method should return the string:
+ * <tt>"MyBean": {"foo": 101, "bar": "Hello: My Bean!"}"</tt>.
+ * </p>
  * 
  * @author LeifOO
  */
@@ -29,7 +48,9 @@ public class ToStringBuilder {
   private Object target = null;
   private int indentation = 2;
   private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-  private boolean prettyFormat = true;
+  private boolean hierarchical = true;
+  private String rootNameAlias = null;
+  private boolean dropRootNode = false;
   private boolean publicFields = false;
   private boolean allFields = false;
   private FieldNameFormatter fieldNameFormatter = null;
@@ -77,8 +98,19 @@ public class ToStringBuilder {
     return this;
   }
   
-  public ToStringBuilder withPrettyFormat(final boolean prettyFormat) {
-    this.prettyFormat = prettyFormat;
+  public ToStringBuilder withHierarchical(final boolean hierarchical) {
+    this.hierarchical = hierarchical;
+    return this;
+  }
+  
+  public ToStringBuilder withRootNameAlias(final String name) {
+    final String n = name != null ? name.trim() : null; 
+    this.rootNameAlias = n;
+    return this;
+  }
+  
+  public ToStringBuilder withDropRootNode(final boolean dropRootNode) {
+    this.dropRootNode = dropRootNode;
     return this;
   }
   
@@ -113,7 +145,7 @@ public class ToStringBuilder {
       fieldNameFormatter = new FieldNameFormatter() {
         @Override
         public String format(final Object owner, final String name) {
-          return quote(name) + " : ";
+          return quote(name) + ": ";
         }
       };  
     }
@@ -122,27 +154,40 @@ public class ToStringBuilder {
       fieldValueFormatter = new FieldValueFormatter() {
         @Override
         public String format(final Object owner, final Object value) {
-          return value == null 
-            ? "" : value instanceof String 
-            ? quote((String)value) : value instanceof java.util.Date 
-            ? dateFormat.format(value) : value.toString();
+          if(value == null) {
+            return "";
+          }
+          else if (value instanceof String) {
+            return quote((String)value);
+          }
+          else {
+            return value instanceof java.util.Date ? dateFormat.format(value) : value.toString();
+          }
+//          return value == null 
+//            ? "" 
+//            : value instanceof String 
+//            ? quote((String)value) 
+//            : value instanceof java.util.Date 
+//            ? dateFormat.format(value) 
+//            : value.toString();
         }
       };
     }
     
+    if(rootNameAlias == null) {
+      rootNameAlias = target.getClass().getSimpleName();
+    }
+    
     if(fieldNames.size() < 1) {
-      final Meta meta = MetaCache.getMeta(target.getClass());
-      fieldNames.addAll(meta.fields.keySet());
       allFields = true;
     }
     
     StringBuilder sb = new StringBuilder(64)
-      .append("{ ")
+      .append(dropRootNode ? "" : '{')
       .append(build(target, indentation))
-      .append(indentation > 0 ? String.format("%" + (indentation) + "s", "") : "")
-      .append("\n}");
+      .append(dropRootNode ? "" : '}');
     
-    return prettyFormat ? sb.toString() : sb.toString().replaceAll("\\s+", " ");
+    return hierarchical ? sb.toString() : sb.toString().replaceAll("\\s+", " ");
   }
 
   private StringBuilder build(final Object owner, int indent) {
@@ -161,7 +206,7 @@ public class ToStringBuilder {
         } 
         else {
           sb.append('\n')
-            .append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
+            .append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
             .append(build(v, indent+indentation));
         }
         sb.append(++i < l ? ", " : "");
@@ -174,7 +219,7 @@ public class ToStringBuilder {
         final Entry<?, ?> e = (Entry<?, ?>)i.next();
         final Object v = e.getValue();
         
-        sb.append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
+        sb.append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
           .append(fieldNameFormatter.format(owner, e.getKey().toString()));
         
         if(v != null) {
@@ -183,7 +228,7 @@ public class ToStringBuilder {
         }
         sb.append(i.hasNext() ? ",\n" : '\n');
       }
-      sb.append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
+      sb.append(indent-indentation > 0 ? String.format("%" + (indent-indentation) + "s", "") : "")
         .append('}');
     }
     else if(owner.getClass().isArray()) {
@@ -196,7 +241,7 @@ public class ToStringBuilder {
         }
         else {
           sb.append('\n')
-            .append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
+            .append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
             .append(build(v, indent+indentation));
         }
         // Delete trailing LF
@@ -211,8 +256,13 @@ public class ToStringBuilder {
       sb.append(']');
     }
     else if(owner instanceof Object) {
-      sb.append(fieldNameFormatter.format(owner, owner.getClass().getSimpleName()))
-        .append("{\n");
+      if(target == owner) {
+        sb.append(dropRootNode ? "" : fieldNameFormatter.format(owner, rootNameAlias));  
+      }
+      else {
+        sb.append(fieldNameFormatter.format(owner, owner.getClass().getSimpleName()));
+      }
+      sb.append("{\n");
       
       final Meta meta = MetaCache.getMeta(owner.getClass());
       for (Entry<String, Field> entry : meta.fields.entrySet()) {
@@ -229,10 +279,11 @@ public class ToStringBuilder {
             final Object value = MetaCache.get(entry.getKey(), owner);
             final Class<?> type = field.getType();
               
-            sb.append(indent > 0 ? String.format("%" + (indent+indentation) + "s", "") : "")
+            sb.append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
               .append(fieldNameFormatter.format(owner, fieldName))
-              .append(isPrimitive(type) ? 
-                  fieldValueFormatter.format(owner, value) : build(value, indent+indentation))
+              .append(isPrimitive(type) 
+                  ? fieldValueFormatter.format(owner, value) 
+                  : build(value, indent+indentation))
               .append(",\n");
           }
         }
@@ -243,7 +294,7 @@ public class ToStringBuilder {
         sb.deleteCharAt(n);
       }
       // Closing '}'
-      sb.append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
+      sb.append(indent-indentation > 0 ? String.format("%" + (indent-indentation) + "s", "") : "")
         .append('}');
     }    
     return sb;
