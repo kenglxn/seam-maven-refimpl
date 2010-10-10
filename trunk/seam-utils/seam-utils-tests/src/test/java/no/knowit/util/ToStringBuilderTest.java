@@ -68,36 +68,34 @@ public class ToStringBuilderTest {
     SimpleBean simpleBean = createSimpleBean();
     
     String actual = ToStringBuilder.builder(simpleBean)
-      .withPublicFieldsOnly(true)
-      .withHierarchical(true)
-      .withIndentation(2)
-      .withRootNameAlias("FOAA")
-      .withDropRootNode(false)
-      .withFieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
+      .publicFieldsOnly(true)
+      .hierarchical(true)
+      .indentation(2)
+      .rootNodeAlias("FOAA")
+      .printRootNode(true)
+      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
         @Override
         public String format(Object owner, String name) {
           return name + "->";
         }
       })
-      .withFieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
+      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
         @Override
         public String format(final Object owner, final Object value) {
-          return "@" + value.toString();
+          return value == null ? "" : "@" + value.toString();
         }
       })
       .toString();
     log.debug("\n"+actual);
 
     NestedBean nestedBean = createNestedBean(simpleBean);
-    actual = ToStringBuilder
-      .builder(nestedBean)
-      .withPublicFieldsOnly(false)
+    actual = ToStringBuilder.builder(nestedBean)
+      .publicFieldsOnly(false)
       .toString();
     log.debug("\n"+actual);
 
-    actual = ToStringBuilder
-      .builder(simpleBean)
-      .withIndentation(1)
+    actual = ToStringBuilder.builder(simpleBean)
+      .indentation(1)
       .withField("id")
       .withField("color")
       .withField("baz")
@@ -105,14 +103,43 @@ public class ToStringBuilderTest {
     log.debug("\n"+actual);
     
     actual = ToStringBuilder.builder(nestedBean)
-      .withIndentation(2)
+      .indentation(2)
       .withField("animalList")
       .withField("catArray")
       .withField("Animal.name")
       .withField("Animal.says")
-      .withHierarchical(false)
+      .hierarchical(false)
       .toString();
     log.debug("\n"+actual);
+    
+    List<Integer> integerList = Arrays.asList(new Integer(101), new Integer(201), new Integer(301));
+    actual = ToStringBuilder.builder(integerList)
+      .toString();
+    log.debug("\n"+actual);
+    
+    Map<String, String> stringMap = new HashMap<String, String>();
+    stringMap.put("Finland", "the land of a thousand lakes");
+    stringMap.put("Norway",  "the land of the midnight sun");
+    stringMap.put("Denmark", "the land of fairy-tales and mermaids");
+    stringMap.put("Sweden",  "one upon a time they had Volvo and Saab");
+    stringMap.put("Iceland", "the land of volcanoes and geysirs");
+    
+//    Map<String, String> stringMap = new HashMap<String, String>() {{
+//      put("Finland", "the land of a thousand lakes");
+//      put("Norway",  "the land of the midnight sun");
+//      put("Denmark", "the land of fairy-tales and mermaids");
+//      put("Sweden",  "one upon a time they had Volvo and Saab");
+//      put("Iceland", "the land of volcanoes and geysirs");
+//    }};
+    
+    actual = ToStringBuilder.builder(stringMap)
+      .toString();
+    log.debug("\n"+actual);
+  
+    actual = ToStringBuilder.builder(new Integer(1000))
+      .toString();
+    log.debug("\n"+actual);
+
   }
   
 //  @Test
@@ -175,7 +202,7 @@ public class ToStringBuilderTest {
     MetaCache.set("id" ,   simpleBean, 2);
     MetaCache.set("foo",   simpleBean, 100);
     MetaCache.set("bar",   simpleBean, "Hello \"BAR\"!");
-    MetaCache.set("baz",   simpleBean, "Hello BAZ!");
+    MetaCache.set("baz",   simpleBean, "  Hello   BAZ!");
     MetaCache.set("color", simpleBean, SimpleBean.Color.RED);
     MetaCache.set("someDate", simpleBean, expectedDate);
 
