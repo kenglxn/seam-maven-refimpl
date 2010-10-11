@@ -66,74 +66,41 @@ public class ToStringBuilderTest {
 
   @Test
   public void should() throws Exception {
-    String actual;
     
-//    BeanWithPrimitives beanWithPrimitives = createSimpleBean();
-//    
-//    actual = ToStringBuilder.builder(beanWithPrimitives)
-//      .publicFieldsOnly(true)
-//      .hierarchical(true)
-//      .indentation(2)
-//      .rootNodeAlias("FOAA")
-//      .printRootNode(true)
-//      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
-//        @Override
-//        public String format(Object owner, String name) {
-//          return name + "->";
-//        }
-//      })
-//      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
-//        @Override
-//        public String format(final Object owner, final Object value) {
-//          return value == null ? "" : "@" + value.toString();
-//        }
-//      })
-//      .toString();
-//    log.debug("\n"+actual);
-//
-//    BeanWithComposition beanWithComposition = createNestedBean(beanWithPrimitives);
-//    actual = ToStringBuilder.builder(beanWithComposition)
-//      .publicFieldsOnly(false)
-//      .toString();
-//    log.debug("\n"+actual);
-//
-//    actual = ToStringBuilder.builder(beanWithPrimitives)
-//      .indentation(1)
-//      .withField("id")
-//      .withField("color")
-//      .withField("baz")
-//      .toString();
-//    log.debug("\n"+actual);
-//    
-//    actual = ToStringBuilder.builder(beanWithComposition)
-//      .indentation(2)
-//      .withField("animalList")
-//      .withField("catArray")
-//      .withField("Animal.name")
-//      .withField("Animal.says")
-//      .hierarchical(false)
-//      .toString();
-//    log.debug("\n"+actual);
-//    
-//    List<Integer> integerList = Arrays.asList(new Integer(101), new Integer(201), new Integer(301));
-//    actual = ToStringBuilder.builder(integerList)
-//      .toString();
-//    log.debug("\n"+actual);
-//    
-//    Map<String, String> stringMap = new HashMap<String, String>();
-//    stringMap.put("Finland", "the land of a thousand lakes");
-//    stringMap.put("Norway",  "the land of the midnight sun");
-//    stringMap.put("Denmark", "the land of fairy-tales and mermaids");
-//    stringMap.put("Sweden",  "one upon a time they had Volvo and Saab");
-//    stringMap.put("Iceland", "the land of volcanoes and geysirs");
-//    
-//    actual = ToStringBuilder.builder(stringMap)
-//      .toString();
-//    log.debug("\n"+actual);
-//  
-//    actual = ToStringBuilder.builder(new Integer(1000))
-//      .toString();
-//    log.debug("\n"+actual);
+    String actual = ToStringBuilder.builder(createSimpleBean())
+      .publicFieldsOnly(true)
+      .hierarchical(true)
+      .indentation(2)
+      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
+        @Override
+        public String format(Object owner, String name) {
+          return name + "->";
+        }
+      })
+      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
+        @Override
+        public String format(final Object owner, final Object value) {
+          return "@" + value.toString();
+        }
+      })
+      .toString();
+    log.debug("\n"+actual);
+
+    BeanWithComposition nestedBean = createNestedBean(createSimpleBean());
+    actual = ToStringBuilder
+      .builder(nestedBean)
+      .publicFieldsOnly(false)
+      .toString();
+    log.debug("\n"+actual);
+
+    actual = ToStringBuilder
+      .builder(createSimpleBean())
+      .indentation(1)
+      .withField("id")
+      .withField("color")
+      .withField("baz")
+      .toString();
+    log.debug("\n"+actual);
     
     actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
       .toString();
