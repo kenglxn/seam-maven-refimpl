@@ -10,11 +10,12 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import no.knowit.testsupport.bean.Animal;
+import no.knowit.testsupport.bean.BeanWithNestedClasses;
 import no.knowit.testsupport.bean.Bird;
 import no.knowit.testsupport.bean.Cat;
 import no.knowit.testsupport.bean.Dog;
-import no.knowit.testsupport.bean.NestedBean;
-import no.knowit.testsupport.bean.SimpleBean;
+import no.knowit.testsupport.bean.BeanWithComposition;
+import no.knowit.testsupport.bean.BeanWithPrimitives;
 
 import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeSuite;
@@ -65,81 +66,78 @@ public class ToStringBuilderTest {
 
   @Test
   public void should() throws Exception {
-    SimpleBean simpleBean = createSimpleBean();
+    String actual;
     
-    String actual = ToStringBuilder.builder(simpleBean)
-      .publicFieldsOnly(true)
-      .hierarchical(true)
-      .indentation(2)
-      .rootNodeAlias("FOAA")
-      .printRootNode(true)
-      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
-        @Override
-        public String format(Object owner, String name) {
-          return name + "->";
-        }
-      })
-      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
-        @Override
-        public String format(final Object owner, final Object value) {
-          return value == null ? "" : "@" + value.toString();
-        }
-      })
-      .toString();
-    log.debug("\n"+actual);
-
-    NestedBean nestedBean = createNestedBean(simpleBean);
-    actual = ToStringBuilder.builder(nestedBean)
-      .publicFieldsOnly(false)
-      .toString();
-    log.debug("\n"+actual);
-
-    actual = ToStringBuilder.builder(simpleBean)
-      .indentation(1)
-      .withField("id")
-      .withField("color")
-      .withField("baz")
-      .toString();
-    log.debug("\n"+actual);
+//    BeanWithPrimitives beanWithPrimitives = createSimpleBean();
+//    
+//    actual = ToStringBuilder.builder(beanWithPrimitives)
+//      .publicFieldsOnly(true)
+//      .hierarchical(true)
+//      .indentation(2)
+//      .rootNodeAlias("FOAA")
+//      .printRootNode(true)
+//      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
+//        @Override
+//        public String format(Object owner, String name) {
+//          return name + "->";
+//        }
+//      })
+//      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
+//        @Override
+//        public String format(final Object owner, final Object value) {
+//          return value == null ? "" : "@" + value.toString();
+//        }
+//      })
+//      .toString();
+//    log.debug("\n"+actual);
+//
+//    BeanWithComposition beanWithComposition = createNestedBean(beanWithPrimitives);
+//    actual = ToStringBuilder.builder(beanWithComposition)
+//      .publicFieldsOnly(false)
+//      .toString();
+//    log.debug("\n"+actual);
+//
+//    actual = ToStringBuilder.builder(beanWithPrimitives)
+//      .indentation(1)
+//      .withField("id")
+//      .withField("color")
+//      .withField("baz")
+//      .toString();
+//    log.debug("\n"+actual);
+//    
+//    actual = ToStringBuilder.builder(beanWithComposition)
+//      .indentation(2)
+//      .withField("animalList")
+//      .withField("catArray")
+//      .withField("Animal.name")
+//      .withField("Animal.says")
+//      .hierarchical(false)
+//      .toString();
+//    log.debug("\n"+actual);
+//    
+//    List<Integer> integerList = Arrays.asList(new Integer(101), new Integer(201), new Integer(301));
+//    actual = ToStringBuilder.builder(integerList)
+//      .toString();
+//    log.debug("\n"+actual);
+//    
+//    Map<String, String> stringMap = new HashMap<String, String>();
+//    stringMap.put("Finland", "the land of a thousand lakes");
+//    stringMap.put("Norway",  "the land of the midnight sun");
+//    stringMap.put("Denmark", "the land of fairy-tales and mermaids");
+//    stringMap.put("Sweden",  "one upon a time they had Volvo and Saab");
+//    stringMap.put("Iceland", "the land of volcanoes and geysirs");
+//    
+//    actual = ToStringBuilder.builder(stringMap)
+//      .toString();
+//    log.debug("\n"+actual);
+//  
+//    actual = ToStringBuilder.builder(new Integer(1000))
+//      .toString();
+//    log.debug("\n"+actual);
     
-    actual = ToStringBuilder.builder(nestedBean)
-      .indentation(2)
-      .withField("animalList")
-      .withField("catArray")
-      .withField("Animal.name")
-      .withField("Animal.says")
-      .hierarchical(false)
+    actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
       .toString();
     log.debug("\n"+actual);
-    
-    List<Integer> integerList = Arrays.asList(new Integer(101), new Integer(201), new Integer(301));
-    actual = ToStringBuilder.builder(integerList)
-      .toString();
-    log.debug("\n"+actual);
-    
-    Map<String, String> stringMap = new HashMap<String, String>();
-    stringMap.put("Finland", "the land of a thousand lakes");
-    stringMap.put("Norway",  "the land of the midnight sun");
-    stringMap.put("Denmark", "the land of fairy-tales and mermaids");
-    stringMap.put("Sweden",  "one upon a time they had Volvo and Saab");
-    stringMap.put("Iceland", "the land of volcanoes and geysirs");
-    
-//    Map<String, String> stringMap = new HashMap<String, String>() {{
-//      put("Finland", "the land of a thousand lakes");
-//      put("Norway",  "the land of the midnight sun");
-//      put("Denmark", "the land of fairy-tales and mermaids");
-//      put("Sweden",  "one upon a time they had Volvo and Saab");
-//      put("Iceland", "the land of volcanoes and geysirs");
-//    }};
-    
-    actual = ToStringBuilder.builder(stringMap)
-      .toString();
-    log.debug("\n"+actual);
-  
-    actual = ToStringBuilder.builder(new Integer(1000))
-      .toString();
-    log.debug("\n"+actual);
-
   }
   
 //  @Test
@@ -197,39 +195,39 @@ public class ToStringBuilderTest {
 //    log.debug("\n"+actual);
 //  }
 
-  private SimpleBean createSimpleBean() {
-    SimpleBean simpleBean = new SimpleBean();
-    MetaCache.set("id" ,   simpleBean, 2);
-    MetaCache.set("foo",   simpleBean, 100);
-    MetaCache.set("bar",   simpleBean, "Hello \"BAR\"!");
-    MetaCache.set("baz",   simpleBean, "  Hello   BAZ!");
-    MetaCache.set("color", simpleBean, SimpleBean.Color.RED);
-    MetaCache.set("someDate", simpleBean, expectedDate);
+  private BeanWithPrimitives createSimpleBean() {
+    BeanWithPrimitives beanWithPrimitives = new BeanWithPrimitives();
+    MetaCache.set("id" ,   beanWithPrimitives, 2);
+    MetaCache.set("foo",   beanWithPrimitives, 100);
+    MetaCache.set("bar",   beanWithPrimitives, "Hello \"BAR\"!");
+    MetaCache.set("baz",   beanWithPrimitives, "  Hello   BAZ!");
+    MetaCache.set("color", beanWithPrimitives, BeanWithPrimitives.Color.RED);
+    MetaCache.set("someDate", beanWithPrimitives, expectedDate);
 
-    return simpleBean;
+    return beanWithPrimitives;
   }
 
-  private NestedBean createNestedBean(SimpleBean simpleBean) {
-    NestedBean nestedBean = new NestedBean(99, simpleBean);
-    MetaCache.set("floatValue",  nestedBean, 12.0F);
+  private BeanWithComposition createNestedBean(BeanWithPrimitives beanWithPrimitives) {
+    BeanWithComposition beanWithComposition = new BeanWithComposition(99, beanWithPrimitives);
+    MetaCache.set("floatValue",  beanWithComposition, 12.0F);
     int intArray[] = new int[]{1,2,3};
-    MetaCache.set("intArray", nestedBean, intArray);
-    MetaCache.set("twoDimensionalArray", nestedBean, new int[][]{intArray,{4,5,6},{7,8,9}});
-    MetaCache.set("stringArray", nestedBean, new String[]{"Array", "or", "List", "of", "strings"});
+    MetaCache.set("intArray", beanWithComposition, intArray);
+    MetaCache.set("twoDimensionalArray", beanWithComposition, new int[][]{intArray,{4,5,6},{7,8,9}});
+    MetaCache.set("stringArray", beanWithComposition, new String[]{"Array", "or", "List", "of", "strings"});
 
     Cat cat1 = new Cat("Puss");
     Cat cat2 = new Cat("Tiger");
     MetaCache.set("says", cat2, "Roar");
-    MetaCache.set("catArray",  nestedBean, new Cat[]{cat1, cat2});
+    MetaCache.set("catArray",  beanWithComposition, new Cat[]{cat1, cat2});
 
     List<Integer> integerList = Arrays.asList(new Integer(101), new Integer(201), new Integer(301));
-    MetaCache.set("integerList", nestedBean, integerList);
+    MetaCache.set("integerList", beanWithComposition, integerList);
 
     List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
-    MetaCache.set("stringList", nestedBean, stringList);
+    MetaCache.set("stringList", beanWithComposition, stringList);
 
     List<Animal> animalsList = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));
-    MetaCache.set("animalList", nestedBean, animalsList);
+    MetaCache.set("animalList", beanWithComposition, animalsList);
     
     Map<String, String> stringMap = new HashMap<String, String>() {{
       put("Finland", "the land of a thousand lakes");
@@ -238,7 +236,7 @@ public class ToStringBuilderTest {
       put("Sweden",  "one upon a time they had Volvo and Saab");
       put("Iceland", "the land of volcanoes and geysirs");
     }};
-    MetaCache.set("stringMap", nestedBean, stringMap);
+    MetaCache.set("stringMap", beanWithComposition, stringMap);
       
     Map<String, Dog> dogMap = new HashMap<String, Dog>() {{
       put("Bonzo", new Dog("Bonzo"));
@@ -246,8 +244,8 @@ public class ToStringBuilderTest {
       put("Lady",  new Dog("Lady"));
       put("Tramp", new Dog("Tramp"));
     }};
-    MetaCache.set("dogMap", nestedBean, dogMap);    
+    MetaCache.set("dogMap", beanWithComposition, dogMap);    
     
-    return nestedBean;
+    return beanWithComposition;
   }
 }

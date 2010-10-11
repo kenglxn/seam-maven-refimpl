@@ -16,8 +16,8 @@ import no.knowit.testsupport.bean.Animal;
 import no.knowit.testsupport.bean.Bird;
 import no.knowit.testsupport.bean.Cat;
 import no.knowit.testsupport.bean.Dog;
-import no.knowit.testsupport.bean.NestedBean;
-import no.knowit.testsupport.bean.SimpleBean;
+import no.knowit.testsupport.bean.BeanWithComposition;
+import no.knowit.testsupport.bean.BeanWithPrimitives;
 import no.knowit.util.MetaCache.Meta;
 
 import org.testng.annotations.BeforeSuite;
@@ -30,7 +30,7 @@ public class MetaCacheTest {
   private static final int EXPECTED_FOO = 200; 
   private static final String EXPECTED_BAR = "setBar -> Hello \"BAR\"!"; 
   private static final String EXPECTED_BAZ = "Hello BAZ!"; 
-  private static final SimpleBean.Color EXPECTED_COLOR = SimpleBean.Color.RED;
+  private static final BeanWithPrimitives.Color EXPECTED_COLOR = BeanWithPrimitives.Color.RED;
   
   private static final List<String> EXPECTED_STRINGLIST = Arrays.asList(
       "Array", "or", "List", "of", "strings");
@@ -65,48 +65,48 @@ public class MetaCacheTest {
   
   @Test
   public void shouldSetAttributesByReflection() throws Exception {
-    SimpleBean simpleBean = createSimpleBean();
+    BeanWithPrimitives beanWithPrimitives = createSimpleBean();
     
-    assert (Integer)MetaCache.get("id", simpleBean) == EXPECTED_ID 
-      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("id", simpleBean), EXPECTED_ID);
+    assert (Integer)MetaCache.get("id", beanWithPrimitives) == EXPECTED_ID 
+      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("id", beanWithPrimitives), EXPECTED_ID);
     
-    assert (Integer)MetaCache.get("foo", simpleBean) == EXPECTED_FOO 
-      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("foo", simpleBean), EXPECTED_FOO);
+    assert (Integer)MetaCache.get("foo", beanWithPrimitives) == EXPECTED_FOO 
+      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("foo", beanWithPrimitives), EXPECTED_FOO);
     
-    assert ((String)MetaCache.get("bar", simpleBean)).equals(EXPECTED_BAR) 
-      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("bar", simpleBean), EXPECTED_BAR);
+    assert ((String)MetaCache.get("bar", beanWithPrimitives)).equals(EXPECTED_BAR) 
+      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("bar", beanWithPrimitives), EXPECTED_BAR);
     
-    assert ((String)MetaCache.get("baz", simpleBean)).equals(EXPECTED_BAZ) 
-      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("baz", simpleBean), EXPECTED_BAZ);
+    assert ((String)MetaCache.get("baz", beanWithPrimitives)).equals(EXPECTED_BAZ) 
+      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("baz", beanWithPrimitives), EXPECTED_BAZ);
     
-    assert ((SimpleBean.Color)MetaCache.get("color", simpleBean)).equals(EXPECTED_COLOR) 
-      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("color", simpleBean), EXPECTED_COLOR);
+    assert ((BeanWithPrimitives.Color)MetaCache.get("color", beanWithPrimitives)).equals(EXPECTED_COLOR) 
+      : String.format(ASSERT_MESSAGE_FORMAT, MetaCache.get("color", beanWithPrimitives), EXPECTED_COLOR);
 
-    Date actual = (Date)MetaCache.get("someDate", simpleBean);
+    Date actual = (Date)MetaCache.get("someDate", beanWithPrimitives);
     assert actual.equals(expectedDate)
       : String.format(ASSERT_MESSAGE_FORMAT, actual, expectedDate);
   }
   
   @Test(dependsOnMethods={ "shouldSetAttributesByReflection" })
   public void shouldGetClassFromCache() throws Exception {
-    Meta meta = MetaCache.getMeta(SimpleBean.class);
+    Meta meta = MetaCache.getMeta(BeanWithPrimitives.class);
     assert meta != null;
   }
   
   @Test
   public void shouldSetAttributesByReflectionOnNestedBean() throws Exception {
-    NestedBean nestedBean = createNestedBean(createSimpleBean());
+    BeanWithComposition beanWithComposition = createNestedBean(createSimpleBean());
     
-    Object actual = MetaCache.get("intArray", nestedBean);
+    Object actual = MetaCache.get("intArray", beanWithComposition);
     assert actual.getClass().isArray() && Array.getLength(actual) == 3;
     
-    actual = MetaCache.get("stringArray", nestedBean);
+    actual = MetaCache.get("stringArray", beanWithComposition);
     assert actual.getClass().isArray() && Array.getLength(actual) == 5;
     for (String v : (String[])actual) {
       assert EXPECTED_STRINGLIST.contains(v);
     }
     
-    actual = MetaCache.get("stringList", nestedBean);
+    actual = MetaCache.get("stringList", beanWithComposition);
     assert actual instanceof Collection<?>;
 
     List<?> list = (List<?>) actual;
@@ -114,7 +114,7 @@ public class MetaCacheTest {
       assert list.contains(v);
     }
     
-    actual = MetaCache.get("stringMap", nestedBean);
+    actual = MetaCache.get("stringMap", beanWithComposition);
     assert actual instanceof Map<?, ?>;
 
     Map<?, ?> map = (Map<?, ?>) actual;
@@ -125,7 +125,7 @@ public class MetaCacheTest {
       assert map.get(key).toString().equals(value.toString());
     }
     
-    actual = MetaCache.get("animalList", nestedBean);
+    actual = MetaCache.get("animalList", beanWithComposition);
     assert actual instanceof Collection<?>;
 
     List<?> animalList = (List<?>) actual;
@@ -133,7 +133,7 @@ public class MetaCacheTest {
       assert obj instanceof Animal;
     }
     
-    actual = MetaCache.get("dogMap", nestedBean);
+    actual = MetaCache.get("dogMap", beanWithComposition);
     assert actual instanceof Map<?, ?>;
 
     Map<?, ?> dogMap = (Map<?, ?>) actual;
@@ -146,36 +146,36 @@ public class MetaCacheTest {
     }
   }
   
-  private SimpleBean createSimpleBean() {
-    SimpleBean simpleBean = new SimpleBean();
-    MetaCache.set("id" ,      simpleBean, 2);
-    MetaCache.set("foo",      simpleBean, 100);
-    MetaCache.set("bar",      simpleBean, "Hello \"BAR\"!");
-    MetaCache.set("baz",      simpleBean, "Hello BAZ!");
-    MetaCache.set("color",    simpleBean, SimpleBean.Color.RED);
-    MetaCache.set("someDate", simpleBean, expectedDate);
+  private BeanWithPrimitives createSimpleBean() {
+    BeanWithPrimitives beanWithPrimitives = new BeanWithPrimitives();
+    MetaCache.set("id" ,      beanWithPrimitives, 2);
+    MetaCache.set("foo",      beanWithPrimitives, 100);
+    MetaCache.set("bar",      beanWithPrimitives, "Hello \"BAR\"!");
+    MetaCache.set("baz",      beanWithPrimitives, "Hello BAZ!");
+    MetaCache.set("color",    beanWithPrimitives, BeanWithPrimitives.Color.RED);
+    MetaCache.set("someDate", beanWithPrimitives, expectedDate);
 
-    return simpleBean;
+    return beanWithPrimitives;
   }
   
-  private NestedBean createNestedBean(SimpleBean simpleBean) {
-    NestedBean nestedBean = new NestedBean(99, simpleBean);
-    MetaCache.set("intArray",    nestedBean, new int[]{1,2,3});
-    MetaCache.set("stringArray", nestedBean, new String[]{"Array", "or", "List", "of", "strings"});
+  private BeanWithComposition createNestedBean(BeanWithPrimitives beanWithPrimitives) {
+    BeanWithComposition beanWithComposition = new BeanWithComposition(99, beanWithPrimitives);
+    MetaCache.set("intArray",    beanWithComposition, new int[]{1,2,3});
+    MetaCache.set("stringArray", beanWithComposition, new String[]{"Array", "or", "List", "of", "strings"});
 
     Cat cat1 = new Cat("Puss");
     Cat cat2 = new Cat("Tiger");
     MetaCache.set("says", cat2, "Roar");
-    MetaCache.set("catArray",  nestedBean, new Cat[]{cat1, cat2});
+    MetaCache.set("catArray",  beanWithComposition, new Cat[]{cat1, cat2});
 
     List<Integer> integerList = Arrays.asList(new Integer(101), new Integer(201), new Integer(301));
-    MetaCache.set("integerList", nestedBean, integerList);
+    MetaCache.set("integerList", beanWithComposition, integerList);
 
     List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
-    MetaCache.set("stringList", nestedBean, stringList);
+    MetaCache.set("stringList", beanWithComposition, stringList);
 
     List<Animal> animalList = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));;
-    MetaCache.set("animalList", nestedBean, animalList);
+    MetaCache.set("animalList", beanWithComposition, animalList);
     
     Map<String, String> stringMap = new HashMap<String, String>();
     stringMap.put("finland", "the land of a thousand lakes");
@@ -183,15 +183,15 @@ public class MetaCacheTest {
     stringMap.put("denmark", "the land of fairy-tales and mermaids");
     stringMap.put("sweden",  "one upon a time they had Volvo and Saab");
     stringMap.put("iceland", "the land of volcanoes and geysirs");
-    MetaCache.set("stringMap", nestedBean, stringMap);
+    MetaCache.set("stringMap", beanWithComposition, stringMap);
       
     Map<String, Dog> dogMap = new HashMap<String, Dog>();
     dogMap.put("Bonzo", new Dog("Bonzo"));
     dogMap.put("Fido",  new Dog("Fido"));
     dogMap.put("Lady",  new Dog("Lady"));
     dogMap.put("Tramp", new Dog("Tramp"));
-    MetaCache.set("dogMap", nestedBean, dogMap);    
+    MetaCache.set("dogMap", beanWithComposition, dogMap);    
     
-    return nestedBean;
+    return beanWithComposition;
   }
 }

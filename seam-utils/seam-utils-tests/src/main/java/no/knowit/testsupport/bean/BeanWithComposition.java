@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-public class NestedBean {
+public class BeanWithComposition {
   private Integer id;
   private Float floatValue;
-  private SimpleBean simpleBean;
+  private BeanWithPrimitives beanWithPrimitives;
   private int[] intArray;
   private int[][] twoDimensionalArray;
   private String[] stringArray;
@@ -18,13 +18,13 @@ public class NestedBean {
   private Map<String, String> stringMap;
   private Map<String, Dog> dogMap;
   
-  public NestedBean() {
+  public BeanWithComposition() {
     super();
   }
 
-  public NestedBean(Integer id, SimpleBean simpleBean) {
+  public BeanWithComposition(Integer id, BeanWithPrimitives beanWithPrimitives) {
     this.id = id;
-    this.simpleBean = simpleBean;
+    this.beanWithPrimitives = beanWithPrimitives;
   }
   
   public List<Animal> getAnimalList() {

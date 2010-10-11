@@ -123,7 +123,7 @@ public class ToStringBuilder {
   }
 
   /**
-   * <p>Indentiation of output.</p>
+   * <p>Indentiation of formatted output.</p>
    * <pre><code>String s = ToStringBuilder.builder(anObject).indentation(4).toString());</code></pre>
    * @param indentation number of spaces to indent output, default value is 2
    * @return the same {@link ToStringBuilder} instance
@@ -161,7 +161,7 @@ public class ToStringBuilder {
    * }</code></pre>
    * 
    * <p><b>When</b> we call <code>toString</code>
-   * <b>then</b> the method should return the string;</p> 
+   * <b>then</b> the method should return the string:</p> 
    * <pre><code>{"Frog": {"name": "Kermit the frog"}}</code></pre>
    *
    * @param publicFields default value is <code>false</code>
@@ -202,7 +202,7 @@ public class ToStringBuilder {
   }
 
   /**
-   * <p>You can output class names using {@link Class#getSimpleName} or {@link Class#getName}.
+   * <p>You can output class names using {@link Class#getSimpleName} or {@link Class#getName}.<br/>
    * <b>Given</b> a package, <code>org.mypackage</code> and a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
@@ -216,7 +216,7 @@ public class ToStringBuilder {
    *}</code></pre>
    * 
    * <p><b>When</b> we call <code>toString</code>
-   * <b>then</b> the method should return the string;</p> 
+   * <b>then</b> the method should return the string:</p> 
    * <pre><code>{"org.mypackage.Toad": {"name": "Kermit"}}</code></pre>
    *
    * @param simpleClassNames default value is <code>true</code>
@@ -228,7 +228,7 @@ public class ToStringBuilder {
   }
 
   /**
-   * <p>Whether to output the topmost class name.</p>
+   * <p>Whether to output the topmost class name.<br/>
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
@@ -254,7 +254,7 @@ public class ToStringBuilder {
   }
 
   /**
-   * <p>This method alters the name of the topmost class in the formatted output. 
+   * <p>This method alters the name of the topmost class in the formatted output.<br/> 
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
@@ -268,7 +268,7 @@ public class ToStringBuilder {
    * }</code></pre>
    * 
    * <p><b>When</b> we call <code>toString</code>
-   * <b>then</b> the method should return the string;</p> 
+   * <b>then</b> the method should return the string:</p> 
    * <pre><code>{"Toad": {"name": "Kermit"}}</code></pre>
    * 
    * @param name the name of the root node alias
@@ -281,7 +281,7 @@ public class ToStringBuilder {
   }
   
   /**
-   * <p>You can set up a call back method to control formatting of field names.
+   * <p>You can set up a call back method to control formatting of field names.<br/>
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
@@ -300,7 +300,7 @@ public class ToStringBuilder {
    * }</code></pre>
    * 
    * <p><b>When</b> we call <code>toString</code>
-   * <b>then</b> the method should return the string;</p> 
+   * <b>then</b> the method should return the string:</p> 
    * <pre><code>{"Frog": {name-> "Kermit"}}</code></pre>
    * 
    * @param fieldNameFormatter
@@ -312,7 +312,7 @@ public class ToStringBuilder {
   }
   
   /**
-   * <p>You can set up a call back method to control formatting of field value s.
+   * <p>You can set up a call back method to control formatting of field values.<br/>
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
@@ -331,7 +331,7 @@ public class ToStringBuilder {
    * }</code></pre>
    * 
    * <p><b>When</b> we call <code>toString</code>
-   * <b>then</b> the method should return the string;</p> 
+   * <b>then</b> the method should return the string:</p> 
    * <pre><code>{"Frog": {"name": #Kermit}}</code></pre>
    * 
    * @param fieldValueFormatter
@@ -344,7 +344,7 @@ public class ToStringBuilder {
   
   /**
    * <p>If you do not want to output all fields of a class' instance you can use this method to 
-   * add fields to the formatted output. Use "dot" notation to add fields in encapsulated classes.
+   * add fields to the formatted output. Use "dot" notation to add fields for encapsulated classes.<br/>
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   public static Class Address {
@@ -368,7 +368,7 @@ public class ToStringBuilder {
    * }</code></pre>
    * 
    * <p><b>When</b> we call <code>toString</code>
-   * <b>then</b> the method should return the string;</p> 
+   * <b>then</b> the method should return the string:</p> 
    * <pre><code>{"Frog": {
    *  "name": "Kermit the frog",
    *  "address": "Address" {
@@ -506,7 +506,7 @@ public class ToStringBuilder {
             .append(indent > 0 ? String.format("%" + (indent) + "s", "") : "")
             .append(build(v, indent+indentation));
         }
-        // Delete trailing LF
+        // Delete trailing '\n'
         int n = sb.length()-1;
         if(sb.charAt(n) == '\n') {
           sb.deleteCharAt(n);
