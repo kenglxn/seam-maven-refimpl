@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import no.knowit.testsupport.bean.SimpleBean;
+import no.knowit.testsupport.bean.BeanWithPrimitives;
 import no.knowit.testsupport.model.ConcreteEntityFieldAnnotated;
 import no.knowit.testsupport.model.ConcreteEntityPropertyAnnotated;
 import no.knowit.testsupport.model.FieldAnnotatedEntity;
@@ -32,7 +32,7 @@ public class CrudServiceUtilsTest {
   
   @Test
   public void shouldNotBeAnEntity() throws Exception {
-    Assert.assertFalse(CrudServiceUtils.isEntity(SimpleBean.class), 
+    Assert.assertFalse(CrudServiceUtils.isEntity(BeanWithPrimitives.class), 
         "Expected class without @Entity annotation");
   }
   

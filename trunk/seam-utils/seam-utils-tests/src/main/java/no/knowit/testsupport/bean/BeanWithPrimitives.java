@@ -3,7 +3,7 @@ package no.knowit.testsupport.bean;
 import java.util.Date;
 
 @SuppressWarnings("unused")
-public class SimpleBean {
+public class BeanWithPrimitives {
   public enum Color {RED, YELLOW, GREEN};
   
   private Integer id;
