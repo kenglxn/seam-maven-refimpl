@@ -26,6 +26,7 @@ import no.knowit.util.MetaCache.Meta;
  *   private String bar;
  *   public MyBean(int foo, String bar) { this.foo = foo; this.bar = bar; }
  *   public String getBar() { return "Hello: " + bar}
+ *   &#064;Override
  *   public String toString() {
  *     return ToStringBuilder
  *       .builder(this)
@@ -84,7 +85,7 @@ public class ToStringBuilder {
   private int indentation = 2;
   private DateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
   private boolean hierarchical = true;
-  private String rootNameAlias = null;
+  private String rootNodeAlias = null;
   private boolean simpleClassNames = true;
   private boolean printRootNode = true;
   private boolean publicFields = false;
@@ -155,6 +156,7 @@ public class ToStringBuilder {
    *     put("zip",    "01234");
    *   }};
    *   public String getName() { return name + " the frog"; }
+   *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
@@ -211,6 +213,7 @@ public class ToStringBuilder {
    * <b>Given</b> a package, <code>org.mypackage</code> and a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
+   *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
@@ -237,6 +240,7 @@ public class ToStringBuilder {
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
+   *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
@@ -263,6 +267,7 @@ public class ToStringBuilder {
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
+   *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
@@ -281,7 +286,7 @@ public class ToStringBuilder {
    */
   public ToStringBuilder rootNodeAlias(final String name) {
     final String n = name != null ? name.trim() : null;
-    this.rootNameAlias = n;
+    this.rootNodeAlias = n;
     return this;
   }
 
@@ -290,6 +295,7 @@ public class ToStringBuilder {
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
+   *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
@@ -321,6 +327,7 @@ public class ToStringBuilder {
    * <b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
+   *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
@@ -363,6 +370,7 @@ public class ToStringBuilder {
    *   private int firstAppearance = 1955;
    *   private Address address = new Address("Sesame Street", "01234");
    *   public String getName() { return name + " the frog"; }
+   *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
@@ -405,8 +413,8 @@ public class ToStringBuilder {
 
     initFieldValueFormatter();
 
-    if (rootNameAlias == null) {
-      rootNameAlias = generateClassname(target);
+    if (rootNodeAlias == null) {
+      rootNodeAlias = generateClassname(target);
     }
 
     if (fieldNames.size() < 1) {
@@ -417,14 +425,13 @@ public class ToStringBuilder {
 
     if (printRootNode) {
       sb.append("{")
-        .append(fieldNameFormatter.format(target, rootNameAlias))
+        .append(fieldNameFormatter.format(target, rootNodeAlias))
         .append(build(target, indentation))
         .append("}");
     } else {
       sb.append(build(target, indentation));
     }
 
-    //return hierarchical ? sb.toString() : sb.toString().replaceAll("\\s+", " ");
     if (!hierarchical) {
       sb = flattenBuild(sb);
     }
@@ -475,24 +482,25 @@ public class ToStringBuilder {
   }
 
   private StringBuilder build(final Object owner, int indent) {
-
-    final StringBuilder sb = new StringBuilder(32);
-    if (owner == null) {
-      return sb;
+    if(owner != null) {
+      if (owner instanceof Collection<?>) {
+        return buildCollection(owner, indent);
+      } 
+      else if (owner instanceof Map<?, ?>) {
+        return buildMap(owner, indent);
+      } 
+      else if (owner.getClass().isArray()) {
+        return buildArray(owner, indent);
+      } 
+      else if (owner instanceof Object) {
+        return buildObject(owner, indent);
+      }
     }
-    if (owner instanceof Collection<?>) {
-      buildCollection(owner, indent, sb);
-    } else if (owner instanceof Map<?, ?>) {
-      buildMap(owner, indent, sb);
-    } else if (owner.getClass().isArray()) {
-      buildArray(owner, indent, sb);
-    } else if (owner instanceof Object) {
-      buildObject(owner, indent, sb);
-    }
-    return sb;
+    return null;
   }
 
-  private void buildObject(Object owner, int indent, StringBuilder sb) {
+  private StringBuilder buildObject(final Object owner, final int indent) {
+    final StringBuilder sb = new StringBuilder(32);
     if (target != owner) {
       sb.append(fieldNameFormatter.format(owner, generateClassname(owner)));
     }
@@ -509,6 +517,12 @@ public class ToStringBuilder {
         (getter != null && Modifier.isPublic(getter.getModifiers())))) {
 
         final String fieldName = entry.getKey();
+        
+        if(fieldName.startsWith("this$")) {
+          // Nested classes that are not static member classes has a hiden 
+          // this$0 field to reference the outermost enclosing class
+          continue;  
+        }
         if (allFields || isFieldNameInFieldNames(owner, fieldName)) {
           final Object value = MetaCache.get(entry.getKey(), owner);
           final Class<?> type = field.getType();
@@ -530,13 +544,12 @@ public class ToStringBuilder {
     // Closing '}'
     sb.append(indent(indent - indentation))
       .append('}');
+    
+    return sb;
   }
 
-  private String indent(int indent) {
-    return indent > 0 ? String.format("%" + (indent) + "s", "") : "";
-  }
-
-  private void buildArray(Object owner, int indent, StringBuilder sb) {
+  private StringBuilder buildArray(final Object owner, final int indent) {
+    final StringBuilder sb = new StringBuilder(32);
     sb.append('[');
     int l = Array.getLength(owner);
     for (int i = 0; i < l; i++) {
@@ -558,9 +571,11 @@ public class ToStringBuilder {
       }
     }
     sb.append(']');
+    return sb;
   }
 
-  private void buildMap(Object owner, int indent, StringBuilder sb) {
+  private StringBuilder buildMap(final Object owner, final int indent) {
+    final StringBuilder sb = new StringBuilder(32);
     sb.append("{\n");
     for (Iterator<?> i = ((Map<?, ?>) owner).entrySet().iterator(); i.hasNext();) {
       final Entry<?, ?> e = (Entry<?, ?>) i.next();
@@ -578,9 +593,12 @@ public class ToStringBuilder {
     }
     sb.append(indent(indent - indentation))
       .append('}');
+    
+    return sb;
   }
 
-  private void buildCollection(Object owner, int indent, StringBuilder sb) {
+  private StringBuilder buildCollection(final Object owner, final int indent) {
+    final StringBuilder sb = new StringBuilder(32);
     sb.append('[');
     final Collection<?> c = (Collection<?>) owner;
 
@@ -596,6 +614,11 @@ public class ToStringBuilder {
       sb.append(++i < l ? ", " : "");
     }
     sb.append(']');
+    return sb;
+  }
+
+  private String indent(int indent) {
+    return indent > 0 ? String.format("%" + (indent) + "s", "") : "";
   }
 
   private boolean isFieldNameInFieldNames(final Object owner, final String fieldName) {
@@ -673,7 +696,7 @@ public class ToStringBuilder {
     return sb.toString();
   }
 
-  private static boolean isPrimitive(final Class<?> type) {
+  public static boolean isPrimitive(final Class<?> type) {
     return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
   }
 }

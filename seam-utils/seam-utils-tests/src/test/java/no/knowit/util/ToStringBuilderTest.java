@@ -1,5 +1,7 @@
 package no.knowit.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -7,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
+import java.util.Map.Entry;
 
 import no.knowit.testsupport.bean.Animal;
 import no.knowit.testsupport.bean.BeanWithNestedClasses;
@@ -126,51 +128,7 @@ public class ToStringBuilderTest {
 
   @BeforeSuite
   public void beforeSuite() throws Exception {
-    //dateformat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
     expectedDate = dateformat.parse("2010-04-11 15:11:28 +0200");
-  }
-
-  @Test
-  public void should() throws Exception {
-
-    String actual = ToStringBuilder.builder(createSimpleBean())
-      .publicFieldsOnly(true)
-      .hierarchical(true)
-      .indentation(2)
-      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
-        @Override
-        public String format(Object owner, String name) {
-          return name + "->";
-        }
-      })
-      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
-        @Override
-        public String format(final Object owner, final Object value) {
-          return "@" + value.toString();
-        }
-      })
-      .toString();
-    log.debug("\n" + actual);
-
-    BeanWithComposition nestedBean = createNestedBean(createSimpleBean());
-    actual = ToStringBuilder
-      .builder(nestedBean)
-      .publicFieldsOnly(false)
-      .toString();
-    log.debug("\n" + actual);
-
-    actual = ToStringBuilder
-      .builder(createSimpleBean())
-      .indentation(1)
-      .withField("id")
-      .withField("color")
-      .withField("baz")
-      .toString();
-    log.debug("\n" + actual);
-
-    actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
-      .toString();
-    log.debug("\n" + actual);
   }
 
   @Test
@@ -214,14 +172,14 @@ public class ToStringBuilderTest {
     assert actual.equals(EXPECTED_STRINGMAP_TOSTRING)
       : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGMAP_TOSTRING);
 
-    BeanWithPrimitives simpleBean = createSimpleBean();
+    BeanWithPrimitives simpleBean = createBeanWithPrimitives();
     actual = ToStringBuilder.builder(simpleBean).toString();
     assert actual.startsWith(EXPECTED_SIMPLEBEAN_FRAGMENT)
       : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLEBEAN_FRAGMENT);
 
     log.debug("\n" + actual);
 
-    BeanWithComposition nestedBean = createNestedBean(simpleBean);
+    BeanWithComposition nestedBean = createBeanWithComposition(simpleBean);
     actual = ToStringBuilder.builder(nestedBean).toString();
     assert actual.startsWith(EXPECTED_NESTEDBEAN_FRAGMENT_1) &&
       actual.contains(EXPECTED_NESTEDBEAN_FRAGMENT_2)
@@ -230,7 +188,93 @@ public class ToStringBuilderTest {
     log.debug("\n" + actual);
   }
 
-  private BeanWithPrimitives createSimpleBean() {
+  @Test
+  public void should() throws Exception {
+    // Sandbox, no real tests here
+    
+    String actual;
+    
+//    actual = ToStringBuilder.builder(createSimpleBean())
+//      .publicFieldsOnly(true)
+//      .hierarchical(true)
+//      .indentation(2)
+//      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
+//        @Override
+//        public String format(Object owner, String name) {
+//          return name + "->";
+//        }
+//      })
+//      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
+//        @Override
+//        public String format(final Object owner, final Object value) {
+//          return "@" + value.toString();
+//        }
+//      })
+//      .toString();
+//    log.debug("\n" + actual);
+//
+//    BeanWithComposition nestedBean = createNestedBean(createSimpleBean());
+//    actual = ToStringBuilder
+//      .builder(nestedBean)
+//      .publicFieldsOnly(false)
+//      .toString();
+//    log.debug("\n" + actual);
+//
+//    actual = ToStringBuilder
+//      .builder(createSimpleBean())
+//      .indentation(1)
+//      .withField("id")
+//      .withField("color")
+//      .withField("baz")
+//      .toString();
+//    log.debug("\n" + actual);
+
+    BeanWithNestedClasses b = new BeanWithNestedClasses(100);
+    final Class<?>[] nestedClasses = b.getClass().getDeclaredClasses();
+    for (Class<?> clazz : nestedClasses) {
+      log.debug("Nested Class: " + clazz.getSimpleName() + " -> " + clazz.getName() 
+          + ", isStatic: " + Modifier.isStatic(clazz.getModifiers()) + ", isEnum: " + clazz.isEnum() 
+          + ", isInterface: " + clazz.isInterface() + ", isSynthetic : " + clazz.isSynthetic());
+    }
+
+    log.debug("");
+    
+    Object innerClass = MetaCache.get("innerClass", b);
+    inspectObject("innerClass", innerClass);
+    
+    MetaCache.Meta meta = MetaCache.getMeta(innerClass.getClass());
+    for (Entry<String, Field> entry : meta.fields.entrySet()) {
+      final Field field = entry.getValue();
+      inspectObject("Field name:  " + field.getName(), field);
+      //inspectObject("Field value: " + field.getName(), MetaCache.get(field.getName(), innerClass));
+    }
+    
+    
+    Object i = MetaCache.get("i", innerClass);
+    inspectObject("innerClass.i", i);
+    
+    actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
+      .toString();
+    log.debug("\n" + actual);
+  }
+  
+  private void inspectObject(String msg, Object o)  {
+    if(o == null) {
+      log.debug(msg + ": NULL");
+      return;
+    }
+    
+    Class<?> clazz = o.getClass();
+    boolean isPrimitive = ToStringBuilder.isPrimitive(clazz);
+    log.debug(msg + ": " + clazz.getSimpleName() + " -> " + clazz.getName() 
+        + ", isStatic: " + Modifier.isStatic(clazz.getModifiers()) + ", isEnum: " + clazz.isEnum() 
+        + ", isInterface: " + clazz.isInterface() + ", instanceof Object: " + (o instanceof Object)
+        + ", isSynthetic : " + clazz.isSynthetic()
+        + ", isPrimitive: " + isPrimitive + ", " + (isPrimitive ? o : ""));
+  }
+
+  
+  private BeanWithPrimitives createBeanWithPrimitives() {
     BeanWithPrimitives beanWithPrimitives = new BeanWithPrimitives();
     MetaCache.set("id", beanWithPrimitives, 2);
     MetaCache.set("foo", beanWithPrimitives, 100);
@@ -242,7 +286,7 @@ public class ToStringBuilderTest {
     return beanWithPrimitives;
   }
 
-  private BeanWithComposition createNestedBean(BeanWithPrimitives beanWithPrimitives) {
+  private BeanWithComposition createBeanWithComposition(BeanWithPrimitives beanWithPrimitives) {
     BeanWithComposition beanWithComposition = new BeanWithComposition(99, beanWithPrimitives);
     MetaCache.set("floatValue", beanWithComposition, 12.0F);
     int intArray[] = new int[]{1, 2, 3};
@@ -264,6 +308,7 @@ public class ToStringBuilderTest {
     List<Animal> animalsList = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));
     MetaCache.set("animalList", beanWithComposition, animalsList);
 
+    @SuppressWarnings("serial")
     Map<String, String> stringMap = new HashMap<String, String>() {{
       put("Finland", "the land of a thousand lakes");
       put("Norway", "the land of the midnight sun");
@@ -273,6 +318,7 @@ public class ToStringBuilderTest {
     }};
     MetaCache.set("stringMap", beanWithComposition, stringMap);
 
+    @SuppressWarnings("serial")
     Map<String, Dog> dogMap = new HashMap<String, Dog>() {{
       put("Bonzo", new Dog("Bonzo"));
       put("Fido", new Dog("Fido"));
