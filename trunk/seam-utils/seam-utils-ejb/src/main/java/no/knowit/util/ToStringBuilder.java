@@ -84,7 +84,7 @@ public class ToStringBuilder {
   private Object target = null;
   private int indentation = 2;
   private DateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
-  private boolean hierarchical = true;
+  private boolean flatten = false;
   private String rootNodeAlias = null;
   private boolean simpleClassNames = true;
   private boolean printRootNode = true;
@@ -197,14 +197,14 @@ public class ToStringBuilder {
 
   /**
    * <p>Indicates whether the output should be hierarchical, i.e. pretty formatted with indentation
-   * and line breaks, or if the output should be compressed into a one line output.</p>
-   * <pre><code>String s = ToStringBuilder.builder(anObject).hierarchical(false).toString());</code></pre>
+   * and line breaks, or if the output should be flattened into a one line output.</p>
+   * <pre><code>String s = ToStringBuilder.builder(anObject).flatten(true).toString());</code></pre>
    *
-   * @param hierarchical default value is <code>true</code>
+   * @param flatten default value is <code>false</code>
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder hierarchical(final boolean hierarchical) {
-    this.hierarchical = hierarchical;
+  public ToStringBuilder flatten(final boolean flatten) {
+    this.flatten = flatten;
     return this;
   }
 
@@ -432,7 +432,7 @@ public class ToStringBuilder {
       sb.append(build(target, indentation));
     }
 
-    if (!hierarchical) {
+    if (flatten) {
       sb = flattenBuild(sb);
     }
     return sb.toString();
@@ -519,7 +519,7 @@ public class ToStringBuilder {
         final String fieldName = entry.getKey();
         
         if(fieldName.startsWith("this$")) {
-          // Nested classes that are not static member classes has a hiden 
+          // Nested classes that are not static member classes has a hidden 
           // this$0 field to reference the outermost enclosing class
           continue;  
         }
