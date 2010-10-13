@@ -48,6 +48,7 @@ public class ToStringBuilderTest {
       "  \"id\": 2,\n" +
       "  \"baz\": \"  Hello   BAZ!\",\n" +
       "  \"color\": RED,\n" +
+      "  \"finalField\": \"A final field\",\n" +
       "  \"foo\": 200,\n" +
       "  \"bar\": \"setBar -> Hello \\\"BAR\\\"!\",\n" +
       "  \"someDate\": 2010-04-11 15:11:28 +0200\n}}";
@@ -116,6 +117,7 @@ public class ToStringBuilderTest {
     "    \"id\": 2,\n" +
     "    \"baz\": \"  Hello   BAZ!\",\n" +
     "    \"color\": RED,\n" +
+    "    \"finalField\": \"A final field\",\n" +
     "    \"foo\": 200,\n" +
     "    \"bar\": \"setBar -> Hello \\\"BAR\\\"!\",\n" +
     "    \"someDate\": 2010-04-11 15:11:28 +0200\n" +
@@ -256,6 +258,16 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
       .toString();
     log.debug("\n" + actual);
+    
+    int intArray[] = new int[]{1, 2, 3};
+    int[][] twoDimensionalArray =  new int[][]{intArray, {4, 5, 6}, {7, 8, 9}};
+    
+    actual = ToStringBuilder.builder(twoDimensionalArray)
+      .skipRootNode()
+      .flatten()
+      .toString();
+    log.debug("\n" + actual);
+
   }
   
   private void inspectObject(String msg, Object o)  {

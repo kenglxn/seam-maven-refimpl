@@ -20,7 +20,7 @@ import no.knowit.util.MetaCache.Meta;
 /**
  * <p>Assists in implementing {@link Object#toString()} methods. For example:<br/>
  * <b>Given</b> an object that contains two member fields, {@code foo}, and {@code bar}:</p>
- * <p/>
+ * 
  * <pre><code>public class MyBean {
  *   private int foo;
  *   private String bar;
@@ -30,17 +30,18 @@ import no.knowit.util.MetaCache.Meta;
  *   public String toString() {
  *     return ToStringBuilder
  *       .builder(this)
- *       .hierarchical(false)
+ *       .flatten()
  *       .toString();
  *   }
  * }</code></pre>
- * <p/>
+ * 
  * <p><b>When</b> the values of {@code foo} and {@code bar} are 101 and "My Bean!"
  * <b>then</b> the <code>toString</code> method should return the string:
- * <code>"{MyBean": {"foo": 101, "bar": "Hello: My Bean!"}}"</code>.
- * <p/>
+ * <code>"{MyBean": {"foo": 101, "bar": "Hello: My Bean!"}}"</code>.</p>
+ * 
  * <p>The builder is capable of outputting values in encapsulated classes as well.
  * <b>Given</b> a class instance with values:</p>
+ * 
  * <pre><code>public class Frog {
  *   private String name = "Kermit";
  *   private int firstAppearance = 1955; // According to: http://en.wikipedia.org/wiki/Kermit_the_Frog
@@ -55,9 +56,10 @@ import no.knowit.util.MetaCache.Meta;
  *       .toString();
  *   }
  * }</code></pre>
- * <p/>
+ * 
  * <p><b>When</b> we call <code>toString</code>
  * <b>then</b> the method should return the string;</p>
+ * 
  * <pre><code>{"Frog": {
  *  "name": "Kermit the frog",
  *  "firstAppearance": 1955,
@@ -66,11 +68,11 @@ import no.knowit.util.MetaCache.Meta;
  *    "zip": "01234"
  *  }
  * }}</code></pre>
- * <p/>
+ * 
  * <p>You can also use the builder to debug 3rd party objects:</p>
  * <pre><code>Integer i = new Integer(1001);
  * System.out.println(ToStringBuilder.builder(i).toString());</code></pre>
- * <p/>
+ * 
  * </p>Reflection is used to output the field values which for private and protected fields will
  * fail under a security manager, unless the appropriate permissions are set up correctly.<p>
  *
@@ -86,8 +88,8 @@ public class ToStringBuilder {
   private DateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
   private boolean flatten = false;
   private String rootNodeAlias = null;
-  private boolean simpleClassNames = true;
-  private boolean printRootNode = true;
+  private boolean packageNameForClasses = false;
+  private boolean skipRootNode = false;
   private boolean publicFields = false;
   private boolean allFields = false;
   private FieldNameFormatter fieldNameFormatter = null;
@@ -127,7 +129,7 @@ public class ToStringBuilder {
   }
 
   /**
-   * <p>Indentiation of formatted output.</p>
+   * <p>Indentation of formatted output.</p>
    * <pre><code>String s = ToStringBuilder.builder(anObject).indentation(4).toString());</code></pre>
    *
    * @param indentation number of spaces to indent output, default value is 2
@@ -139,14 +141,11 @@ public class ToStringBuilder {
   }
 
   /**
-   * <p>Whether to output public fields only. If the parameter value is <code>false</code> then only
-   * public fields or fields with a corresponding public get method will be processed. A parameter
-   * value of <code>true</code> will process private, protected and public fields.</p>
-   * <p/>
-   * </p>Reflection is used to output the field values which for private and protected fields will
-   * fail under a security manager, unless the appropriate permissions are set up correctly.
-   * <p>
-   * <p/>
+   * <p>Only public fields or fields with a corresponding public get method will be processed.</p>
+   * 
+   * <p>Reflection is used to output the field values which for private and protected fields will
+   * fail under a security manager, unless the appropriate permissions are set up correctly.</p>
+   * 
    * <p><b>Given</b> a class instance with values:</p>
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
@@ -160,21 +159,19 @@ public class ToStringBuilder {
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
-   *       <b>.publicFieldsOnly(true)</b>
-   *       .hierarchical(false)
+   *       <b>.publicFieldsOnly()</b>
+   *       .flatten()
    *       .toString();
    *   }
    * }</code></pre>
-   * <p/>
    * <p><b>When</b> we call <code>toString</code>
    * <b>then</b> the method should return the string:</p>
    * <pre><code>{"Frog": {"name": "Kermit the frog"}}</code></pre>
    *
-   * @param publicFields default value is <code>false</code>
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder publicFieldsOnly(final boolean publicFields) {
-    this.publicFields = publicFields;
+  public ToStringBuilder publicFieldsOnly() {
+    this.publicFields = true;
     return this;
   }
 
@@ -198,73 +195,76 @@ public class ToStringBuilder {
   /**
    * <p>Indicates whether the output should be hierarchical, i.e. pretty formatted with indentation
    * and line breaks, or if the output should be flattened into a one line output.</p>
-   * <pre><code>String s = ToStringBuilder.builder(anObject).flatten(true).toString());</code></pre>
+   * 
+   * <pre><code>String s = ToStringBuilder.builder(anObject).flatten().toString());</code></pre>
    *
-   * @param flatten default value is <code>false</code>
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder flatten(final boolean flatten) {
-    this.flatten = flatten;
+  public ToStringBuilder flatten() {
+    this.flatten = true;
     return this;
   }
 
   /**
    * <p>You can output class names using {@link Class#getSimpleName} or {@link Class#getName}.<br/>
    * <b>Given</b> a package, <code>org.mypackage</code> and a class instance with values:</p>
+   * 
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
    *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
-   *       <b>.useSimpleClassNames(false)</b>
-   *       .hierarchical(false)
+   *       <b>.packageNameForClasses()</b>
+   *       .flatten()
    *       .toString();
    *   }
    * }</code></pre>
-   * <p/>
+   * 
    * <p><b>When</b> we call <code>toString</code>
    * <b>then</b> the method should return the string:</p>
+   * 
    * <pre><code>{"org.mypackage.Toad": {"name": "Kermit"}}</code></pre>
    *
-   * @param simpleClassNames default value is <code>true</code>
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder useSimpleClassNames(final boolean simpleClassNames) {
-    this.simpleClassNames = simpleClassNames;
+  public ToStringBuilder packageNameForClasses() {
+    this.packageNameForClasses = true;
     return this;
   }
 
   /**
-   * <p>Whether to output the topmost class name.<br/>
+   * <p>Skip output of the topmost class name.<br/>
    * <b>Given</b> a class instance with values:</p>
+   * 
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
    *   &#064;Override
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
-   *       <b>.printRootNode(false)</b>
-   *       .hierarchical(false)
+   *       <b>.skipRootNode()</b>
+   *       .flatten()
    *       .toString();
    *   }
    * }</code></pre>
-   * <p/>
+   *
    * <p><b>When</b> we call <code>toString</code>
    * <b>then</b> the method should return the string;</p>
+   * 
    * <pre><code>{"name": "Kermit"}</code></pre>
    *
-   * @param printRootNode default value is <code>true</code>
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder printRootNode(final boolean printRootNode) {
-    this.printRootNode = printRootNode;
+  public ToStringBuilder skipRootNode() {
+    this.skipRootNode = true;
     return this;
   }
 
   /**
    * <p>This method alters the name of the topmost class in the formatted output.<br/>
    * <b>Given</b> a class instance with values:</p>
+   * 
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
    *   &#064;Override
@@ -272,13 +272,14 @@ public class ToStringBuilder {
    *     return ToStringBuilder
    *       .builder(this)
    *       <b>.rootNodeAlias("Toad")</b>
-   *       .hierarchical(false)
+   *       .flatten()
    *       .toString();
    *   }
    * }</code></pre>
-   * <p/>
+   * 
    * <p><b>When</b> we call <code>toString</code>
    * <b>then</b> the method should return the string:</p>
+   * 
    * <pre><code>{"Toad": {"name": "Kermit"}}</code></pre>
    *
    * @param name the name of the root node alias
@@ -293,6 +294,7 @@ public class ToStringBuilder {
   /**
    * <p>You can set up a call back method to control formatting of field names.<br/>
    * <b>Given</b> a class instance with values:</p>
+   * 
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
    *   &#064;Override
@@ -305,13 +307,14 @@ public class ToStringBuilder {
    *           return name + "->";
    *         }
    *       })</b>
-   *       .hierarchical(false)
+   *       .flatten()
    *       .toString();
    *     }
    * }</code></pre>
-   * <p/>
+   * 
    * <p><b>When</b> we call <code>toString</code>
    * <b>then</b> the method should return the string:</p>
+   * 
    * <pre><code>{"Frog": {name-> "Kermit"}}</code></pre>
    *
    * @param fieldNameFormatter
@@ -325,6 +328,7 @@ public class ToStringBuilder {
   /**
    * <p>You can set up a call back method to control formatting of field values.<br/>
    * <b>Given</b> a class instance with values:</p>
+   * 
    * <pre><code>public class Frog {
    *   private String name = "Kermit";
    *   &#064;Override
@@ -337,13 +341,14 @@ public class ToStringBuilder {
    *           return "#" + value;
    *         }
    *       })</b>
-   *       .hierarchical(false)
+   *       .flatten()
    *       .toString();
    *     }
    * }</code></pre>
-   * <p/>
+   * 
    * <p><b>When</b> we call <code>toString</code>
    * <b>then</b> the method should return the string:</p>
+   * 
    * <pre><code>{"Frog": {"name": #Kermit}}</code></pre>
    *
    * @param fieldValueFormatter
@@ -358,6 +363,7 @@ public class ToStringBuilder {
    * <p>If you do not want to output all fields of a class' instance you can use this method to
    * add fields to the formatted output. Use "dot" notation to add fields for encapsulated classes.<br/>
    * <b>Given</b> a class instance with values:</p>
+   * 
    * <pre><code>public class Frog {
    *   public static Class Address {
    *     String street;
@@ -379,9 +385,10 @@ public class ToStringBuilder {
    *       .toString();
    *   }
    * }</code></pre>
-   * <p/>
+   * 
    * <p><b>When</b> we call <code>toString</code>
    * <b>then</b> the method should return the string:</p>
+   * 
    * <pre><code>{"Frog": {
    *  "name": "Kermit the frog",
    *  "address": "Address" {
@@ -401,7 +408,7 @@ public class ToStringBuilder {
   }
 
   /**
-   * Creates a string representation of an object
+   * <p>Creates a string representation of an object.</p>
    *
    * @return a string representation of the objects' field values
    * @see {@link Object#toString()}
@@ -423,13 +430,13 @@ public class ToStringBuilder {
 
     StringBuilder sb = new StringBuilder(64);
 
-    if (printRootNode) {
-      sb.append("{")
-        .append(fieldNameFormatter.format(target, rootNodeAlias))
-        .append(build(target, indentation))
-        .append("}");
-    } else {
+    if (skipRootNode) {
       sb.append(build(target, indentation));
+    } else {
+      sb.append("{")
+      .append(fieldNameFormatter.format(target, rootNodeAlias))
+      .append(build(target, indentation))
+      .append("}");
     }
 
     if (flatten) {
@@ -439,9 +446,9 @@ public class ToStringBuilder {
   }
 
   private String generateClassname(Object obj) {
-    return simpleClassNames
-      ? obj.getClass().getSimpleName()
-      : obj.getClass().getName();
+    return packageNameForClasses
+      ? obj.getClass().getName()
+      : obj.getClass().getSimpleName();
   }
 
   private StringBuilder flattenBuild(StringBuilder sb) {
