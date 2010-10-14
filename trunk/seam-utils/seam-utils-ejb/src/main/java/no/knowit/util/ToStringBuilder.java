@@ -638,6 +638,10 @@ public class ToStringBuilder {
     return false;
   }
 
+  public static boolean isPrimitive(final Class<?> type) {
+    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
+  }
+  
   /**
    * Copy from: org.json.JSONObject<br/>
    * Produce a string in double quotes with backslash sequences in all the
@@ -701,9 +705,5 @@ public class ToStringBuilder {
     }
     sb.append('"');
     return sb.toString();
-  }
-
-  public static boolean isPrimitive(final Class<?> type) {
-    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
   }
 }

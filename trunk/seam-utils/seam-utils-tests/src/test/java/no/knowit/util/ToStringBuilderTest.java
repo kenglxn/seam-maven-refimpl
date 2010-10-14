@@ -20,20 +20,102 @@ import no.knowit.testsupport.bean.BeanWithComposition;
 import no.knowit.testsupport.bean.BeanWithPrimitives;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class ToStringBuilderTest {
 
   private static Logger log = Logger.getLogger(ToStringBuilderTest.class);
+  
+  private static final String HEAD_AND_BODY = "{\"%s\": %s}" ;
+  
+  private static final String INTEGER_HEAD = "Integer" ;
+  private static final String INTEGER_BODY = "{\n" +
+    "  \"value\": 101\n" +
+    "}" ;
+  
+  private static final String FLOAT_HEAD = "Float" ;
+  private static final String FLOAT_BODY = "{\n" +
+    "  \"value\": 12.0\n" +
+    "}" ;
+  
+  private static final String STRING_HEAD = "String" ;
+  private static final String STRING_BODY = "{\n" +
+    "  \"count\": 14,\n" +
+    "  \"hash\": 0,\n" +
+    "  \"value\": [A,  , s, t, r, i, n, g,  , v, a, l, u, e],\n" +
+    "  \"offset\": 0\n" +
+    "}";
+  
+  private static final int[] INT_ARRAY =  new int[]{1, 2, 3};  
+  private static final String INT_ARRAY_HEAD = "int[]" ;
+  private static final String INT_ARRAY_BODY = "[1, 2, 3]";
+  
+  private static final int[][] TWO_DIMENSIONAL_INT_ARRAY =  new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+  private static final String TWO_DIMENSIONAL_INT_ARRAY_HEAD = "int[][]" ;
+  private static final String TWO_DIMENSIONAL_INT_ARRAY_BODY = "[\n" +
+    "  [1, 2, 3], \n" +
+    "  [4, 5, 6], \n" +
+    "  [7, 8, 9]]";
 
-  private static final String EXPECTED_INTARRAY_TOSTRING = "{\"int[]\": [1, 2, 3]}";
+  private static final String[] STRING_ARRAY = new String[]{"Array", "or", "List", "of", "strings"};
+  private static final String STRING_ARRAY_HEAD = "String[]" ;
+  private static final String STRING_ARRAY_BODY = 
+    "[\"Array\", \"or\", \"List\", \"of\", \"strings\"]";
+  
+  private static final String CAT_ARRAY_HEAD = "Cat[]" ;
+  private static final String CAT_ARRAY_BODY = "[\n" +
+    "  \"Cat\": {\n" +
+    "    \"name\": \"Puss\",\n" +
+    "    \"says\": \"Purr\"\n" +
+    "  }, \n" +
+    "  \"Cat\": {\n" +
+    "    \"name\": \"Tiger\",\n" +
+    "    \"says\": \"Roar\"\n" +
+    "  }]";
+
+  private static List<Integer> INTEGER_ARRAY_LIST = Arrays.asList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3));
+  private static final String INTEGER_ARRAY_LIST_HEAD = "ArrayList" ;
+  private static final String INTEGER_ARRAY_LIST_BODY = INT_ARRAY_BODY;
+  
+  private static final List<Animal> ANIMAL_LIST = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));
+  private static final String ANIMAL_LIST_HEAD = "ArrayList" ;
+  private static final String ANIMAL_LIST_BODY = "[\n" +
+    "  \"Dog\": {\n" +
+    "    \"name\": \"Laika\",\n" +
+    "    \"says\": \"Bark\"\n" +
+    "  }, \n" +
+    "  \"Cat\": {\n" +
+    "    \"name\": \"Fritz\",\n" +
+    "    \"says\": \"Purr\"\n" +
+    "  }, \n" +
+    "  \"Bird\": {\n" +
+    "    \"name\": \"Pip\",\n" +
+    "    \"says\": \"Tweet\"\n" +
+    "  }]";
+
+  private static final Map<String, String> STRING_MAP = new HashMap<String, String>() {{
+    put("Finland", "the land of a thousand lakes");
+    put("Norway", "the land of the midnight sun");
+    put("Denmark", "the land of fairy-tales and mermaids");
+    put("Sweden", "one upon a time they had Volvo and Saab");
+    put("Iceland", "the land of volcanoes and geysirs");
+  }};
+  private static final String STRING_MAP_HEAD_ALIAS = "Map" ;
+  private static final String STRING_MAP_BODY = "{\n" +
+  "  \"Finland\": \"the land of a thousand lakes\",\n" +
+  "  \"Denmark\": \"the land of fairy-tales and mermaids\",\n" +
+  "  \"Iceland\": \"the land of volcanoes and geysirs\",\n" +
+  "  \"Norway\": \"the land of the midnight sun\",\n" +
+  "  \"Sweden\": \"one upon a time they had Volvo and Saab\"\n" +
+  "}" ;
+  
+  
+  
+  
+  
   private static final String EXPECTED_ARRAYLIST_TOSTRING = "{\"ArrayList\": [1, 2, 3]}";
 
-  private static final String EXPECTED_FLOATVALUE_TOSTRING = "{\"Float\": {\n  \"value\": 12.0\n}}";
-
-  private static final String EXPECTED_STRINGARRAY_TOSTRING =
-    "{\"String[]\": [\"Array\", \"or\", \"List\", \"of\", \"strings\"]}";
   private static final String EXPECTED_STRINGLIST_TOSTRING =
     "{\"ArrayList\": [\"Array\", \"or\", \"List\", \"of\", \"strings\"]}";
 
@@ -128,38 +210,155 @@ public class ToStringBuilderTest {
   private Date expectedDate;
 
 
-  @BeforeSuite
+  @BeforeClass
   public void beforeSuite() throws Exception {
     expectedDate = dateformat.parse("2010-04-11 15:11:28 +0200");
   }
 
   @Test
-  public void anythingToString() throws Exception {
+  public void primitivesToString() {
+    String actual;
+    String expected;
+    
+    // Given
+    Integer intValue = Integer.valueOf(101);
+
+    // When
+    actual = ToStringBuilder.builder(intValue).toString();
+    
+    // Then
+    expected = String.format(HEAD_AND_BODY, INTEGER_HEAD, INTEGER_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    
+    // Given
+    Float floatValue = 12.0F;
+    
+    // When
+    actual = ToStringBuilder.builder(floatValue).toString();
+    
+    // Then
+    expected = String.format(HEAD_AND_BODY, FLOAT_HEAD, FLOAT_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+
+    // Given
+    String stringValue = "A string value";
+    
+    // When
+    actual = ToStringBuilder.builder(stringValue).toString();
+    
+    // Then
+    expected = String.format(HEAD_AND_BODY, STRING_HEAD, STRING_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+}
+
+  @Test
+  public void arraysToString() {
+    String actual;
+    String expected;
+    
+    // Given
+    int[] intArray = Arrays.copyOf(INT_ARRAY, INT_ARRAY.length);
+    
+    // When
+    actual = ToStringBuilder.builder(intArray).toString();
+    
+    // Then
+    expected = String.format(HEAD_AND_BODY, INT_ARRAY_HEAD, INT_ARRAY_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+
+    // Given
+    int[][] twoDimensionalIntArray =  TWO_DIMENSIONAL_INT_ARRAY.clone();
+
+    // When
+    actual = ToStringBuilder.builder(twoDimensionalIntArray).toString();
+    
+    // Then
+    expected = String.format(HEAD_AND_BODY, TWO_DIMENSIONAL_INT_ARRAY_HEAD, TWO_DIMENSIONAL_INT_ARRAY_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    
+    // Given
+    String[] stringArray = new String[STRING_ARRAY.length];
+    System.arraycopy(STRING_ARRAY, 0, stringArray, 0, STRING_ARRAY.length);
+    
+    // When
+    actual = ToStringBuilder.builder(stringArray).toString();
+    
+    // Then
+    expected = String.format(HEAD_AND_BODY, STRING_ARRAY_HEAD, STRING_ARRAY_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    
+    // Given
+    Cat puss = new Cat("Puss");
+    Cat tiger = new Cat("Tiger");
+    MetaCache.set("says", tiger, "Roar");
+    Cat[] catArray = new Cat[]{puss, tiger};
+    
+    // When
+    actual = ToStringBuilder.builder(catArray).toString();
+    
+    // Then
+    expected = String.format(HEAD_AND_BODY, CAT_ARRAY_HEAD, CAT_ARRAY_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+  }
+  
+  @Test
+  public void collectionsToString() {
+    
+    String actual;
+    String expected;
+
+    // Given
+    List<Integer> arrayList = INTEGER_ARRAY_LIST;
+
+    // When
+    actual = ToStringBuilder.builder(arrayList).toString();
+
+    // Then
+    expected = String.format(HEAD_AND_BODY, INTEGER_ARRAY_LIST_HEAD, INTEGER_ARRAY_LIST_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    
+    // Given
+    Map<String, String> stringMap = STRING_MAP;
+
+    // When
+    // Initialization of map uses the static initializer which gives us an anonymous class instance
+    actual = ToStringBuilder.builder(stringMap).rootNodeAlias("Map").toString();
+
+    // Then
+    expected = String.format(HEAD_AND_BODY, STRING_MAP_HEAD_ALIAS, STRING_MAP_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+
+    // Given
+    List<Animal> animalList = ANIMAL_LIST;
+    
+    // When
+    actual = ToStringBuilder.builder(animalList).toString();
+
+    // Then
+    expected = String.format(HEAD_AND_BODY, ANIMAL_LIST_HEAD, ANIMAL_LIST_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    
+    // Given
+    // When
+    // log.debug("******\n" + actual);
+    // Then
+    
+    // Given
+    // When
+    // Then
+    
+  }
+  
+  @Test
+  public void anythingToString() {
 
     String actual;
-
-    String[] stringArray = new String[]{"Array", "or", "List", "of", "strings"};
-    actual = ToStringBuilder.builder(stringArray).toString();
-    assert actual.equals(EXPECTED_STRINGARRAY_TOSTRING)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGARRAY_TOSTRING);
-
-    int[] intArray = new int[]{1, 2, 3};
-    actual = ToStringBuilder.builder(intArray).toString();
-    assert actual.equals(EXPECTED_INTARRAY_TOSTRING)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_INTARRAY_TOSTRING);
-
-
-    List<Integer> integerList = Arrays.asList(new Integer(1), new Integer(2), new Integer(3));
+    
+    List<Integer> integerList = Arrays.asList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3));
     actual = ToStringBuilder.builder(integerList).toString();
     log.debug("\n" + actual);
     assert actual.equals(EXPECTED_ARRAYLIST_TOSTRING)
       : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_ARRAYLIST_TOSTRING);
-
-    Float floatValue = 12.0F;
-    actual = ToStringBuilder.builder(floatValue).toString();
-    log.debug("\n" + actual);
-    assert actual.equals(EXPECTED_FLOATVALUE_TOSTRING)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_FLOATVALUE_TOSTRING);
 
 
     List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
@@ -194,7 +393,7 @@ public class ToStringBuilderTest {
   public void should() throws Exception {
     // Sandbox, no real tests here
     
-    String actual;
+//    String actual;
     
 //    actual = ToStringBuilder.builder(createSimpleBean())
 //      .publicFieldsOnly(true)
@@ -231,59 +430,63 @@ public class ToStringBuilderTest {
 //      .toString();
 //    log.debug("\n" + actual);
 
-    BeanWithNestedClasses b = new BeanWithNestedClasses(100);
-    final Class<?>[] nestedClasses = b.getClass().getDeclaredClasses();
-    for (Class<?> clazz : nestedClasses) {
-      log.debug("Nested Class: " + clazz.getSimpleName() + " -> " + clazz.getName() 
-          + ", isStatic: " + Modifier.isStatic(clazz.getModifiers()) + ", isEnum: " + clazz.isEnum() 
-          + ", isInterface: " + clazz.isInterface() + ", isSynthetic : " + clazz.isSynthetic());
-    }
-
-    log.debug("");
+//    BeanWithNestedClasses b = new BeanWithNestedClasses(100);
+//    final Class<?>[] nestedClasses = b.getClass().getDeclaredClasses();
+//    for (Class<?> clazz : nestedClasses) {
+//      log.debug("Nested Class: " + clazz.getSimpleName() + " -> " + clazz.getName() 
+//          + ", isStatic: " + Modifier.isStatic(clazz.getModifiers()) + ", isEnum: " + clazz.isEnum() 
+//          + ", isInterface: " + clazz.isInterface() + ", isSynthetic : " + clazz.isSynthetic());
+//    }
+//
+//    log.debug("");
+//    
+//    Object innerClass = MetaCache.get("innerClass", b);
+//    inspectObject("innerClass", innerClass);
+//    
+//    MetaCache.Meta meta = MetaCache.getMeta(innerClass.getClass());
+//    for (Entry<String, Field> entry : meta.fields.entrySet()) {
+//      final Field field = entry.getValue();
+//      inspectObject("Field name:  " + field.getName(), field);
+//      //inspectObject("Field value: " + field.getName(), MetaCache.get(field.getName(), innerClass));
+//    }
+//    
+//    
+//    Object i = MetaCache.get("i", innerClass);
+//    inspectObject("innerClass.i", i);
+//    
+//    actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
+//      .toString();
+//    log.debug("\n" + actual);
     
-    Object innerClass = MetaCache.get("innerClass", b);
-    inspectObject("innerClass", innerClass);
-    
-    MetaCache.Meta meta = MetaCache.getMeta(innerClass.getClass());
-    for (Entry<String, Field> entry : meta.fields.entrySet()) {
-      final Field field = entry.getValue();
-      inspectObject("Field name:  " + field.getName(), field);
-      //inspectObject("Field value: " + field.getName(), MetaCache.get(field.getName(), innerClass));
-    }
-    
-    
-    Object i = MetaCache.get("i", innerClass);
-    inspectObject("innerClass.i", i);
-    
-    actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
-      .toString();
-    log.debug("\n" + actual);
-    
-    int intArray[] = new int[]{1, 2, 3};
-    int[][] twoDimensionalArray =  new int[][]{intArray, {4, 5, 6}, {7, 8, 9}};
-    
-    actual = ToStringBuilder.builder(twoDimensionalArray)
-      .skipRootNode()
-      .flatten()
-      .toString();
-    log.debug("\n" + actual);
+//    int intArray[] = new int[]{1, 2, 3};
+//    log.debug(actual = ToStringBuilder.builder(intArray)
+//        //.skipRootNode()
+//        //.flatten()
+//        .toString());
+//    
+//    int[][] twoDimensionalArray =  new int[][]{intArray, {4, 5, 6}, {7, 8, 9}};
+//    
+//    log.debug(actual = ToStringBuilder.builder(twoDimensionalArray)
+//      //.skipRootNode()
+//      //.flatten()
+//      .toString());
 
   }
   
-  private void inspectObject(String msg, Object o)  {
-    if(o == null) {
-      log.debug(msg + ": NULL");
-      return;
-    }
-    
-    Class<?> clazz = o.getClass();
-    boolean isPrimitive = ToStringBuilder.isPrimitive(clazz);
-    log.debug(msg + ": " + clazz.getSimpleName() + " -> " + clazz.getName() 
-        + ", isStatic: " + Modifier.isStatic(clazz.getModifiers()) + ", isEnum: " + clazz.isEnum() 
-        + ", isInterface: " + clazz.isInterface() + ", instanceof Object: " + (o instanceof Object)
-        + ", isSynthetic : " + clazz.isSynthetic()
-        + ", isPrimitive: " + isPrimitive + ", " + (isPrimitive ? o : ""));
-  }
+//  private void inspectObject(String msg, Object o)  {
+//    if(o == null) {
+//      log.debug(msg + ": NULL");
+//      return;
+//    }
+//    
+//    Class<?> clazz = o.getClass();
+//    boolean isPrimitive = ToStringBuilder.isPrimitive(clazz);
+//    log.debug(msg + ": " + clazz.getSimpleName() + " -> " + clazz.getName() 
+//        + ", isStatic: " + Modifier.isStatic(clazz.getModifiers()) + ", isEnum: " + clazz.isEnum() 
+//        + ", isInterface: " + clazz.isInterface() + ", instanceof Object: " + (o instanceof Object)
+//        + ", isSynthetic : " + clazz.isSynthetic()
+//        + ", isPrimitive: " + isPrimitive + ", " + (isPrimitive ? o : ""));
+//  }
 
   
   private BeanWithPrimitives createBeanWithPrimitives() {
