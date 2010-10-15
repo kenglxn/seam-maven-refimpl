@@ -445,6 +445,91 @@ public class ToStringBuilder {
     return sb.toString();
   }
 
+  /**
+   * Determines if the specified Class object represents a primitive type. For the 
+   * <code>ToStringBuilder</code> class a primitive is an entity with a value, so in addition
+   * to the eight primitives determined by {@link java.lang.Class#isPrimitive} this method
+   * considers class objects of <code>
+   *  java.lang.String.class,    java.lang.Boolean.class,  java.lang.Byte.class,
+   *  java.lang.Character.class, java.lang.Double.class,   java.lang.Float.class,
+   *  java.lang.Integer.class,   java.lang.Long.class,     java.lang.Number.class,
+   *  java.lang.Short.class,     java.util.Currency.class, java.util.Date.class,
+   *  java.sql.Date.class,       java.sql.Time.class,      java.sql.Timestamp.class</code> 
+   *  and <code>enums</code> as primitives. 
+   *  
+   * @param type the type to check
+   * @return true if the type is a primitive, otherwise false
+   * @see {@link java.lang.Class#isPrimitive}
+   */
+  public static boolean isPrimitive(final Class<?> type) {
+    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
+  }
+  
+  /**
+   * Copy from: org.json.JSONObject<br/>
+   * Produce a string in double quotes with backslash sequences in all the
+   * right places. A backslash will be inserted within </, allowing JSON
+   * text to be delivered in HTML. In JSON text, a string cannot contain a
+   * control character or an unescaped quote or backslash.
+   *
+   * @param string A String
+   * @return A String correctly formatted for insertion in a JSON text.
+   */
+  public static String quote(String string) {
+    if (string == null || string.trim().length() == 0) {
+      return "\"\"";
+    }
+    char b;
+    char c = 0;
+    int i;
+    int len = string.length();
+    StringBuffer sb = new StringBuffer(len + 4);
+    String t;
+
+    sb.append('"');
+    for (i = 0; i < len; i += 1) {
+      b = c;
+      c = string.charAt(i);
+      switch (c) {
+        case '\\':
+        case '"':
+          sb.append('\\');
+          sb.append(c);
+          break;
+        case '/':
+          if (b == '<') {
+            sb.append('\\');
+          }
+          sb.append(c);
+          break;
+        case '\b':
+          sb.append("\\b");
+          break;
+        case '\t':
+          sb.append("\\t");
+          break;
+        case '\n':
+          sb.append("\\n");
+          break;
+        case '\f':
+          sb.append("\\f");
+          break;
+        case '\r':
+          sb.append("\\r");
+          break;
+        default:
+          if (c < ' ' || (c >= '\u0080' && c < '\u00a0') || (c >= '\u2000' && c < '\u2100')) {
+            t = "000" + Integer.toHexString(c);
+            sb.append("\\u" + t.substring(t.length() - 4));
+          } else {
+            sb.append(c);
+          }
+      }
+    }
+    sb.append('"');
+    return sb.toString();
+  }
+  
   private String generateClassname(Object obj) {
     return packageNameForClasses
       ? obj.getClass().getName()
@@ -636,74 +721,5 @@ public class ToStringBuilder {
       }
     }
     return false;
-  }
-
-  public static boolean isPrimitive(final Class<?> type) {
-    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
-  }
-  
-  /**
-   * Copy from: org.json.JSONObject<br/>
-   * Produce a string in double quotes with backslash sequences in all the
-   * right places. A backslash will be inserted within </, allowing JSON
-   * text to be delivered in HTML. In JSON text, a string cannot contain a
-   * control character or an unescaped quote or backslash.
-   *
-   * @param string A String
-   * @return A String correctly formatted for insertion in a JSON text.
-   */
-  public static String quote(String string) {
-    if (string == null || string.trim().length() == 0) {
-      return "\"\"";
-    }
-    char b;
-    char c = 0;
-    int i;
-    int len = string.length();
-    StringBuffer sb = new StringBuffer(len + 4);
-    String t;
-
-    sb.append('"');
-    for (i = 0; i < len; i += 1) {
-      b = c;
-      c = string.charAt(i);
-      switch (c) {
-        case '\\':
-        case '"':
-          sb.append('\\');
-          sb.append(c);
-          break;
-        case '/':
-          if (b == '<') {
-            sb.append('\\');
-          }
-          sb.append(c);
-          break;
-        case '\b':
-          sb.append("\\b");
-          break;
-        case '\t':
-          sb.append("\\t");
-          break;
-        case '\n':
-          sb.append("\\n");
-          break;
-        case '\f':
-          sb.append("\\f");
-          break;
-        case '\r':
-          sb.append("\\r");
-          break;
-        default:
-          if (c < ' ' || (c >= '\u0080' && c < '\u00a0') || (c >= '\u2000' && c < '\u2100')) {
-            t = "000" + Integer.toHexString(c);
-            sb.append("\\u" + t.substring(t.length() - 4));
-          } else {
-            sb.append(c);
-          }
-      }
-    }
-    sb.append('"');
-    return sb.toString();
   }
 }

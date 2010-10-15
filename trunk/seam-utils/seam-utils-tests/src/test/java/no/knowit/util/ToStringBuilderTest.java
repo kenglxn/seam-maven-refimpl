@@ -1,15 +1,14 @@
 package no.knowit.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import no.knowit.testsupport.bean.Animal;
 import no.knowit.testsupport.bean.BeanWithNestedClasses;
@@ -20,25 +19,29 @@ import no.knowit.testsupport.bean.BeanWithComposition;
 import no.knowit.testsupport.bean.BeanWithPrimitives;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class ToStringBuilderTest {
+
+  private enum Metrics {MM, CM, M, KM};
 
   private static Logger log = Logger.getLogger(ToStringBuilderTest.class);
   
   private static final String HEAD_AND_BODY = "{\"%s\": %s}" ;
   
+  private static int INT_VALUE = 101;
   private static final String INTEGER_HEAD = "Integer" ;
   private static final String INTEGER_BODY = "{\n" +
     "  \"value\": 101\n" +
     "}" ;
   
+  private static float FLOAT_VALUE = 12.0F;
   private static final String FLOAT_HEAD = "Float" ;
   private static final String FLOAT_BODY = "{\n" +
     "  \"value\": 12.0\n" +
     "}" ;
   
+  private static final String STRING_VALUE = "A string value";
   private static final String STRING_HEAD = "String" ;
   private static final String STRING_BODY = "{\n" +
     "  \"count\": 14,\n" +
@@ -47,6 +50,20 @@ public class ToStringBuilderTest {
     "  \"offset\": 0\n" +
     "}";
   
+  private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+  private static final String DATE_STRING = "2010-04-11 15:11:28 +0200";
+  private static final String DATE_HEAD = "Date" ;
+  private static final String DATE_BODY = "{\n" +
+    "  \"fastTime\": 1270991488000,\n" +
+    "  \"cdate\": null\n" +
+    "}";
+
+  private static final String METRICS_HEAD = "Metrics";
+  private static final String METRICS_BODY = "{\n" +
+    "  \"name\": \"KM\",\n" +
+    "  \"ordinal\": 3\n" +
+    "}" ;
+
   private static final int[] INT_ARRAY =  new int[]{1, 2, 3};  
   private static final String INT_ARRAY_HEAD = "int[]" ;
   private static final String INT_ARRAY_BODY = "[1, 2, 3]";
@@ -59,7 +76,7 @@ public class ToStringBuilderTest {
     "  [7, 8, 9]]";
 
   private static final String[] STRING_ARRAY = new String[]{"Array", "or", "List", "of", "strings"};
-  private static final String STRING_ARRAY_HEAD = "String[]" ;
+  private static final String STRING_ARRAY_HEAD = "String[]";
   private static final String STRING_ARRAY_BODY = 
     "[\"Array\", \"or\", \"List\", \"of\", \"strings\"]";
   
@@ -78,6 +95,10 @@ public class ToStringBuilderTest {
   private static final String INTEGER_ARRAY_LIST_HEAD = "ArrayList" ;
   private static final String INTEGER_ARRAY_LIST_BODY = INT_ARRAY_BODY;
   
+  private static final List<String> STRING_LIST = new ArrayList<String>(Arrays.asList(STRING_ARRAY));
+  private static final String STRING_LIST_HEAD = "ArrayList";
+  private static final String STRING_LIST_BODY = STRING_ARRAY_BODY;
+
   private static final List<Animal> ANIMAL_LIST = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));
   private static final String ANIMAL_LIST_HEAD = "ArrayList" ;
   private static final String ANIMAL_LIST_BODY = "[\n" +
@@ -94,6 +115,7 @@ public class ToStringBuilderTest {
     "    \"says\": \"Tweet\"\n" +
     "  }]";
 
+  @SuppressWarnings("serial")
   private static final Map<String, String> STRING_MAP = new HashMap<String, String>() {{
     put("Finland", "the land of a thousand lakes");
     put("Norway", "the land of the midnight sun");
@@ -110,21 +132,34 @@ public class ToStringBuilderTest {
   "  \"Sweden\": \"one upon a time they had Volvo and Saab\"\n" +
   "}" ;
   
-  
-  
-  
-  
-  private static final String EXPECTED_ARRAYLIST_TOSTRING = "{\"ArrayList\": [1, 2, 3]}";
+  @SuppressWarnings("serial")
+  private static final Map<String, Dog> DOG_MAP = new HashMap<String, Dog>() {{
+    put("Bonzo", new Dog("Bonzo"));
+    put("Fido", new Dog("Fido"));
+    put("Lady", new Dog("Lady"));
+    put("Tramp", new Dog("Tramp"));
+  }};
+  private static final String DOG_MAP_HEAD_ALIAS = "dogs4all" ;
+  private static final String DOG_MAP_BODY = "{\n" +
+  "  \"Tramp\": \"Dog\": {\n" +
+  "    \"name\": \"Tramp\",\n" +
+  "    \"says\": \"Bark\"\n" +
+  "  },\n" +
+  "  \"Fido\": \"Dog\": {\n" +
+  "    \"name\": \"Fido\",\n" +
+  "    \"says\": \"Bark\"\n" +
+  "  },\n" +
+  "  \"Lady\": \"Dog\": {\n" +
+  "    \"name\": \"Lady\",\n" +
+  "    \"says\": \"Bark\"\n" +
+  "  },\n" +
+  "  \"Bonzo\": \"Dog\": {\n" +
+  "    \"name\": \"Bonzo\",\n" +
+  "    \"says\": \"Bark\"\n" +
+  "  }\n" +
+  "}" ;
 
-  private static final String EXPECTED_STRINGLIST_TOSTRING =
-    "{\"ArrayList\": [\"Array\", \"or\", \"List\", \"of\", \"strings\"]}";
-
-  private static final String EXPECTED_STRINGMAP_TOSTRING =
-    "{\"HashMap\": {\n" +
-      "  \"Finland\": \"the land of a thousand lakes\",\n" +
-      "  \"Norway\": \"the land of the midnight sun\"\n" +
-      "}}";
-
+  
   private static final String EXPECTED_SIMPLEBEAN_FRAGMENT =
     "{\"BeanWithPrimitives\": {\n" +
       "  \"id\": 2,\n" +
@@ -206,14 +241,7 @@ public class ToStringBuilderTest {
     "  }\n}}";
   
   private static final String ASSERT_MESSAGE_FORMAT = "Actual: [%s]. Expected: [%s].";
-  private final DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-  private Date expectedDate;
 
-
-  @BeforeClass
-  public void beforeSuite() throws Exception {
-    expectedDate = dateformat.parse("2010-04-11 15:11:28 +0200");
-  }
 
   @Test
   public void primitivesToString() {
@@ -221,7 +249,7 @@ public class ToStringBuilderTest {
     String expected;
     
     // Given
-    Integer intValue = Integer.valueOf(101);
+    Integer intValue = Integer.valueOf(INT_VALUE);
 
     // When
     actual = ToStringBuilder.builder(intValue).toString();
@@ -231,7 +259,7 @@ public class ToStringBuilderTest {
     assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     // Given
-    Float floatValue = 12.0F;
+    Float floatValue = FLOAT_VALUE;
     
     // When
     actual = ToStringBuilder.builder(floatValue).toString();
@@ -241,13 +269,39 @@ public class ToStringBuilderTest {
     assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 
     // Given
-    String stringValue = "A string value";
+    String stringValue = STRING_VALUE;
     
     // When
     actual = ToStringBuilder.builder(stringValue).toString();
     
     // Then
     expected = String.format(HEAD_AND_BODY, STRING_HEAD, STRING_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    
+    // Given
+    Date date = null;
+    try {
+      date = DATE_FORMAT.parse(DATE_STRING);
+    } 
+    catch (ParseException e) {}
+
+    // When
+    actual = ToStringBuilder.builder(date).toString();
+    //log.debug("******\n" + actual);
+    
+    // Then
+    expected = String.format(HEAD_AND_BODY, DATE_HEAD, DATE_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    
+    
+    // Given
+    Metrics metrics = Metrics.KM;
+    
+    // When
+    actual = ToStringBuilder.builder(metrics).toString();
+
+    // Then
+    expected = String.format(HEAD_AND_BODY, METRICS_HEAD, METRICS_BODY);
     assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 }
 
@@ -318,10 +372,22 @@ public class ToStringBuilderTest {
     assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     // Given
+    List<String> stringList = STRING_LIST;
+
+    // When
+    actual = ToStringBuilder.builder(stringList).toString();
+    //log.debug("******\n" + actual);
+
+    // Then
+    expected = String.format(HEAD_AND_BODY, STRING_LIST_HEAD, STRING_LIST_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+
+    // Given
     Map<String, String> stringMap = STRING_MAP;
 
     // When
     // Initialization of map uses the static initializer which gives us an anonymous class instance
+    // Uses rootNodeAlias("Map") to name the Map instance
     actual = ToStringBuilder.builder(stringMap).rootNodeAlias("Map").toString();
 
     // Then
@@ -339,48 +405,37 @@ public class ToStringBuilderTest {
     assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     // Given
+    Map<String, Dog> dogMap = DOG_MAP;
+    
     // When
-    // log.debug("******\n" + actual);
+    // Initialization of map uses the static initializer which gives us an anonymous class instance
+    // Uses rootNodeAlias("dogs4all") to name the Map instance
+    actual = ToStringBuilder.builder(dogMap).rootNodeAlias("dogs4all").toString();
+    
     // Then
+    expected = String.format(HEAD_AND_BODY, DOG_MAP_HEAD_ALIAS, DOG_MAP_BODY);
+    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     // Given
     // When
+    //log.debug("******\n" + actual);
     // Then
     
   }
   
   @Test
-  public void anythingToString() {
+  public void beansToString() {
 
     String actual;
     
-    List<Integer> integerList = Arrays.asList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3));
-    actual = ToStringBuilder.builder(integerList).toString();
-    log.debug("\n" + actual);
-    assert actual.equals(EXPECTED_ARRAYLIST_TOSTRING)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_ARRAYLIST_TOSTRING);
-
-
-    List<String> stringList = Arrays.asList("Array", "or", "List", "of", "strings");
-    actual = ToStringBuilder.builder(stringList).toString();
-    assert actual.equals(EXPECTED_STRINGLIST_TOSTRING)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGLIST_TOSTRING);
-
-    Map<String, String> stringMap = new HashMap<String, String>();
-    stringMap.put("Finland", "the land of a thousand lakes");
-    stringMap.put("Norway", "the land of the midnight sun");
-    actual = ToStringBuilder.builder(stringMap).toString();
-    assert actual.equals(EXPECTED_STRINGMAP_TOSTRING)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_STRINGMAP_TOSTRING);
-
-    BeanWithPrimitives simpleBean = createBeanWithPrimitives();
-    actual = ToStringBuilder.builder(simpleBean).toString();
+    BeanWithPrimitives beanWithPrimitives = createBeanWithPrimitives();
+    actual = ToStringBuilder.builder(beanWithPrimitives).toString();
     assert actual.startsWith(EXPECTED_SIMPLEBEAN_FRAGMENT)
       : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLEBEAN_FRAGMENT);
 
     log.debug("\n" + actual);
 
-    BeanWithComposition nestedBean = createBeanWithComposition(simpleBean);
+    BeanWithComposition nestedBean = createBeanWithComposition(beanWithPrimitives);
     actual = ToStringBuilder.builder(nestedBean).toString();
     assert actual.startsWith(EXPECTED_NESTEDBEAN_FRAGMENT_1) &&
       actual.contains(EXPECTED_NESTEDBEAN_FRAGMENT_2)
@@ -393,101 +448,48 @@ public class ToStringBuilderTest {
   public void should() throws Exception {
     // Sandbox, no real tests here
     
-//    String actual;
+    String actual;
     
-//    actual = ToStringBuilder.builder(createSimpleBean())
-//      .publicFieldsOnly(true)
-//      .hierarchical(true)
-//      .indentation(2)
-//      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
-//        @Override
-//        public String format(Object owner, String name) {
-//          return name + "->";
-//        }
-//      })
-//      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
-//        @Override
-//        public String format(final Object owner, final Object value) {
-//          return "@" + value.toString();
-//        }
-//      })
-//      .toString();
-//    log.debug("\n" + actual);
-//
-//    BeanWithComposition nestedBean = createNestedBean(createSimpleBean());
-//    actual = ToStringBuilder
-//      .builder(nestedBean)
-//      .publicFieldsOnly(false)
-//      .toString();
-//    log.debug("\n" + actual);
-//
-//    actual = ToStringBuilder
-//      .builder(createSimpleBean())
-//      .indentation(1)
-//      .withField("id")
-//      .withField("color")
-//      .withField("baz")
-//      .toString();
-//    log.debug("\n" + actual);
+    actual = ToStringBuilder.builder(createBeanWithPrimitives())
+      .publicFieldsOnly()
+      .flatten()
+      .indentation(2)
+      .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
+        @Override
+        public String format(Object owner, String name) {
+          return name + "->";
+        }
+      })
+      .fieldValueFormatter(new ToStringBuilder.FieldValueFormatter() {
+        @Override
+        public String format(final Object owner, final Object value) {
+          return "@" + value.toString();
+        }
+      })
+      .toString();
+    log.debug("\n" + actual);
 
-//    BeanWithNestedClasses b = new BeanWithNestedClasses(100);
-//    final Class<?>[] nestedClasses = b.getClass().getDeclaredClasses();
-//    for (Class<?> clazz : nestedClasses) {
-//      log.debug("Nested Class: " + clazz.getSimpleName() + " -> " + clazz.getName() 
-//          + ", isStatic: " + Modifier.isStatic(clazz.getModifiers()) + ", isEnum: " + clazz.isEnum() 
-//          + ", isInterface: " + clazz.isInterface() + ", isSynthetic : " + clazz.isSynthetic());
-//    }
-//
-//    log.debug("");
-//    
-//    Object innerClass = MetaCache.get("innerClass", b);
-//    inspectObject("innerClass", innerClass);
-//    
-//    MetaCache.Meta meta = MetaCache.getMeta(innerClass.getClass());
-//    for (Entry<String, Field> entry : meta.fields.entrySet()) {
-//      final Field field = entry.getValue();
-//      inspectObject("Field name:  " + field.getName(), field);
-//      //inspectObject("Field value: " + field.getName(), MetaCache.get(field.getName(), innerClass));
-//    }
-//    
-//    
-//    Object i = MetaCache.get("i", innerClass);
-//    inspectObject("innerClass.i", i);
-//    
-//    actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
-//      .toString();
-//    log.debug("\n" + actual);
+    BeanWithComposition beanWithComposition = createBeanWithComposition(createBeanWithPrimitives());
+    actual = ToStringBuilder
+      .builder(beanWithComposition)
+      .publicFieldsOnly()
+      .toString();
+    log.debug("\n" + actual);
+
+    actual = ToStringBuilder
+      .builder(createBeanWithPrimitives())
+      .indentation(1)
+      .withField("id")
+      .withField("color")
+      .withField("baz")
+      .toString();
+    log.debug("\n" + actual);
+
+    actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
+      .toString();
+    log.debug("\n" + actual);
     
-//    int intArray[] = new int[]{1, 2, 3};
-//    log.debug(actual = ToStringBuilder.builder(intArray)
-//        //.skipRootNode()
-//        //.flatten()
-//        .toString());
-//    
-//    int[][] twoDimensionalArray =  new int[][]{intArray, {4, 5, 6}, {7, 8, 9}};
-//    
-//    log.debug(actual = ToStringBuilder.builder(twoDimensionalArray)
-//      //.skipRootNode()
-//      //.flatten()
-//      .toString());
-
   }
-  
-//  private void inspectObject(String msg, Object o)  {
-//    if(o == null) {
-//      log.debug(msg + ": NULL");
-//      return;
-//    }
-//    
-//    Class<?> clazz = o.getClass();
-//    boolean isPrimitive = ToStringBuilder.isPrimitive(clazz);
-//    log.debug(msg + ": " + clazz.getSimpleName() + " -> " + clazz.getName() 
-//        + ", isStatic: " + Modifier.isStatic(clazz.getModifiers()) + ", isEnum: " + clazz.isEnum() 
-//        + ", isInterface: " + clazz.isInterface() + ", instanceof Object: " + (o instanceof Object)
-//        + ", isSynthetic : " + clazz.isSynthetic()
-//        + ", isPrimitive: " + isPrimitive + ", " + (isPrimitive ? o : ""));
-//  }
-
   
   private BeanWithPrimitives createBeanWithPrimitives() {
     BeanWithPrimitives beanWithPrimitives = new BeanWithPrimitives();
@@ -496,7 +498,12 @@ public class ToStringBuilderTest {
     MetaCache.set("bar", beanWithPrimitives, "Hello \"BAR\"!");
     MetaCache.set("baz", beanWithPrimitives, "  Hello   BAZ!");
     MetaCache.set("color", beanWithPrimitives, BeanWithPrimitives.Color.RED);
-    MetaCache.set("someDate", beanWithPrimitives, expectedDate);
+    
+    try {
+      Date date = DATE_FORMAT.parse(DATE_STRING);
+      MetaCache.set("someDate", beanWithPrimitives, date);
+    } 
+    catch (ParseException e) {}
 
     return beanWithPrimitives;
   }
