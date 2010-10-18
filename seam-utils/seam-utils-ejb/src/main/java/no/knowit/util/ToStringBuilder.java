@@ -179,7 +179,7 @@ public class ToStringBuilder {
    * <p>The date format used to output date values.</p>
    * <pre><code>String s = ToStringBuilder.builder(anObject).dateFormat("dd-MM-yyyy HH:mm").toString());</code></pre>
    *
-   * @param dateFormat the date format, default format value is <code>"yyyy-MM-dd HH:mm:ss Z"</code>
+   * @param dateFormat the date format, default date format is <code>"yyyy-MM-dd HH:mm:ss Z"</code>
    * @return the same {@link ToStringBuilder} instance
    * @see java.text.DateFormat
    */
@@ -406,6 +406,15 @@ public class ToStringBuilder {
     }
     return this;
   }
+  
+  /**
+   * Output fields with a given annotation
+   * @param name the annotation name to output fields for  when <code>toString</code> is called
+   * @return the same {@link ToStringBuilder} instance
+   */
+  public ToStringBuilder withAnnotation(final String name) {
+    throw new UnsupportedOperationException("ToStringBuilder.withAnnotation is not yet implemented");
+  }
 
   /**
    * <p>Creates a string representation of an object.</p>
@@ -433,10 +442,10 @@ public class ToStringBuilder {
     if (skipRootNode) {
       sb.append(build(target, indentation));
     } else {
-      sb.append("{")
+      sb.append('{')
       .append(fieldNameFormatter.format(target, rootNodeAlias))
       .append(build(target, indentation))
-      .append("}");
+      .append('}');
     }
 
     if (flatten) {
@@ -446,8 +455,7 @@ public class ToStringBuilder {
   }
 
   /**
-   * Determines if the specified Class object represents a primitive type. For the 
-   * <code>ToStringBuilder</code> class a primitive is an entity with a value, so in addition
+   * Determines if the specified Class object represents a primitive type. In addition
    * to the eight primitives determined by {@link java.lang.Class#isPrimitive} this method
    * considers class objects of <code>
    *  java.lang.String.class,    java.lang.Boolean.class,  java.lang.Byte.class,
@@ -460,6 +468,7 @@ public class ToStringBuilder {
    * @param type the type to check
    * @return true if the type is a primitive, otherwise false
    * @see {@link java.lang.Class#isPrimitive}
+   * @see {@link java.lang.Class#isEnum}
    */
   public static boolean isPrimitive(final Class<?> type) {
     return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);

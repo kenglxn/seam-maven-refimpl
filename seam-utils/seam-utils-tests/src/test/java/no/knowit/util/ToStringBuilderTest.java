@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import no.knowit.testsupport.bean.Animal;
 import no.knowit.testsupport.bean.BeanWithNestedClasses;
@@ -23,11 +25,17 @@ import org.testng.annotations.Test;
 
 public class ToStringBuilderTest {
 
-  private enum Metrics {MM, CM, M, KM};
+  private enum Metrics {
+    MM("Millimetres"), CM("Centimetres"), M("Metres"), KM("Kilometres");
+    private String description;
+    Metrics(String description) { this.description = description; }
+    @SuppressWarnings("unused")
+    public String getDescription() { return description; }
+  };
 
   private static Logger log = Logger.getLogger(ToStringBuilderTest.class);
   
-  private static final String HEAD_AND_BODY = "{\"%s\": %s}" ;
+  private static final String HEAD_BODY_TAIL = "{\"%s\": %s}" ;
   
   private static int INT_VALUE = 101;
   private static final String INTEGER_HEAD = "Integer" ;
@@ -60,6 +68,7 @@ public class ToStringBuilderTest {
 
   private static final String METRICS_HEAD = "Metrics";
   private static final String METRICS_BODY = "{\n" +
+    "  \"description\": \"Kilometres\",\n" +
     "  \"name\": \"KM\",\n" +
     "  \"ordinal\": 3\n" +
     "}" ;
@@ -71,8 +80,8 @@ public class ToStringBuilderTest {
   private static final int[][] TWO_DIMENSIONAL_INT_ARRAY =  new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
   private static final String TWO_DIMENSIONAL_INT_ARRAY_HEAD = "int[][]" ;
   private static final String TWO_DIMENSIONAL_INT_ARRAY_BODY = "[\n" +
-    "  [1, 2, 3], \n" +
-    "  [4, 5, 6], \n" +
+    "  [1, 2, 3],\n" +
+    "  [4, 5, 6],\n" +
     "  [7, 8, 9]]";
 
   private static final String[] STRING_ARRAY = new String[]{"Array", "or", "List", "of", "strings"};
@@ -159,8 +168,7 @@ public class ToStringBuilderTest {
   "  }\n" +
   "}" ;
 
-  
-  private static final String EXPECTED_SIMPLEBEAN_FRAGMENT =
+  private static final String EXPECTED_SIMPLE_BEAN =
     "{\"BeanWithPrimitives\": {\n" +
       "  \"id\": 2,\n" +
       "  \"baz\": \"  Hello   BAZ!\",\n" +
@@ -168,11 +176,19 @@ public class ToStringBuilderTest {
       "  \"finalField\": \"A final field\",\n" +
       "  \"foo\": 200,\n" +
       "  \"bar\": \"setBar -> Hello \\\"BAR\\\"!\",\n" +
-      "  \"someDate\": 2010-04-11 15:11:28 +0200\n}}";
+      "  \"someDate\": 2010-04-11 15:11:28 +0200\n" +
+      "}}";
 
-  private static final String EXPECTED_NESTEDBEAN_FRAGMENT_1 = "{\"BeanWithComposition\": {";
+  private static final String EXPECTED_SIMPLE_BEAN_PUBLIC_FIELDS =
+    "{\"BeanWithPrimitives\": {\n" +
+      "  \"baz\": \"  Hello   BAZ!\",\n" +
+      "  \"color\": RED,\n" +
+      "  \"foo\": 200,\n" +
+      "  \"someDate\": 2010-04-11 15:11:28 +0200\n" +
+      "}}";
 
-  private static final String EXPECTED_NESTEDBEAN_FRAGMENT_2 =
+  private static final String EXPECTED_COMPOSED_BEAN =
+    "{\"BeanWithComposition\": {\n" +
     "  \"id\": 99,\n" +
     "  \"animalList\": [\n" +
     "    \"Dog\": {\n" +
@@ -197,8 +213,8 @@ public class ToStringBuilderTest {
     "  \"intArray\": [1, 2, 3],\n" +
     "  \"stringArray\": [\"Array\", \"or\", \"List\", \"of\", \"strings\"],\n" +
     "  \"twoDimensionalArray\": [\n" +
-    "    [1, 2, 3], \n" +
-    "    [4, 5, 6], \n" +
+    "    [1, 2, 3],\n" +
+    "    [4, 5, 6],\n" +
     "    [7, 8, 9]],\n" +
     "  \"stringList\": [\"Array\", \"or\", \"List\", \"of\", \"strings\"],\n" +
     "  \"integerList\": [101, 201, 301],\n" +
@@ -240,7 +256,43 @@ public class ToStringBuilderTest {
     "    \"someDate\": 2010-04-11 15:11:28 +0200\n" +
     "  }\n}}";
   
-  private static final String ASSERT_MESSAGE_FORMAT = "Actual: [%s]. Expected: [%s].";
+  private static final String EXPECTED_COMPOSED_BEAN_WITH_FIELDS =
+    "  {\"BeanWithComposition\": {\n" +
+    "    \"id\": 99,\n" +
+    "    \"dogMap\": {\n" +
+    "      \"Tramp\": \"Dog\": {\n" +
+    "        \"name\": \"Tramp\"\n" +
+    "      },\n" +
+    "      \"Fido\": \"Dog\": {\n" +
+    "        \"name\": \"Fido\"\n" +
+    "      },\n" +
+    "      \"Lady\": \"Dog\": {\n" +
+    "        \"name\": \"Lady\"\n" +
+    "      },\n" +
+    "      \"Bonzo\": \"Dog\": {\n" +
+    "        \"name\": \"Bonzo\"\n" +
+    "      }\n" +
+    "    },\n" +
+    "    \"beanWithPrimitives\": \"BeanWithPrimitives\": {\n" +
+    "      \"id\": 2,\n" +
+    "      \"color\": RED\n" +
+    "    }\n" +
+    "  }}";
+  
+  private static final String EXPECTED_BEAN_WITH_NESTED_CLASSES =
+    "  {\"BeanWithNestedClasses\": {\n" +
+    "    \"nestedEnum\": YELLOW,\n" +
+    "    \"innerClass\": \"InnerClass\": {\n" +
+    "      \"i\": 110\n" +
+    "    },\n" +
+    "    \"staticNestedClass\": \"StaticNestedClass\": {\n" +
+    "      \"i\": 120\n" +
+    "    },\n" +
+    "    \"i\": 100\n" +
+    "  }}";
+  
+  private static final String ASSERT_MESSAGE_FORMAT = 
+    "Actual result was not expected!\nActual: [%s]. Expected: [%s].";
 
 
   @Test
@@ -255,8 +307,8 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(intValue).toString();
     
     // Then
-    expected = String.format(HEAD_AND_BODY, INTEGER_HEAD, INTEGER_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, INTEGER_HEAD, INTEGER_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     // Given
     Float floatValue = FLOAT_VALUE;
@@ -265,8 +317,8 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(floatValue).toString();
     
     // Then
-    expected = String.format(HEAD_AND_BODY, FLOAT_HEAD, FLOAT_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, FLOAT_HEAD, FLOAT_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 
     // Given
     String stringValue = STRING_VALUE;
@@ -275,8 +327,8 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(stringValue).toString();
     
     // Then
-    expected = String.format(HEAD_AND_BODY, STRING_HEAD, STRING_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, STRING_HEAD, STRING_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     // Given
     Date date = null;
@@ -287,11 +339,10 @@ public class ToStringBuilderTest {
 
     // When
     actual = ToStringBuilder.builder(date).toString();
-    //log.debug("******\n" + actual);
     
     // Then
-    expected = String.format(HEAD_AND_BODY, DATE_HEAD, DATE_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, DATE_HEAD, DATE_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     
     // Given
@@ -299,10 +350,11 @@ public class ToStringBuilderTest {
     
     // When
     actual = ToStringBuilder.builder(metrics).toString();
+    //log.debug("******\n" + actual);
 
     // Then
-    expected = String.format(HEAD_AND_BODY, METRICS_HEAD, METRICS_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, METRICS_HEAD, METRICS_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 }
 
   @Test
@@ -317,8 +369,8 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(intArray).toString();
     
     // Then
-    expected = String.format(HEAD_AND_BODY, INT_ARRAY_HEAD, INT_ARRAY_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, INT_ARRAY_HEAD, INT_ARRAY_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 
     // Given
     int[][] twoDimensionalIntArray =  TWO_DIMENSIONAL_INT_ARRAY.clone();
@@ -327,8 +379,8 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(twoDimensionalIntArray).toString();
     
     // Then
-    expected = String.format(HEAD_AND_BODY, TWO_DIMENSIONAL_INT_ARRAY_HEAD, TWO_DIMENSIONAL_INT_ARRAY_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, TWO_DIMENSIONAL_INT_ARRAY_HEAD, TWO_DIMENSIONAL_INT_ARRAY_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
     
     // Given
     String[] stringArray = new String[STRING_ARRAY.length];
@@ -338,8 +390,8 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(stringArray).toString();
     
     // Then
-    expected = String.format(HEAD_AND_BODY, STRING_ARRAY_HEAD, STRING_ARRAY_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, STRING_ARRAY_HEAD, STRING_ARRAY_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
     
     // Given
     Cat puss = new Cat("Puss");
@@ -349,10 +401,11 @@ public class ToStringBuilderTest {
     
     // When
     actual = ToStringBuilder.builder(catArray).toString();
+    //log.debug("******\n" + actual);
     
     // Then
-    expected = String.format(HEAD_AND_BODY, CAT_ARRAY_HEAD, CAT_ARRAY_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, CAT_ARRAY_HEAD, CAT_ARRAY_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
   }
   
   @Test
@@ -368,19 +421,18 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(arrayList).toString();
 
     // Then
-    expected = String.format(HEAD_AND_BODY, INTEGER_ARRAY_LIST_HEAD, INTEGER_ARRAY_LIST_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, INTEGER_ARRAY_LIST_HEAD, INTEGER_ARRAY_LIST_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
     
     // Given
     List<String> stringList = STRING_LIST;
 
     // When
     actual = ToStringBuilder.builder(stringList).toString();
-    //log.debug("******\n" + actual);
 
     // Then
-    expected = String.format(HEAD_AND_BODY, STRING_LIST_HEAD, STRING_LIST_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, STRING_LIST_HEAD, STRING_LIST_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
 
     // Given
     Map<String, String> stringMap = STRING_MAP;
@@ -391,8 +443,8 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(stringMap).rootNodeAlias("Map").toString();
 
     // Then
-    expected = String.format(HEAD_AND_BODY, STRING_MAP_HEAD_ALIAS, STRING_MAP_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, STRING_MAP_HEAD_ALIAS, STRING_MAP_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
 
     // Given
     List<Animal> animalList = ANIMAL_LIST;
@@ -401,8 +453,8 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(animalList).toString();
 
     // Then
-    expected = String.format(HEAD_AND_BODY, ANIMAL_LIST_HEAD, ANIMAL_LIST_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    expected = String.format(HEAD_BODY_TAIL, ANIMAL_LIST_HEAD, ANIMAL_LIST_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
     
     // Given
     Map<String, Dog> dogMap = DOG_MAP;
@@ -411,16 +463,11 @@ public class ToStringBuilderTest {
     // Initialization of map uses the static initializer which gives us an anonymous class instance
     // Uses rootNodeAlias("dogs4all") to name the Map instance
     actual = ToStringBuilder.builder(dogMap).rootNodeAlias("dogs4all").toString();
-    
-    // Then
-    expected = String.format(HEAD_AND_BODY, DOG_MAP_HEAD_ALIAS, DOG_MAP_BODY);
-    assert actual.equals(expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
-    
-    // Given
-    // When
     //log.debug("******\n" + actual);
-    // Then
     
+    // Then
+    expected = String.format(HEAD_BODY_TAIL, DOG_MAP_HEAD_ALIAS, DOG_MAP_BODY);
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
   }
   
   @Test
@@ -428,32 +475,107 @@ public class ToStringBuilderTest {
 
     String actual;
     
+    // Given
     BeanWithPrimitives beanWithPrimitives = createBeanWithPrimitives();
+    
+    // When
     actual = ToStringBuilder.builder(beanWithPrimitives).toString();
-    assert actual.startsWith(EXPECTED_SIMPLEBEAN_FRAGMENT)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLEBEAN_FRAGMENT);
+    
+    // Then
+    assert actualInExpected(actual, EXPECTED_SIMPLE_BEAN) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLE_BEAN);
 
-    log.debug("\n" + actual);
+    // Given
+    BeanWithComposition beanWithComposition = createBeanWithComposition(beanWithPrimitives);
+    
+    // When
+    actual = ToStringBuilder.builder(beanWithComposition).toString();
+    log.debug("******\n" + actual);
+    
+    // Then
+    assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN);
 
-    BeanWithComposition nestedBean = createBeanWithComposition(beanWithPrimitives);
-    actual = ToStringBuilder.builder(nestedBean).toString();
-    assert actual.startsWith(EXPECTED_NESTEDBEAN_FRAGMENT_1) &&
-      actual.contains(EXPECTED_NESTEDBEAN_FRAGMENT_2)
-      : String.format(ASSERT_MESSAGE_FORMAT, actual,
-      EXPECTED_NESTEDBEAN_FRAGMENT_1 + "\n" + EXPECTED_NESTEDBEAN_FRAGMENT_2);
-    log.debug("\n" + actual);
+    // Given
+    BeanWithNestedClasses beanWithNestedClasses = new BeanWithNestedClasses(100);
+
+    // When
+    actual = ToStringBuilder.builder(beanWithNestedClasses).toString();
+    
+    // Then
+    assert actualInExpected(actual, EXPECTED_BEAN_WITH_NESTED_CLASSES) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_BEAN_WITH_NESTED_CLASSES);
   }
 
   @Test
-  public void should() throws Exception {
-    // Sandbox, no real tests here
-    
+  public void publicFieldsToString() throws Exception {
     String actual;
     
+    // Given
+    BeanWithPrimitives beanWithPrimitives = createBeanWithPrimitives();
+    
+    // When
+    actual = ToStringBuilder.builder(beanWithPrimitives)
+      .publicFieldsOnly()
+      .toString();
+    
+    // Then
+    assert actualInExpected(actual, EXPECTED_SIMPLE_BEAN_PUBLIC_FIELDS) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLE_BEAN_PUBLIC_FIELDS);
+  }
+
+  @Test
+  public void withNamedFieldsToString() {
+    // Given
+    BeanWithComposition beanWithComposition = createBeanWithComposition(createBeanWithPrimitives());
+    
+    // When
+    String actual = ToStringBuilder.builder(beanWithComposition)
+      .withField("id")
+      .withField("beanWithPrimitives")
+      .withField("dogMap")
+      .withField("BeanWithPrimitives.id")
+      .withField("BeanWithPrimitives.color")
+      .withField("Animal.name")
+      .toString();
+    
+    //log.debug("******\n" + actual);
+    
+    // Then
+    assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN_WITH_FIELDS) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN_WITH_FIELDS);
+  }
+  
+  @Test(enabled=false)
+  public void withAnnotatedFields() {
+    ; // TBD
+  }
+
+  @Test
+  public void flattenToString() {
+    
+    // Given
+    BeanWithPrimitives beanWithPrimitives = createBeanWithPrimitives();
+    
+    // When
+    String actual = ToStringBuilder.builder(beanWithPrimitives)
+      .flatten()
+      .toString();
+    
+    String lines[] = actual.split("[\\r\\n]+");
+    
+    // Then
+    assert lines.length == 1 : "A flattened result should be exactly one line";
+  }
+  
+  @Test
+  public void overrideFormat() {
+    String actual;
+
+    // Given / When
     actual = ToStringBuilder.builder(createBeanWithPrimitives())
       .publicFieldsOnly()
       .flatten()
-      .indentation(2)
       .fieldNameFormatter(new ToStringBuilder.FieldNameFormatter() {
         @Override
         public String format(Object owner, String name) {
@@ -467,28 +589,77 @@ public class ToStringBuilderTest {
         }
       })
       .toString();
-    log.debug("\n" + actual);
-
-    BeanWithComposition beanWithComposition = createBeanWithComposition(createBeanWithPrimitives());
-    actual = ToStringBuilder
-      .builder(beanWithComposition)
-      .publicFieldsOnly()
-      .toString();
-    log.debug("\n" + actual);
-
-    actual = ToStringBuilder
-      .builder(createBeanWithPrimitives())
-      .indentation(1)
-      .withField("id")
-      .withField("color")
-      .withField("baz")
-      .toString();
-    log.debug("\n" + actual);
-
-    actual = ToStringBuilder.builder(new BeanWithNestedClasses(100))
-      .toString();
-    log.debug("\n" + actual);
+    //log.debug("\n" + actual);
     
+    // Then
+    assert actual.contains("->@") : "Overridden format should contain \"->@\"";
+  }
+  
+  
+  @Test
+  public void skipRootNode() {
+    // Given
+    List<Animal> animalList = ANIMAL_LIST;
+    
+    // When
+    String actual = ToStringBuilder.builder(animalList)
+      .skipRootNode()
+      .toString();
+  
+    // Then
+    assert actualInExpected(actual, ANIMAL_LIST_BODY) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, ANIMAL_LIST_BODY);
+  }
+
+  
+  @Test
+  public void packageNameForClasses() {
+    // Given
+    BeanWithComposition beanWithComposition = createBeanWithComposition(createBeanWithPrimitives());
+    
+    // When
+    String actual = ToStringBuilder.builder(beanWithComposition)
+      .packageNameForClasses()
+      .flatten()
+      .toString();
+    //log.debug("\n" + actual);
+  
+    // Then
+    assert actual.contains("no.knowit.testsupport.bean") 
+      : "Output should contain package name\"no.knowit.testsupport.bean\"";
+  }
+
+  @Test
+  public void modifyDateFormat() {
+    // Given
+    BeanWithPrimitives beanWithPrimitives = createBeanWithPrimitives();
+    
+    // When
+    String actual = ToStringBuilder.builder(beanWithPrimitives)
+      .dateFormat(new SimpleDateFormat("ddMMyyyy-HHmmss"))
+      .withField("someDate")
+      .toString();
+    
+    // Then
+    String expected = "11042010-151128";
+    assert actual.contains(expected) 
+      : String.format("Output should contain expected date: \"%s\"", expected);
+  }
+
+  private boolean actualInExpected(final String actual, final String expected) {
+    String lines[] = actual.split("[\\r\\n]+");
+    final Set<String> actualSet = new HashSet<String>();
+    for (String line : lines) {
+      actualSet.add(line.trim());
+    }
+    
+    lines = expected.split("[\\r\\n]+");
+    final Set<String> expectedSet = new HashSet<String>();
+    for (String line : lines) {
+      expectedSet.add(line.trim());
+    }
+    
+    return actualSet.containsAll(expectedSet);
   }
   
   private BeanWithPrimitives createBeanWithPrimitives() {
