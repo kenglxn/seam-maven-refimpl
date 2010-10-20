@@ -2,8 +2,10 @@ package no.knowit.util;
 
 import static no.knowit.util.ReflectionUtils.OBJECT_PRIMITIVES;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.DateFormat;
@@ -11,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -35,7 +38,8 @@ import no.knowit.util.MetaCache.Meta;
  *   }
  * }</code></pre>
  * 
- * <p><b>When</b> the values of {@code foo} and {@code bar} are 101 and "My Bean!"
+ * <p><b>When</b> the values of {@code foo} and {@code bar} are <code>101</code> and 
+ * <code>"My Bean!"</code>
  * <b>then</b> the <code>toString</code> method should return the string:
  * <code>"{MyBean": {"foo": 101, "bar": "Hello: My Bean!"}}"</code>.</p>
  * 
@@ -50,6 +54,7 @@ import no.knowit.util.MetaCache.Meta;
  *     put("zip",    "01234");
  *   }};
  *   public String getName() { return name + " the frog"; }
+ *   &#064;Override
  *   public String toString() {
  *     return ToStringBuilder
  *       .builder(this)
@@ -95,6 +100,8 @@ public class ToStringBuilder {
   private FieldNameFormatter fieldNameFormatter = null;
   private FieldValueFormatter fieldValueFormatter = null;
   private final Set<String> fieldNames = new HashSet<String>();
+  private final Set<String> excludedFieldNames = new HashSet<String>();
+  private final Set<Class<? extends Annotation>> annotations = new HashSet<Class<? extends Annotation>>();
 
   // Strategy interfaces
 
@@ -141,7 +148,8 @@ public class ToStringBuilder {
   }
 
   /**
-   * <p>Only public fields or fields with a corresponding public get method will be processed.</p>
+   * <p>Only public fields or fields with a corresponding public get method will be added to the
+   * formatted output.</p>
    * 
    * <p>Reflection is used to output the field values which for private and protected fields will
    * fail under a security manager, unless the appropriate permissions are set up correctly.</p>
@@ -360,8 +368,8 @@ public class ToStringBuilder {
   }
 
   /**
-   * <p>If you do not want to output all fields of a class' instance you can use this method to
-   * add fields to the formatted output. Use "dot" notation to add fields for encapsulated classes.<br/>
+   * <p>Only a specified set of fields will be <b>included</b> in the formatted output. 
+   * Use "dot" notation to include fields for encapsulated classes.<br/>
    * <b>Given</b> a class instance with values:</p>
    * 
    * <pre><code>public class Frog {
@@ -380,8 +388,9 @@ public class ToStringBuilder {
    *   public String toString() {
    *     return ToStringBuilder
    *       .builder(this)
-   *       <b>.withField("name")
-   *       .withField("Address.street")</b>
+   *       <b>.includeField("name")
+   *       .includeField("address")</b>
+   *       .includeField("Address.street")</b>
    *       .toString();
    *   }
    * }</code></pre>
@@ -399,8 +408,8 @@ public class ToStringBuilder {
    * @param name the name of the field to output when <code>toString</code> is called
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder withField(final String name) {
-    final String n = name != null ? name.trim() : "";
+  public ToStringBuilder includeField(final String name) {
+    String n = name != null ? name.trim() : "";
     if (n.length() > 0) {
       fieldNames.add(n);
     }
@@ -408,12 +417,94 @@ public class ToStringBuilder {
   }
   
   /**
-   * Output fields with a given annotation
-   * @param name the annotation name to output fields for  when <code>toString</code> is called
+   * <p>You can specify a set of fields to be <b>excluded</b> from the formatted output. 
+   * Use "dot" notation to include fields for encapsulated classes.<br/>
+   * <b>Given</b> a class instance with values:</p>
+   * 
+   * <pre><code>public class Frog {
+   *   public static Class Address {
+   *     String street;
+   *     String zip;
+   *     public Address(String street, string zip) {
+   *       this.street=street; this.zip=zip;
+   *     }
+   *   }
+   *   private String name = "Kermit";
+   *   private int firstAppearance = 1955;
+   *   private Address address = new Address("Sesame Street", "01234");
+   *   public String getName() { return name + " the frog"; }
+   *   &#064;Override
+   *   public String toString() {
+   *     return ToStringBuilder
+   *       .builder(this)
+   *       <b>.excludeField("firstAppearance")
+   *       .excludeField("Address.zip")</b>
+   *       .toString();
+   *   }
+   * }</code></pre>
+   * 
+   * <p><b>When</b> we call <code>toString</code>
+   * <b>then</b> the method should return the string:</p>
+   * 
+   * <pre><code>{"Frog": {
+   *  "name": "Kermit the frog",
+   *  "address": "Address" {
+   *    "street": "Sesame Street"
+   *  }
+   * }}</code></pre>
+   *
+   * @param name the name of the field to exclude from output when <code>toString</code> is called
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder withAnnotation(final String name) {
-    throw new UnsupportedOperationException("ToStringBuilder.withAnnotation is not yet implemented");
+  public ToStringBuilder excludeField(final String name) {
+    String n = name != null ? name.trim() : "";
+    if (n.length() > 0) {
+      excludedFieldNames.add(n);
+    }
+    return this;
+  }
+  
+  /**
+   * <p>Output fields with a given annotation.<br/>
+   * <b>Given</b> a class with a member field annotated with the {@link javax.persistence.Id} 
+   * annotation:</p>
+   * 
+   * <pre><code>&#064;Entity
+   * public class Frog {
+   *   &#064;Id
+   *   private Integer identifier;
+   *   private String name;
+   *   &#064;Override
+   *   public String toString() {
+   *     return ToStringBuilder
+   *       .builder(this)
+   *       <b>.includeAnnotation(Id.class)</b>
+   *       .flatten()
+   *       .toString();
+   *   }
+   * }</code></pre>
+   * 
+   * <p><b>When</b> the values of {@code identifier} is <code>101</code> 
+   * <b>then</b> the <code>toString</code> method should return the string:
+   * <code>"{Frog": {"identifier": 101}}"</code>.</p>
+   * 
+   * @param annotation the annotation to output fields for when <code>toString</code> is called
+   * @return the same {@link ToStringBuilder} instance
+   */
+  public ToStringBuilder includeAnnotation(final Class<? extends Annotation> annotation) {
+    annotations.add(annotation);
+    
+//    List<Member> members = ReflectionUtils.searchMembersForAnnotation(annotation, target.getClass());
+//    for (Member member : members) {
+//      String name = member.getName();
+//      
+//      if(member instanceof Method) {
+//        name = ReflectionUtils.getPropertyName((Method) member);
+//      }
+//      Class<?> clazz = member.getDeclaringClass();
+//    }
+
+    throw new UnsupportedOperationException("ToStringBuilder.includeAnnotation is not yet implemented");
   }
 
   /**
@@ -433,25 +524,19 @@ public class ToStringBuilder {
       rootNodeAlias = generateClassname(target);
     }
 
-    if (fieldNames.size() < 1) {
-      allFields = true;
-    }
+    allFields = (fieldNames.size() < 1 && excludedFieldNames.size() < 1 && annotations.size() < 1);
 
     StringBuilder sb = new StringBuilder(64);
-
     if (skipRootNode) {
       sb.append(build(target, indentation));
     } else {
       sb.append('{')
-      .append(fieldNameFormatter.format(target, rootNodeAlias))
-      .append(build(target, indentation))
-      .append('}');
+        .append(fieldNameFormatter.format(target, rootNodeAlias))
+        .append(build(target, indentation))
+        .append('}');
     }
 
-    if (flatten) {
-      sb = flattenBuild(sb);
-    }
-    return sb.toString();
+    return flatten ? flattenBuild(sb) : sb.toString();
   }
 
   /**
@@ -545,13 +630,13 @@ public class ToStringBuilder {
       : obj.getClass().getSimpleName();
   }
 
-  private StringBuilder flattenBuild(StringBuilder sb) {
+  private String flattenBuild(StringBuilder sb) {
     String lines[] = sb.toString().split("[\\r\\n]+");
     sb = new StringBuilder(64);
     for (String line : lines) {
       sb.append(line.trim());
     }
-    return sb;
+    return sb.toString();
   }
 
   private void initFieldValueFormatter() {
@@ -624,7 +709,7 @@ public class ToStringBuilder {
           // this$0 field to reference the outermost enclosing class
           continue;  
         }
-        if (allFields || isFieldNameInFieldNames(owner, fieldName)) {
+        if (isFieldNameInFieldNames(owner, fieldName)) {
           final Object value = MetaCache.get(entry.getKey(), owner);
           final Class<?> type = field.getType();
 
@@ -723,12 +808,29 @@ public class ToStringBuilder {
   }
 
   private boolean isFieldNameInFieldNames(final Object owner, final String fieldName) {
-    for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
-      if (fieldNames.contains(
-        target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
-        return true;
+    if(allFields) { 
+      return true;
+    }
+    
+    if(excludedFieldNames.size() > 0) {
+      for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
+        if (excludedFieldNames.contains(
+          target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
+          return false;
+        }
       }
     }
-    return false;
+
+    if(fieldNames.size() > 0) {
+      for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
+        if (fieldNames.contains(
+          target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
+          return true;
+        }
+      }
+      return false;
+    }
+    
+    return true;
   }
 }

@@ -169,7 +169,9 @@ public class ReflectionUtils {
     if(target != null && annotation != null) {
       for (Class<?> clazz = target; clazz != Object.class; clazz = clazz.getSuperclass()) {
         for (Field field : clazz.getDeclaredFields()) {
-          if(field.isAnnotationPresent(annotation)) fields.add(field);
+          if(field.isAnnotationPresent(annotation)) {
+            fields.add(field);
+          }
         }
       }
     }
@@ -182,7 +184,9 @@ public class ReflectionUtils {
     if(target != null && annotation != null) {
       for (Class<?> clazz = target; clazz != Object.class; clazz = clazz.getSuperclass()) {
         for (Field field : clazz.getDeclaredFields()) {
-          if(field.isAnnotationPresent(annotation)) return field;
+          if(field.isAnnotationPresent(annotation)) {
+            return field;
+          }
         }
       }
     }

@@ -292,7 +292,7 @@ public class ToStringBuilderTest {
     "  }}";
   
   private static final String ASSERT_MESSAGE_FORMAT = 
-    "Actual result was not expected!\nActual: [%s]. Expected: [%s].";
+    "Actual result was not expected! Actual: [\n%s\n]. Expected: [\n%s\n]";
 
 
   @Test
@@ -489,7 +489,10 @@ public class ToStringBuilderTest {
     BeanWithComposition beanWithComposition = createBeanWithComposition(beanWithPrimitives);
     
     // When
-    actual = ToStringBuilder.builder(beanWithComposition).toString();
+    actual = ToStringBuilder
+      .builder(beanWithComposition)
+      .indentation(4)
+      .toString();
     log.debug("******\n" + actual);
     
     // Then
@@ -525,18 +528,49 @@ public class ToStringBuilderTest {
   }
 
   @Test
-  public void withNamedFieldsToString() {
+  public void includedFieldsToString() {
     // Given
     BeanWithComposition beanWithComposition = createBeanWithComposition(createBeanWithPrimitives());
     
     // When
     String actual = ToStringBuilder.builder(beanWithComposition)
-      .withField("id")
-      .withField("beanWithPrimitives")
-      .withField("dogMap")
-      .withField("BeanWithPrimitives.id")
-      .withField("BeanWithPrimitives.color")
-      .withField("Animal.name")
+      .includeField("id")
+      .includeField("beanWithPrimitives")
+      .includeField("dogMap")
+      .includeField("BeanWithPrimitives.id")
+      .includeField("BeanWithPrimitives.color")
+      .includeField("Animal.name")
+      .toString();
+    
+    //log.debug("******\n" + actual);
+    
+    // Then
+    assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN_WITH_FIELDS) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN_WITH_FIELDS);
+  }
+  
+  @Test
+  public void excludedFieldsToString() {
+    // Given
+    BeanWithComposition beanWithComposition = createBeanWithComposition(createBeanWithPrimitives());
+    
+    // When
+    String actual = ToStringBuilder.builder(beanWithComposition)
+      .excludeField("floatValue")
+      .excludeField("animalList")
+      .excludeField("stringMap")
+      .excludeField("stringList")
+      .excludeField("stringArray")
+      .excludeField("twoDimensionalArray")
+      .excludeField("integerList")
+      .excludeField("intArray")
+      .excludeField("catArray")
+      .excludeField("Animal.says")
+      .excludeField("BeanWithPrimitives.baz")
+      .excludeField("BeanWithPrimitives.finalField")
+      .excludeField("BeanWithPrimitives.foo")
+      .excludeField("BeanWithPrimitives.bar")
+      .excludeField("BeanWithPrimitives.someDate")
       .toString();
     
     //log.debug("******\n" + actual);
@@ -548,7 +582,7 @@ public class ToStringBuilderTest {
   
   @Test(enabled=false)
   public void withAnnotatedFields() {
-    ; // TBD
+    log.debug("TBD!"); // TBD
   }
 
   @Test
@@ -637,7 +671,7 @@ public class ToStringBuilderTest {
     // When
     String actual = ToStringBuilder.builder(beanWithPrimitives)
       .dateFormat(new SimpleDateFormat("ddMMyyyy-HHmmss"))
-      .withField("someDate")
+      .includeField("someDate")
       .toString();
     
     // Then
