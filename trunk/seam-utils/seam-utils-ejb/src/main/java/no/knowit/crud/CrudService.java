@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.ejb.Local;
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.TransactionRequiredException;
 
@@ -16,8 +17,10 @@ public interface CrudService {
 
 	/**
 	 * Make an entity instance managed and persistent. 
-	 * After persist this method will call flush and refresh to make shure the entity is in sync.
+	 * After persist this method will call flush and refresh to make sure the entity is in sync.
 	 * 
+   * @param entity the entity to persist
+   * @return the entity with the persisted state
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws EntityExistsException if the entity already exists.
    *         (The EntityExistsException may be thrown when the persist
@@ -30,7 +33,6 @@ public interface CrudService {
    *         PersistenceContextType.TRANSACTION and there is
    *         no transaction.
    * @throws PersistenceException if the flush fails
-	 * @param entity the entity to persist
    * @see javax.persistence.EntityManager#persist(Object)
 	 */
 	public <T> T persist(T entity);
@@ -39,6 +41,8 @@ public interface CrudService {
 	 * Make a collection of entities managed and persistent. 
 	 * Basics - persist will take the entity and put it into the db.
 	 * 
+   * @param entities A collection of entities to persist
+   * @return a collection of entities with the persisted state
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws EntityExistsException if an entity in the collection already exists.
    *         (The EntityExistsException may be thrown when the persist
@@ -51,17 +55,16 @@ public interface CrudService {
    *         PersistenceContextType.TRANSACTION and there is
    *         no transaction.
    * @throws PersistenceException if the flush fails
-	 * @param entities A collection of entities to persist
    * @see javax.persistence.EntityManager#persist(Object)
 	 */
 	public <T> Collection<T> persist(Collection<T> entities);
 
   /**
-   * Finds an entity by the entitys primary key.<br/>
+   * Find by primary key.
    *
    * @param entityClass the entity class to find an instance of 
    * @param id the primary key to find the entity by
-   * @return The entity instance or null if the entity does not exist
+   * @return the found entity instance or null if the entity does not exist
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if the first argument does
    *         not denote an entity type or the second
@@ -76,7 +79,7 @@ public interface CrudService {
    * This is similar to the JPQL statement: <br/>
    * <code>select e from Entity e as e</code>
    * @param entityClass
-   * @return A list of populated entities
+   * @return a list of entities
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if produced query string is not valid
    */
@@ -89,7 +92,7 @@ public interface CrudService {
    * <code>maxResult</code> parameters.</p>
    * @param startPosition position of the first result to be returned by the query, numbered from 0
    * @param maxResult the maximum number of entities that should be returned by the query
-   * @return A list of populated entities
+   * @return a list of entities
    * @throws java.lang.IllegalArgumentException if <code>startPosition</code>
    *         or <code>maxResult</code> is negative.
    * @throws IllegalStateException if this EntityManager has been closed
@@ -100,29 +103,29 @@ public interface CrudService {
    * <p> Find all entities of a particular type matching conditions 
    * in the <code>example</code> parameter.</p> 
    * 
-   * @param example An entity instantiated with the fields to match. Only non <code>null</code>
-   * 	primitives (e.g. String, Integer) vill be used to construct the query.
-   * @param distinct Whether  the query should be distinct or not 
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   * 	primitives (e.g. String, Integer, Date) will be used to construct the query.
+   * @param distinct whether  the query should be distinct or not 
    * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
    * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
-   * @return A list of populated entities
+   * @return a list of entities
    */
   public <T> List<T> find(T example, boolean distinct, boolean any);
 
   /**
-   * <p> Find all entities of a particular type matching conditions 
+   * <p>Find all entities of a particular type matching conditions 
    * in the <code>example</code> parameter. The number of entities 
    * returned is limited by the <code>startPosition</code> and 
    * <code>maxResult</code> parameters.</p>
    * 
-   * @param example An entity instantiated with the fields to match. Only non <code>null</code>
-   * 	primitives (e.g. String, Integer) will be used to construct the query.
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   * 	primitives (e.g. String, Integer, Date) will be used to construct the query.
    * @param distinct Whether  the query should be distinct or not 
    * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
    * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
    * @param startPosition position of the first result to be returned by the query, numbered from 0
    * @param maxResult the maximum number of entities that should be returned by the query
-   * @return A list of populated entities
+   * @return a list of entities
    */
   public <T> List<T> find(T example, boolean distinct, boolean any, int startPosition, int maxResult);
   
@@ -132,8 +135,8 @@ public interface CrudService {
 	 * returning (a potentially different object) the persisted entity.
 	 * entity. 
 	 * 
-	 * @param entity The entity instance to merge
-   * @return The entity with the merged state
+	 * @param entity the entity instance to merge
+   * @return the instance that the state was merged to
    * @see javax.persistence.EntityManager#merge
 	 */
 	public <T> T merge(T entity);
@@ -145,7 +148,7 @@ public interface CrudService {
 	 * entity. The entity with the merged state is returned.
 	 * 
 	 * @param entities A collection of entities
-	 * @return a collection of managed entities
+	 * @return a collection of entities with the merged state
 	 * 
 	 */
 	public <T> Collection<T> merge(Collection<T> entities);
@@ -156,7 +159,7 @@ public interface CrudService {
 	 * If the entity is not in the 'managed' state, it is merged 
 	 * into the persistent context, then removed.
 	 * 
-	 * @param entity The object to delete.
+	 * @param entity the object to delete.
    * @see javax.persistence.EntityManager#remove
    * @see javax.persistence.EntityManager#merge
 	 */
@@ -174,8 +177,8 @@ public interface CrudService {
 	/**
 	 * Remove an object from persistent storage in the database. 
 	 * 
-	 * @param entityClass The entity class of the object to delete
-	 * @param id The Primary Key of the object to delete.
+	 * @param entityClass the entity class of the object to delete
+	 * @param id the Primary Key of the object to delete.
    * @see javax.persistence.EntityManager#remove
    * @see javax.persistence.EntityManager#getReference
 	 */
@@ -184,16 +187,16 @@ public interface CrudService {
 	/**
 	 * Remove a collection of entities from persistent storage in the database.
 	 * 
-	 * @param entities A collection of entities to delete
+	 * @param entities r collection of entities to remove
 	 */
 	public void remove(Collection<Object> entities);
 
 
 	/**
-   * <p>Remove all entities matching conditions in the <code>example</code> parameter.</p> 
+   * <p>Remove all entities where conditions in the <code>example</code> parameter matches.</p> 
 	 * 
-   * @param example An entity instantiated with the fields to match. Only non <code>null</code>
-   * 	primitives (e.g. String, Integer) vill be used to construct the query.
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   * 	primitives (e.g. String, Integer, Date) will be used to construct the query.
    * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
    * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
 	 */
@@ -201,11 +204,11 @@ public interface CrudService {
 
 	
   /**
-   * Make an entity instance managed and persistent.
-   * If the entity is already persisted then the state of the given entity
-   * is merged into the current persistence context.
-   * @param entity The entity to persist or merge
-   * @return The persisted entity
+   * Persist or merge an entity. If the entity is already persisted then the state of the given 
+   * entity is merged into the current persistence context, otherwise the entity instance is 
+   * persisted (made managed and persistent).
+   * @param entity the entity to persist or merge
+   * @return the persisted entity
    * @see javax.persistence.EntityManager#persist(Object entity)
    * @see javax.persistence.EntityManager#merge(Object entity)
    * @throws IllegalStateException if this EntityManager has been closed.
@@ -213,13 +216,20 @@ public interface CrudService {
    * @throws TransactionRequiredException if invoked on a container-managed entity manager of type
    * 	PersistenceContextType.TRANSACTION and there is no transaction.
    */
-
 	public <T> T store(T entity);
 	
 	/**
-	 * Make a collection of entities managed and persistent.
-	 * 
-	 * @param entities A collection of entities to persist or merge
+	 * Persist or merge a collection of entities. If an entity in the collection is already persisted 
+	 * then the state of the given entity is merged into the current persistence context, otherwise 
+	 * the entity instance is persisted (made managed and persistent).
+	 * @param entities a collection of entities to persist or merge
+	 * @return a collection of stored entities
+   * @see javax.persistence.EntityManager#persist(Object entity)
+   * @see javax.persistence.EntityManager#merge(Object entity)
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if not an entity
+   * @throws TransactionRequiredException if invoked on a container-managed entity manager of type
+   *  PersistenceContextType.TRANSACTION and there is no transaction.
 	 */
 	public <T> Collection<T> store(Collection<T> entities);
 
@@ -237,7 +247,8 @@ public interface CrudService {
 	 * 'managed' state, it is first merged into the persistent
 	 * context, then refreshed.
 	 * 
-	 * @param transientEntity The Object to refresh.
+	 * @param transientEntity the Object to refresh
+	 * @see javax.persistence.EntityManager#refresh(Object)
 	 */
 	public <T> T refresh(T transientEntity);
 	
@@ -247,8 +258,9 @@ public interface CrudService {
 	 * 'managed' state, it is first merged into the persistent
 	 * context, then refreshed.
 	 * 
-	 * @param entityClass The entity type to refresh.
-	 * @param id The entity identity to refresh.
+	 * @param entityClass the entity type to refresh.
+	 * @param id the entity identity to refresh.
+   * @see javax.persistence.EntityManager#refresh(Object)
 	 */
 	public <T> T refresh(Class<T> entityClass, Object id);
 
@@ -308,6 +320,10 @@ public interface CrudService {
 
 	/**
 	 * Write anything to db that is pending operation and clear it.
+	 * @see CrudService#flush()
+   * @see javax.persistence.EntityManager#flush()
+   * @see CrudService#clear()
+   * @see javax.persistence.EntityManager#clear()
 	 */
 	public void flushAndClear();
 
