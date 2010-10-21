@@ -1,6 +1,7 @@
 package no.knowit.testsupport.bean;
 
 public abstract class Animal {
+  @MyAnnotation
   protected String name;
   protected String says;
   public Animal() {};

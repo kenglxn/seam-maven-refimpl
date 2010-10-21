@@ -5,6 +5,7 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public class BeanWithComposition {
+  @MyAnnotation
   private Integer id;
   private Float floatValue;
   private BeanWithPrimitives beanWithPrimitives;
@@ -27,6 +28,7 @@ public class BeanWithComposition {
     this.beanWithPrimitives = beanWithPrimitives;
   }
   
+  @MyAnnotation
   public List<Animal> getAnimalList() {
     return animalList;
   }

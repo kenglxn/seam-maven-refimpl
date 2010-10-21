@@ -5,7 +5,6 @@ import static no.knowit.util.ReflectionUtils.OBJECT_PRIMITIVES;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.DateFormat;
@@ -13,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -87,9 +85,11 @@ public class ToStringBuilder {
 
   private static final String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
   private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss Z";
+  private static final int MAX_RECURSION_LEVEL = 1000;
 
   private Object target = null;
   private int indentation = 2;
+  private int recursionLevel = MAX_RECURSION_LEVEL;
   private DateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
   private boolean flatten = false;
   private String rootNodeAlias = null;
@@ -144,6 +144,16 @@ public class ToStringBuilder {
    */
   public ToStringBuilder indentation(final int indentation) {
     this.indentation = indentation < 0 ? 2 : indentation;
+    return this;
+  }
+  
+  /**
+   * Maximum level of encapsulated classes to output
+   * @param recursionLevel recursion level, default value is 1000
+   * @return the same {@link ToStringBuilder} instance
+   */
+  public ToStringBuilder recursionLevel(final int recursionLevel) {
+    this.recursionLevel = recursionLevel < 0 || recursionLevel > MAX_RECURSION_LEVEL ? 0 : recursionLevel;
     return this;
   }
 
@@ -491,20 +501,9 @@ public class ToStringBuilder {
    * @param annotation the annotation to output fields for when <code>toString</code> is called
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder includeAnnotation(final Class<? extends Annotation> annotation) {
+  public ToStringBuilder includeFieldsWithAnnotation(final Class<? extends Annotation> annotation) {
     annotations.add(annotation);
-    
-//    List<Member> members = ReflectionUtils.searchMembersForAnnotation(annotation, target.getClass());
-//    for (Member member : members) {
-//      String name = member.getName();
-//      
-//      if(member instanceof Method) {
-//        name = ReflectionUtils.getPropertyName((Method) member);
-//      }
-//      Class<?> clazz = member.getDeclaringClass();
-//    }
-
-    throw new UnsupportedOperationException("ToStringBuilder.includeAnnotation is not yet implemented");
+    return this;
   }
 
   /**
@@ -709,11 +708,11 @@ public class ToStringBuilder {
           // this$0 field to reference the outermost enclosing class
           continue;  
         }
-        if (isFieldNameInFieldNames(owner, fieldName)) {
+        if (isFieldNameInFieldNames(fieldName, owner) || hasAnnotation(fieldName, meta)) {
           final Object value = MetaCache.get(entry.getKey(), owner);
           final Class<?> type = field.getType();
 
-          sb.append(indent(indent))
+          sb.append(indention(indent))
             .append(fieldNameFormatter.format(owner, fieldName))
             .append(isPrimitive(type)
               ? fieldValueFormatter.format(owner, value)
@@ -728,7 +727,7 @@ public class ToStringBuilder {
       sb.deleteCharAt(n);
     }
     // Closing '}'
-    sb.append(indent(indent - indentation))
+    sb.append(indention(indent - indentation))
       .append('}');
     
     return sb;
@@ -744,7 +743,7 @@ public class ToStringBuilder {
         sb.append(fieldValueFormatter.format(owner, v));
       } else {
         sb.append('\n')
-          .append(indent(indent))
+          .append(indention(indent))
           .append(build(v, indent + indentation));
       }
       // Delete trailing '\n'
@@ -767,7 +766,7 @@ public class ToStringBuilder {
       final Entry<?, ?> e = (Entry<?, ?>) i.next();
       final Object v = e.getValue();
 
-      sb.append(indent(indent))
+      sb.append(indention(indent))
         .append(fieldNameFormatter.format(owner, e.getKey().toString()));
 
       if (v != null) {
@@ -777,9 +776,8 @@ public class ToStringBuilder {
       }
       sb.append(i.hasNext() ? ",\n" : '\n');
     }
-    sb.append(indent(indent - indentation))
+    sb.append(indention(indent - indentation))
       .append('}');
-    
     return sb;
   }
 
@@ -794,7 +792,7 @@ public class ToStringBuilder {
         sb.append(fieldValueFormatter.format(owner, v));
       } else {
         sb.append('\n')
-          .append(indent(indent))
+          .append(indention(indent))
           .append(build(v, indent + indentation));
       }
       sb.append(++i < l ? ", " : "");
@@ -803,16 +801,16 @@ public class ToStringBuilder {
     return sb;
   }
 
-  private String indent(int indent) {
+  private String indention(int indent) {
     return indent > 0 ? String.format("%" + (indent) + "s", "") : "";
   }
 
-  private boolean isFieldNameInFieldNames(final Object owner, final String fieldName) {
+  private boolean isFieldNameInFieldNames(final String fieldName, final Object owner) {
     if(allFields) { 
       return true;
     }
-    
-    if(excludedFieldNames.size() > 0) {
+    final boolean excludedFieldNamesSizeGt0 = excludedFieldNames.size() > 0; 
+    if(excludedFieldNamesSizeGt0) {
       for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
         if (excludedFieldNames.contains(
           target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
@@ -820,7 +818,6 @@ public class ToStringBuilder {
         }
       }
     }
-
     if(fieldNames.size() > 0) {
       for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
         if (fieldNames.contains(
@@ -830,7 +827,20 @@ public class ToStringBuilder {
       }
       return false;
     }
-    
-    return true;
+    return excludedFieldNamesSizeGt0 ? true : false;
+  }
+  
+  private boolean hasAnnotation(final String fieldName, final Meta meta) {
+    if(annotations.size() > 0) {
+      Field field = meta.fields.get(fieldName);  // Assumes field != null
+      Method getter = meta.getters.get(fieldName);
+      Method setter = meta.setters.get(fieldName);
+      for(Class<? extends Annotation> annotation : annotations) {
+        if(field.isAnnotationPresent(annotation)) return true; 
+        if(getter != null && getter.isAnnotationPresent(annotation)) return true;
+        if(setter != null && setter.isAnnotationPresent(annotation)) return true;
+      }
+    }
+    return false;
   }
 }

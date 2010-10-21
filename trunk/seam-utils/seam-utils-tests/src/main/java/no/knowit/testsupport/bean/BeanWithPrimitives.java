@@ -9,6 +9,7 @@ public class BeanWithPrimitives {
   public enum Color {RED, YELLOW, GREEN};
   
   private Integer id;
+  @MyAnnotation
   private int foo; 
   private final String finalField = "A final field";
   protected String bar;
@@ -28,7 +29,13 @@ public class BeanWithPrimitives {
     this.bar = "setBar -> " + bar;
   }
   
+  @MyAnnotation
   public void setBaz(String baz) {
     this.baz = baz;
+  }
+  
+  @MyAnnotation
+  public Color getColor() {
+    return color;
   }
 }
