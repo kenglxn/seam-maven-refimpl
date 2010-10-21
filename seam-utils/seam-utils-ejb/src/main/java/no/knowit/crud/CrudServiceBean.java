@@ -43,7 +43,7 @@ import no.knowit.util.ReflectionUtils;
 import org.apache.log4j.Logger;
 
 /**
- * An implementation of the generic CrudService.<br/>
+ * An implementation of the generic CrudService, a.k.a. DAO, a.k.a. Repository.<br/>
  * 
  * @author http://code.google.com/p/krank/
  * @author adam-bien.com

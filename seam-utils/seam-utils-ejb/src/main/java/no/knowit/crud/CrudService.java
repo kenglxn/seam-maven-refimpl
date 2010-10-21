@@ -6,14 +6,20 @@ import java.util.Map;
 
 import javax.ejb.Local;
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.TransactionRequiredException;
 
+/**
+ * Generic CrudService interface, a.k.a. DAO, a.k.a. Repository.<br/>
+ * 
+ * @author http://code.google.com/p/krank/
+ * @author adam-bien.com
+ * @author Leif Olsen
+ */
 @Local
 public interface CrudService {
   
-  final static String NAME = "crudService";
+  static final String NAME = "crudService";
 
 	/**
 	 * Make an entity instance managed and persistent. 
@@ -39,7 +45,7 @@ public interface CrudService {
 
 	/**
 	 * Make a collection of entities managed and persistent. 
-	 * Basics - persist will take the entity and put it into the db.
+   * After persist this method will call flush and refresh to make sure the entity is in sync.
 	 * 
    * @param entities A collection of entities to persist
    * @return a collection of entities with the persisted state
@@ -56,6 +62,7 @@ public interface CrudService {
    *         no transaction.
    * @throws PersistenceException if the flush fails
    * @see javax.persistence.EntityManager#persist(Object)
+   * @see CrudService#persist(Object)
 	 */
 	public <T> Collection<T> persist(Collection<T> entities);
 
@@ -78,7 +85,7 @@ public interface CrudService {
    * Find all entities of a particular type. 
    * This is similar to the JPQL statement: <br/>
    * <code>select e from Entity e as e</code>
-   * @param entityClass
+   * @param entityClass the entity class to find instances of 
    * @return a list of entities
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if produced query string is not valid
@@ -100,8 +107,7 @@ public interface CrudService {
   public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult);
   
   /**
-   * <p> Find all entities of a particular type matching conditions 
-   * in the <code>example</code> parameter.</p> 
+   * <p>Find entities based on an example entity.</p> 
    * 
    * @param example an entity instantiated with the fields to match. Only non <code>null</code>
    * 	primitives (e.g. String, Integer, Date) will be used to construct the query.
@@ -113,8 +119,7 @@ public interface CrudService {
   public <T> List<T> find(T example, boolean distinct, boolean any);
 
   /**
-   * <p>Find all entities of a particular type matching conditions 
-   * in the <code>example</code> parameter. The number of entities 
+   * <p>Find entities based on an example entity. The number of entities 
    * returned is limited by the <code>startPosition</code> and 
    * <code>maxResult</code> parameters.</p>
    * 
