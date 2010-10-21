@@ -19,6 +19,7 @@ import no.knowit.testsupport.bean.Cat;
 import no.knowit.testsupport.bean.Dog;
 import no.knowit.testsupport.bean.BeanWithComposition;
 import no.knowit.testsupport.bean.BeanWithPrimitives;
+import no.knowit.testsupport.bean.MyAnnotation;
 
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
@@ -168,7 +169,7 @@ public class ToStringBuilderTest {
   "  }\n" +
   "}" ;
 
-  private static final String EXPECTED_SIMPLE_BEAN =
+  private static final String EXPECTED_BEAN_WITH_PRIMITIVES =
     "{\"BeanWithPrimitives\": {\n" +
       "  \"id\": 2,\n" +
       "  \"baz\": \"  Hello   BAZ!\",\n" +
@@ -179,7 +180,7 @@ public class ToStringBuilderTest {
       "  \"someDate\": 2010-04-11 15:11:28 +0200\n" +
       "}}";
 
-  private static final String EXPECTED_SIMPLE_BEAN_PUBLIC_FIELDS =
+  private static final String EXPECTED_BEAN_WITH_PRIMITIVES_PUBLIC_FIELDS =
     "{\"BeanWithPrimitives\": {\n" +
       "  \"baz\": \"  Hello   BAZ!\",\n" +
       "  \"color\": RED,\n" +
@@ -256,7 +257,7 @@ public class ToStringBuilderTest {
     "    \"someDate\": 2010-04-11 15:11:28 +0200\n" +
     "  }\n}}";
   
-  private static final String EXPECTED_COMPOSED_BEAN_WITH_FIELDS =
+  private static final String EXPECTED_COMPOSED_BEAN_WITH_INCLUDED_FIELDS =
     "  {\"BeanWithComposition\": {\n" +
     "    \"id\": 99,\n" +
     "    \"dogMap\": {\n" +
@@ -279,6 +280,8 @@ public class ToStringBuilderTest {
     "    }\n" +
     "  }}";
   
+  private static final String EXPECTED_COMPOSED_BEAN_WITH_EXCLUDED_FIELDS = EXPECTED_COMPOSED_BEAN_WITH_INCLUDED_FIELDS;
+    
   private static final String EXPECTED_BEAN_WITH_NESTED_CLASSES =
     "  {\"BeanWithNestedClasses\": {\n" +
     "    \"nestedEnum\": YELLOW,\n" +
@@ -291,6 +294,27 @@ public class ToStringBuilderTest {
     "    \"i\": 100\n" +
     "  }}";
   
+  private static final String EXPECTED_BEAN_WITH_PRIMITIVES_INCLUDED_ANNTATIONS =
+    "{\"BeanWithPrimitives\": {\n" +
+      "  \"baz\": \"  Hello   BAZ!\",\n" +
+      "  \"color\": RED,\n" +
+      "  \"foo\": 200\n" +
+      "}}";
+
+  private static final String EXPECTED_COMPOSED_BEAN_INCLUDED_ANNOTATIONS =
+    "{\"BeanWithComposition\": {\n" +
+    "  \"id\": 99,\n" +
+    "  \"animalList\": [\n" +
+    "    \"Dog\": {\n" +
+    "      \"name\": \"Laika\"\n" +
+    "    }, \n" +
+    "    \"Cat\": {\n" +
+    "      \"name\": \"Fritz\"\n" +
+    "    }, \n" +
+    "    \"Bird\": {\n" +
+    "      \"name\": \"Pip\"\n" +
+    "    }]\n" +
+    "}}";
   private static final String ASSERT_MESSAGE_FORMAT = 
     "Actual result was not expected! Actual: [\n%s\n]. Expected: [\n%s\n]";
 
@@ -310,6 +334,7 @@ public class ToStringBuilderTest {
     expected = String.format(HEAD_BODY_TAIL, INTEGER_HEAD, INTEGER_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
+    
     // Given
     Float floatValue = FLOAT_VALUE;
     
@@ -320,6 +345,7 @@ public class ToStringBuilderTest {
     expected = String.format(HEAD_BODY_TAIL, FLOAT_HEAD, FLOAT_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 
+    
     // Given
     String stringValue = STRING_VALUE;
     
@@ -329,6 +355,7 @@ public class ToStringBuilderTest {
     // Then
     expected = String.format(HEAD_BODY_TAIL, STRING_HEAD, STRING_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    
     
     // Given
     Date date = null;
@@ -372,6 +399,7 @@ public class ToStringBuilderTest {
     expected = String.format(HEAD_BODY_TAIL, INT_ARRAY_HEAD, INT_ARRAY_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 
+    
     // Given
     int[][] twoDimensionalIntArray =  TWO_DIMENSIONAL_INT_ARRAY.clone();
 
@@ -381,6 +409,7 @@ public class ToStringBuilderTest {
     // Then
     expected = String.format(HEAD_BODY_TAIL, TWO_DIMENSIONAL_INT_ARRAY_HEAD, TWO_DIMENSIONAL_INT_ARRAY_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    
     
     // Given
     String[] stringArray = new String[STRING_ARRAY.length];
@@ -392,6 +421,7 @@ public class ToStringBuilderTest {
     // Then
     expected = String.format(HEAD_BODY_TAIL, STRING_ARRAY_HEAD, STRING_ARRAY_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    
     
     // Given
     Cat puss = new Cat("Puss");
@@ -424,6 +454,7 @@ public class ToStringBuilderTest {
     expected = String.format(HEAD_BODY_TAIL, INTEGER_ARRAY_LIST_HEAD, INTEGER_ARRAY_LIST_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
     
+    
     // Given
     List<String> stringList = STRING_LIST;
 
@@ -434,6 +465,7 @@ public class ToStringBuilderTest {
     expected = String.format(HEAD_BODY_TAIL, STRING_LIST_HEAD, STRING_LIST_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
 
+    
     // Given
     Map<String, String> stringMap = STRING_MAP;
 
@@ -446,6 +478,7 @@ public class ToStringBuilderTest {
     expected = String.format(HEAD_BODY_TAIL, STRING_MAP_HEAD_ALIAS, STRING_MAP_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
 
+    
     // Given
     List<Animal> animalList = ANIMAL_LIST;
     
@@ -456,13 +489,14 @@ public class ToStringBuilderTest {
     expected = String.format(HEAD_BODY_TAIL, ANIMAL_LIST_HEAD, ANIMAL_LIST_BODY);
     assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
     
+    
     // Given
     Map<String, Dog> dogMap = DOG_MAP;
     
     // When
     // Initialization of map uses the static initializer which gives us an anonymous class instance
     // Uses rootNodeAlias("dogs4all") to name the Map instance
-    actual = ToStringBuilder.builder(dogMap).rootNodeAlias("dogs4all").toString();
+    actual = ToStringBuilder.builder(dogMap).rootNodeAlias(DOG_MAP_HEAD_ALIAS).toString();
     //log.debug("******\n" + actual);
     
     // Then
@@ -482,9 +516,10 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(beanWithPrimitives).toString();
     
     // Then
-    assert actualInExpected(actual, EXPECTED_SIMPLE_BEAN) 
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLE_BEAN);
+    assert actualInExpected(actual, EXPECTED_BEAN_WITH_PRIMITIVES) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_BEAN_WITH_PRIMITIVES);
 
+    
     // Given
     BeanWithComposition beanWithComposition = createBeanWithComposition(beanWithPrimitives);
     
@@ -493,12 +528,13 @@ public class ToStringBuilderTest {
       .builder(beanWithComposition)
       .indentation(4)
       .toString();
-    log.debug("******\n" + actual);
+    //log.debug("******\n" + actual);
     
     // Then
     assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN) 
       : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN);
 
+    
     // Given
     BeanWithNestedClasses beanWithNestedClasses = new BeanWithNestedClasses(100);
 
@@ -523,8 +559,8 @@ public class ToStringBuilderTest {
       .toString();
     
     // Then
-    assert actualInExpected(actual, EXPECTED_SIMPLE_BEAN_PUBLIC_FIELDS) 
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_SIMPLE_BEAN_PUBLIC_FIELDS);
+    assert actualInExpected(actual, EXPECTED_BEAN_WITH_PRIMITIVES_PUBLIC_FIELDS) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_BEAN_WITH_PRIMITIVES_PUBLIC_FIELDS);
   }
 
   @Test
@@ -545,8 +581,8 @@ public class ToStringBuilderTest {
     //log.debug("******\n" + actual);
     
     // Then
-    assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN_WITH_FIELDS) 
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN_WITH_FIELDS);
+    assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN_WITH_INCLUDED_FIELDS) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN_WITH_INCLUDED_FIELDS);
   }
   
   @Test
@@ -576,15 +612,42 @@ public class ToStringBuilderTest {
     //log.debug("******\n" + actual);
     
     // Then
-    assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN_WITH_FIELDS) 
-      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN_WITH_FIELDS);
+    assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN_WITH_EXCLUDED_FIELDS) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN_WITH_EXCLUDED_FIELDS);
   }
   
-  @Test(enabled=false)
-  public void withAnnotatedFields() {
-    log.debug("TBD!"); // TBD
-  }
+  @Test
+  public void includeAnnotationsToSTring() {
+    String actual;
+    
+    // Given
+    BeanWithPrimitives beanWithPrimitives = createBeanWithPrimitives();
+    
+    // When
+    actual = ToStringBuilder.builder(beanWithPrimitives)
+      .includeFieldsWithAnnotation(MyAnnotation.class)
+      .toString();
+    //log.debug("******\n" + actual);
+    
+    // Then
+    assert actualInExpected(actual, EXPECTED_BEAN_WITH_PRIMITIVES_INCLUDED_ANNTATIONS) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_BEAN_WITH_PRIMITIVES_INCLUDED_ANNTATIONS);
 
+    
+    // Given
+    BeanWithComposition beanWithComposition = createBeanWithComposition(createBeanWithPrimitives());
+    
+    // When
+    actual = ToStringBuilder.builder(beanWithComposition)
+      .includeFieldsWithAnnotation(MyAnnotation.class)
+      .toString();
+    log.debug("******\n" + actual);
+    
+    // Then
+    assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN_INCLUDED_ANNOTATIONS) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_COMPOSED_BEAN_INCLUDED_ANNOTATIONS);
+  }
+  
   @Test
   public void flattenToString() {
     
