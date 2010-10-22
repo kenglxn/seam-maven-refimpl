@@ -1,6 +1,14 @@
 package no.knowit.testsupport.bean;
 
 public class Cat extends Animal {
-  public Cat() { says = "Purr"; }
-  public Cat(final String name) { this(); this.name = name; }
+  
+  private class TeddyBear {
+    private String name = "Pooky";
+  }
+
+  private TeddyBear teddy = new TeddyBear();
+  
+  public Cat(final String name) { super(name); }
+  @Override
+  public void say() { says = "Purr"; }
 }

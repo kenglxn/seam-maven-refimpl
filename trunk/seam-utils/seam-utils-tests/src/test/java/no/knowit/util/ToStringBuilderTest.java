@@ -19,7 +19,9 @@ import no.knowit.testsupport.bean.Cat;
 import no.knowit.testsupport.bean.Dog;
 import no.knowit.testsupport.bean.BeanWithComposition;
 import no.knowit.testsupport.bean.BeanWithPrimitives;
+import no.knowit.testsupport.bean.Mouse;
 import no.knowit.testsupport.bean.MyAnnotation;
+import no.knowit.testsupport.bean.PetOwner;
 
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
@@ -94,11 +96,17 @@ public class ToStringBuilderTest {
   private static final String CAT_ARRAY_BODY = "[\n" +
     "  \"Cat\": {\n" +
     "    \"name\": \"Puss\",\n" +
-    "    \"says\": \"Purr\"\n" +
+    "    \"says\": \"Purr\",\n" +
+    "    \"teddy\": \"TeddyBear\": {\n" +
+    "      \"name\": \"Pooky\"\n" +
+    "     }\n" +
     "  }, \n" +
     "  \"Cat\": {\n" +
     "    \"name\": \"Tiger\",\n" +
-    "    \"says\": \"Roar\"\n" +
+    "    \"says\": \"Roar\",\n" +
+    "    \"teddy\": \"TeddyBear\": {\n" +
+    "      \"name\": \"Pooky\"\n" +
+    "     }\n" +
     "  }]";
 
   private static List<Integer> INTEGER_ARRAY_LIST = Arrays.asList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3));
@@ -118,7 +126,10 @@ public class ToStringBuilderTest {
     "  }, \n" +
     "  \"Cat\": {\n" +
     "    \"name\": \"Fritz\",\n" +
-    "    \"says\": \"Purr\"\n" +
+    "    \"says\": \"Purr\",\n" +
+    "    \"teddy\": \"TeddyBear\": {\n" +
+    "      \"name\": \"Pooky\"\n" +
+    "     }\n" +
     "  }, \n" +
     "  \"Bird\": {\n" +
     "    \"name\": \"Pip\",\n" +
@@ -198,7 +209,10 @@ public class ToStringBuilderTest {
     "    }, \n" +
     "    \"Cat\": {\n" +
     "      \"name\": \"Fritz\",\n" +
-    "      \"says\": \"Purr\"\n" +
+    "      \"says\": \"Purr\",\n" +
+    "      \"teddy\": \"TeddyBear\": {\n" +
+    "        \"name\": \"Pooky\"\n" +
+    "       }\n" +
     "    }, \n" +
     "    \"Bird\": {\n" +
     "      \"name\": \"Pip\",\n" +
@@ -222,11 +236,17 @@ public class ToStringBuilderTest {
     "  \"catArray\": [\n" +
     "    \"Cat\": {\n" +
     "      \"name\": \"Puss\",\n" +
-    "      \"says\": \"Purr\"\n" +
+    "      \"says\": \"Purr\",\n" +
+    "      \"teddy\": \"TeddyBear\": {\n" +
+    "        \"name\": \"Pooky\"\n" +
+    "       }\n" +
     "    }, \n" +
     "    \"Cat\": {\n" +
     "      \"name\": \"Tiger\",\n" +
-    "      \"says\": \"Roar\"\n" +
+    "      \"says\": \"Roar\",\n" +
+    "      \"teddy\": \"TeddyBear\": {\n" +
+    "        \"name\": \"Pooky\"\n" +
+    "       }\n" +
     "    }],\n" +
     "  \"floatValue\": 12.0,\n" +
     "  \"dogMap\": {\n" +
@@ -315,6 +335,72 @@ public class ToStringBuilderTest {
     "      \"name\": \"Pip\"\n" +
     "    }]\n" +
     "}}";
+  
+  private static final String EXPECTED_RECURSION_LEVEL_1 =
+    "{\"PetOwner\": {\n" +
+    "  \"pets\": {\n" +
+    "    \"Odie\": \"Dog\": no.knowit.testsupport.bean.Dog@abcdef,\n" +
+    "    \"Garfield\": \"Cat\": no.knowit.testsupport.bean.Cat@affafa,\n" +
+    "    \"Squeak\": \"Mouse\": no.knowit.testsupport.bean.Mouse@doesnotmatterwhatsafter@\n" +
+    "  },\n" +
+    "  \"name\": \"Jon Arbuckle\"\n" +
+    "}}";
+
+  private static final String EXPECTED_RECURSION_LEVEL_1_FRAGMENT_1 =
+    "\"Odie\": \"Dog\": no.knowit.testsupport.bean.Dog@";
+  
+  private static final String EXPECTED_RECURSION_LEVEL_1_FRAGMENT_2 =
+    "\"Garfield\": \"Cat\": no.knowit.testsupport.bean.Cat@";
+  
+  private static final String EXPECTED_RECURSION_LEVEL_1_FRAGMENT_3 =
+    "\"Squeak\": \"Mouse\": no.knowit.testsupport.bean.Mouse@";
+  
+  private static final String EXPECTED_RECURSION_LEVEL_2 =
+    "{\"PetOwner\": {\n" +
+    "  \"pets\": {\n" +
+    "    \"Odie\": \"Dog\": {\n" +
+    "      \"name\": \"Odie\",\n" +
+    "      \"says\": \"Bark\"\n" +
+    "    },\n" +
+    "    \"Garfield\": \"Cat\": {\n" +
+    "      \"name\": \"Garfield\",\n" +
+    "      \"says\": \"Purr\",\n" +
+    "      \"teddy\": \"TeddyBear\": no.knowit.testsupport.bean.Cat$TeddyBear@\n" +
+    "    },\n" +
+    "    \"Squeak\": \"Mouse\": {\n" +
+    "      \"name\": \"Squeak\",\n" +
+    "      \"says\": \"Peep\"\n" +
+    "    }\n" +
+    "  },\n" +
+    "  \"name\": \"Jon Arbuckle\"\n" +
+    "}}";
+  
+  private static final String EXPECTED_RECURSION_LEVEL_2_FRAGMENT =
+    "\"teddy\": \"TeddyBear\": no.knowit.testsupport.bean.Cat$TeddyBear@";
+    
+    
+  private static final String EXPECTED_RECURSION_LEVEL_3 =
+    "{\"PetOwner\": {\n" +
+    "  \"pets\": {\n" +
+    "    \"Odie\": \"Dog\": {\n" +
+    "      \"name\": \"Odie\",\n" +
+    "      \"says\": \"Bark\"\n" +
+    "    },\n" +
+    "    \"Garfield\": \"Cat\": {\n" +
+    "      \"name\": \"Garfield\",\n" +
+    "      \"says\": \"Purr\",\n" +
+    "      \"teddy\": \"TeddyBear\": {\n" +
+    "        \"name\": \"Pooky\"\n" +
+    "      }\n" +
+    "    },\n" +
+    "    \"Squeak\": \"Mouse\": {\n" +
+    "      \"name\": \"Squeak\",\n" +
+    "      \"says\": \"Peep\"\n" +
+    "    }\n" +
+    "  },\n" +
+    "  \"name\": \"Jon Arbuckle\"\n" +
+    "}}";
+  
   private static final String ASSERT_MESSAGE_FORMAT = 
     "Actual result was not expected! Actual: [\n%s\n]. Expected: [\n%s\n]";
 
@@ -617,7 +703,7 @@ public class ToStringBuilderTest {
   }
   
   @Test
-  public void includeAnnotationsToSTring() {
+  public void includeAnnotationsToString() {
     String actual;
     
     // Given
@@ -641,7 +727,7 @@ public class ToStringBuilderTest {
     actual = ToStringBuilder.builder(beanWithComposition)
       .includeFieldsWithAnnotation(MyAnnotation.class)
       .toString();
-    log.debug("******\n" + actual);
+    //log.debug("******\n" + actual);
     
     // Then
     assert actualInExpected(actual, EXPECTED_COMPOSED_BEAN_INCLUDED_ANNOTATIONS) 
@@ -663,6 +749,7 @@ public class ToStringBuilderTest {
     
     // Then
     assert lines.length == 1 : "A flattened result should be exactly one line";
+    // ... structure and content of BeanWithPrimitives class tested elsewhere
   }
   
   @Test
@@ -742,18 +829,73 @@ public class ToStringBuilderTest {
     assert actual.contains(expected) 
       : String.format("Output should contain expected date: \"%s\"", expected);
   }
+  
+  @Test
+  public void recursionLevels() {
+    String actual;
+    
+    // Given
+    PetOwner petOwner = PetOwner
+      .owner("Jon Arbuckle")
+      .owns(new Cat("Garfield"))
+      .owns(new Dog("Odie"))
+      .owns(new Mouse("Squeak"))
+      .build();
+    
+    // When
+    actual = ToStringBuilder.builder(petOwner)
+      .recursionLevel(1)
+      .toString();
+    log.debug("\n" + actual);
+  
+    // Then
+    assert actual.contains(EXPECTED_RECURSION_LEVEL_1_FRAGMENT_1) 
+      && actual.contains(EXPECTED_RECURSION_LEVEL_1_FRAGMENT_2) 
+      && actual.contains(EXPECTED_RECURSION_LEVEL_1_FRAGMENT_3)
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_RECURSION_LEVEL_1);
+      
+    
+    // When
+    actual = ToStringBuilder.builder(petOwner)
+      .recursionLevel(2)
+      .toString();
+    log.debug("\n" + actual);
+  
+    // Then
+    assert actual.contains(EXPECTED_RECURSION_LEVEL_2_FRAGMENT) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_RECURSION_LEVEL_2);
+    
+    
+    // When
+    actual = ToStringBuilder.builder(petOwner)
+      .recursionLevel(3)
+      .toString();
+    log.debug("\n" + actual);
+  
+    // Then
+    assert actualInExpected(actual, EXPECTED_RECURSION_LEVEL_3) 
+      : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_RECURSION_LEVEL_3);
+  }
 
   private boolean actualInExpected(final String actual, final String expected) {
     String lines[] = actual.split("[\\r\\n]+");
     final Set<String> actualSet = new HashSet<String>();
     for (String line : lines) {
-      actualSet.add(line.trim());
+      String s = line.trim();
+      int n = s.length();
+      if(n > 0) {
+        actualSet.add(s.endsWith(",") ? s.substring(0, n) : s);
+      }
     }
     
     lines = expected.split("[\\r\\n]+");
     final Set<String> expectedSet = new HashSet<String>();
     for (String line : lines) {
-      expectedSet.add(line.trim());
+      String s = line.trim();
+      int n = s.length();
+      if(n > 0) {
+        expectedSet.add(s.endsWith(",") ? s.substring(0, n) : s);
+      }
     }
     
     return actualSet.containsAll(expectedSet);

@@ -148,12 +148,35 @@ public class ToStringBuilder {
   }
   
   /**
-   * Maximum level of encapsulated classes to output
+   * Maximum level of encapsulated classes in formatted output
+   * <p><b>Given</b> a package, <code>org.mypackage</code>, and two classes, <code>Hello</code> and 
+   * <code>World</code> where <code>Hello</code> encapsulates <code>World</code>.</p>
+   * 
+   * <pre><code>public class World {
+   *   private String world = "World";
+   * }
+   * public class Hello {
+   *   private String hello = "Hello";
+   *   private World world
+   *   &#064;Override
+   *   public String toString() {
+   *     return ToStringBuilder
+   *       .builder(this)
+   *       <b>.recursionLevel(0)</b>
+   *       .flatten()
+   *       .toString();
+   *   }
+   * }</code></pre>
+   * 
+   * <p><b>When</b> we call <code>toString</code>
+   * <b>then</b> the method should return the string:</p>
+   * <pre><code>{"Hello": {"hello": "Hello", world: "World" : org.mypackage.World@1f6df4c}}</code></pre>
+   * 
    * @param recursionLevel recursion level, default value is 1000
    * @return the same {@link ToStringBuilder} instance
    */
   public ToStringBuilder recursionLevel(final int recursionLevel) {
-    this.recursionLevel = recursionLevel < 0 || recursionLevel > MAX_RECURSION_LEVEL ? 0 : recursionLevel;
+    this.recursionLevel = recursionLevel < 0 || recursionLevel > MAX_RECURSION_LEVEL ? 1 : recursionLevel;
     return this;
   }
 
@@ -527,11 +550,11 @@ public class ToStringBuilder {
 
     StringBuilder sb = new StringBuilder(64);
     if (skipRootNode) {
-      sb.append(build(target, indentation));
+      sb.append(build(target, indentation, 0));
     } else {
       sb.append('{')
         .append(fieldNameFormatter.format(target, rootNodeAlias))
-        .append(build(target, indentation))
+        .append(build(target, indentation, 0))
         .append('}');
     }
 
@@ -666,58 +689,65 @@ public class ToStringBuilder {
     }
   }
 
-  private StringBuilder build(final Object owner, int indent) {
+  private StringBuilder build(final Object owner, int indent, final int recursion) {
     if(owner != null) {
       if (owner instanceof Collection<?>) {
-        return buildCollection(owner, indent);
+        return buildCollection(owner, indent, recursion);
       } 
       else if (owner instanceof Map<?, ?>) {
-        return buildMap(owner, indent);
+        return buildMap(owner, indent, recursion);
       } 
       else if (owner.getClass().isArray()) {
-        return buildArray(owner, indent);
+        return buildArray(owner, indent, recursion);
       } 
       else if (owner instanceof Object) {
-        return buildObject(owner, indent);
+        return buildObject(owner, indent, recursion);
       }
     }
     return null;
   }
 
-  private StringBuilder buildObject(final Object owner, final int indent) {
+  private StringBuilder buildObject(final Object owner, final int indent, final int recursion) {
     final StringBuilder sb = new StringBuilder(32);
     if (target != owner) {
       sb.append(fieldNameFormatter.format(owner, generateClassname(owner)));
     }
-    sb.append("{\n");
-
-    final Meta meta = MetaCache.getMeta(owner.getClass());
-    for (Entry<String, Field> entry : meta.fields.entrySet()) {
-      final Field field = entry.getValue();
-      if (field == null) {
-        continue;
-      }
-      final Method getter = meta.getters.get(entry.getKey());
-      if (!publicFields || (Modifier.isPublic(field.getModifiers()) ||
-        (getter != null && Modifier.isPublic(getter.getModifiers())))) {
-
-        final String fieldName = entry.getKey();
-        
-        if(fieldName.startsWith("this$")) {
-          // Nested classes that are not static member classes has a hidden 
-          // this$0 field to reference the outermost enclosing class
-          continue;  
+    
+    if(recursion > recursionLevel) {
+      sb.append(owner.getClass().getName() + '@' + Integer.toHexString(owner.hashCode()));
+      owner.toString();
+    }
+    else {
+      sb.append("{\n");
+  
+      final Meta meta = MetaCache.getMeta(owner.getClass());
+      for (Entry<String, Field> entry : meta.fields.entrySet()) {
+        final Field field = entry.getValue();
+        if (field == null) {
+          continue;
         }
-        if (isFieldNameInFieldNames(fieldName, owner) || hasAnnotation(fieldName, meta)) {
-          final Object value = MetaCache.get(entry.getKey(), owner);
-          final Class<?> type = field.getType();
-
-          sb.append(indention(indent))
-            .append(fieldNameFormatter.format(owner, fieldName))
-            .append(isPrimitive(type)
-              ? fieldValueFormatter.format(owner, value)
-              : build(value, indent + indentation))
-            .append(",\n");
+        final Method getter = meta.getters.get(entry.getKey());
+        if (!publicFields || (Modifier.isPublic(field.getModifiers()) ||
+          (getter != null && Modifier.isPublic(getter.getModifiers())))) {
+  
+          final String fieldName = entry.getKey();
+          
+          if(fieldName.startsWith("this$")) {
+            // Nested classes that are not static member classes has a hidden 
+            // this$0 field to reference the outermost enclosing class
+            continue;  
+          }
+          if (isFieldNameInFieldNames(fieldName, owner) || hasAnnotation(fieldName, meta)) {
+            final Object value = MetaCache.get(entry.getKey(), owner);
+            final Class<?> type = field.getType();
+  
+            sb.append(indention(indent))
+              .append(fieldNameFormatter.format(owner, fieldName))
+              .append(isPrimitive(type)
+                ? fieldValueFormatter.format(owner, value)
+                : build(value, indent + indentation, recursion+1))
+              .append(",\n");
+          }
         }
       }
     }
@@ -726,14 +756,14 @@ public class ToStringBuilder {
     if (sb.charAt(n) == ',') {
       sb.deleteCharAt(n);
     }
-    // Closing '}'
-    sb.append(indention(indent - indentation))
-      .append('}');
-    
+    if(recursion <= recursionLevel) {
+      sb.append(indention(indent - indentation))
+        .append('}');
+    }
     return sb;
   }
 
-  private StringBuilder buildArray(final Object owner, final int indent) {
+  private StringBuilder buildArray(final Object owner, final int indent, final int recursion) {
     final StringBuilder sb = new StringBuilder(32);
     sb.append('[');
     int l = Array.getLength(owner);
@@ -744,7 +774,7 @@ public class ToStringBuilder {
       } else {
         sb.append('\n')
           .append(indention(indent))
-          .append(build(v, indent + indentation));
+          .append(build(v, indent + indentation, recursion + 1));
       }
       // Delete trailing '\n'
       int n = sb.length() - 1;
@@ -759,7 +789,7 @@ public class ToStringBuilder {
     return sb;
   }
 
-  private StringBuilder buildMap(final Object owner, final int indent) {
+  private StringBuilder buildMap(final Object owner, final int indent, final int recursion) {
     final StringBuilder sb = new StringBuilder(32);
     sb.append("{\n");
     for (Iterator<?> i = ((Map<?, ?>) owner).entrySet().iterator(); i.hasNext();) {
@@ -772,7 +802,7 @@ public class ToStringBuilder {
       if (v != null) {
         sb.append(isPrimitive(v.getClass())
           ? fieldValueFormatter.format(owner, v)
-          : build(v, indent + indentation));
+          : build(v, indent + indentation, recursion + 1));
       }
       sb.append(i.hasNext() ? ",\n" : '\n');
     }
@@ -781,7 +811,7 @@ public class ToStringBuilder {
     return sb;
   }
 
-  private StringBuilder buildCollection(final Object owner, final int indent) {
+  private StringBuilder buildCollection(final Object owner, final int indent, int recursion) {
     final StringBuilder sb = new StringBuilder(32);
     sb.append('[');
     final Collection<?> c = (Collection<?>) owner;
@@ -793,7 +823,7 @@ public class ToStringBuilder {
       } else {
         sb.append('\n')
           .append(indention(indent))
-          .append(build(v, indent + indentation));
+          .append(build(v, indent + indentation, recursion + 1));
       }
       sb.append(++i < l ? ", " : "");
     }
