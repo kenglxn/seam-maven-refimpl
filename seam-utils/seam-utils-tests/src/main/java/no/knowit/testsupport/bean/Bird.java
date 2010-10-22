@@ -1,6 +1,7 @@
 package no.knowit.testsupport.bean;
 
 public class Bird extends Animal {
-  public Bird() { says = "Tweet"; }
-  public Bird(final String name) { this(); this.name = name; }
+  public Bird(final String name) { super(name); }
+  @Override
+  public void say() { says = "Tweet"; }
 }

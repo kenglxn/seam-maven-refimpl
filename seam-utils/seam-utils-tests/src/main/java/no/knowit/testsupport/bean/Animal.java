@@ -4,7 +4,7 @@ public abstract class Animal {
   @MyAnnotation
   protected String name;
   protected String says;
-  public Animal() {};
-  public Animal(final String name) { this.name = name; }
-  public final String say() { return says; }
+  private Animal() {say(); };
+  protected Animal(final String name) { this(); this.name = name;  }
+  public abstract void say();
 }
