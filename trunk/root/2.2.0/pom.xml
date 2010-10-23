@@ -25,12 +25,11 @@
   <properties>
     <!-- jar versions, for dependency management -->
     <version.seam>2.2.0.GA</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
-    <version.richfaces>3.3.1.GA</version.richfaces>
+    <version.richfaces>3.3.3.Final</version.richfaces>
     <version.drools>5.0.1</version.drools>
     <version.resteasy>1.1-RC2</version.resteasy>
-    <version.jboss.embedded>beta3.SP9</version.jboss.embedded>
-    <version.junit>4.7</version.junit>
-    <version.testng>5.12.1</version.testng>
+    <version.junit>4.8.2</version.junit>
+    <version.testng>5.14.1</version.testng>
     <version.gmaven>1.2</version.gmaven>
     <version.groovy>1.7.2</version.groovy>
     <version.ant>1.8.1</version.ant>
@@ -1430,13 +1429,15 @@
       <url>http://repository.codehaus.org</url>
     </repository>
 
+<!-- 
     <repository>
       <snapshots />
       <id>snapshots.jboss.org</id>
       <name>JBoss Snapshot Repository</name>
       <url>http://snapshots.jboss.org/maven2</url>
     </repository>
-    
+-->
+
     <!-- for openejb -->
     <repository>
       <id>apache-m2-snapshot</id>
