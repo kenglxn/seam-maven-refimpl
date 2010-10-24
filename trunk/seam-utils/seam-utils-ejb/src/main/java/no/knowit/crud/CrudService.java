@@ -135,6 +135,23 @@ public interface CrudService {
   public <T> List<T> find(T example, boolean distinct, boolean any, int startPosition, int maxResult);
   
   
+  
+  @SuppressWarnings("unchecked")
+  public List findByNamedQuery(String namedQueryName);
+
+  @SuppressWarnings("unchecked")
+  public List findByNamedQuery(String namedQueryName, Map<String, Object> parameters);
+
+  @SuppressWarnings("unchecked")
+  public List findByNamedQuery(String queryName, int startPOsition, int maxResult);
+
+  @SuppressWarnings("unchecked")
+  public List findByNamedQuery(String namedQueryName, Map<String, Object> parameters, 
+      int startPosition, int maxResult);
+
+  public <T> List<T> findByNativeQuery(String sql, Class<T> type);
+
+  
 	/**
 	 * Merge the state of the given entity into the current persistence context, 
 	 * returning (a potentially different object) the persisted entity.
@@ -339,20 +356,4 @@ public interface CrudService {
    * @see javax.persistence.EntityManager#contains(Object)
    */
   public boolean isManaged(Object entity);
-  
-  
-	@SuppressWarnings("unchecked")
-  public List findWithNamedQuery(String namedQueryName);
-
-  @SuppressWarnings("unchecked")
-	public List findWithNamedQuery(String namedQueryName, Map<String, Object> parameters);
-
-  @SuppressWarnings("unchecked")
-	public List findWithNamedQuery(String queryName, int resultLimit);
-
-	public <T> List<T> findByNativeQuery(String sql, Class<T> type);
-
-  @SuppressWarnings("unchecked")
-	public List findWithNamedQuery(String namedQueryName,	Map<String, Object> parameters, int resultLimit);
-
 }
