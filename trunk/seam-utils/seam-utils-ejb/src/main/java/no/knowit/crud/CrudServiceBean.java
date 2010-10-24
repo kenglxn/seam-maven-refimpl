@@ -115,21 +115,18 @@ public class CrudServiceBean implements CrudService {
 	}
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public List findByNamedQuery(String queryName) {
+  public List<?> findByNamedQuery(String queryName) {
     return this.entityManager.createNamedQuery(queryName)
       .getResultList();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public List findByNamedQuery(String queryName, Map<String, Object> parameters) {
+  public List<?> findByNamedQuery(String queryName, Map<String, Object> parameters) {
     return findByNamedQuery(queryName, parameters, -1, -1);
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public List findByNamedQuery(String queryName, int startPosition, int maxResult) {
+  public List<?> findByNamedQuery(String queryName, int startPosition, int maxResult) {
     return this.entityManager.createNamedQuery(queryName)
       .setFirstResult(startPosition)
       .setMaxResults(maxResult)
@@ -137,8 +134,7 @@ public class CrudServiceBean implements CrudService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public List findByNamedQuery(String queryName, Map<String, Object> parameters, 
+  public List<?> findByNamedQuery(String queryName, Map<String, Object> parameters, 
       int startPosition, int maxResult) {
     
     Query query = this.entityManager.createNamedQuery(queryName);
@@ -158,9 +154,51 @@ public class CrudServiceBean implements CrudService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<?> findByNativeQuery(String sql) {
+    return this.entityManager.createNativeQuery(sql)
+      .getResultList();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<?> findByNativeQuery(String sql, int startPosition, int maxResult) {
+    return this.entityManager.createNativeQuery(sql)
+    .setFirstResult(startPosition)
+    .setMaxResults(maxResult)
+    .getResultList();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
   public <T> List<T> findByNativeQuery(String sql, Class<T> type) {
-    return this.entityManager.createNativeQuery(sql, type).getResultList();
+    return this.entityManager.createNativeQuery(sql, type)
+      .getResultList();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public <T> List<T> findByNativeQuery(String sql, Class<T> type, int startPosition, int maxResult) {
+    return this.entityManager.createNativeQuery(sql, type)
+      .setFirstResult(startPosition)
+      .setMaxResults(maxResult)
+      .getResultList();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public <T> List<T> findByNativeQuery(String sql, String resultSetMapping) {
+    return this.entityManager.createNativeQuery(sql, resultSetMapping)
+      .getResultList();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public <T> List<T> findByNativeQuery(String sql, String resultSetMapping, 
+      int startPosition, int maxResult) {
+    
+    return this.entityManager.createNativeQuery(sql, resultSetMapping)
+      .setFirstResult(startPosition)
+      .setMaxResults(maxResult)
+      .getResultList();
   }
 
 	// 'U'
