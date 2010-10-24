@@ -136,20 +136,26 @@ public interface CrudService {
   
   
   
-  @SuppressWarnings("unchecked")
-  public List findByNamedQuery(String namedQueryName);
+  public List<?> findByNamedQuery(String namedQueryName);
 
-  @SuppressWarnings("unchecked")
-  public List findByNamedQuery(String namedQueryName, Map<String, Object> parameters);
+  public List<?> findByNamedQuery(String namedQueryName, Map<String, Object> parameters);
 
-  @SuppressWarnings("unchecked")
-  public List findByNamedQuery(String queryName, int startPOsition, int maxResult);
+  public List<?> findByNamedQuery(String queryName, int startPOsition, int maxResult);
 
-  @SuppressWarnings("unchecked")
-  public List findByNamedQuery(String namedQueryName, Map<String, Object> parameters, 
+  public List<?> findByNamedQuery(String namedQueryName, Map<String, Object> parameters, 
       int startPosition, int maxResult);
 
+  public List<?> findByNativeQuery(String sql);
+
+  public List<?> findByNativeQuery(String sql, int startPosition, int maxResult);
+
   public <T> List<T> findByNativeQuery(String sql, Class<T> type);
+
+  public <T> List<T> findByNativeQuery(String sql, Class<T> type, int startPosition, int maxResult);
+
+  public <T> List<T> findByNativeQuery(String sql, String resultSetMapping);
+
+  public <T> List<T> findByNativeQuery(String sql, String resultSetMapping, int startPosition, int maxResult);
 
   
 	/**
