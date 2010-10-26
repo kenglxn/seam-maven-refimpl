@@ -169,15 +169,17 @@ public class CrudServiceBean implements CrudService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
-  public <T> List<T> findByNativeQuery(String sql, Class<T> type) {
-    return this.entityManager.createNativeQuery(sql, type)
+  public <T> List<T> findByNativeQuery(String sql, Class<T> resultClass) {
+    return this.entityManager.createNativeQuery(sql, resultClass)
       .getResultList();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
-  public <T> List<T> findByNativeQuery(String sql, Class<T> type, int startPosition, int maxResult) {
-    return this.entityManager.createNativeQuery(sql, type)
+  public <T> List<T> findByNativeQuery(String sql, Class<T> resultClass, 
+      int startPosition, int maxResult) {
+    
+    return this.entityManager.createNativeQuery(sql, resultClass)
       .setFirstResult(startPosition)
       .setMaxResults(maxResult)
       .getResultList();
