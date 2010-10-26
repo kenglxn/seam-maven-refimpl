@@ -263,6 +263,13 @@
 
     <!-- ******** TEST DEPENDECIES ********	-->
     
+    <!-- spec apis such as javax.persistence -->
+    <dependency>
+      <groupId>org.apache.openejb</groupId>
+      <artifactId>javaee-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
     <!-- openejb embedded container for running tests -->
     <dependency>
       <groupId>org.apache.openejb</groupId>
