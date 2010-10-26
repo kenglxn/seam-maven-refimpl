@@ -24,9 +24,12 @@ public class InjectedEntityManagerInStatelessBeanTest extends SeamOpenEjbTest {
 				injectedEntityManager.deleteAllMovies();
 				Assert.assertEquals(injectedEntityManager.getMovies().size(), 0, "InjectedEntityManager.deleteAllMovies()");
 				
-				injectedEntityManager.addMovie(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992));
-				injectedEntityManager.addMovie(new Movie("Joel Coen", "Fargo", 1996));
-				injectedEntityManager.addMovie(new Movie("Joel Coen", "The Big Lebowski", 1998));
+				injectedEntityManager.addMovie(Movie.builder()
+				    .withDirector("Quentin Tarantino").withTitle("Reservoir Dogs").withYear(1992).build());
+				injectedEntityManager.addMovie(Movie.builder()
+            .withDirector("Joel Coen").withTitle("Fargo").withYear(1996).build());
+				injectedEntityManager.addMovie(Movie.builder()
+            .withDirector("Joel Coen").withTitle("The Big Lebowski").withYear(1998).build());
 				
 				List<Movie> list = injectedEntityManager.getMovies();
 				Assert.assertEquals(list.size(), 3, "List.size()");

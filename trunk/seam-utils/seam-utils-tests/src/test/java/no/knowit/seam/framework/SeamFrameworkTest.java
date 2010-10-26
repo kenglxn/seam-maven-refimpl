@@ -38,7 +38,11 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
     crudService.remove(Movie.class);
     assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 before tests";
     
-		crudService.persist(new Movie("Alan Parker", "The Wall", 1999));
+		crudService.persist(Movie.builder()
+      .withDirector("Alan Parker")
+      .withTitle("The Wall")
+      .withYear(1999)
+      .build());
 	}
 	
   @Override
@@ -65,9 +69,16 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
 //				MovieHome movieHome = (MovieHome)Component.getInstance("movieHome");
 				
 				movieHome.clearInstance();
-				movieHome.getInstance().setDirector("Joel Coen");
-				movieHome.getInstance().setTitle("Fargo");
-				movieHome.getInstance().setYear(1996);
+				
+				Movie.builder(movieHome.getInstance())
+          .withDirector("Joel Coen")
+          .withTitle("Fargo")
+          .withYear(1996).build();
+				
+//				movieHome.getInstance().setDirector("Joel Coen");
+//				movieHome.getInstance().setTitle("Fargo");
+//				movieHome.getInstance().setYear(1996);
+				
 				String result = movieHome.persist();
 				Assert.assertEquals(result, "persisted");
 				Conversation.instance().end();
