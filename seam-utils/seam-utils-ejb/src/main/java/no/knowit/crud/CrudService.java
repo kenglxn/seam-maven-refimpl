@@ -134,28 +134,182 @@ public interface CrudService {
    */
   public <T> List<T> find(T example, boolean distinct, boolean any, int startPosition, int maxResult);
   
-  
-  
-  public List<?> findByNamedQuery(String namedQueryName);
+  /**
+   * Creates an instance of Query for executing a named query (in the Java Persistence query 
+   * language or in native SQL), executes a SELECT query and return the query results as a List
+   * of entities.
+   * 
+   * @param queryName the name of the named query
+   * @return a list of entities
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if a query has not been
+   *         defined with the given name
+   * @throws IllegalStateException if called for a Java 
+   *         Persistence query language UPDATE or DELETE statement
+   * @see javax.persistence.EntityManager#createNamedQuery(String)
+   * @see javax.persistence.Query#getResultList()
+   */
+  public List<?> findByNamedQuery(String queryName);
 
-  public List<?> findByNamedQuery(String namedQueryName, Map<String, Object> parameters);
+  /**
+   * Creates an instance of Query for executing a named query (in the Java Persistence query 
+   * language or in native SQL), binds all arguments in <code>parameters</code> to corresponding
+   * named parameters in the named query, then executes a SELECT query and return the query 
+   * results as a List of entities.
+   * 
+   * @param queryName the name of the named query
+   * @param parameters a map with arguments to bind to named parameters in the query
+   * @return a list of entities
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if a query has not been
+   *         defined with the given name
+   * @throws IllegalStateException if called for a Java 
+   *         Persistence query language UPDATE or DELETE statement
+   * @throws IllegalArgumentException if parameter name does not
+   *         correspond to parameter in query string
+   *         or argument is of incorrect type
+   * @see javax.persistence.EntityManager#createNamedQuery(String)
+   * @see javax.persistence.Query#getResultList()
+   * @see javax.persistence.Query#setParameter(String, Object)
+   */
+  public List<?> findByNamedQuery(String queryName, Map<String, Object> parameters);
 
-  public List<?> findByNamedQuery(String queryName, int startPOsition, int maxResult);
+  /**
+   * Creates an instance of Query for executing a named query (in the Java Persistence query 
+   * language or in native SQL), executes a SELECT query and return the query results as a List
+   * of entities. The number of entities returned is limited by the <code>startPosition</code> and 
+   * <code>maxResult</code> parameters.
+   * 
+   * @param queryName the name of the named query
+   * @param startPosition position of the first result to be returned by the query, numbered from 0
+   * @param maxResult the maximum number of entities that should be returned by the query
+   * @return a list of entities
+   * @throws IllegalStateException if this EntityManager has been closed
+   * @throws IllegalArgumentException if a query has not been
+   *         defined with the given name
+   * @throws IllegalStateException if called for a Java 
+   *         Persistence query language UPDATE or DELETE statement
+   * @throws java.lang.IllegalArgumentException if <code>startPosition</code>
+   *         or <code>maxResult</code> is negative.
+   * @see javax.persistence.EntityManager#createNamedQuery(String)
+   * @see javax.persistence.Query#getResultList()
+   * @see javax.persistence.Query#setFirstResult(int)
+   * @see javax.persistence.Query#setMaxResults(int)
+   */
+  public List<?> findByNamedQuery(String queryName, int startPosition, int maxResult);
 
-  public List<?> findByNamedQuery(String namedQueryName, Map<String, Object> parameters, 
+  /**
+   * Creates an instance of Query for executing a named query (in the Java Persistence query 
+   * language or in native SQL), binds all arguments in <code>parameters</code> to corresponding
+   * named parameters in the named query, then executes a SELECT query and return the query 
+   * results as a List of entities. The number of entities returned is limited by the 
+   * <code>startPosition</code> and <code>maxResult</code> parameters.
+   * 
+   * @param queryName the name of the named query
+   * @param parameters a map with arguments to bind to named parameters in the query
+   * @param startPosition position of the first result to be returned by the query, numbered from 0
+   * @param maxResult the maximum number of entities that should be returned by the query
+   * @return a list of entities
+   */
+  public List<?> findByNamedQuery(String queryName, Map<String, Object> parameters, 
       int startPosition, int maxResult);
 
+  /**
+   * Creates a dynamic query using a native SQL statement with UPDATE or DELETE, 
+   * executes the query and return the query results as a List.
+   * 
+   * @param sql the native SQL query to execute
+   * @return a list of results
+   */
   public List<?> findByNativeQuery(String sql);
 
+  /**
+   * Creates a dynamic query using a native SQL statement with UPDATE or DELETE, 
+   * executes the query and return the query results as a List. The number of results returned is 
+   * limited by the <code>startPosition</code> and <code>maxResult</code> parameters.
+   * 
+   * @param sql the native SQL query to execute
+   * @param startPosition position of the first result to be returned by the query, numbered from 0
+   * @param maxResult the maximum number of entities that should be returned by the query
+   * @return a list of results
+   */
   public List<?> findByNativeQuery(String sql, int startPosition, int maxResult);
 
-  public <T> List<T> findByNativeQuery(String sql, Class<T> type);
+  /**
+   * Creates a dynamic query using a native SQL statement that retrieves a single entity type, 
+   * executes the query and return the query results as a List. The type of results is determined
+   * by the <code>resultClass</code> parameter
+   * 
+   * @param sql the native SQL query to execute
+   * @param resultClass the class of the resulting instance(s)
+   * @return a list of results
+   */
+  public <T> List<T> findByNativeQuery(String sql, Class<T> resultClass);
 
-  public <T> List<T> findByNativeQuery(String sql, Class<T> type, int startPosition, int maxResult);
+  /**
+   * Creates a dynamic query using a native SQL statement that retrieves a single entity type,
+   * executes the query and return the query results as a List. The type of results is determined
+   * by the <code>resultClass</code> parameter. The number of results returned is 
+   * limited by the <code>startPosition</code> and <code>maxResult</code> parameters.
+   * 
+   * @param sql the native SQL query to execute
+   * @param resultClass the class of the resulting instance(s)
+   * @param startPosition position of the first result to be returned by the query, numbered from 0
+   * @param maxResult the maximum number of entities that should be returned by the query
+   * @return a list of results
+   */
+  public <T> List<T> findByNativeQuery(String sql, Class<T> resultClass, 
+      int startPosition, int maxResult);
 
+  /**
+   * Creates a dynamic query using a native SQL statement that retrieves a result set with multiple 
+   * entity types, executes the query and return the query results as a List.<br/>
+   * For example, if we want to create a <code>SqlResultSetMapping</code> for the <code>User</code>
+   * entity, then we can use the &#064;SqlResultSetMapping annotation as follows:
+   * <pre><code>&#064;SqlResultSetMapping(name = "UserResults", 
+   *   entities = &#064;EntityResult(
+   *     entityClass = org.mydomain.model.User.class))</code></pre>
+   * <p>Then we can specify the mapping in the Query as follows:</p>
+   * <pre><code>List<?> result = findByNativeQuery(
+   *   "SELECT user_id, first_name, last_name "
+   * + "FROM   users "
+   * + "WHERE  user_id IN "
+   * + "      (SELECT seller_id FROM items "
+   * + "       GROUP BY seller_id HAVING COUNT(*) > 1)",
+   *   "UserResults")</code></pre>
+   * 
+   * @param sql the native SQL query to execute
+   * @param resultSetMapping the name of the result set mapping
+   * @return a list of results
+   */
   public <T> List<T> findByNativeQuery(String sql, String resultSetMapping);
 
-  public <T> List<T> findByNativeQuery(String sql, String resultSetMapping, int startPosition, int maxResult);
+  /**
+   * Creates a dynamic query using a native SQL statement that retrieves a result set with multiple 
+   * entity types, executes the query and return the query results as a List. The number of results 
+   * returned is limited by the <code>startPosition</code> and <code>maxResult</code> parameters.<br/>
+   * For example, if we want to create a <code>SqlResultSetMapping</code> for the <code>User</code>
+   * entity, then we can use the &#064;SqlResultSetMapping annotation as follows:
+   * <pre><code>&#064;SqlResultSetMapping(name = "UserResults", 
+   *   entities = &#064;EntityResult(
+   *     entityClass = org.mydomain.model.User.class))</code></pre>
+   * <p>Then we can specify the mapping in the Query as follows:</p>
+   * <pre><code>List<?> result = findByNativeQuery(
+   *   "SELECT user_id, first_name, last_name "
+   * + "FROM   users "
+   * + "WHERE  user_id IN "
+   * + "      (SELECT seller_id FROM items "
+   * + "       GROUP BY seller_id HAVING COUNT(*) > 1)",
+   *   "UserResults")</code></pre>
+   * 
+   * @param sql the native SQL query to execute
+   * @param resultSetMapping the name of the result set mapping
+   * @param startPosition position of the first result to be returned by the query, numbered from 0
+   * @param maxResult the maximum number of entities that should be returned by the query
+   * @return a list of results
+   */
+  public <T> List<T> findByNativeQuery(String sql, String resultSetMapping, 
+      int startPosition, int maxResult);
 
   
 	/**
