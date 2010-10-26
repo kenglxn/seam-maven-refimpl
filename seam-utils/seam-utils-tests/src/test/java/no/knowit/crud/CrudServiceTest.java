@@ -82,21 +82,38 @@ public class CrudServiceTest extends OpenEjbTest {
     // Persist 4 movies
     ArrayList<Movie> movies = new ArrayList<Movie>();
 
-    movies.add(new Movie(DIRECTOR_JOEL_COEN, THE_BIG_LEBOWSKI_TITLE, THE_BIG_LEBOWSKI_YEAR, "..."));
+    movies.add(Movie.builder()
+      .withDirector(DIRECTOR_JOEL_COEN)
+      .withTitle(THE_BIG_LEBOWSKI_TITLE)
+      .withYear(THE_BIG_LEBOWSKI_YEAR)
+      .withPlot("...")
+      .build());
     
-    movies.add(new Movie("Quentin Tarantino", "Reservoir Dogs", 1992, 
-      "After a simple jewelery heist goes terribly wrong, the surviving criminals begin " +
-      "to suspect that one of them is a police informant."));
+    movies.add(Movie.builder()
+      .withDirector("Quentin Tarantino")
+      .withTitle("Reservoir Dogs")
+      .withYear(1992) 
+      .withPlot("After a simple jewelery heist goes terribly wrong, the surviving criminals begin " +
+                "to suspect that one of them is a police informant.")
+      .build());
     
-    movies.add(new Movie(DIRECTOR_JOEL_COEN, "Fargo", 1996, 
-      "Jerry Lundegaard's inept crime falls apart due to his and his henchmen's bungling " +
-      "and the persistent police work of pregnant Marge Gunderson."));
+    movies.add(Movie.builder()
+      .withDirector(DIRECTOR_JOEL_COEN)
+      .withTitle("Fargo")
+      .withYear(1996) 
+      .withPlot("Jerry Lundegaard's inept crime falls apart due to his and his henchmen's bungling " +
+                "and the persistent police work of pregnant Marge Gunderson.")
+      .build());
     
-    movies.add(new Movie("Lewis Milestone", "All Quiet on the Western Front", 1930, 
-      "One of the most powerful anti-war statements ever put on film, this gut-wrenching story " +
-      "concerns a group of friends who join the Army during World War I and are assigned to the " +
-      "Western Front, where their fiery patriotism is quickly turned to horror and misery by the " +
-      "harsh realities of combat."));
+    movies.add(Movie.builder()
+      .withDirector("Lewis Milestone")
+      .withTitle("All Quiet on the Western Front")
+      .withYear(1930) 
+      .withPlot("One of the most powerful anti-war statements ever put on film, this gut-wrenching " +
+                "story concerns a group of friends who join the Army during World War I and are " +
+                "assigned to the Western Front, where their fiery patriotism is quickly turned to " +
+                "horror and misery by the harsh realities of combat.")
+      .build());
       
     movies = (ArrayList<Movie>) crudService.persist(movies);
     
@@ -122,14 +139,18 @@ public class CrudServiceTest extends OpenEjbTest {
 	
 	@Test
 	public void create() throws Exception {
-		Movie theWall = crudService.persist(
-		  new Movie(THE_WALL_DIRECTOR, THE_WALL_TITLE, THE_WALL_YEAR, THE_WALL_PLOT));
+		Movie theWall = crudService.persist(Movie.builder()
+		  .withDirector(THE_WALL_DIRECTOR)
+		  .withTitle(THE_WALL_TITLE)
+		  .withYear(THE_WALL_YEAR)
+		  .withPlot(THE_WALL_PLOT)
+		  .build());
 		
 		Assert.assertNotNull(theWall, "crudService.persist: movie was null");
 		Assert.assertNotNull(theWall.getId(), "movie.getId: movie.id was null");
 		
-    assert crudService.find(
-      new Movie(null, THE_WALL_TITLE, null), true, false).size() == 1 : "List.size():";
+    assert crudService.find(Movie.builder().withTitle(THE_WALL_TITLE).build(), 
+        true, false).size() == 1 : "List.size():";
 	}
 
 	@Test
@@ -142,8 +163,8 @@ public class CrudServiceTest extends OpenEjbTest {
 	@Test
 	public void update() throws Exception {
     Movie movie = crudService.find(Movie.class, theBigLebowskiId);
-    movie.setPlot(THE_BIG_LEBOWSKI_PLOT);
-		movie = crudService.merge(movie);
+    assert movie != null : "Movie was null";
+		movie = crudService.merge(Movie.builder(movie).withPlot(THE_BIG_LEBOWSKI_PLOT).build());
 		Assert.assertEquals(movie.getPlot(), THE_BIG_LEBOWSKI_PLOT);
 	}
 	
@@ -156,12 +177,18 @@ public class CrudServiceTest extends OpenEjbTest {
 	@Test
 	public void createOrUpdate() throws Exception {
 		// Create
-		Movie movie = crudService.store(new Movie("Martin Scorsese", "Shine a Light", 2007));
+		Movie movie = crudService.store(Movie.builder()
+		    .withDirector("Martin Scorsese")
+		    .withTitle("Shine a Light")
+		    .withYear(2007)
+		    .build());
 		Assert.assertNotNull(movie.getId(), "movie.getId: movie.id was null");
 		
 		// Modify and update
-		movie.setPlot("Words greatest rockband meets words greatest director - finally!");
-		crudService.store(movie);
+		movie = crudService.store(Movie.builder(movie)
+	    .withPlot("Words greatest rockband meets words greatest director - finally!")
+	    .build());
+		assert movie != null : "Movie was null";
 	}
 	
 	@Test
@@ -173,9 +200,10 @@ public class CrudServiceTest extends OpenEjbTest {
 
 	@Test
 	public void findByExample() throws Exception {
-		Movie exampleMovie = new Movie();
-		exampleMovie.setDirector("Joel%");
-		exampleMovie.setYear(1930);
+		Movie exampleMovie = Movie.builder()
+		  .withDirector("Joel%")
+		  .withYear(1930)
+		  .build();
 		List<Movie> exampleMovies = crudService.find(exampleMovie, false, true);
   	Assert.assertEquals(exampleMovies.size(), 3, "List.size()");
 	}
@@ -186,9 +214,10 @@ public class CrudServiceTest extends OpenEjbTest {
     final int expectedCount = crudService.count(Movie.class);
     log.debug("deleteByExample: Also testing transaction Rollback. # of movies before transaction: " + expectedCount);
     
-    Movie exampleMovie = new Movie();
-    exampleMovie.setDirector("Joel Coen");
-    exampleMovie.setYear(1930);
+    Movie exampleMovie = Movie.builder()
+      .withDirector("Joel Coen")
+      .withYear(1930)
+      .build();
     
 	  userTransaction.begin();
 	  try {
