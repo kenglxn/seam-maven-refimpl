@@ -40,6 +40,8 @@ public interface CrudService {
    *         no transaction.
    * @throws PersistenceException if the flush fails
    * @see javax.persistence.EntityManager#persist(Object)
+   * @see javax.persistence.EntityManager#flush()
+   * @see javax.persistence.EntityManager#refresh(Object)
 	 */
 	public <T> T persist(T entity);
 
@@ -61,7 +63,6 @@ public interface CrudService {
    *         PersistenceContextType.TRANSACTION and there is
    *         no transaction.
    * @throws PersistenceException if the flush fails
-   * @see javax.persistence.EntityManager#persist(Object)
    * @see CrudService#persist(Object)
 	 */
 	public <T> Collection<T> persist(Collection<T> entities);
@@ -82,9 +83,9 @@ public interface CrudService {
 	public <T> T find(Class<T> entityClass, Object id);
 
   /**
-   * Find all entities of a particular type. 
-   * This is similar to the JPQL statement: <br/>
-   * <code>select e from Entity e as e</code>
+   * Find all entities of a particular type by generating a select query; 
+   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> 
+   * is the given <code>entityClass</code> parameter. 
    * @param entityClass the entity class to find instances of 
    * @return a list of entities
    * @throws IllegalStateException if this EntityManager has been closed.
@@ -94,15 +95,19 @@ public interface CrudService {
   
   
   /**
-   * <p> Find all entities of a particular type. The number of entities 
+   * Find all entities of a particular type by generating a select query; 
+   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> 
+   * is the given <code>entityClass</code> parameter. The number of entities 
    * returned is limited by the <code>startPosition</code> and 
-   * <code>maxResult</code> parameters.</p>
+   * <code>maxResult</code> parameters.
+   * @param entityClass the entity class to find instances of 
    * @param startPosition position of the first result to be returned by the query, numbered from 0
    * @param maxResult the maximum number of entities that should be returned by the query
    * @return a list of entities
    * @throws java.lang.IllegalArgumentException if <code>startPosition</code>
    *         or <code>maxResult</code> is negative.
    * @throws IllegalStateException if this EntityManager has been closed
+   * @see CrudService#find(Class)
    */
   public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult);
   
