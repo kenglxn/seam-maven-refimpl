@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.jboss.seam</groupId>
     <artifactId>root</artifactId>
-    <version>2.2.1.CR1</version>
+    <version>2.2.1.CR2</version>
   </parent>
 
   <groupId>no.knowit.seam</groupId>
@@ -24,7 +24,7 @@
 
   <properties>
     <!-- jar versions, for dependency management -->
-    <version.seam>2.2.1.CR1</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
+    <version.seam>2.2.1.CR2</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
     <version.richfaces>3.3.3.Final</version.richfaces>
     <version.junit>4.8.2</version.junit>
     <version.testng>5.14.1</version.testng>
