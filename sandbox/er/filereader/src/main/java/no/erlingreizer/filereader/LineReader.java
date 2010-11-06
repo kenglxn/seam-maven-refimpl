@@ -1,6 +1,7 @@
 package no.erlingreizer.filereader;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +10,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
 /***
- * Class that will read line from line from a file. Example of use:
+ * Class that will read line after line from a file. Example of use:
  * 
  * <pre>
  * <code>
@@ -33,8 +34,9 @@ public class LineReader {
 	}
 
 	private void readFile(String fileName) {
+		BufferedReader bf = null;
 		try {
-			BufferedReader bf = new BufferedReader(new InputStreamReader(
+			bf = new BufferedReader(new InputStreamReader(
 					new FileInputStream(new File(fileName)), charset));
 			String line;
 			int lineCounter = 1;
@@ -46,6 +48,13 @@ public class LineReader {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+		finally{
+			try {
+				bf.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
