@@ -7,7 +7,7 @@
 	<properties>
 		<!-- jar versions, for dependency management -->
 		<version.junit>4.8.2</version.junit>
-		<version.guava.io>r03</version.guava.io>
+		<version.guava>r07</version.guava>
 		<jdk.debug>true</jdk.debug>
 		<jdk.optimize>false</jdk.optimize>
 		<jdk.source>1.6</jdk.source>
@@ -29,10 +29,11 @@
 			<version>${version.junit}</version>
 			<classifier>sources</classifier>
 		</dependency>
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
-			<artifactId>guava-io</artifactId>
-			<version>${version.guava.io}</version>
+			<artifactId>guava</artifactId>
+			<version>${version.guava}</version>
 		</dependency>
 	</dependencies>
 

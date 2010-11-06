@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
+import com.google.common.base.Preconditions;
 import com.google.common.io.Closeables;
 
 /***
@@ -62,7 +63,7 @@ public class LineReader {
 	 */
 	public static LineReader withLineHandler(
 			final LineHandler lineHandler) {
-		assertNotNull("LineReaderHandler", lineHandler);
+		Preconditions.checkArgument(lineHandler != null, "Linehandler cannot be null");
 		return new LineReader(lineHandler);
 	}
 
@@ -71,22 +72,15 @@ public class LineReader {
 	 *            The file to parse
 	 */
 	public void parseFile(final String filnavn) {
-		assertNotNull("Filnavn", filnavn);
+		Preconditions.checkArgument(filnavn != null, "Filnavn cannot be null");
 		readFile(filnavn);
 
 	}
 
 	public LineReader withCharsetEncoding(final Charset charset) {
-		assertNotNull("Charset", charset);
+		Preconditions.checkArgument(charset != null, "Charset cannot be null");
 		this.charset = charset;
 		return this;
-	}
-
-	private static <T> void assertNotNull(final String field, final T object) {
-		if (object == null) {
-			throw new IllegalArgumentException(String.format(
-					"%s cannot be null!", field));
-		}
 	}
 
 	public interface LineHandler {
