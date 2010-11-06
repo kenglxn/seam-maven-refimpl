@@ -26,7 +26,7 @@ public class LineReaderTest {
 			public void handleLine(int lineNumber, String s) {
 				filInnhold.put(lineNumber, s);
 			}
-		}).parseFile(FILE_UTF_8_ENCODED);
+		}).withCharsetEncoding(Charset.availableCharsets().get("UTF-8")).parseFile(FILE_UTF_8_ENCODED);
 		
 		
 		
