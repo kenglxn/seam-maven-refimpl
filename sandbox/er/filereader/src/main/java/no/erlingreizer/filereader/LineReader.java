@@ -68,12 +68,12 @@ public class LineReader {
 	}
 
 	/***
-	 * @param filnavn
+	 * @param filename
 	 *            The file to parse
 	 */
-	public void parseFile(final String filnavn) {
-		Preconditions.checkArgument(filnavn != null, "Filnavn cannot be null");
-		readFile(filnavn);
+	public void parseFile(final String filename) {
+		Preconditions.checkArgument(filename != null, "Filename cannot be null");
+		readFile(filename);
 
 	}
 
