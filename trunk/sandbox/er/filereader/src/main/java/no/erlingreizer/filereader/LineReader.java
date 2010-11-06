@@ -1,13 +1,14 @@
 package no.erlingreizer.filereader;
 
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+
+import com.google.common.io.Closeables;
 
 /***
  * Class that will read line after line from a file. Example of use:
@@ -34,13 +35,13 @@ public class LineReader {
 	}
 
 	private void readFile(String fileName) {
-		BufferedReader bf = null;
+		BufferedReader bfr = null;
 		try {
-			bf = new BufferedReader(new InputStreamReader(
+			bfr = new BufferedReader(new InputStreamReader(
 					new FileInputStream(new File(fileName)), charset));
 			String line;
 			int lineCounter = 1;
-			while ((line = bf.readLine()) != null) {
+			while ((line = bfr.readLine()) != null) {
 				lineReaderCallback.handleLine(lineCounter, line);
 				lineCounter++;
 			}
@@ -50,11 +51,7 @@ public class LineReader {
 			throw new RuntimeException(e);
 		}
 		finally{
-			try {
-				bf.close();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
+			Closeables.closeQuietly(bfr);
 		}
 	}
 
