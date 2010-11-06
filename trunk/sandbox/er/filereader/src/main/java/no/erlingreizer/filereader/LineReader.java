@@ -26,14 +26,13 @@ import java.nio.charset.Charset;
  */
 public class LineReader {
 	LineHandler lineReaderCallback;
-	String fileName;
 	Charset charset = Charset.defaultCharset();
 
 	private LineReader(final LineHandler lineReaderCallback) {
 		this.lineReaderCallback = lineReaderCallback;
 	}
 
-	private void readFile() {
+	private void readFile(String fileName) {
 		try {
 			BufferedReader bf = new BufferedReader(new InputStreamReader(
 					new FileInputStream(new File(fileName)), charset));
@@ -50,10 +49,15 @@ public class LineReader {
 		}
 	}
 
+	/***
+	 * Factory method that builds a linereader with the specified LineHandler
+	 * @param lineHandler
+	 * @return
+	 */
 	public static LineReader withLineHandler(
-			final LineHandler lineReaderCallback) {
-		assertNotNull("LineReaderHandler", lineReaderCallback);
-		return new LineReader(lineReaderCallback);
+			final LineHandler lineHandler) {
+		assertNotNull("LineReaderHandler", lineHandler);
+		return new LineReader(lineHandler);
 	}
 
 	/***
@@ -62,8 +66,7 @@ public class LineReader {
 	 */
 	public void parseFile(final String filnavn) {
 		assertNotNull("Filnavn", filnavn);
-		this.fileName = filnavn;
-		readFile();
+		readFile(filnavn);
 
 	}
 

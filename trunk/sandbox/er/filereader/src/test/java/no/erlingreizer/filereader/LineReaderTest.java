@@ -29,6 +29,7 @@ public class LineReaderTest {
 		}).parseFile(FILE_UTF_8_ENCODED);
 		
 		
+		
 		//skrivUtInnhold(filInnhold);
 		assertInnhold(filInnhold);
 
