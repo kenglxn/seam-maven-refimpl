@@ -25,7 +25,7 @@ import java.nio.charset.Charset;
  * 
  */
 public class LineReader {
-	LineHandler lineReaderCallback;
+	final LineHandler lineReaderCallback;
 	Charset charset = Charset.defaultCharset();
 
 	private LineReader(final LineHandler lineReaderCallback) {
