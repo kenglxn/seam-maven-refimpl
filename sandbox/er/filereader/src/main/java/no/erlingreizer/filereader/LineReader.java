@@ -53,8 +53,7 @@ public class LineReader {
 	public static LineReader withLineHandler(
 			final LineHandler lineReaderCallback) {
 		assertNotNull("LineReaderHandler", lineReaderCallback);
-		LineReader lr = new LineReader(lineReaderCallback);
-		return lr;
+		return new LineReader(lineReaderCallback);
 	}
 
 	/***
