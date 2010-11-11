@@ -84,6 +84,6 @@ public class LineReader {
 	}
 
 	public interface LineHandler {
-		public void handleLine(int lineNumber, final String s);
+		public void handleLine(int lineNumber, final String lineContent);
 	}
 }
