@@ -15,14 +15,14 @@ import com.google.common.collect.Maps;
 
 public class LineReaderTest {
 
-	private static final String LINE_NUMBER_3_CONTENT = "deg";
-	private static final String LINE_NUMBER_2_CONTENT = "på";
 	private static final String LINE_NUMBER_1_CONTENT = "hei";
-	private static final int LINE_NUMBER_3 = 3;
+	private static final String LINE_NUMBER_2_CONTENT = "på";
+	private static final String LINE_NUMBER_3_CONTENT = "deg";
 	private static final int LINE_NUMBER_1 = 1;
 	private static final int LINE_NUMBER_2 = 2;
-	private static final String ISO_8859_1_ENCODING = "ISO-8859-1";
+	private static final int LINE_NUMBER_3 = 3;
 	private static final String UTF_8_ENCODING = "UTF-8";
+	private static final String ISO_8859_1_ENCODING = "ISO-8859-1";
 	private static final String FILE_UTF_8_ENCODED = "src/main/resources/fil.utf8.txt";
 	private static final String FILE_ANSI_ENCODED = "src/main/resources/fil.ansi.txt";
 	final Map<Integer, String> fileContent = Maps.newHashMap();
