@@ -61,13 +61,17 @@ public class ToStringBuilderTest {
     "  \"offset\": 0\n" +
     "}";
   
+  private static final Date DATE_NOW = new Date(); 
   private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-  private static final String DATE_STRING = "2010-04-11 15:11:28 +0200";
+  private static final String DATE_STRING = DATE_FORMAT.format(DATE_NOW); //e.g. "2010-04-11 15:11:28 +0200";
   private static final String DATE_HEAD = "Date" ;
-  private static final String DATE_BODY = "{\n" +
-    "  \"fastTime\": 1270991488000,\n" +
-    "  \"cdate\": null\n" +
-    "}";
+  private static final String DATE_BODY_FRAGMENT_1 =  "\"fastTime\":";
+  private static final String DATE_BODY_FRAGMENT_2 =  "\"cdate\":";
+  private static final String EXPECTED_DATE_NOW = 
+    "{\"Date\":{\n" +
+    "  \"fastTime\": someNumber,\n" +
+    "  \"cdate\": someObject\n" +
+    "}}";
 
   private static final String METRICS_HEAD = "Metrics";
   private static final String METRICS_BODY = "{\n" +
@@ -80,7 +84,8 @@ public class ToStringBuilderTest {
   private static final String INT_ARRAY_HEAD = "int[]" ;
   private static final String INT_ARRAY_BODY = "[1, 2, 3]";
   
-  private static final int[][] TWO_DIMENSIONAL_INT_ARRAY =  new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+  private static final int[][] TWO_DIMENSIONAL_INT_ARRAY =  new int[][]{
+    {1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
   private static final String TWO_DIMENSIONAL_INT_ARRAY_HEAD = "int[][]" ;
   private static final String TWO_DIMENSIONAL_INT_ARRAY_BODY = "[\n" +
     "  [1, 2, 3],\n" +
@@ -109,7 +114,8 @@ public class ToStringBuilderTest {
     "     }\n" +
     "  }]";
 
-  private static List<Integer> INTEGER_ARRAY_LIST = Arrays.asList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3));
+  private static List<Integer> INTEGER_ARRAY_LIST = Arrays.asList(
+      Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3));
   private static final String INTEGER_ARRAY_LIST_HEAD = "ArrayList" ;
   private static final String INTEGER_ARRAY_LIST_BODY = INT_ARRAY_BODY;
   
@@ -117,7 +123,8 @@ public class ToStringBuilderTest {
   private static final String STRING_LIST_HEAD = "ArrayList";
   private static final String STRING_LIST_BODY = STRING_ARRAY_BODY;
 
-  private static final List<Animal> ANIMAL_LIST = Arrays.asList(new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));
+  private static final List<Animal> ANIMAL_LIST = Arrays.asList(
+      new Dog("Laika"), new Cat("Fritz"), new Bird("Pip"));
   private static final String ANIMAL_LIST_HEAD = "ArrayList" ;
   private static final String ANIMAL_LIST_BODY = "[\n" +
     "  \"Dog\": {\n" +
@@ -188,15 +195,15 @@ public class ToStringBuilderTest {
       "  \"finalField\": \"A final field\",\n" +
       "  \"foo\": 200,\n" +
       "  \"bar\": \"setBar -> Hello \\\"BAR\\\"!\",\n" +
-      "  \"someDate\": 2010-04-11 15:11:28 +0200\n" +
+      "  \"someDate\": " + DATE_STRING + "\n" +
       "}}";
-
+  
   private static final String EXPECTED_BEAN_WITH_PRIMITIVES_PUBLIC_FIELDS =
     "{\"BeanWithPrimitives\": {\n" +
       "  \"baz\": \"  Hello   BAZ!\",\n" +
       "  \"color\": RED,\n" +
       "  \"foo\": 200,\n" +
-      "  \"someDate\": 2010-04-11 15:11:28 +0200\n" +
+      "  \"someDate\": " + DATE_STRING + "\n" +
       "}}";
 
   private static final String EXPECTED_COMPOSED_BEAN =
@@ -274,7 +281,7 @@ public class ToStringBuilderTest {
     "    \"finalField\": \"A final field\",\n" +
     "    \"foo\": 200,\n" +
     "    \"bar\": \"setBar -> Hello \\\"BAR\\\"!\",\n" +
-    "    \"someDate\": 2010-04-11 15:11:28 +0200\n" +
+    "    \"someDate\": " + DATE_STRING + "\n" +
     "  }\n}}";
   
   private static final String EXPECTED_COMPOSED_BEAN_WITH_INCLUDED_FIELDS =
@@ -300,7 +307,8 @@ public class ToStringBuilderTest {
     "    }\n" +
     "  }}";
   
-  private static final String EXPECTED_COMPOSED_BEAN_WITH_EXCLUDED_FIELDS = EXPECTED_COMPOSED_BEAN_WITH_INCLUDED_FIELDS;
+  private static final String EXPECTED_COMPOSED_BEAN_WITH_EXCLUDED_FIELDS = 
+    EXPECTED_COMPOSED_BEAN_WITH_INCLUDED_FIELDS;
     
   private static final String EXPECTED_BEAN_WITH_NESTED_CLASSES =
     "  {\"BeanWithNestedClasses\": {\n" +
@@ -444,18 +452,17 @@ public class ToStringBuilderTest {
     
     
     // Given
-    Date date = null;
-    try {
-      date = DATE_FORMAT.parse(DATE_STRING);
-    } 
-    catch (ParseException e) {}
+    Date date = DATE_NOW;
 
     // When
     actual = ToStringBuilder.builder(date).toString();
+    //log.debug("******\n" + actual);
     
     // Then
-    expected = String.format(HEAD_BODY_TAIL, DATE_HEAD, DATE_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
+    assert actual.contains(DATE_HEAD) 
+      && actual.contains(DATE_BODY_FRAGMENT_1) 
+      && actual.contains(DATE_BODY_FRAGMENT_2)
+        : String.format(ASSERT_MESSAGE_FORMAT, actual, EXPECTED_DATE_NOW);
     
     
     // Given
@@ -494,7 +501,7 @@ public class ToStringBuilderTest {
     
     // Then
     expected = String.format(HEAD_BODY_TAIL, TWO_DIMENSIONAL_INT_ARRAY_HEAD, TWO_DIMENSIONAL_INT_ARRAY_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     
     // Given
@@ -506,7 +513,7 @@ public class ToStringBuilderTest {
     
     // Then
     expected = String.format(HEAD_BODY_TAIL, STRING_ARRAY_HEAD, STRING_ARRAY_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     
     // Given
@@ -521,7 +528,7 @@ public class ToStringBuilderTest {
     
     // Then
     expected = String.format(HEAD_BODY_TAIL, CAT_ARRAY_HEAD, CAT_ARRAY_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
   }
   
   @Test
@@ -538,7 +545,7 @@ public class ToStringBuilderTest {
 
     // Then
     expected = String.format(HEAD_BODY_TAIL, INTEGER_ARRAY_LIST_HEAD, INTEGER_ARRAY_LIST_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     
     // Given
@@ -549,7 +556,7 @@ public class ToStringBuilderTest {
 
     // Then
     expected = String.format(HEAD_BODY_TAIL, STRING_LIST_HEAD, STRING_LIST_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 
     
     // Given
@@ -562,7 +569,7 @@ public class ToStringBuilderTest {
 
     // Then
     expected = String.format(HEAD_BODY_TAIL, STRING_MAP_HEAD_ALIAS, STRING_MAP_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
 
     
     // Given
@@ -573,7 +580,7 @@ public class ToStringBuilderTest {
 
     // Then
     expected = String.format(HEAD_BODY_TAIL, ANIMAL_LIST_HEAD, ANIMAL_LIST_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
     
     
     // Given
@@ -587,7 +594,7 @@ public class ToStringBuilderTest {
     
     // Then
     expected = String.format(HEAD_BODY_TAIL, DOG_MAP_HEAD_ALIAS, DOG_MAP_BODY);
-    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);;
+    assert actualInExpected(actual, expected) : String.format(ASSERT_MESSAGE_FORMAT, actual, expected);
   }
   
   @Test
@@ -819,13 +826,14 @@ public class ToStringBuilderTest {
     BeanWithPrimitives beanWithPrimitives = createBeanWithPrimitives();
     
     // When
+    final DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy-HHmmss");
     String actual = ToStringBuilder.builder(beanWithPrimitives)
-      .dateFormat(new SimpleDateFormat("ddMMyyyy-HHmmss"))
+      .dateFormat(dateFormat)
       .includeField("someDate")
       .toString();
     
     // Then
-    String expected = "11042010-151128";
+    String expected = dateFormat.format(DATE_NOW); // e.g. "11042010-151128";
     assert actual.contains(expected) 
       : String.format("Output should contain expected date: \"%s\"", expected);
   }
@@ -908,12 +916,7 @@ public class ToStringBuilderTest {
     MetaCache.set("bar", beanWithPrimitives, "Hello \"BAR\"!");
     MetaCache.set("baz", beanWithPrimitives, "  Hello   BAZ!");
     MetaCache.set("color", beanWithPrimitives, BeanWithPrimitives.Color.RED);
-    
-    try {
-      Date date = DATE_FORMAT.parse(DATE_STRING);
-      MetaCache.set("someDate", beanWithPrimitives, date);
-    } 
-    catch (ParseException e) {}
+    MetaCache.set("someDate", beanWithPrimitives, DATE_NOW);
 
     return beanWithPrimitives;
   }
