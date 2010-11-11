@@ -4,19 +4,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Map;
 
 import no.erlingreizer.filereader.LineReader.LineHandler;
 
 import org.junit.Test;
 
+import com.google.common.collect.Maps;
+
 
 public class LineReaderTest {
 
+	private static final String UTF_8_ENCODING = "UTF-8";
 	private static final String FILE_UTF_8_ENCODED = "src/main/resources/fil.utf8.txt";
 	private static final String FILE_ANSI_ENCODED = "src/main/resources/fil.ansi.txt";
-	final Map<Integer, String> filInnhold = new HashMap<Integer, String>();
+	final Map<Integer, String> filInnhold = Maps.newHashMap();
 	
 	@Test
 	public void should_parse_three_lines(){
@@ -26,7 +28,7 @@ public class LineReaderTest {
 			public void handleLine(int lineNumber, String s) {
 				filInnhold.put(lineNumber, s);
 			}
-		}).withCharsetEncoding(Charset.availableCharsets().get("UTF-8")).parseFile(FILE_UTF_8_ENCODED);
+		}).withCharsetEncoding(Charset.availableCharsets().get(UTF_8_ENCODING)).parseFile(FILE_UTF_8_ENCODED);
 		
 		
 		
@@ -43,7 +45,7 @@ public class LineReaderTest {
 			public void handleLine(int lineNumber, String s) {
 				filInnhold.put(lineNumber, s);
 			}
-		}).withCharsetEncoding(Charset.availableCharsets().get("UTF-8")).parseFile(FILE_UTF_8_ENCODED);
+		}).withCharsetEncoding(Charset.availableCharsets().get(UTF_8_ENCODING)).parseFile(FILE_UTF_8_ENCODED);
 		
 		
 		//skrivUtInnhold(filInnhold);
@@ -59,7 +61,7 @@ public class LineReaderTest {
 			public void handleLine(int lineNumber, String s) {
 				filInnhold.put(lineNumber, s);
 			}
-		}).withCharsetEncoding(Charset.availableCharsets().get("UTF-8")).parseFile(FILE_ANSI_ENCODED);
+		}).withCharsetEncoding(Charset.availableCharsets().get(UTF_8_ENCODING)).parseFile(FILE_ANSI_ENCODED);
 		assertFalse("på".equals(filInnhold.get(2)));
 		
 		LineReader.withLineHandler(new LineHandler() {
