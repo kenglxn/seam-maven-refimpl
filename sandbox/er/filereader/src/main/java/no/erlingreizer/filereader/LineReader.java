@@ -83,7 +83,7 @@ public class LineReader {
 		return this;
 	}
 
-	public interface LineHandler {
+	public static interface LineHandler {
 		public void handleLine(int lineNumber, final String lineContent);
 	}
 }
