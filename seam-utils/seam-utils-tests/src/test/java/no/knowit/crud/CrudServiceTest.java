@@ -20,12 +20,11 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 /**
- * Demonstrates local client injection. For more information see:
- * <a href="http://openejb.apache.org/3.0/local-client-injection.html">
+ * Demonstrates local client injection and user transaction for testing transaction rollback. 
+ * For more information see: <a href="http://openejb.apache.org/3.0/local-client-injection.html">
  * OpenEJB: Local Client Injection</a> and 
  * <a href="https://blogs.apache.org/openejb/entry/example_testing_transaction_rollback">
  * OpenEJB Example: Testing Transaction Rollback</a>
- * 
  * @author LeifOO
  *
  */
@@ -72,7 +71,7 @@ public class CrudServiceTest extends OpenEjbTest {
   public void setupClass() throws Exception {
     super.setupClass();
     
-    getInitialContext().bind("inject", this);
+    container.getContext().bind("inject", this);
     
     
     // Delete all movies

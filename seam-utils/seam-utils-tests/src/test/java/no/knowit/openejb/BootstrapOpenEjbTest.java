@@ -2,52 +2,42 @@ package no.knowit.openejb;
 
 import java.util.Properties;
 
-import javax.naming.InitialContext;
+import javax.ejb.embeddable.EJBContainer;
 
 import org.apache.openejb.OpenEJB;
-import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-/**
- * @author LeifOO
- *
- */
-public class BootstrapOpenEjbTest { 
-  private InitialContext initialContext = null;
-	
+public class BootstrapOpenEjbTest {
+  
+  private static final String CONTEXT_CLOSE = "openejb.embedded.initialcontext.close";
+  private static final String DESTROY = "DESTROY";
+  
 	@BeforeSuite
-	public void beforeSuite() throws Exception {
-    assert BootStrapOpenEjb.isopenEjbAvailable() : "OpenEJB is not available. Check your classpath";
-    assert OpenEJB.isInitialized() == false : "OpenEJB is already running";
+	public void beforeSuite() {
+    assert OpenEJB.isInitialized() == false : "OpenEJB container is already running";
 	}
 
-	/**
-	 * Bootstrap the OpenEJB embedded container with property 
-	 * <code>openejb.embedded.initialcontext.close=DESTROY</code> which makes it possible to restart
-	 * the server between test scenarios. See: 
-	 * <a href="http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html">
-	 * Restarting the embedded OpenEJB container between each test</a>
-	 * @throws Exception
-	 */
 	@Test
-	public void shouldBootstrapAndDestroyContainer() throws Exception {
-    Properties environment = new Properties();
-    environment.put(BootStrapOpenEjb.OPENEJB_EMBEDDED_IC_CLOSE, "DESTROY");
-    environment.put("log4j.category.no.knowit.openejb", "debug");
+	public void shouldBootstrapAndDestroyContainer() {
+
+    // Bootstrap the OpenEJB embedded container with property 
+    // <code>openejb.embedded.initialcontext.close=DESTROY</code> which makes it possible to 
+    // restart the server between test scenarios. 
+    // see: http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
+    // see: http://openejb.apache.org/faq.html
+    Properties p = new Properties();
+    p.put(CONTEXT_CLOSE, DESTROY);
     
-	  // We do not have a logger yet, using sysout
-		System.out.println(String.format(
-		    "*** Bootstrapping OpenEJB embedded container with property: \"%s=%s\"",
-		    BootStrapOpenEjb.OPENEJB_EMBEDDED_IC_CLOSE, 
-		    environment.get(BootStrapOpenEjb.OPENEJB_EMBEDDED_IC_CLOSE)));
-		
-		initialContext = BootStrapOpenEjb.bootstrap(environment);
-		
-		Assert.assertNotNull(initialContext, "InitialContext was null after bootstrap.");
-    Assert.assertTrue(OpenEJB.isInitialized(), "OpenEJB is not running after bootstrap");
+	  // Boot
+	  EJBContainer container = EJBContainer.createEJBContainer(p);
+    assert OpenEJB.isInitialized() : "OpenEJB container did not boot";
+
+    // Should boot only once
+    assert container == EJBContainer.createEJBContainer() : "OpenEJB container Should boot only once";
     
-    BootStrapOpenEjb.closeInitialContext();
-    Assert.assertFalse(OpenEJB.isInitialized(), "OpenEJB should not be initialized after close");
+    // Close and destroy
+    container.close();
+    assert !OpenEJB.isInitialized() : "OpenEJB did not close";
 	}
 }
