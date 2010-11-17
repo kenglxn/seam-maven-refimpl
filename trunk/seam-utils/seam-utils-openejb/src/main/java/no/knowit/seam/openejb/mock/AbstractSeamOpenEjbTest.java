@@ -2,10 +2,9 @@ package no.knowit.seam.openejb.mock;
 
 import java.util.Properties;
 
+import javax.ejb.embeddable.EJBContainer;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import no.knowit.openejb.BootStrapOpenEjb;
 
 import org.apache.log4j.Logger;
 import org.jboss.seam.Component;
@@ -21,6 +20,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
 
   private static final Logger log = Logger.getLogger(AbstractSeamOpenEjbTest.class);
 
+  protected static EJBContainer container;
   protected static final String JNDI_PATTERN = "%s/Local";
   protected static Properties contextProperties = new Properties();
   
@@ -29,30 +29,18 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
    */
   @Override
   protected void startJbossEmbeddedIfNecessary() throws Exception {
-    // do not call super!!
-    BootStrapOpenEjb.bootstrap(contextProperties);
+    // Start OpenEJB embedded container. Do not call super!!
+    container = EJBContainer.createEJBContainer(contextProperties);
   }
 
   @Override
   protected InitialContext getInitialContext() throws NamingException {
     // do not call super!!
-    return BootStrapOpenEjb.getInitialContext();
-  }
-
-  /**
-   * Close the embedded container If you need the embedded container to restart
-   * between different test scenarios, then you should bootstrap the container
-   * with the property <code>"openejb.embedded.initialcontext.close=destroy"</code>, see
-   * <a href="http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html">
-   *  http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
-   * </a>
-   */
-  protected void closeInitialContext() {
-    BootStrapOpenEjb.closeInitialContext();
+    return (InitialContext)container.getContext();
   }
 
   @SuppressWarnings("unchecked")
-  protected <T> T doJndiLookup(final String name) throws Exception {
+  protected <T> T doJndiLookup(final String name) {
     try {
       InitialContext initialContext = getInitialContext();
       Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
@@ -61,7 +49,7 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
     } 
     catch (NamingException e) {
       log.error(e);
-      throw (e);
+      throw new IllegalStateException(e);
     }
   }
 
@@ -111,18 +99,18 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
-  protected static <T> T getComponentInstanceWithAsserts(final String name, Class<?> clazz)
-      throws Exception {
+  protected static <T> T getComponentInstanceWithAsserts(final String name, Class<?> clazz) {
     try {
       Object instance = Component.getInstance(name);
-      Assert.assertNotNull(instance, "Component.getInstance(\"" + name + "\") returned null");
-      Assert.assertTrue(instance.getClass() instanceof Class,
-          "Component.getInstance(\"name\") returned incorrect type");
+      assert instance != null : "Component.getInstance(\"" + name + "\") returned null";
+      assert instance.getClass() instanceof Class :
+          "Component.getInstance(\"name\") returned incorrect type";
       return (T)instance;
     } 
     catch (Exception e) {
-      Assert.fail("Could not lookup Seam component: " + name, e);
+      AssertionError ae = new AssertionError("Could not lookup Seam component: " + name);
+      ae.initCause(e);
+      throw ae;
     }
-    return null;
   }
 }

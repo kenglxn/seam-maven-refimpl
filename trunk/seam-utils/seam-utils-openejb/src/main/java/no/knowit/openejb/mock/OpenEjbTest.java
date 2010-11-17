@@ -2,10 +2,10 @@ package no.knowit.openejb.mock;
 
 import java.util.Properties;
 
+import javax.ejb.embeddable.EJBContainer;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import no.knowit.openejb.BootStrapOpenEjb;
 
 import org.apache.log4j.Logger;
 import org.testng.Assert;
@@ -17,10 +17,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 /**
- * Provides Base OpenEJB test functionality for TestNG tests. This is a copy of
- * the <code>org.jboss.seam.mock.SeamTest</code> class.<br/>
- * Use the <code>no.knowit.seam.openejb.mock.SeamOpenEjbTest</code> class to run
- * Seam specific tests in OpenEJB.
+ * Provides Base EJB test functionality for TestNG integration tests running in the Apache
+ * OpenEJB embedded container. Use the {@link no.knowit.seam.openejb.mock.SeamOpenEjbTest} class 
+ * to run Seam specific tests in OpenEJB.
  */
 public class OpenEjbTest {
 
@@ -28,6 +27,7 @@ public class OpenEjbTest {
   
   protected static final String JNDI_PATTERN = "%s/Local";
   protected static Properties contextProperties = new Properties();
+  protected static EJBContainer container;
 
   
   @BeforeMethod
@@ -48,41 +48,25 @@ public class OpenEjbTest {
 
   @BeforeSuite
   public void beforeSuite() throws Exception {
-    startOpenEjbEmbeddedIfNecessary();
+    // Start OpenEJB embedded container
+    container = EJBContainer.createEJBContainer(contextProperties);
   }
 
   @AfterSuite
   protected void afterSuite() throws Exception {
-    closeInitialContext();
+    // Do we need this??
+    //container.close();
   }
 
-  /**
-   * Start embedded OpenEJB container
-   */
-  protected void startOpenEjbEmbeddedIfNecessary() throws Exception {
-    BootStrapOpenEjb.bootstrap(contextProperties);
+  protected InitialContext getInitialContext() throws NamingException {
+    return (InitialContext)container.getContext();
   }
-
-  protected InitialContext getInitialContext() {
-    return BootStrapOpenEjb.getInitialContext();
-  }
-
-  /**
-   * Close the embedded container. If you need the embedded container to restart
-   * between different test scenarios, then you should bootstrap the container
-   * with the property <code>"openejb.embedded.initialcontext.close=DESTROY"</code>, see
-   * http://blog.jonasbandi.net/2009/06/restarting-embedded-openejb-container.html
-   */
-  protected void closeInitialContext() {
-    BootStrapOpenEjb.closeInitialContext();
-  }
-
   
   @SuppressWarnings("unchecked")
   protected <T> T doJndiLookup(final String name) throws Exception {
     try {
-      InitialContext initialContext = getInitialContext();
-      Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
+      Context context = container.getContext();
+      Object instance = context.lookup(String.format(JNDI_PATTERN, name));
       Assert.assertNotNull(instance, String.format("InitialContext.lookup(\"%s\"): returned null", name));
       return (T) instance;
     } 
