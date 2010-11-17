@@ -5,6 +5,7 @@
   <test name="Simplest possible OpenEJB test">
     <classes>
       <class name="no.knowit.openejb.HelloStatelessEjbTest" />
+      <class name="no.knowit.openejb.HelloStatelessEjbLocalClientInjectionTest" />
     </classes>
   </test>
 
