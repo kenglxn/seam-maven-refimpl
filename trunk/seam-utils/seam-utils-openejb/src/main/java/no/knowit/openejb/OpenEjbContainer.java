@@ -25,13 +25,13 @@ import org.apache.openejb.loader.SystemInstance;
  * {@link javax.ejb.spiEJBContainerProvider}, which provides the 
  * {@link javax.ejb.embeddable.EJBContainer#createEJBContainer()} method, should be sufficient.
  * 
- * <p><b>Note:</b> Since I don't know how to create a factory in OpenEJB so I had to make a copy of
+ * <p><b>Note:</b> I don't know how to create a factory in OpenEJB so I had to make a copy of
  * the {@link javax.ejb.embeddable.EJBContainer} class and modify the 
  * {@link javax.ejb.embeddable.EJBContainer#createEJBContainer()} method. Tried to put the  
  * file <code>javax.ejb.spiEJBContainerProvider</code> with content 
  * <code>no.knowit.openejb.OpenEjbContainer$Provider</code> into the
  * <code>src/main/resources/META-INF/services</code> directory as it is done in OpenEJB-3.2, 
- * but it had no effect - most likely OpenEJB-3.2 spesific.
+ * but it had no effect - most likely OpenEJB-3.2 specific.
  * </p>
  * 
  * @author LeifOO
