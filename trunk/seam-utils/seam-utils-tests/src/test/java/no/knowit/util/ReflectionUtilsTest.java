@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import no.knowit.testsupport.model.ConcreteEntityFieldAnnotated;
