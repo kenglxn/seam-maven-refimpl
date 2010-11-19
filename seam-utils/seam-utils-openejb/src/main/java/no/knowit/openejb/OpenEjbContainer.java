@@ -139,7 +139,7 @@ public class OpenEjbContainer extends EJBContainer {
       
       if(s != null) {
         log.debug(String.format(
-          "Bootstrapping OpenEJB Embedded Container with property \"%s=%s\".", CONTEXT_CLOSE, s));
+          "OenEJB Embedded Container started with property \"%s=%s\".", CONTEXT_CLOSE, s));
       }
       
       try {

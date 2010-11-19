@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
@@ -47,6 +48,7 @@ public class EjbSynchronizations
 	implements org.jboss.seam.transaction.LocalEjbSynchronizations, SessionSynchronization {
 	
   @Remove
+  @Destroy
   public void destroy() {
   }
 }
