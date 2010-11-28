@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.mock.AbstractSeamTest;
-import org.testng.Assert;
 
 /**
  * @author <a href="http://seamframework.org/Community/UsingOpenEJBForIntegrationTesting">
@@ -44,12 +43,15 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
     try {
       InitialContext initialContext = getInitialContext();
       Object instance = initialContext.lookup(String.format(JNDI_PATTERN, name));
-      Assert.assertNotNull(instance, String.format("InitialContext.lookup(%s): returned null", name));
+      if(instance == null) {
+        throw new IllegalArgumentException(
+            String.format("InitialContext.lookup(%s): returned null", name));
+      }
       return (T)instance;
     } 
     catch (NamingException e) {
-      log.error(e);
-      throw new IllegalStateException(e);
+      log.error("JNDI lookup failed. Reason: " + e);
+      throw new IllegalArgumentException("JNDI lookup failed. Reason: " + e, e);
     }
   }
 
@@ -102,15 +104,22 @@ public class AbstractSeamOpenEjbTest extends AbstractSeamTest {
   protected static <T> T getComponentInstanceWithAsserts(final String name, Class<?> clazz) {
     try {
       Object instance = Component.getInstance(name);
-      assert instance != null : "Component.getInstance(\"" + name + "\") returned null";
-      assert instance.getClass() instanceof Class :
-          "Component.getInstance(\"name\") returned incorrect type";
+      if(instance == null) {
+        throw new IllegalArgumentException(
+            String.format("Component.getInstance(%s): returned null", name));
+      }
+      
+      if(!(instance.getClass() instanceof Class)) {
+        throw new IllegalArgumentException(
+            String.format("Component.getInstance(%s): returned incorrect type", name));
+      }
+      
       return (T)instance;
     } 
     catch (Exception e) {
-      AssertionError ae = new AssertionError("Could not lookup Seam component: " + name);
-      ae.initCause(e);
-      throw ae;
+      throw new IllegalArgumentException(
+          String.format("Could not lookup Seam component: %s", name), e);
+
     }
   }
 }
