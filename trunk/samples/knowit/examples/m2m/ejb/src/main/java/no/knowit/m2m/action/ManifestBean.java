@@ -3,11 +3,11 @@ package no.knowit.m2m.action;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -24,56 +24,57 @@ import org.jboss.seam.log.Log;
 
 @Name("manifest")
 public class ManifestBean {
-	
-    @Logger private Log log;
-    @In StatusMessages statusMessages;
+  
+  @Logger private Log log;
+  @In StatusMessages statusMessages;
 
-    @Factory("manifest.attributes")
-    public List<Object> getAttributes() {
-    	log.debug("Reading war/META-INF/MANIFEST.MF");
-    	
-    	List<Object> result = new ArrayList<Object>(readManifestAttributes());
-    	if(result == null) {
-            statusMessages.add(Severity.ERROR, "Could not read war/META-INF/MANIFEST.MF");
-        	log.error("Could not read war/META-INF/MANIFEST.MF");
-    	}
-    	return result;
+  @Factory("manifest.attributes")
+  public List<Object> getAttributes() {
+    log.debug("Reading war/META-INF/MANIFEST.MF");
+    
+    Set<Entry<Object, Object>> result = readManifestAttributes();
+    if(result == null) {
+      statusMessages.add(Severity.ERROR, "Could not read war/META-INF/MANIFEST.MF");
+      log.error("Could not read war/META-INF/MANIFEST.MF");
     }
+    return new ArrayList<Object>(result);
+  }
     
     
     /*
-     * This is not production code. Normally we'll put code like this into application startup
+     * This is not production code. Normally we should put code like this into application startup
      */
-	@SuppressWarnings("unchecked")
-	public static Set<Map.Entry<Object,Object>> readManifestAttributes() {
-		Manifest manifest;
-	    try {
-			ServletContext sc = ServletLifecycle.getServletContext();
-			manifest = new Manifest( sc.getResourceAsStream("META-INF/MANIFEST.MF") );
-	    }
-	    catch (IOException e) {
-			return null;
-	    }
-	    
-		Attributes attributes = manifest.getMainAttributes();
-		//return attributes.entrySet();
-		
-		Set<Map.Entry<Object,Object>> orderedAttributes = new TreeSet<Map.Entry<Object,Object>>(
-			new Comparator<Object>() {
-				public int compare(Object lhs, Object rhs) {
-					return  ((Map.Entry)lhs).getKey().toString().compareTo( 
-							((Map.Entry)rhs).getKey().toString());
-				}
-			}
-		);
-		
-		Iterator<?> i = attributes.entrySet().iterator();
-		while(i.hasNext()) {
-			Map.Entry entry = (Map.Entry)i.next();
-			orderedAttributes.add(entry);
-		}
-		
-		return orderedAttributes;
-	}
+  
+  private static Manifest getManifest() {
+    try {
+      ServletContext sc = ServletLifecycle.getServletContext();
+      return new Manifest( sc.getResourceAsStream("META-INF/MANIFEST.MF") );
+    }
+    catch (IOException e) {
+      return null;
+    }
+  }
+  
+  public static Set<Map.Entry<Object,Object>> readManifestAttributes() {
+    Manifest manifest = getManifest();
+    if(manifest == null) {
+      return null;
+    }
+      
+    Attributes attributes = manifest.getMainAttributes();
+    Set<Map.Entry<Object,Object>> orderedAttributes = new TreeSet<Map.Entry<Object,Object>>(
+      new Comparator<Map.Entry<Object,Object>>() {
+        public int compare(Map.Entry<Object,Object> lhs, Map.Entry<Object,Object> rhs) {
+          return  lhs.getKey().toString().compareTo(rhs.getKey().toString());
+        }
+      }
+    );
     
+    for(Map.Entry<Object,  Object> entry : attributes.entrySet()) {
+      orderedAttributes.add(entry);
+    }
+    
+    return orderedAttributes;
+  }
+  
 }
