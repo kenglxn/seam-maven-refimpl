@@ -87,7 +87,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.3.1</version>
+          <version>2.3.2</version>
           <configuration>
             <source>${jdk.source}</source>
             <target>${jdk.target}</target>
@@ -124,20 +124,35 @@
               <artifactId>gmaven-runtime-1.7</artifactId>
               <version>${version.gmaven}</version>
               
-              <!-- gmaven runtime has a dependency on groovy-all v1.7.4 but we want 1.7.5 -->
               <exclusions>
                 <exclusion>
                   <groupId>org.codehaus.groovy</groupId>
                   <artifactId>groovy-all</artifactId>
                 </exclusion>
               </exclusions>
+
             </dependency>
             
             <dependency>
               <groupId>org.codehaus.groovy</groupId>
               <artifactId>groovy-all</artifactId>
-              <version>${version.groovy}</version>
+              <version>1.7.0</version>
             </dependency>
+            
+            <!--
+            <dependency>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant</artifactId>
+              <version>${version.ant}</version>
+            </dependency>
+            -->
+            <!--
+            <dependency>
+              <groupId>org.fusesource.jansi</groupId>
+              <artifactId>jansi</artifactId>
+              <version>1.4</version>
+            </dependency>
+            -->
           </dependencies>
         </plugin>
       </plugins>
