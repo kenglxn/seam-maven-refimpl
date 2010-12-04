@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+//http://codemonkeyism.com/fluent-interface-and-reflection-for-object-building-in-java/
 public class FluentInterface<T> implements InvocationHandler {
 	  final Object obj;
 

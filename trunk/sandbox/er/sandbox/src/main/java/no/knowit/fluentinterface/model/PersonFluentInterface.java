@@ -1,5 +1,6 @@
 package no.knowit.fluentinterface.model;
 
+//http://codemonkeyism.com/fluent-interface-and-reflection-for-object-building-in-java/
 public interface PersonFluentInterface {
 
 	public PersonFluentInterface firstName(String firstName);
