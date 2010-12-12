@@ -458,6 +458,14 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
 			
