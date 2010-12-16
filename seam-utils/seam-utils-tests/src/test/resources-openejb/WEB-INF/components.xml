@@ -26,7 +26,7 @@
 
 	<core:init 
 		jndi-pattern="${app.jndi.pattern.test}" 
-		debug="${app.debug}"
+		debug="true"
 		transaction-management-enabled="true" />
 
 	<!-- JPA -->
