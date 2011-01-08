@@ -17,17 +17,18 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
 /**
  * <p>
- * Receives JTA transaction completion notifications from 
+ * Receives JTA transaction completion notifications from
  * the EJB container, and passes them on to the registered
  * Synchronizations. This implementation
- * is fully aware of container managed transactions and is 
- * able to register Synchronizations for the container 
+ * is fully aware of container managed transactions and is
+ * able to register Synchronizations for the container
  * transaction.
  * </p>
  * <p>
  * LOO-20091209: Had to extend this class due to following exception:
  *   <code><pre>
- *   java.lang.AssertionError: javax.el.ELException: org.jboss.seam.InstantiationException: Could not instantiate Seam component: org.jboss.seam.transaction.synchronizations
+ *   java.lang.AssertionError: javax.el.ELException: org.jboss.seam.InstantiationException:
+ *   Could not instantiate Seam component: org.jboss.seam.transaction.synchronizations
  *   .
  *   .
  *   Caused by: javax.naming.NameNotFoundException: Name "/EjbSynchronizations/Local" not found.
@@ -37,16 +38,18 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
  * @author Gavin King
  *
  */
+
 @Stateful
 @Name("org.jboss.seam.transaction.synchronizations")
 @Scope(ScopeType.EVENT)
-@Install(precedence=MOCK, dependencies="org.jboss.seam.transaction.ejbTransaction")
+@Install(precedence = MOCK, dependencies = "org.jboss.seam.transaction.ejbTransaction")
 @BypassInterceptors
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-public class EjbSynchronizations 
-	extends org.jboss.seam.transaction.EjbSynchronizations 
-	implements org.jboss.seam.transaction.LocalEjbSynchronizations, SessionSynchronization {
-	
+public class EjbSynchronizations
+extends org.jboss.seam.transaction.EjbSynchronizations
+implements org.jboss.seam.transaction.LocalEjbSynchronizations, SessionSynchronization {
+
+  @Override
   @Remove
   @Destroy
   public void destroy() {
