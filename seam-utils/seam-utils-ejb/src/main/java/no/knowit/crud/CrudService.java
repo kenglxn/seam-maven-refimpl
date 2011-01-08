@@ -1,3 +1,28 @@
+/**
+ * This file is part of javaee-patterns.
+ *
+ * javaee-patterns is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * javaee-patterns is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.opensource.org/licenses/gpl-2.0.php>.
+ *
+ * Copyright (c) 22. June 2009 Adam Bien, blog.adam-bien.com
+ * http://press.adam-bien.com
+ * 
+ * Modified by Leif Olsen
+ *   Added a lot of code from Crank, the Java Framework for CRUD and Validation:
+ *   http://code.google.com/p/krank/
+ *   Actually added some code of my own :-)
+ */
+
 package no.knowit.crud;
 
 import java.util.Collection;
@@ -11,6 +36,7 @@ import javax.persistence.TransactionRequiredException;
 
 /**
  * Generic CrudService interface, a.k.a. DAO, a.k.a. Repository.<br/>
+ * See chapter 4 in Real World Java EE Patterns
  * 
  * @author http://code.google.com/p/krank/
  * @author adam-bien.com
@@ -18,59 +44,97 @@ import javax.persistence.TransactionRequiredException;
  */
 @Local
 public interface CrudService {
-  
-  static final String NAME = "crudService";
 
-	/**
-	 * Make an entity instance managed and persistent. 
-	 * After persist this method will call flush and refresh to make sure the entity is in sync.
-	 * 
+  String NAME = "crudService";
+
+  /**
+   * Make an entity instance managed and persistent.
+   * 
+   * @param entity the entity to persist
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws EntityExistsException if the entity already exists.
+   *           (The EntityExistsException may be thrown when the persist
+   *           operation is invoked, or the EntityExistsException or
+   *           another PersistenceException may be thrown at flush or commit
+   *           time.)
+   * @throws IllegalArgumentException if not an entity
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   * @see javax.persistence.EntityManager#persist(Object)
+   */
+  void persist(Object entity);
+
+  /**
+   * Make a collection of entity instances managed and persistent.
+   * 
+   * @param entities A collection of entities to persist
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws EntityExistsException if an entity in the collection already exists.
+   *           (The EntityExistsException may be thrown when the persist
+   *           operation is invoked, or the EntityExistsException or
+   *           another PersistenceException may be thrown at flush or commit
+   *           time.)
+   * @throws IllegalArgumentException if an element in the collection is not an entity
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   * @see javax.persistence.EntityManager#persist(Object)
+   */
+  void persist(Collection<Object> entities);
+
+  /**
+   * Make an entity instance managed and persistent. After persist this method will call flush and
+   * refresh to make sure the entity is in sync.
+   * 
    * @param entity the entity to persist
    * @return the entity with the persisted state
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws EntityExistsException if the entity already exists.
-   *         (The EntityExistsException may be thrown when the persist
-   *         operation is invoked, or the EntityExistsException or
-   *         another PersistenceException may be thrown at flush or commit
-   *         time.)
+   *           (The EntityExistsException may be thrown when the persist
+   *           operation is invoked, or the EntityExistsException or
+   *           another PersistenceException may be thrown at flush or commit
+   *           time.)
    * @throws IllegalArgumentException if not an entity
    * @throws TransactionRequiredException if invoked on a
-   *         container-managed entity manager of type
-   *         PersistenceContextType.TRANSACTION and there is
-   *         no transaction.
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
    * @throws PersistenceException if the flush fails
    * @see javax.persistence.EntityManager#persist(Object)
    * @see javax.persistence.EntityManager#flush()
    * @see javax.persistence.EntityManager#refresh(Object)
-	 */
-	public <T> T persist(T entity);
+   */
+  <T> T create(T entity);
 
-	/**
-	 * Make a collection of entities managed and persistent. 
-   * After persist this method will call flush and refresh to make sure the entity is in sync.
-	 * 
+  /**
+   * Make a collection of entity instances managed and persistent. After persist this method will
+   * call flush and refresh to make sure the entity is in sync.
+   * 
    * @param entities A collection of entities to persist
    * @return a collection of entities with the persisted state
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws EntityExistsException if an entity in the collection already exists.
-   *         (The EntityExistsException may be thrown when the persist
-   *         operation is invoked, or the EntityExistsException or
-   *         another PersistenceException may be thrown at flush or commit
-   *         time.)
+   *           (The EntityExistsException may be thrown when the persist
+   *           operation is invoked, or the EntityExistsException or
+   *           another PersistenceException may be thrown at flush or commit
+   *           time.)
    * @throws IllegalArgumentException if an element in the collection is not an entity
    * @throws TransactionRequiredException if invoked on a
-   *         container-managed entity manager of type
-   *         PersistenceContextType.TRANSACTION and there is
-   *         no transaction.
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
    * @throws PersistenceException if the flush fails
-   * @see CrudService#persist(Object)
-	 */
-	public <T> Collection<T> persist(Collection<T> entities);
+   * @see CrudService#create(Object)
+   */
+  <T> Collection<T> create(Collection<T> entities);
 
   /**
    * Find by primary key.
    *
-   * @param entityClass the entity class to find an instance of 
+   * @param entityClass the entity class to find an instance of
    * @param id the primary key to find the entity by
    * @return the found entity instance or null if the entity does not exist
    * @throws IllegalStateException if this EntityManager has been closed.
@@ -80,86 +144,85 @@ public interface CrudService {
    *         entity's primary key
    * @see javax.persistence.EntityManager#find
    */
-	public <T> T find(Class<T> entityClass, Object id);
+  <T> T find(Class<T> entityClass, Object id);
 
   /**
-   * Find all entities of a particular type by generating a select query; 
-   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> 
-   * is the given <code>entityClass</code> parameter. 
-   * @param entityClass the entity class to find instances of 
+   * Find all entities of a particular type by generating a select query;
+   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code>
+   * is the given <code>entityClass</code> parameter.
+   * @param entityClass the entity class to find instances of
    * @return a list of entities
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if produced query string is not valid
    */
-  public <T> List<T> find(Class<T> entityClass);
-  
-  
+  <T> List<T> find(Class<T> entityClass);
+
   /**
-   * Find all entities of a particular type by generating a select query; 
-   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> 
-   * is the given <code>entityClass</code> parameter. The number of entities 
-   * returned is limited by the <code>startPosition</code> and 
-   * <code>maxResult</code> parameters.
-   * @param entityClass the entity class to find instances of 
-   * @param startPosition position of the first result to be returned by the query, numbered from 0
-   * @param maxResult the maximum number of entities that should be returned by the query
+   * Find all entities of a particular type by generating a select query;
+   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
+   * <code>entityClass</code> parameter. The number of entities
+   * returned is limited by the <code>startPosition</code> and <code>maxResult</code> parameters.
+   * 
+   * @param entityClass the entity class to find instances of
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of entities
-   * @throws java.lang.IllegalArgumentException if <code>startPosition</code>
-   *         or <code>maxResult</code> is negative.
    * @throws IllegalStateException if this EntityManager has been closed
    * @see CrudService#find(Class)
    */
-  public <T> List<T> find(Class<T> entityClass, int startPosition, int maxResult);
-  
-  /**
-   * <p>Find entities based on an example entity.</p> 
-   * 
-   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
-   * 	primitives (e.g. String, Integer, Date) will be used to construct the query.
-   * @param distinct whether  the query should be distinct or not 
-   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
-   * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
-   * @return a list of entities
-   */
-  public <T> List<T> find(T example, boolean distinct, boolean any);
+  <T> List<T> find(Class<T> entityClass, int firstResult, int maxResults);
 
   /**
-   * <p>Find entities based on an example entity. The number of entities 
-   * returned is limited by the <code>startPosition</code> and 
-   * <code>maxResult</code> parameters.</p>
+   * <p>
+   * Find entities based on an example entity.
+   * </p>
    * 
    * @param example an entity instantiated with the fields to match. Only non <code>null</code>
-   * 	primitives (e.g. String, Integer, Date) will be used to construct the query.
-   * @param distinct Whether  the query should be distinct or not 
-   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
-   * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
-   * @param startPosition position of the first result to be returned by the query, numbered from 0
-   * @param maxResult the maximum number of entities that should be returned by the query
+   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
+   * @param distinct whether the query should be distinct or not
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
+   *          <code>false</code> if the query should be an <b>"AND"</b> query.
    * @return a list of entities
    */
-  public <T> List<T> find(T example, boolean distinct, boolean any, int startPosition, int maxResult);
-  
+  <T> List<T> find(T example, boolean distinct, boolean any);
+
   /**
-   * Creates an instance of Query for executing a named query (in the Java Persistence query 
-   * language or in native SQL), executes a SELECT query and return the query results as a List
-   * of entities.
+   * <p>
+   * Find entities based on an example entity. The number of entities returned is limited by the
+   * <code>firstResult</code> and <code>maxResults</code> parameters.
+   * </p>
+   * 
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
+   * @param distinct Whether the query should be distinct or not
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
+   *          <code>false</code> if the query should be an <b>"AND"</b> query.
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
+   * @return a list of entities
+   */
+  <T> List<T> find(T example, boolean distinct, boolean any, int firstResult, int maxResults);
+
+  /**
+   * Creates an instance of Query for executing a named query (in the Java Persistence query
+   * language), executes the query and return the query results as a List of entities.
    * 
    * @param queryName the name of the named query
    * @return a list of entities
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if a query has not been
-   *         defined with the given name
-   * @throws IllegalStateException if called for a Java 
-   *         Persistence query language UPDATE or DELETE statement
+   *           defined with the given name
+   * @throws IllegalStateException if called for a Java
+   *           Persistence query language UPDATE or DELETE statement
    * @see javax.persistence.EntityManager#createNamedQuery(String)
    * @see javax.persistence.Query#getResultList()
    */
-  public List<?> findByNamedQuery(String queryName);
+  <T> List<T> findByNamedQuery(String queryName);
 
   /**
-   * Creates an instance of Query for executing a named query (in the Java Persistence query 
-   * language or in native SQL), binds all arguments in <code>parameters</code> to corresponding
-   * named parameters in the named query, then executes a SELECT query and return the query 
+   * Creates an instance of Query for executing a named query (in the Java Persistence query
+   * language), binds all arguments in <code>parameters</code> to corresponding
+   * named parameters in the named query, then executes the query and return the query
    * results as a List of entities.
    * 
    * @param queryName the name of the named query
@@ -167,81 +230,79 @@ public interface CrudService {
    * @return a list of entities
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if a query has not been
-   *         defined with the given name
-   * @throws IllegalStateException if called for a Java 
-   *         Persistence query language UPDATE or DELETE statement
+   *           defined with the given name
+   * @throws IllegalStateException if called for a Java
+   *           Persistence query language UPDATE or DELETE statement
    * @throws IllegalArgumentException if parameter name does not
-   *         correspond to parameter in query string
-   *         or argument is of incorrect type
+   *           correspond to parameter in query string
+   *           or argument is of incorrect type
    * @see javax.persistence.EntityManager#createNamedQuery(String)
    * @see javax.persistence.Query#getResultList()
    * @see javax.persistence.Query#setParameter(String, Object)
    */
-  public List<?> findByNamedQuery(String queryName, Map<String, Object> parameters);
+  <T> List<T> findByNamedQuery(String queryName, Map<String, Object> parameters);
 
   /**
-   * Creates an instance of Query for executing a named query (in the Java Persistence query 
-   * language or in native SQL), executes a SELECT query and return the query results as a List
-   * of entities. The number of entities returned is limited by the <code>startPosition</code> and 
-   * <code>maxResult</code> parameters.
+   * Creates an instance of Query for executing a named query (in the Java Persistence query
+   * language), executes the query and return the query results as a List of entities. The number of
+   * entities returned is limited by the <code>firstResult</code> and <code>maxResults</code>
+   * parameters.
    * 
    * @param queryName the name of the named query
-   * @param startPosition position of the first result to be returned by the query, numbered from 0
-   * @param maxResult the maximum number of entities that should be returned by the query
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of entities
    * @throws IllegalStateException if this EntityManager has been closed
    * @throws IllegalArgumentException if a query has not been
-   *         defined with the given name
-   * @throws IllegalStateException if called for a Java 
-   *         Persistence query language UPDATE or DELETE statement
-   * @throws java.lang.IllegalArgumentException if <code>startPosition</code>
-   *         or <code>maxResult</code> is negative.
+   *           defined with the given name
+   * @throws IllegalStateException if called for a Java
+   *           Persistence query language UPDATE or DELETE statement
    * @see javax.persistence.EntityManager#createNamedQuery(String)
    * @see javax.persistence.Query#getResultList()
    * @see javax.persistence.Query#setFirstResult(int)
    * @see javax.persistence.Query#setMaxResults(int)
    */
-  public List<?> findByNamedQuery(String queryName, int startPosition, int maxResult);
+  <T> List<T> findByNamedQuery(String queryName, int firstResult, int maxResults);
 
   /**
-   * Creates an instance of Query for executing a named query (in the Java Persistence query 
+   * Creates an instance of Query for executing a named query (in the Java Persistence query
    * language or in native SQL), binds all arguments in <code>parameters</code> to corresponding
-   * named parameters in the named query, then executes a SELECT query and return the query 
-   * results as a List of entities. The number of entities returned is limited by the 
-   * <code>startPosition</code> and <code>maxResult</code> parameters.
+   * named parameters in the named query, then executes a SELECT query and return the query
+   * results as a List of entities. The number of entities returned is limited by the
+   * <code>firstResult</code> and <code>maxResults</code> parameters.
    * 
    * @param queryName the name of the named query
    * @param parameters a map with arguments to bind to named parameters in the query
-   * @param startPosition position of the first result to be returned by the query, numbered from 0
-   * @param maxResult the maximum number of entities that should be returned by the query
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of entities
    */
-  public List<?> findByNamedQuery(String queryName, Map<String, Object> parameters, 
-      int startPosition, int maxResult);
+  <T> List<T> findByNamedQuery(String queryName, Map<String, Object> parameters,
+      int firstResult, int maxResults);
 
   /**
-   * Creates a dynamic query using a native SQL statement with UPDATE or DELETE, 
+   * Creates a dynamic query using a native SQL statement with UPDATE or DELETE,
    * executes the query and return the query results as a List.
    * 
    * @param sql the native SQL query to execute
    * @return a list of results
    */
-  public List<?> findByNativeQuery(String sql);
+  <T> List<T> findByNativeQuery(String sql);
 
   /**
-   * Creates a dynamic query using a native SQL statement with UPDATE or DELETE, 
-   * executes the query and return the query results as a List. The number of results returned is 
-   * limited by the <code>startPosition</code> and <code>maxResult</code> parameters.
+   * Creates a dynamic query using a native SQL statement with UPDATE or DELETE,
+   * executes the query and return the query results as a List. The number of results returned is
+   * limited by the <code>firstResult</code> and <code>maxResulst</code> parameters.
    * 
    * @param sql the native SQL query to execute
-   * @param startPosition position of the first result to be returned by the query, numbered from 0
-   * @param maxResult the maximum number of entities that should be returned by the query
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of results
    */
-  public List<?> findByNativeQuery(String sql, int startPosition, int maxResult);
+  <T> List<T> findByNativeQuery(String sql, int firstResult, int maxResults);
 
   /**
-   * Creates a dynamic query using a native SQL statement that retrieves a single entity type, 
+   * Creates a dynamic query using a native SQL statement that retrieves a single entity type,
    * executes the query and return the query results as a List. The type of results is determined
    * by the <code>resultClass</code> parameter
    * 
@@ -249,29 +310,29 @@ public interface CrudService {
    * @param resultClass the class of the resulting instance(s)
    * @return a list of results
    */
-  public <T> List<T> findByNativeQuery(String sql, Class<T> resultClass);
+  <T> List<T> findByNativeQuery(String sql, Class<T> resultClass);
 
   /**
    * Creates a dynamic query using a native SQL statement that retrieves a single entity type,
    * executes the query and return the query results as a List. The type of results is determined
-   * by the <code>resultClass</code> parameter. The number of results returned is 
-   * limited by the <code>startPosition</code> and <code>maxResult</code> parameters.
+   * by the <code>resultClass</code> parameter. The number of results returned is
+   * limited by the <code>firstResult</code> and <code>maxResults</code> parameters.
    * 
    * @param sql the native SQL query to execute
    * @param resultClass the class of the resulting instance(s)
-   * @param startPosition position of the first result to be returned by the query, numbered from 0
-   * @param maxResult the maximum number of entities that should be returned by the query
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of results
    */
-  public <T> List<T> findByNativeQuery(String sql, Class<T> resultClass, 
-      int startPosition, int maxResult);
+  <T> List<T> findByNativeQuery(String sql, Class<T> resultClass,
+      int firstResult, int maxResults);
 
   /**
-   * Creates a dynamic query using a native SQL statement that retrieves a result set with multiple 
+   * Creates a dynamic query using a native SQL statement that retrieves a result set with multiple
    * entity types, executes the query and return the query results as a List.<br/>
    * For example, if we want to create a <code>SqlResultSetMapping</code> for the <code>User</code>
    * entity, then we can use the &#064;SqlResultSetMapping annotation as follows:
-   * <pre><code>&#064;SqlResultSetMapping(name = "UserResults", 
+   * <pre><code>&#064;SqlResultSetMapping(name = "UserResults",
    *   entities = &#064;EntityResult(
    *     entityClass = org.mydomain.model.User.class))</code></pre>
    * <p>Then we can specify the mapping in the Query as follows:</p>
@@ -287,113 +348,177 @@ public interface CrudService {
    * @param resultSetMapping the name of the result set mapping
    * @return a list of results
    */
-  public <T> List<T> findByNativeQuery(String sql, String resultSetMapping);
+  <T> List<T> findByNativeQuery(String sql, String resultSetMapping);
 
   /**
-   * Creates a dynamic query using a native SQL statement that retrieves a result set with multiple 
-   * entity types, executes the query and return the query results as a List. The number of results 
-   * returned is limited by the <code>startPosition</code> and <code>maxResult</code> parameters.<br/>
+   * Creates a dynamic query using a native SQL statement that retrieves a result set with multiple
+   * entity types, executes the query and return the query results as a List. The number of results
+   * returned is limited by the <code>firstResult</code> and <code>maxResults</code> parameters.
    * For example, if we want to create a <code>SqlResultSetMapping</code> for the <code>User</code>
    * entity, then we can use the &#064;SqlResultSetMapping annotation as follows:
-   * <pre><code>&#064;SqlResultSetMapping(name = "UserResults", 
+   * 
+   * <pre>
+   * <code>&#064;SqlResultSetMapping(name = "UserResults",
    *   entities = &#064;EntityResult(
-   *     entityClass = org.mydomain.model.User.class))</code></pre>
-   * <p>Then we can specify the mapping in the Query as follows:</p>
-   * <pre><code>List<?> result = findByNativeQuery(
+   *     entityClass = org.mydomain.model.User.class))</code>
+   * </pre>
+   * <p>
+   * Then we can specify the mapping in the Query as follows:
+   * </p>
+   * 
+   * <pre>
+   * <code>List<?> result = findByNativeQuery(
    *   "SELECT user_id, first_name, last_name "
    * + "FROM   users "
    * + "WHERE  user_id IN "
    * + "      (SELECT seller_id FROM items "
    * + "       GROUP BY seller_id HAVING COUNT(*) > 1)",
-   *   "UserResults")</code></pre>
+   *   "UserResults")</code>
+   * </pre>
    * 
    * @param sql the native SQL query to execute
    * @param resultSetMapping the name of the result set mapping
-   * @param startPosition position of the first result to be returned by the query, numbered from 0
-   * @param maxResult the maximum number of entities that should be returned by the query
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of results
    */
-  public <T> List<T> findByNativeQuery(String sql, String resultSetMapping, 
-      int startPosition, int maxResult);
+  <T> List<T> findByNativeQuery(String sql, String resultSetMapping,
+      int firstResult, int maxResults);
 
-  
-	/**
-	 * Merge the state of the given entity into the current persistence context, 
-	 * returning (a potentially different object) the persisted entity.
-	 * entity. 
-	 * 
-	 * @param entity the entity instance to merge
+  /**
+   * Merge the state of the given entity into the current persistence context,
+   * returning (a potentially different object) the persisted entity.
+   * 
+   * @param entity the entity instance to merge
    * @return the instance that the state was merged to
    * @see javax.persistence.EntityManager#merge
-	 */
-	public <T> T merge(T entity);
-	
-	/**
-	 * Merge the collection of entities, returning (a collection of potentially different objects) the
-	 * persisted entities. Basics - merge will take
-	 * an exiting 'detached' entity and merge its properties onto an existing
-	 * entity. The entity with the merged state is returned.
-	 * 
-	 * @param entities A collection of entities
-	 * @return a collection of entities with the merged state
-	 * 
-	 */
-	public <T> Collection<T> merge(Collection<T> entities);
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if not an entity
+   *           or if a detached entity
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   */
+  <T> T merge(T entity);
 
+  /**
+   * Merge the collection of entities, returning (a collection of potentially different objects) the
+   * persisted entities. Basics - merge will take an exiting 'detached' entity and merge its
+   * properties onto an existing entity. The entity with the merged state is returned.
+   * 
+   * @param entities A collection of entities
+   * @return a collection of entities with the merged state
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if not an entity
+   *           or if a detached entity
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   * @see CrudService#merge(T entity)
+   */
+  <T> Collection<T> merge(Collection<T> entities);
 
-	/**
-	 * Remove an entity from persistent storage in the database.  
-	 * If the entity is not in the 'managed' state, it is merged 
-	 * into the persistent context, then removed.
-	 * 
-	 * @param entity the object to delete.
+  /**
+   * Merge the state of the given entity into the current persistence context, returning (a
+   * potentially different object) the persisted entity. Basics - merge will take an exiting
+   * 'detached' entity and merge its properties onto an existing entity. After merge this method
+   * will call flush and refresh to make sure the entity is in sync.
+   * 
+   * @param entity the entity instance to merge
+   * @return the instance that the state was merged to
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if not an entity
+   *           or if a detached entity
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   * @throws PersistenceException if the flush fails
+   * @see javax.persistence.EntityManager#merge
+   * @see javax.persistence.EntityManager#flush()
+   * @see javax.persistence.EntityManager#refresh(Object)
+   */
+  <T> T update(T entity);
+
+  /**
+   * Merge the collection of entities, returning (a collection of potentially different objects) the
+   * persisted entities. Basics - merge will take an exiting 'detached' entity and merge its
+   * properties onto an existing entity. After merge this method will call flush and refresh to make
+   * sure the entity is in sync. The entity with the merged state is
+   * returned.
+   * 
+   * @param entities A collection of entities
+   * @return a collection of entities with the merged state
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if not an entity
+   *           or if a detached entity
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   * @throws PersistenceException if the flush fails
+   * @see CrudService#update(T entity)
+   * @see javax.persistence.EntityManager#merge
+   * @see javax.persistence.EntityManager#flush()
+   * @see javax.persistence.EntityManager#refresh(Object)
+   */
+  <T> Collection<T> update(Collection<T> entities);
+
+  /**
+   * Remove an entity from persistent storage in the database.
+   * If the entity is not in the 'managed' state, it is merged
+   * into the persistent context, then removed.
+   * 
+   * @param entity the object to delete.
    * @see javax.persistence.EntityManager#remove
    * @see javax.persistence.EntityManager#merge
-	 */
-	public void remove(Object entity);
+   */
+  void remove(Object entity);
 
-	/**
-	 * Remove all instances of the specified class
+  /**
+   * Remove all instances of the specified class
    * @throws IllegalArgumentException if <code>entityClass</code> parameter is null
    * @throws java.lang.IllegalStateException if this EntityManager has been closed
    * @throws TransactionRequiredException if there is  no transaction
-	 * @param entityClass The class to remove instances for
-	 */
-	public void remove(Class<?> entityClass);
-	
-	/**
-	 * Remove an object from persistent storage in the database. 
-	 * 
-	 * @param entityClass the entity class of the object to delete
-	 * @param id the Primary Key of the object to delete.
+   * @param entityClass The class to remove instances for
+   */
+  void remove(Class<?> entityClass);
+
+  /**
+   * Remove an entity from persistent storage in the database.
+   * 
+   * @param entityClass the entity class of the object to delete
+   * @param id the Primary Key of the object to delete.
    * @see javax.persistence.EntityManager#remove
    * @see javax.persistence.EntityManager#getReference
-	 */
-	public void remove(Class<?> entityClass, Object id);
+   */
+  void remove(Class<?> entityClass, Object id);
 
-	/**
-	 * Remove a collection of entities from persistent storage in the database.
-	 * 
-	 * @param entities r collection of entities to remove
-	 */
-	public void remove(Collection<Object> entities);
+  /**
+   * Remove a collection of entities from persistent storage in the database.
+   * 
+   * @param entities collection of entities to remove
+   */
+  void remove(Collection<Object> entities);
 
 
-	/**
-   * <p>Remove all entities where conditions in the <code>example</code> parameter matches.</p> 
-	 * 
+  /**
+   * <p>Remove all entities where conditions in the <code>example</code> parameter matches.</p>
+   * 
    * @param example an entity instantiated with the fields to match. Only non <code>null</code>
    * 	primitives (e.g. String, Integer, Date) will be used to construct the query.
-   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query, 
-   * 	<code>false</code> if the query should be an <b>"AND"</b> query.  
-	 */
-	public void remove(Object example, boolean any);
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
+   * 	<code>false</code> if the query should be an <b>"AND"</b> query.
+   */
+  void remove(Object example, boolean any);
 
-	
   /**
-   * Persist or merge an entity. If the entity is already persisted then the state of the given 
-   * entity is merged into the current persistence context, otherwise the entity instance is 
+   * Persist or merge an entity. If the entity is already persisted then the state of the given
+   * entity is merged into the current persistence context, otherwise the entity instance is
    * persisted (made managed and persistent).
+   * 
    * @param entity the entity to persist or merge
    * @return the persisted entity
    * @see javax.persistence.EntityManager#persist(Object entity)
@@ -401,55 +526,69 @@ public interface CrudService {
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if not an entity
    * @throws TransactionRequiredException if invoked on a container-managed entity manager of type
-   * 	PersistenceContextType.TRANSACTION and there is no transaction.
+   *           PersistenceContextType.TRANSACTION and there is no transaction.
    */
-	public <T> T store(T entity);
-	
-	/**
-	 * Persist or merge a collection of entities. If an entity in the collection is already persisted 
-	 * then the state of the given entity is merged into the current persistence context, otherwise 
-	 * the entity instance is persisted (made managed and persistent).
-	 * @param entities a collection of entities to persist or merge
-	 * @return a collection of stored entities
+  <T> T store(T entity);
+
+  /**
+   * Persist or merge a collection of entities. If an entity in the collection is already persisted
+   * then the state of the given entity is merged into the current persistence context, otherwise
+   * the entity instance is persisted (made managed and persistent).
+   * 
+   * @param entities a collection of entities to persist or merge
+   * @return a collection of stored entities
    * @see javax.persistence.EntityManager#persist(Object entity)
    * @see javax.persistence.EntityManager#merge(Object entity)
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if not an entity
    * @throws TransactionRequiredException if invoked on a container-managed entity manager of type
-   *  PersistenceContextType.TRANSACTION and there is no transaction.
-	 */
-	public <T> Collection<T> store(Collection<T> entities);
+   *           PersistenceContextType.TRANSACTION and there is no transaction.
+   */
+  <T> Collection<T> store(Collection<T> entities);
 
 
-	/**
-	 * <p>Count entity instances</p> 
+  /**
+   * <p>Count entity instances</p>
    * @param entityClass the entity class to count instances of
-	 * @return the number of entities
-	 */
-	public int count(final Class<?> entityClass);
+   * @return the number of entities
+   */
+  int count(final Class<?> entityClass);
 
-	/**
-	 * Refresh an entity that may have changed in another
-	 * thread/transaction.  If the entity is not in the 
-	 * 'managed' state, it is first merged into the persistent
-	 * context, then refreshed.
-	 * 
-	 * @param transientEntity the Object to refresh
-	 * @see javax.persistence.EntityManager#refresh(Object)
-	 */
-	public <T> T refresh(T transientEntity);
-	
-	/**
-	 * Refresh an entity that may have changed in another
-	 * thread/transaction.  If the entity is not in the 
-	 * 'managed' state, it is first merged into the persistent
-	 * context, then refreshed.
-	 * 
-	 * @param entityClass the entity type to refresh.
-	 * @param id the entity identity to refresh.
+  /**
+   * Refresh an entity that may have changed in another
+   * thread/transaction. If the entity is not in the
+   * 'managed' state, it is first merged into the persistent
+   * context, then refreshed.
+   * 
+   * @param transientEntity the transient entity to refresh
+   * @return the refreshed entity
    * @see javax.persistence.EntityManager#refresh(Object)
-	 */
-	public <T> T refresh(Class<T> entityClass, Object id);
+   */
+  <T> T refresh(T transientEntity);
+
+  /**
+   * Refresh a collection of entities that may have changed in another
+   * thread/transaction. If the entity is not in the
+   * 'managed' state, it is first merged into the persistent
+   * context, then refreshed.
+   * 
+   * @param transientEntities a collection of transient entities to refresh
+   * @return a collection of refreshed entities
+   * @see javax.persistence.EntityManager#refresh(Object)
+   */
+  <T> Collection<T> refresh(Collection<T> transientEntities);
+
+  /**
+   * Refresh an entity that may have changed in another
+   * thread/transaction.  If the entity is not in the
+   * 'managed' state, it is first merged into the persistent
+   * context, then refreshed.
+   * 
+   * @param entityClass the entity type to refresh.
+   * @param id the entity identity to refresh.
+   * @see javax.persistence.EntityManager#refresh(Object)
+   */
+  <T> T refresh(Class<T> entityClass, Object id);
 
 
   /**
@@ -483,8 +622,8 @@ public interface CrudService {
    * @throws PersistenceException if the flush fails
    * @see javax.persistence.EntityManager#flush()
    */
-	void flush();
-	
+  void flush();
+
   /**
    * <p>Clear the persistence context, causing all managed
    * entities to become detached. Changes made to entities that
@@ -503,16 +642,14 @@ public interface CrudService {
    * @throws IllegalStateException if this EntityManager has been closed
    * @see javax.persistence.EntityManager#clear()
    */
-	void clear();
+  void clear();
 
-	/**
-	 * Write anything to db that is pending operation and clear it.
-	 * @see CrudService#flush()
+  /**
+   * Write anything to db that is pending operation and clear it.
    * @see javax.persistence.EntityManager#flush()
-   * @see CrudService#clear()
    * @see javax.persistence.EntityManager#clear()
-	 */
-	public void flushAndClear();
+   */
+  void flushAndClear();
 
   /**
    * Check if the instance belongs to the current persistence context.
@@ -520,5 +657,5 @@ public interface CrudService {
    * @return true if the instance belongs to the current persistence context.
    * @see javax.persistence.EntityManager#contains(Object)
    */
-  public boolean isManaged(Object entity);
+  boolean isManaged(Object entity);
 }
