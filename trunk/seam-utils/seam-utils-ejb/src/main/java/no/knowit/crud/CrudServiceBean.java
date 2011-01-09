@@ -409,35 +409,33 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> T refresh(final T transientEntity) {
     final EntityManager em = getEntityManager();
-    final T managedEntity = em.contains(transientEntity) ? transientEntity : em
-        .merge(transientEntity);
+    final T managedEntity = em.contains(transientEntity) ? transientEntity
+        : em.merge(transientEntity);
+
     em.refresh(managedEntity);
     return managedEntity;
   }
 
   @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> Collection<T> refresh(final Collection<T> transientEntities) {
+    if (transientEntities == null) {
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
+    }
+    final Collection<T> refreshedResults = new ArrayList<T>(transientEntities.size());
+    for (final T transientEntity : transientEntities) {
+      refreshedResults.add(refresh(transientEntity));
+    }
+    return refreshedResults;
+  }
+
+  @Override
   public <T> T refresh(final Class<T> entityClass, final Object id) {
     final EntityManager em = getEntityManager();
     final T managedEntity = em.find(entityClass, id);
     em.refresh(managedEntity);
     return managedEntity;
-  }
-
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> Collection<T> refresh(final Collection<T> entities) {
-    if (entities == null) {
-      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
-    }
-    final Collection<T> refreshedResults = new ArrayList<T>(entities.size());
-    for (final T entity : entities) {
-      refreshedResults.add(refresh(entity));
-    }
-    return refreshedResults;
   }
 
   @Override
@@ -458,7 +456,6 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public void flushAndClear() {
     final EntityManager em = getEntityManager();
     em.flush();
