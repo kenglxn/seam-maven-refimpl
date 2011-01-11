@@ -147,6 +147,57 @@ public class CrudServiceBean implements CrudService {
     return query.getResultList();
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> List<T> findByQuery(final String jpql) {
+    return entityManager.createQuery(jpql).getResultList();
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> List<T> findByQuery(final String jpql, final int firstResult, final int maxResults) {
+    final Query query = entityManager.createQuery(jpql);
+
+    if (firstResult >= 0) {
+      query.setFirstResult(firstResult);
+    }
+    if (maxResults > 0) {
+      query.setMaxResults(maxResults);
+    }
+
+    return query.getResultList();
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> List<T> findByQuery(final String jpql, final Map<String, Object> parameters) {
+    return findByQuery(jpql, parameters, -1, -1);
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> List<T> findByQuery(final String jpql, final Map<String, Object> parameters,
+      final int firstResult, final int maxResults) {
+
+    final Query query = entityManager.createQuery(jpql);
+    if (firstResult >= 0) {
+      query.setFirstResult(firstResult);
+    }
+    if (maxResults > 0) {
+      query.setMaxResults(maxResults);
+    }
+
+    final Set<Entry<String, Object>> rawParameters = parameters.entrySet();
+    for (final Entry<String, Object> entry : rawParameters) {
+      query.setParameter(entry.getKey(), entry.getValue());
+    }
+
+    return query.getResultList();
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -296,7 +347,7 @@ public class CrudServiceBean implements CrudService {
   public <T> T update(final T entity) {
     final T mergedEntity = getEntityManager().merge(entity);
     getEntityManager().flush();
-    getEntityManager().refresh(entity);
+    //getEntityManager().refresh(mergedEntity);
     return mergedEntity;
   }
 

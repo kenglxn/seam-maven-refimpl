@@ -88,8 +88,22 @@ public interface CrudService {
   void persist(Collection<Object> entities);
 
   /**
-   * Make an entity instance managed and persistent. After persist this method will call flush and
-   * refresh to make sure the entity is in sync.
+   * <p>
+   * Make an entity instance managed and persistent.
+   * </p>
+   * <p>
+   * The passed entity is persisted first, then the <code>flush</code> method is invoked. This
+   * forces the EntityManager to flush its cache to the database. The state of the cached entities
+   * will be written to the database with one or more <code>INSERT</code> statements — but not
+   * committed yet. Either the database or the <code>EntityManager</code> will have to compute any
+   * technical primary key now. After the <code>fush</code> invocation, the entity is going to be
+   * <code>refreshed</code>. The state of the entity is overwritten with the state in the database.
+   * Finally, the fresh entity is returned to the caller. This strange behavior is sometimes
+   * required to force the JPA provider to update the technical key in the entity instance. The
+   * <code>persist</code>, <code>flush</code>, and <code>refresh</code> sequence further enforces
+   * the update of the <code>@Id</code> computed in the database. It is not backed by the spec, but
+   * it works with the popular providers.
+   * </p>
    * 
    * @param entity the entity to persist
    * @return the entity with the persisted state
@@ -205,6 +219,91 @@ public interface CrudService {
    * @return a list of entities
    */
   <T> List<T> find(T example, boolean distinct, boolean any, int firstResult, int maxResults);
+
+  /**
+   * Creates an instance of Query for executing a query in the Java Persistence query
+   * language, executes the (select) query and return the results as a List
+   * of entities.
+   * 
+   * @param jpql the query in the Java Persistence query language
+   * @return a list of entities
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if a query has not been
+   *           defined with the given name
+   * @throws IllegalStateException if called for a Java
+   *           Persistence query language UPDATE or DELETE statement
+   * @see javax.persistence.EntityManager#createQuery(String)
+   * @see javax.persistence.Query#getResultList()
+   */
+  <T> List<T> findByQuery(String jpql);
+
+  /**
+   * Creates an instance of Query for executing a query in the Java Persistence query
+   * language, executes (select) query and return the results as a List of entities. The number of
+   * entities returned is
+   * limited by the <code>firstResult</code> and <code>maxResults</code> parameters.
+   * 
+   * @param jpql the query in the Java Persistence query language
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
+   * @return a list of entities
+   * @throws IllegalStateException if this EntityManager has been closed
+   * @throws IllegalArgumentException if a query has not been
+   *           defined with the given name
+   * @throws IllegalStateException if called for a Java
+   *           Persistence query language UPDATE or DELETE statement
+   * @throws java.lang.IllegalArgumentException if <code>firstResult</code> or
+   *           <code>maxResults</code> is negative.
+   * @see javax.persistence.EntityManager#createQuery(String)
+   * @see javax.persistence.Query#getResultList()
+   * @see javax.persistence.Query#setFirstResult(int)
+   * @see javax.persistence.Query#setMaxResults(int)
+   */
+  <T> List<T> findByQuery(String jpql, int firstResult, int maxResults);
+
+  /**
+   * Creates an instance of Query for executing a query in the Java Persistence query
+   * language, binds all arguments in <code>parameters</code> to corresponding
+   * named parameters in the JPQL query, then executes the (select) query and return the
+   * results as a List of entities.
+   * 
+   * @param queryName the name of the named query
+   * @param parameters a map with arguments to bind to named parameters in the query
+   * @return a list of entities
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if a query has not been
+   *           defined with the given name
+   * @throws IllegalStateException if called for a Java
+   *           Persistence query language UPDATE or DELETE statement
+   * @throws IllegalArgumentException if parameter name does not
+   *           correspond to parameter in query string
+   *           or argument is of incorrect type
+   * @see javax.persistence.EntityManager#createQuery(String)
+   * @see javax.persistence.Query#getResultList()
+   * @see javax.persistence.Query#setParameter(String, Object)
+   */
+  <T> List<T> findByQuery(String jpql, Map<String, Object> parameters);
+
+  /**
+   * Creates an instance of Query for executing a query in the Java Persistence query language,
+   * binds all arguments in <code>parameters</code> to corresponding named parameters in the JPQL
+   * query, then executes the (select) query and
+   * return the results as a List of entities. The number of entities returned is limited by the
+   * <code>firstResult</code> and <code>maxResults</code> parameters.
+   * 
+   * @param queryName the name of the named query
+   * @param parameters a map with arguments to bind to named parameters in the query
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
+   * @return a list of entities
+   * @see javax.persistence.EntityManager#createQuery(String)
+   * @see javax.persistence.Query#setFirstResult(int)
+   * @see javax.persistence.Query#setMaxResults(int)
+   * @see javax.persistence.Query#getResultList()
+   * @see javax.persistence.Query#setParameter(String, Object)
+   */
+  <T> List<T> findByQuery(String jpql, Map<String, Object> parameters, int firstResult,
+      int maxResults);
 
   /**
    * Creates an instance of Query for executing a named query (in the Java Persistence query
@@ -430,7 +529,7 @@ public interface CrudService {
    * Merge the state of the given entity into the current persistence context, returning (a
    * potentially different object) the persisted entity. Basics - merge will take an exiting
    * 'detached' entity and merge its properties onto an existing entity. After merge this method
-   * will call flush and refresh to make sure the entity is in sync.
+   * will call flush to make sure the entity is in sync.
    * 
    * @param entity the entity instance to merge
    * @return the instance that the state was merged to
@@ -451,9 +550,8 @@ public interface CrudService {
   /**
    * Merge the collection of entities, returning (a collection of potentially different objects) the
    * persisted entities. Basics - merge will take an exiting 'detached' entity and merge its
-   * properties onto an existing entity. After merge this method will call flush and refresh to make
-   * sure the entity is in sync. The entity with the merged state is
-   * returned.
+   * properties onto an existing entity. After merge this method will call flush to make
+   * sure the entity is in sync.
    * 
    * @param entities A collection of entities
    * @return a collection of entities with the merged state
