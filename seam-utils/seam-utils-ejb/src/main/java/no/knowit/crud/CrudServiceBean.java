@@ -56,7 +56,7 @@ public class CrudServiceBean implements CrudService {
   private static final String PARAM_NOT_NULL = "The \"%s\" parameter can not be null";
 
   @PersistenceContext
-  protected EntityManager entityManager;
+  protected EntityManager em;
 
   // 'C'
   @Override
@@ -151,14 +151,14 @@ public class CrudServiceBean implements CrudService {
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findByQuery(final String jpql) {
-    return entityManager.createQuery(jpql).getResultList();
+    return em.createQuery(jpql).getResultList();
   }
 
   @Override
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findByQuery(final String jpql, final int firstResult, final int maxResults) {
-    final Query query = entityManager.createQuery(jpql);
+    final Query query = em.createQuery(jpql);
 
     if (firstResult >= 0) {
       query.setFirstResult(firstResult);
@@ -182,7 +182,7 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByQuery(final String jpql, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
-    final Query query = entityManager.createQuery(jpql);
+    final Query query = em.createQuery(jpql);
     if (firstResult >= 0) {
       query.setFirstResult(firstResult);
     }
@@ -202,7 +202,7 @@ public class CrudServiceBean implements CrudService {
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findByNamedQuery(final String queryName) {
-    return entityManager.createNamedQuery(queryName).getResultList();
+    return em.createNamedQuery(queryName).getResultList();
   }
 
   @SuppressWarnings("unchecked")
@@ -210,7 +210,7 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findByNamedQuery(final String queryName, final int firstResult,
       final int maxResults) {
-    final Query query = entityManager.createNamedQuery(queryName);
+    final Query query = em.createNamedQuery(queryName);
 
     if (firstResult > -1) {
       query.setFirstResult(firstResult);
@@ -233,7 +233,7 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
-    final Query query = entityManager.createNamedQuery(queryName);
+    final Query query = em.createNamedQuery(queryName);
 
     if (firstResult > -1) {
       query.setFirstResult(firstResult);
@@ -253,7 +253,7 @@ public class CrudServiceBean implements CrudService {
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findByNativeQuery(final String sql) {
-    return entityManager.createNativeQuery(sql).getResultList();
+    return em.createNativeQuery(sql).getResultList();
   }
 
   @SuppressWarnings("unchecked")
@@ -262,7 +262,7 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByNativeQuery(final String sql, final int firstResult,
       final int maxResults) {
 
-    final Query query = entityManager.createNativeQuery(sql);
+    final Query query = em.createNativeQuery(sql);
 
     if (firstResult > -1) {
       query.setFirstResult(firstResult);
@@ -278,7 +278,7 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
   public <T> List<T> findByNativeQuery(final String sql, final Class<T> resultClass) {
-    return entityManager.createNativeQuery(sql, resultClass).getResultList();
+    return em.createNativeQuery(sql, resultClass).getResultList();
   }
 
   @Override
@@ -287,7 +287,7 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByNativeQuery(final String sql, final Class<T> resultClass,
       final int firstResult, final int maxResults) {
 
-    final Query query = entityManager.createNativeQuery(sql, resultClass);
+    final Query query = em.createNativeQuery(sql, resultClass);
 
     if (firstResult > -1) {
       query.setFirstResult(firstResult);
@@ -303,7 +303,7 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
   public <T> List<T> findByNativeQuery(final String sql, final String resultSetMapping) {
-    return entityManager.createNativeQuery(sql, resultSetMapping)
+    return em.createNativeQuery(sql, resultSetMapping)
     .getResultList();
   }
 
@@ -313,7 +313,7 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByNativeQuery(final String sql, final String resultSetMapping,
       final int firstResult, final int maxResults) {
 
-    final Query query = entityManager.createNativeQuery(sql, resultSetMapping);
+    final Query query = em.createNativeQuery(sql, resultSetMapping);
 
     if (firstResult > -1) {
       query.setFirstResult(firstResult);
@@ -366,7 +366,7 @@ public class CrudServiceBean implements CrudService {
   // 'D'
   @Override
   public void remove(final Object entity) {
-    final EntityManager em = getEntityManager();
+    //final EntityManager em = getEntityManager();
     final Object managedEntity = em.contains(entity) ? entity : em.merge(entity);
     em.remove(managedEntity);
   }
@@ -461,7 +461,7 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public <T> T refresh(final T transientEntity) {
-    final EntityManager em = getEntityManager();
+    //final EntityManager em = getEntityManager();
     final T managedEntity = em.contains(transientEntity) ? transientEntity
         : em.merge(transientEntity);
 
@@ -483,7 +483,7 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public <T> T refresh(final Class<T> entityClass, final Object id) {
-    final EntityManager em = getEntityManager();
+    //final EntityManager em = getEntityManager();
     final T managedEntity = em.find(entityClass, id);
     em.refresh(managedEntity);
     return managedEntity;
@@ -508,7 +508,7 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public void flushAndClear() {
-    final EntityManager em = getEntityManager();
+    //final EntityManager em = getEntityManager();
     em.flush();
     em.clear();
   }
@@ -519,10 +519,10 @@ public class CrudServiceBean implements CrudService {
    *           if EntityManager has not been set on this service before usage
    */
   protected EntityManager getEntityManager() {
-    if (entityManager == null) {
+    if (em == null) {
       throw new IllegalStateException("EntityManager has not been set on service before usage");
     }
-    return entityManager;
+    return em;
   }
 
   /**
