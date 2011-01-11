@@ -52,7 +52,6 @@ public interface CrudService {
    * Make an entity instance managed and persistent.
    * 
    * @param entity the entity to persist
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws EntityExistsException if the entity already exists.
    *           (The EntityExistsException may be thrown when the persist
    *           operation is invoked, or the EntityExistsException or
@@ -71,8 +70,7 @@ public interface CrudService {
    * Make a collection of entity instances managed and persistent.
    * 
    * @param entities A collection of entities to persist
-   * @throws IllegalStateException if the <code>entities</code> parameter is null.
-   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if the <code>entities</code> parameter is null.
    * @throws EntityExistsException if an entity in the collection already exists.
    *           (The EntityExistsException may be thrown when the persist
    *           operation is invoked, or the EntityExistsException or
@@ -107,7 +105,6 @@ public interface CrudService {
    * 
    * @param entity the entity to persist
    * @return the entity with the persisted state
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws EntityExistsException if the entity already exists.
    *           (The EntityExistsException may be thrown when the persist
    *           operation is invoked, or the EntityExistsException or
@@ -131,8 +128,7 @@ public interface CrudService {
    * 
    * @param entities A collection of entities to persist
    * @return a collection of entities with the persisted state
-   * @throws IllegalStateException if the <code>entities</code> parameter is null.
-   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if the <code>entities</code> parameter is null.
    * @throws EntityExistsException if an entity in the collection already exists.
    *           (The EntityExistsException may be thrown when the persist
    *           operation is invoked, or the EntityExistsException or
@@ -154,7 +150,6 @@ public interface CrudService {
    * @param entityClass the entity class to find an instance of
    * @param id the primary key to find the entity by
    * @return the found entity instance or null if the entity does not exist
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if the first argument does
    *         not denote an entity type or the second
    *         argument is not a valid type for that
@@ -169,7 +164,6 @@ public interface CrudService {
    * is the given <code>entityClass</code> parameter.
    * @param entityClass the entity class to find instances of
    * @return a list of entities
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if produced query string is not valid
    */
   <T> List<T> find(Class<T> entityClass);
@@ -184,7 +178,6 @@ public interface CrudService {
    * @param firstResult position of the first result to be returned by the query, numbered from 0
    * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of entities
-   * @throws IllegalStateException if this EntityManager has been closed
    * @see CrudService#find(Class)
    */
   <T> List<T> find(Class<T> entityClass, int firstResult, int maxResults);
@@ -227,7 +220,6 @@ public interface CrudService {
    * 
    * @param jpql the query in the Java Persistence query language
    * @return a list of entities
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if a query has not been
    *           defined with the given name
    * @throws IllegalStateException if called for a Java
@@ -247,7 +239,6 @@ public interface CrudService {
    * @param firstResult position of the first result to be returned by the query, numbered from 0
    * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of entities
-   * @throws IllegalStateException if this EntityManager has been closed
    * @throws IllegalArgumentException if a query has not been
    *           defined with the given name
    * @throws IllegalStateException if called for a Java
@@ -270,7 +261,6 @@ public interface CrudService {
    * @param queryName the name of the named query
    * @param parameters a map with arguments to bind to named parameters in the query
    * @return a list of entities
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if a query has not been
    *           defined with the given name
    * @throws IllegalStateException if called for a Java
@@ -311,7 +301,6 @@ public interface CrudService {
    * 
    * @param queryName the name of the named query
    * @return a list of entities
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if a query has not been
    *           defined with the given name
    * @throws IllegalStateException if called for a Java
@@ -330,8 +319,7 @@ public interface CrudService {
    * @param queryName the name of the named query
    * @param parameters a map with arguments to bind to named parameters in the query
    * @return a list of entities
-   * @throws IllegalStateException if this EntityManager has been closed.
-   * @throws IllegalStateException if the <code>parameters</code> parameter is null.
+   * @throws IllegalArgumentException if the <code>parameters</code> parameter is null.
    * @throws IllegalArgumentException if a query has not been
    *           defined with the given name
    * @throws IllegalStateException if called for a Java
@@ -355,7 +343,6 @@ public interface CrudService {
    * @param firstResult position of the first result to be returned by the query, numbered from 0
    * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of entities
-   * @throws IllegalStateException if this EntityManager has been closed
    * @throws IllegalArgumentException if a query has not been
    *           defined with the given name
    * @throws IllegalStateException if called for a Java
@@ -379,7 +366,7 @@ public interface CrudService {
    * @param firstResult position of the first result to be returned by the query, numbered from 0
    * @param maxResults the maximum number of entities that should be returned by the query
    * @return a list of entities
-   * @throws IllegalStateException if the <code>parameters</code> parameter is null.
+   * @throws IllegalArgumentException if the <code>parameters</code> parameter is null.
    */
   <T> List<T> findByNamedQuery(String queryName, Map<String, Object> parameters,
       int firstResult, int maxResults);
@@ -436,17 +423,24 @@ public interface CrudService {
    * entity types, executes the query and return the query results as a List.<br/>
    * For example, if we want to create a <code>SqlResultSetMapping</code> for the <code>User</code>
    * entity, then we can use the &#064;SqlResultSetMapping annotation as follows:
-   * <pre><code>&#064;SqlResultSetMapping(name = "UserResults",
+   * 
+   * <pre>
+   * <code>&#064;SqlResultSetMapping(name = "UserResults",
    *   entities = &#064;EntityResult(
-   *     entityClass = org.mydomain.model.User.class))</code></pre>
-   * <p>Then we can specify the mapping in the Query as follows:</p>
-   * <pre><code>List<?> result = findByNativeQuery(
+   *     entityClass = org.mydomain.model.User.class))</code>
+   * </pre>
+   * <p>
+   * Then we can specify the mapping in the Query as follows:
+   * </p>
+   * 
+   * <pre>
+   * <code>List<?> result = findByNativeQuery(
    *   "SELECT user_id, first_name, last_name "
    * + "FROM   users "
    * + "WHERE  user_id IN "
    * + "      (SELECT seller_id FROM items "
-   * + "       GROUP BY seller_id HAVING COUNT(*) > 1)",
-   *   "UserResults")</code></pre>
+   * + "       GROUP BY seller_id HAVING COUNT(*) > 1)", "UserResults")</code>
+   * </pre>
    * 
    * @param sql the native SQL query to execute
    * @param resultSetMapping the name of the result set mapping
@@ -476,8 +470,7 @@ public interface CrudService {
    * + "FROM   users "
    * + "WHERE  user_id IN "
    * + "      (SELECT seller_id FROM items "
-   * + "       GROUP BY seller_id HAVING COUNT(*) > 1)",
-   *   "UserResults")</code>
+   * + "       GROUP BY seller_id HAVING COUNT(*) > 1)", "UserResults")</code>
    * </pre>
    * 
    * @param sql the native SQL query to execute
@@ -496,7 +489,6 @@ public interface CrudService {
    * @param entity the entity instance to merge
    * @return the instance that the state was merged to
    * @see javax.persistence.EntityManager#merge
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if not an entity
    *           or if a detached entity
    * @throws TransactionRequiredException if invoked on a
@@ -514,7 +506,7 @@ public interface CrudService {
    * @param entities A collection of entities
    * @return a collection of entities with the merged state
    * @throws IllegalStateException if this EntityManager has been closed.
-   * @throws IllegalStateException if the <code>entities</code> parameter is null.
+   * @throws IllegalArgumentException if the <code>entities</code> parameter is null.
    * @throws IllegalArgumentException if an element in the <code>entities</code> collection is not
    *           an entity or if a detached entity
    * @throws TransactionRequiredException if invoked on a
@@ -556,7 +548,7 @@ public interface CrudService {
    * @param entities A collection of entities
    * @return a collection of entities with the merged state
    * @throws IllegalStateException if this EntityManager has been closed.
-   * @throws IllegalStateException if the <code>entities</code> parameter is null.
+   * @throws IllegalArgumentException if the <code>entities</code> parameter is null.
    * @throws IllegalArgumentException if an element in the collection is not an entity
    *           or if a detached entity
    * @throws TransactionRequiredException if invoked on a
@@ -579,7 +571,6 @@ public interface CrudService {
    * @param entity the object to delete.
    * @see javax.persistence.EntityManager#remove
    * @see javax.persistence.EntityManager#merge
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws TransactionRequiredException if invoked on a
    *           container-managed entity manager of type
    *           PersistenceContextType.TRANSACTION and there is
@@ -612,8 +603,7 @@ public interface CrudService {
    * Remove a collection of entities from persistent storage in the database.
    * 
    * @param entities collection of entities to remove
-   * @throws IllegalStateException if the <code>entities</code> parameter is null.
-   * @throws IllegalArgumentException if <code>entities</code> parameter is null
+   * @throws IllegalArgumentException if the <code>entities</code> parameter is null.
    * @throws IllegalArgumentException if one of the elements in the <code>entities</code> collection
    *           is not an entity
    * @throws java.lang.IllegalStateException if this EntityManager has been closed
@@ -641,7 +631,6 @@ public interface CrudService {
    * @return the persisted entity
    * @see javax.persistence.EntityManager#persist(Object entity)
    * @see javax.persistence.EntityManager#merge(Object entity)
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if not an entity
    * @throws TransactionRequiredException if invoked on a container-managed entity manager of type
    *           PersistenceContextType.TRANSACTION and there is no transaction.
@@ -657,7 +646,6 @@ public interface CrudService {
    * @return a collection of stored entities
    * @see javax.persistence.EntityManager#persist(Object entity)
    * @see javax.persistence.EntityManager#merge(Object entity)
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if <code>entities</code> parameter is null
    * @throws IllegalArgumentException if one of the elements in the <code>entities</code> collection
    *           is not an entity
@@ -683,7 +671,6 @@ public interface CrudService {
    * @param transientEntity the transient entity to refresh
    * @return the refreshed entity
    * @see javax.persistence.EntityManager#refresh(Object)
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if instance is not an
    *           entity or is a removed entity
    * @throws TransactionRequiredException if invoked on a
@@ -704,7 +691,6 @@ public interface CrudService {
    * @param transientEntities a collection of transient entities to refresh
    * @return a collection of refreshed entities
    * @see javax.persistence.EntityManager#refresh(Object)
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if <code>transientEntities</code> parameter is null
    * @throws IllegalArgumentException if instance in the <code>transientEntities</code> collection
    *           is not an entity or is a removed entity
@@ -726,7 +712,6 @@ public interface CrudService {
    * @param entityClass the entity type to refresh.
    * @param id the entity identity to refresh.
    * @see javax.persistence.EntityManager#refresh(Object)
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if the first argument does
    *           not denote an entity type or the second
    *           argument is not a valid type for that
@@ -767,7 +752,6 @@ public interface CrudService {
    * the relationships. If an entity points to another entity that is not
    * managed or has been removed, then an exception may be thrown.</p>
    *
-   * @throws IllegalStateException if this EntityManager has been closed
    * @throws TransactionRequiredException if there is no transaction
    * @throws PersistenceException if the flush fails
    * @see javax.persistence.EntityManager#flush()
@@ -789,7 +773,6 @@ public interface CrudService {
    * need to be able to clear out the managed entities, or else the persistence
    * context will continue to grow over time. </p>
    *
-   * @throws IllegalStateException if this EntityManager has been closed
    * @see javax.persistence.EntityManager#clear()
    */
   void clear();
@@ -799,7 +782,6 @@ public interface CrudService {
    * 
    * @see javax.persistence.EntityManager#flush()
    * @see javax.persistence.EntityManager#clear()
-   * @throws IllegalStateException if this EntityManager has been closed
    * @throws TransactionRequiredException if there is
    *           no transaction
    * @throws PersistenceException if the flush fails
@@ -812,7 +794,6 @@ public interface CrudService {
    * @param entity the entity to check
    * @return true if the instance belongs to the current persistence context.
    * @see javax.persistence.EntityManager#contains(Object)
-   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if not an entity
    */
   boolean isManaged(Object entity);
