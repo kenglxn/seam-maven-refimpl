@@ -98,7 +98,7 @@ public class CrudServiceBean implements CrudService {
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> T find(final Class<T> entityClass, final Object id) {
-    return getEntityManager().find(entityClass, id);
+    return em.find(entityClass, id);
   }
 
   @Override
@@ -328,7 +328,7 @@ public class CrudServiceBean implements CrudService {
   // 'U'
   @Override
   public <T> T merge(final T entity) {
-    return getEntityManager().merge(entity);
+    return em.merge(entity);
   }
 
   @Override
@@ -345,8 +345,8 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public <T> T update(final T entity) {
-    final T mergedEntity = getEntityManager().merge(entity);
-    getEntityManager().flush();
+    final T mergedEntity = em.merge(entity);
+    em.flush();
     //getEntityManager().refresh(mergedEntity);
     return mergedEntity;
   }
@@ -356,11 +356,21 @@ public class CrudServiceBean implements CrudService {
     if (entities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
-    final Collection<T> updatedResults = new ArrayList<T>(entities.size());
+    final Collection<T> mergedResults = new ArrayList<T>(entities.size());
     for (final T entity : entities) {
-      updatedResults.add(update(entity));
+      mergedResults.add(update(entity));
     }
-    return updatedResults;
+    return mergedResults;
+  }
+
+  @Override
+  public int executeUpdate(final String jpql) {
+    return em.createQuery(jpql).executeUpdate();
+  }
+
+  @Override
+  public int executeUpdateByNativeQuery(final String sql) {
+    return em.createNativeQuery(sql).executeUpdate();
   }
 
   // 'D'

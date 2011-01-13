@@ -564,6 +564,31 @@ public interface CrudService {
   <T> Collection<T> update(Collection<T> entities);
 
   /**
+   * Create an instance of Query for executing a Java Persistence query update or delete statement,
+   * then executes the update or delete statement.
+   * 
+   * @param jpql a Java Persistence query language query string
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalStateException if called for a Java Persistence query language SELECT statement
+   * @throws IllegalArgumentException if query string is not valid
+   * @throws TransactionRequiredException if there is no transaction
+   * @return the number of entities updated or deleted
+   */
+  int executeUpdate(String jpql);
+
+  /**
+   * Create an instance of Query for executing a native SQL update or delete statement, then
+   * executes the update or delete statement.
+   * 
+   * @param sql a native SQL query string
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalStateException if called for a native SQL SELECT statement
+   * @throws TransactionRequiredException if there is no transaction
+   * @return the number of rows updated or deleted
+   */
+  int executeUpdateByNativeQuery(String sql);
+
+  /**
    * Remove an entity from persistent storage in the database.
    * If the entity is not in the 'managed' state, it is merged
    * into the persistent context, then removed.
