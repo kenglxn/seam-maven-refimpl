@@ -31,6 +31,7 @@ import java.util.Map;
 
 import javax.ejb.Local;
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TransactionRequiredException;
@@ -86,9 +87,7 @@ public interface CrudService {
   void persist(Collection<Object> entities);
 
   /**
-   * <p>
    * Make an entity instance managed and persistent.
-   * </p>
    * <p>
    * The passed entity is persisted first, then the <code>flush</code> method is invoked. This
    * forces the EntityManager to flush its cache to the database. The state of the cached entities
@@ -123,8 +122,20 @@ public interface CrudService {
   <T> T create(T entity);
 
   /**
-   * Make a collection of entity instances managed and persistent. After persist this method will
-   * call flush and refresh to make sure the entity is in sync.
+   * Make a collection of entity instances managed and persistent.
+   * <p>
+   * Each entity in the collection is persisted first, then the <code>flush</code> method is
+   * invoked. This forces the EntityManager to flush its cache to the database. The state of the
+   * cached entities will be written to the database with one or more <code>INSERT</code> statements
+   * — but not committed yet. Either the database or the <code>EntityManager</code> will have to
+   * compute any technical primary key now. After the <code>fush</code> invocation, the entity is
+   * going to be <code>refreshed</code>. The state of the entity is overwritten with the state in
+   * the database. Finally, the fresh entity is returned to the caller. This strange behavior is
+   * sometimes required to force the JPA provider to update the technical key in the entity
+   * instance. The <code>persist</code>, <code>flush</code>, and <code>refresh</code> sequence
+   * further enforces the update of the <code>@Id</code> computed in the database. It is not backed
+   * by the spec, but it works with the popular providers.
+   * </p>
    * 
    * @param entities A collection of entities to persist
    * @return a collection of entities with the persisted state
@@ -521,7 +532,7 @@ public interface CrudService {
    * Merge the state of the given entity into the current persistence context, returning (a
    * potentially different object) the persisted entity. Basics - merge will take an exiting
    * 'detached' entity and merge its properties onto an existing entity. After merge this method
-   * will call flush to make sure the entity is in sync.
+   * will call flush to make sure the entity is in sync with the database.
    * 
    * @param entity the entity instance to merge
    * @return the instance that the state was merged to
@@ -542,8 +553,8 @@ public interface CrudService {
   /**
    * Merge the collection of entities, returning (a collection of potentially different objects) the
    * persisted entities. Basics - merge will take an exiting 'detached' entity and merge its
-   * properties onto an existing entity. After merge this method will call flush to make
-   * sure the entity is in sync.
+   * properties onto an existing entity. After the entities in the collection are merged, this
+   * method will call flush to make sure the entities are in sync with the database.
    * 
    * @param entities A collection of entities
    * @return a collection of entities with the merged state
@@ -573,6 +584,8 @@ public interface CrudService {
    * @throws IllegalArgumentException if query string is not valid
    * @throws TransactionRequiredException if there is no transaction
    * @return the number of entities updated or deleted
+   * @see javax.persistence.EntityManager#createQuery(String)
+   * @see javax.persistence.Query#executeUpdate()
    */
   int executeUpdate(String jpql);
 
@@ -585,6 +598,8 @@ public interface CrudService {
    * @throws IllegalStateException if called for a native SQL SELECT statement
    * @throws TransactionRequiredException if there is no transaction
    * @return the number of rows updated or deleted
+   * @see javax.persistence.EntityManager#createNativeQuery(String)
+   * @see javax.persistence.Query#executeUpdate()
    */
   int executeUpdateByNativeQuery(String sql);
 
@@ -609,7 +624,10 @@ public interface CrudService {
    * @throws IllegalArgumentException if <code>entityClass</code> parameter is null
    * @throws IllegalArgumentException if not an entity
    * @throws java.lang.IllegalStateException if this EntityManager has been closed
-   * @throws TransactionRequiredException if there is no transaction
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
    * @param entityClass The class to remove instances for
    */
   void remove(Class<?> entityClass);
@@ -621,6 +639,10 @@ public interface CrudService {
    * @param id the Primary Key of the object to delete.
    * @see javax.persistence.EntityManager#remove
    * @see javax.persistence.EntityManager#getReference
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
    */
   void remove(Class<?> entityClass, Object id);
 
@@ -632,7 +654,10 @@ public interface CrudService {
    * @throws IllegalArgumentException if one of the elements in the <code>entities</code> collection
    *           is not an entity
    * @throws java.lang.IllegalStateException if this EntityManager has been closed
-   * @throws TransactionRequiredException if there is no transaction
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
    */
   void remove(Collection<Object> entities);
 
@@ -646,6 +671,66 @@ public interface CrudService {
    * 	<code>false</code> if the query should be an <b>"AND"</b> query.
    */
   void remove(Object example, boolean any);
+
+  /**
+   * Remove an entity from persistent storage in the database. If the entity is not in the 'managed'
+   * state, it is merged into the persistent context, then removed. After remove this method will
+   * call flush to make sure the entity is in sync with the database.
+   * 
+   * @param entity the object to delete.
+   * @see javax.persistence.EntityManager#remove
+   * @see javax.persistence.EntityManager#merge
+   * @see javax.persistence.EntityManager#flush()
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   */
+  void delete(Object entity);
+
+  /**
+   * Remove an entity from persistent storage in the database. After remove this method will call
+   * flush to make sure the entity is in sync with the database.
+   * 
+   * @param entityClass the entity class of the object to delete
+   * @param id the Primary Key of the object to delete.
+   * @see javax.persistence.EntityManager#flush()
+   * @see javax.persistence.EntityManager#remove
+   * @see javax.persistence.EntityManager#getReference
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   */
+  void delete(Class<?> type, Object id);
+
+  /**
+   * <p>
+   * Remove a collection of entities from persistent storage in the database. After the entities are
+   * removed this method will call flush to make sure the entities are in sync with the database.
+   * </p>
+   * 
+   * @param entities collection of entities to remove
+   * @throws IllegalArgumentException if <code>entities</code> parameter is null
+   * @throws IllegalArgumentException if one of the elements in the <code>entities</code> collection
+   *           is not an entity
+   * @throws java.lang.IllegalStateException if this EntityManager has been closed
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   */
+  void delete(Collection<Object> entities);
+
+  /**
+   * Remove all entities where conditions in the <code>example</code> parameter matches.
+   * 
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
+   *          <code>false</code> if the query should be an <b>"AND"</b> query.
+   */
+  void delete(Object example, boolean any);
 
   /**
    * Persist or merge an entity. If the entity is already persisted then the state of the given
@@ -822,4 +907,13 @@ public interface CrudService {
    * @throws IllegalArgumentException if not an entity
    */
   boolean isManaged(Object entity);
+
+  /**
+   * Get the entitymanager wired to this service
+   * 
+   * @return the entitymanager wired to this service
+   * @throws java.lang.IllegalStateException
+   *           if EntityManager has not been set on this service before usage
+   */
+  EntityManager getEntityManager();
 }
