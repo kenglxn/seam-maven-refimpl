@@ -77,8 +77,8 @@ public class CrudServiceBean implements CrudService {
   @Override
   public <T> T create(final T entity) {
     getEntityManager().persist(entity);
-    getEntityManager().flush();
-    getEntityManager().refresh(entity);
+    getEntityManager().flush(); // force the SQL insert and db constraints and triggers to execute
+    getEntityManager().refresh(entity); //re-read the state (after the trigger executes)
     return entity;
   }
 
@@ -408,6 +408,34 @@ public class CrudServiceBean implements CrudService {
     query.executeUpdate();
   }
 
+  @Override
+  public void delete(final Object entity) {
+    remove(entity);
+    em.flush();
+  }
+
+  @Override
+  public void delete(final Class<?> entityClass, final Object id) {
+    remove(entityClass, id);
+    em.flush();
+  }
+
+  @Override
+  public void delete(final Collection<Object> entities) {
+    if (entities == null) {
+      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
+    }
+    for (final Object entity : entities) {
+      remove(entity);
+    }
+    em.flush();
+  }
+
+  @Override
+  public void delete(final Object example, final boolean any) {
+    remove(example, any);
+  }
+
   // C or U :-)
   @Override
   public <T> T store(final T entity) {
@@ -523,12 +551,8 @@ public class CrudServiceBean implements CrudService {
     em.clear();
   }
 
-  /**
-   * @return the entitymanager wired to this service
-   * @throws java.lang.IllegalStateException
-   *           if EntityManager has not been set on this service before usage
-   */
-  protected EntityManager getEntityManager() {
+  @Override
+  public EntityManager getEntityManager() {
     if (em == null) {
       throw new IllegalStateException("EntityManager has not been set on service before usage");
     }
