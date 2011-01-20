@@ -135,14 +135,14 @@ public class CrudServiceBean implements CrudService {
   @Override
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByQuery(final String jpql) {
+  public <T> List<T> findWithQuery(final String jpql) {
     return em.createQuery(jpql).getResultList();
   }
 
   @Override
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByQuery(final String jpql, final int firstResult, final int maxResults) {
+  public <T> List<T> findWithQuery(final String jpql, final int firstResult, final int maxResults) {
     final Query query = em.createQuery(jpql);
 
     if (firstResult > -1) {
@@ -157,14 +157,14 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByQuery(final String jpql, final Map<String, Object> parameters) {
-    return findByQuery(jpql, parameters, -1, -1);
+  public <T> List<T> findWithQuery(final String jpql, final Map<String, Object> parameters) {
+    return findWithQuery(jpql, parameters, -1, -1);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByQuery(final String jpql, final Map<String, Object> parameters,
+  public <T> List<T> findWithQuery(final String jpql, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
     final Query query = em.createQuery(jpql);
@@ -186,14 +186,14 @@ public class CrudServiceBean implements CrudService {
   @SuppressWarnings("unchecked")
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByNamedQuery(final String queryName) {
+  public <T> List<T> findWithNamedQuery(final String queryName) {
     return em.createNamedQuery(queryName).getResultList();
   }
 
   @SuppressWarnings("unchecked")
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByNamedQuery(final String queryName, final int firstResult,
+  public <T> List<T> findWithNamedQuery(final String queryName, final int firstResult,
       final int maxResults) {
     final Query query = em.createNamedQuery(queryName);
 
@@ -208,14 +208,14 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> parameters) {
-    return findByNamedQuery(queryName, parameters, -1, -1);
+  public <T> List<T> findWithNamedQuery(final String queryName, final Map<String, Object> parameters) {
+    return findWithNamedQuery(queryName, parameters, -1, -1);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByNamedQuery(final String queryName, final Map<String, Object> parameters,
+  public <T> List<T> findWithNamedQuery(final String queryName, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
     final Query query = em.createNamedQuery(queryName);
