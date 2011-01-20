@@ -38,7 +38,7 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
     crudService.remove(Movie.class);
     assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 before tests";
     
-		crudService.create(Movie.builder()
+		crudService.persist(Movie.builder()
       .withDirector("Alan Parker")
       .withTitle("The Wall")
       .withYear(1999)

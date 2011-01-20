@@ -114,7 +114,7 @@ public class CrudServiceTest extends OpenEjbTest {
                 "horror and misery by the harsh realities of combat.")
       .build());
       
-    movies = (ArrayList<Movie>) crudService.create(movies);
+    movies = (ArrayList<Movie>) crudService.persist(movies);
     
     theBigLebowskiId = movies.get(0).getId();
     assert theBigLebowskiId != null;
@@ -138,7 +138,7 @@ public class CrudServiceTest extends OpenEjbTest {
 	
 	@Test
 	public void create() throws Exception {
-		Movie theWall = crudService.create(Movie.builder()
+		Movie theWall = crudService.persist(Movie.builder()
 		  .withDirector(THE_WALL_DIRECTOR)
 		  .withTitle(THE_WALL_TITLE)
 		  .withYear(THE_WALL_YEAR)
@@ -233,7 +233,7 @@ public class CrudServiceTest extends OpenEjbTest {
 	
 	@Test
   public void shouldQueryANamedEntity() throws Exception {
-	  crudService.create(new NamedEntity(100));
+	  crudService.persist(new NamedEntity(100));
 	  assert crudService.find(NamedEntity.class).size() > 0;
     assert crudService.count(NamedEntity.class) > 0;
     crudService.remove(NamedEntity.class);
