@@ -200,7 +200,7 @@ public interface CrudService {
    * @see javax.persistence.EntityManager#createQuery(String)
    * @see javax.persistence.Query#getResultList()
    */
-  <T> List<T> findByQuery(String jpql);
+  <T> List<T> findWithQuery(String jpql);
 
   /**
    * Creates an instance of Query for executing a query in the Java Persistence query
@@ -223,7 +223,7 @@ public interface CrudService {
    * @see javax.persistence.Query#setFirstResult(int)
    * @see javax.persistence.Query#setMaxResults(int)
    */
-  <T> List<T> findByQuery(String jpql, int firstResult, int maxResults);
+  <T> List<T> findWithQuery(String jpql, int firstResult, int maxResults);
 
   /**
    * Creates an instance of Query for executing a query in the Java Persistence query
@@ -245,7 +245,7 @@ public interface CrudService {
    * @see javax.persistence.Query#getResultList()
    * @see javax.persistence.Query#setParameter(String, Object)
    */
-  <T> List<T> findByQuery(String jpql, Map<String, Object> parameters);
+  <T> List<T> findWithQuery(String jpql, Map<String, Object> parameters);
 
   /**
    * Creates an instance of Query for executing a query in the Java Persistence query language,
@@ -265,7 +265,7 @@ public interface CrudService {
    * @see javax.persistence.Query#getResultList()
    * @see javax.persistence.Query#setParameter(String, Object)
    */
-  <T> List<T> findByQuery(String jpql, Map<String, Object> parameters, int firstResult,
+  <T> List<T> findWithQuery(String jpql, Map<String, Object> parameters, int firstResult,
       int maxResults);
 
   /**
@@ -281,7 +281,7 @@ public interface CrudService {
    * @see javax.persistence.EntityManager#createNamedQuery(String)
    * @see javax.persistence.Query#getResultList()
    */
-  <T> List<T> findByNamedQuery(String queryName);
+  <T> List<T> findWithNamedQuery(String queryName);
 
   /**
    * Creates an instance of Query for executing a named query (in the Java Persistence query
@@ -304,7 +304,7 @@ public interface CrudService {
    * @see javax.persistence.Query#getResultList()
    * @see javax.persistence.Query#setParameter(String, Object)
    */
-  <T> List<T> findByNamedQuery(String queryName, Map<String, Object> parameters);
+  <T> List<T> findWithNamedQuery(String queryName, Map<String, Object> parameters);
 
   /**
    * Creates an instance of Query for executing a named query (in the Java Persistence query
@@ -325,7 +325,7 @@ public interface CrudService {
    * @see javax.persistence.Query#setFirstResult(int)
    * @see javax.persistence.Query#setMaxResults(int)
    */
-  <T> List<T> findByNamedQuery(String queryName, int firstResult, int maxResults);
+  <T> List<T> findWithNamedQuery(String queryName, int firstResult, int maxResults);
 
   /**
    * Creates an instance of Query for executing a named query (in the Java Persistence query
@@ -341,7 +341,7 @@ public interface CrudService {
    * @return a list of entities
    * @throws IllegalArgumentException if the <code>parameters</code> parameter is null.
    */
-  <T> List<T> findByNamedQuery(String queryName, Map<String, Object> parameters,
+  <T> List<T> findWithNamedQuery(String queryName, Map<String, Object> parameters,
       int firstResult, int maxResults);
 
   /**
