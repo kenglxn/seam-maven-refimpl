@@ -432,7 +432,7 @@ public class CrudServiceBean implements CrudService {
   @Override
   public <T> T refresh(final T transientEntity) {
     final T managedEntity = em.contains(transientEntity)
-    ? transientEntity
+        ? transientEntity
         : em.merge(transientEntity);
 
     em.refresh(managedEntity);
@@ -453,7 +453,6 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public <T> T refresh(final Class<T> entityClass, final Object id) {
-    //final EntityManager em = getEntityManager();
     final T managedEntity = em.find(entityClass, id);
     em.refresh(managedEntity);
     return managedEntity;
