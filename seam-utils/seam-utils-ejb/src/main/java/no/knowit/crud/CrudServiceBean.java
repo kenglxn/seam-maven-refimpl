@@ -60,36 +60,21 @@ public class CrudServiceBean implements CrudService {
 
   // 'C'
   @Override
-  public void persist(final Object entity) {
-    getEntityManager().persist(entity);
-  }
-
-  @Override
-  public void persist(final Collection<Object> entities) {
-    if (entities == null) {
-      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
-    }
-    for (final Object entity : entities) {
-      persist(entity);
-    }
-  }
-
-  @Override
-  public <T> T create(final T entity) {
-    getEntityManager().persist(entity);
-    getEntityManager().flush(); // force the SQL insert and db constraints and triggers to execute
-    getEntityManager().refresh(entity); //re-read the state (after the trigger executes)
+  public <T> T persist(final T entity) {
+    em.persist(entity);
+    em.flush(); // force the SQL insert and db constraints and triggers to execute
+    em.refresh(entity); //re-read the state (after the trigger executes)
     return entity;
   }
 
   @Override
-  public <T> Collection<T> create(final Collection<T> entities) {
+  public <T> Collection<T> persist(final Collection<T> entities) {
     if (entities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
     final Collection<T> persistedResults = new ArrayList<T>(entities.size());
     for (final T entity : entities) {
-      persistedResults.add(create(entity));
+      persistedResults.add(persist(entity));
     }
     return persistedResults;
   }
@@ -160,7 +145,7 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByQuery(final String jpql, final int firstResult, final int maxResults) {
     final Query query = em.createQuery(jpql);
 
-    if (firstResult >= 0) {
+    if (firstResult > -1) {
       query.setFirstResult(firstResult);
     }
     if (maxResults > 0) {
@@ -183,7 +168,7 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = em.createQuery(jpql);
-    if (firstResult >= 0) {
+    if (firstResult > -1) {
       query.setFirstResult(firstResult);
     }
     if (maxResults > 0) {
@@ -328,7 +313,9 @@ public class CrudServiceBean implements CrudService {
   // 'U'
   @Override
   public <T> T merge(final T entity) {
-    return em.merge(entity);
+    final T mergedEntity = em.merge(entity);
+    em.flush();
+    return mergedEntity;
   }
 
   @Override
@@ -338,28 +325,9 @@ public class CrudServiceBean implements CrudService {
     }
     final Collection<T> mergedResults = new ArrayList<T>(entities.size());
     for (final T entity : entities) {
-      mergedResults.add(merge(entity));
+      mergedResults.add(em.merge(entity));
     }
-    return mergedResults;
-  }
-
-  @Override
-  public <T> T update(final T entity) {
-    final T mergedEntity = em.merge(entity);
     em.flush();
-    //getEntityManager().refresh(mergedEntity);
-    return mergedEntity;
-  }
-
-  @Override
-  public <T> Collection<T> update(final Collection<T> entities) {
-    if (entities == null) {
-      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
-    }
-    final Collection<T> mergedResults = new ArrayList<T>(entities.size());
-    for (final T entity : entities) {
-      mergedResults.add(update(entity));
-    }
     return mergedResults;
   }
 
@@ -376,20 +344,16 @@ public class CrudServiceBean implements CrudService {
   // 'D'
   @Override
   public void remove(final Object entity) {
-    //final EntityManager em = getEntityManager();
     final Object managedEntity = em.contains(entity) ? entity : em.merge(entity);
     em.remove(managedEntity);
-  }
-
-  @Override
-  public void remove(final Class<?> entityClass) {
-    getEntityManager().createQuery(CrudServiceUtils.createDeleteJpql(entityClass)).executeUpdate();
+    em.flush();
   }
 
   @Override
   public void remove(final Class<?> entityClass, final Object id) {
-    final Object ref = getEntityManager().getReference(entityClass, id);
-    getEntityManager().remove(ref);
+    final Object ref = em.getReference(entityClass, id);
+    em.remove(ref);
+    em.flush();
   }
 
   @Override
@@ -398,8 +362,15 @@ public class CrudServiceBean implements CrudService {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
     for (final Object entity : entities) {
-      remove(entity);
+      final Object managedEntity = em.contains(entity) ? entity : em.merge(entity);
+      em.remove(managedEntity);
     }
+    em.flush();
+  }
+
+  @Override
+  public void remove(final Class<?> entityClass) {
+    em.createQuery(CrudServiceUtils.createDeleteJpql(entityClass)).executeUpdate();
   }
 
   @Override
@@ -408,69 +379,30 @@ public class CrudServiceBean implements CrudService {
     query.executeUpdate();
   }
 
-  @Override
-  public void delete(final Object entity) {
-    remove(entity);
-    em.flush();
-  }
-
-  @Override
-  public void delete(final Class<?> entityClass, final Object id) {
-    remove(entityClass, id);
-    em.flush();
-  }
-
-  @Override
-  public void delete(final Collection<Object> entities) {
-    if (entities == null) {
-      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
-    }
-    for (final Object entity : entities) {
-      remove(entity);
-    }
-    em.flush();
-  }
-
-  @Override
-  public void delete(final Object example, final boolean any) {
-    remove(example, any);
-  }
-
   // C or U :-)
   @Override
   public <T> T store(final T entity) {
-    if (entity == null) {
-      throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entity"));
-    }
-    //Object id = getIdentity(entity);
-    final Object id = CrudServiceUtils.getIdValues(entity).get(0);
     if (!log.isDebugEnabled()) {
-      if (id != null) {
-        return find(entity.getClass(), id) == null ? create(entity) : merge(entity);
-      }
-      else {
-        return create(entity);
-      }
+      return hasIdentity(entity) ? merge(entity) : persist(entity);
     }
 
     // Debug
-    if (id != null) {
-      if (find(entity.getClass(), id) == null) {
-        final T e = create(entity);
-        log.debug("CrudService.store: persisted new entity, got id: " +
-            CrudServiceUtils.getIdValues(entity).get(0));
-        return e;
+    final StringBuffer debugMessage = new StringBuffer("CrudService.store: ");
+    try {
+      T e;
+      if (hasIdentity(entity)) {
+        e = merge(entity);
+        debugMessage.append("Merged existing entity with identity: ");
       }
       else {
-        log.debug("CrudService.store: merge existing entity with id: " + id);
-        return merge(entity);
+        e = persist(entity);
+        debugMessage.append("Persisted new entity. Got identity: ");
       }
-    }
-    else {
-      final T e = create(entity);
-      log.debug("CrudService.store: persisted new entity, got id: " +
-          CrudServiceUtils.getIdValues(entity).get(0));
+      debugMessage.append(listIdentity(e));
       return e;
+    }
+    finally {
+      log.debug(debugMessage);
     }
   }
 
@@ -499,8 +431,8 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public <T> T refresh(final T transientEntity) {
-    //final EntityManager em = getEntityManager();
-    final T managedEntity = em.contains(transientEntity) ? transientEntity
+    final T managedEntity = em.contains(transientEntity)
+    ? transientEntity
         : em.merge(transientEntity);
 
     em.refresh(managedEntity);
@@ -546,7 +478,6 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public void flushAndClear() {
-    //final EntityManager em = getEntityManager();
     em.flush();
     em.clear();
   }
@@ -557,6 +488,28 @@ public class CrudServiceBean implements CrudService {
       throw new IllegalStateException("EntityManager has not been set on service before usage");
     }
     return em;
+  }
+
+  protected boolean hasIdentity(final Object entity) {
+    final List<Object> ids = CrudServiceUtils.getIdValues(entity);
+    for (final Object id : ids) {
+      if (id != null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  protected String listIdentity(final Object entity) {
+    final List<Member> id = CrudServiceUtils.getIdAnnotations(entity.getClass());
+    final StringBuffer sb = new StringBuffer();
+    for (final Member member : id) {
+      sb.append(member.getName())
+      .append('=')
+      .append(ReflectionUtils.get(member, entity))
+      .append(", ");
+    }
+    return sb.delete(sb.length() - 2, sb.length() - 1).toString();
   }
 
   /**
