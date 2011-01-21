@@ -38,10 +38,10 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
     crudService.remove(Movie.class);
     assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 before tests";
     
-		crudService.persist(Movie.builder()
-      .withDirector("Alan Parker")
-      .withTitle("The Wall")
-      .withYear(1999)
+		crudService.persist(Movie.with()
+      .director("Alan Parker")
+      .title("The Wall")
+      .year(1999)
       .build());
 	}
 	
@@ -70,10 +70,10 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
 				
 				movieHome.clearInstance();
 				
-				Movie.builder(movieHome.getInstance())
-          .withDirector("Joel Coen")
-          .withTitle("Fargo")
-          .withYear(1996).build();
+				Movie.with(movieHome.getInstance())
+          .director("Joel Coen")
+          .title("Fargo")
+          .year(1996).build();
 				
 //				movieHome.getInstance().setDirector("Joel Coen");
 //				movieHome.getInstance().setTitle("Fargo");

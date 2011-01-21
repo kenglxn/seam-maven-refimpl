@@ -47,11 +47,11 @@ public class Movie implements java.io.Serializable {
     // I want to use a Builder instead of polluting code with setters/getters!
   }
   
-  public static Builder builder() {
+  public static Builder with() {
     return new Builder();
   }
 
-  public static Builder builder(Movie movie) {
+  public static Builder with(Movie movie) {
     if(movie == null) {
       throw new IllegalArgumentException("movie was null");
     }
@@ -111,22 +111,22 @@ public class Movie implements java.io.Serializable {
       this.movie = movie;
     }
     
-    public Builder withDirector(final String director) {
+    public Builder director(final String director) {
       movie.director = director;
       return this;
     }
     
-    public Builder withTitle(final String title) {
+    public Builder title(final String title) {
       movie.title = title;
       return this;
     }
     
-    public Builder withYear(final int year) {
+    public Builder year(final int year) {
       movie.year = year;
       return this;
     }
     
-    public Builder withPlot(final String plot) {
+    public Builder plot(final String plot) {
       movie.plot = plot;
       return this;
     }

@@ -52,17 +52,18 @@ public interface CrudService {
   /**
    * Make an entity instance managed and persistent.
    * <p>
-   * The passed entity is persisted first, then the <code>flush</code> method is invoked. This
-   * forces the EntityManager to flush its cache to the database. The state of the cached entities
-   * will be written to the database with one or more <code>INSERT</code> statements — but not
-   * committed yet. Either the database or the <code>EntityManager</code> will have to compute any
-   * technical primary key now. After the <code>flush</code> invocation, the entity is going to be
-   * <code>refreshed</code>. The state of the entity is overwritten with the state in the database.
-   * Finally, the fresh entity is returned to the caller. This strange behavior is sometimes
-   * required to force the JPA provider to update the technical key in the entity instance. The
-   * <code>persist</code>, <code>flush</code>, and <code>refresh</code> sequence further enforces
-   * the update of the <code>@Id</code> computed in the database. It is not backed by the spec, but
-   * it works with the popular providers.
+   * The passed entity is persisted first, then the {@link javax.persistence.EntityManager#flush()}
+   * method is invoked. This forces the EntityManager to flush its cache to the database. The state
+   * of the cached entities will be written to the database with one or more <code>INSERT</code>
+   * statements — but not committed yet. Either the database or the <code>EntityManager</code> will
+   * have to compute any technical primary key now. After the
+   * {@link javax.persistence.EntityManager#flush()} invocation, the entity is going to be refreshed
+   * by invoking {@link javax.persistence.EntityManager#refresh(Object)}. The state of the entity is
+   * overwritten with the state in the database. Finally, the fresh entity is returned to the
+   * caller. This strange behavior is sometimes required to force the JPA provider to update the
+   * technical key in the entity instance. The <code>persist</code>, <code>flush</code>, and
+   * <code>refresh</code> sequence further enforces the update of the <code>@Id</code> computed in
+   * the database. It is not backed by the spec, but it works with the popular providers.
    * </p>
    * 
    * @param entity the entity to persist
@@ -87,17 +88,19 @@ public interface CrudService {
   /**
    * Make a collection of entity instances managed and persistent.
    * <p>
-   * Each entity in the collection is persisted first, then the <code>flush</code> method is
-   * invoked. This forces the EntityManager to flush its cache to the database. The state of the
-   * cached entities will be written to the database with one or more <code>INSERT</code> statements
-   * — but not committed yet. Either the database or the <code>EntityManager</code> will have to
-   * compute any technical primary key now. After the <code>flush</code> invocation, the entity is
-   * going to be <code>refreshed</code>. The state of the entity is overwritten with the state in
-   * the database. Finally, the fresh entity is returned to the caller. This strange behavior is
-   * sometimes required to force the JPA provider to update the technical key in the entity
-   * instance. The <code>persist</code>, <code>flush</code>, and <code>refresh</code> sequence
-   * further enforces the update of the <code>@Id</code> computed in the database. It is not backed
-   * by the spec, but it works with the popular providers.
+   * Each entity in the collection is persisted first, then the
+   * {@link javax.persistence.EntityManager#flush()} method is invoked. This forces the
+   * EntityManager to flush its cache to the database. The state of the cached entities will be
+   * written to the database with one or more <code>INSERT</code> statements — but not committed
+   * yet. Either the database or the <code>EntityManager</code> will have to compute any technical
+   * primary key now. After the {@link javax.persistence.EntityManager#flush()} invocation, the
+   * entity is going to be refreshed by invoking
+   * {@link javax.persistence.EntityManager#refresh(Object)}. The state of the entity is overwritten
+   * with the state in the database. Finally, the fresh entity is returned to the caller. This
+   * strange behavior is sometimes required to force the JPA provider to update the technical key in
+   * the entity instance. The <code>persist</code>, <code>flush</code>, and <code>refresh</code>
+   * sequence further enforces the update of the <code>@Id</code> computed in the database. It is
+   * not backed by the spec, but it works with the popular providers.
    * </p>
    * 
    * @param entities A collection of entities to persist
@@ -118,18 +121,42 @@ public interface CrudService {
   <T> Collection<T> persist(Collection<T> entities);
 
   /**
+   * <p>
+   * Get an instance, whose state may be lazily fetched. If the requested instance does not exist in
+   * the database, throws {@link EntityNotFoundException} when the instance state is first accessed.
+   * (The persistence provider runtime is permitted to throw {@link EntityNotFoundException} when
+   * {@link #getReference} is called.) The application should not expect that the instance state
+   * will be available upon detachment, unless it was accessed by the application while the entity
+   * manager was open.
+   * </p>
+   * 
+   * @param entityClass the entity class to get a reference to
+   * @param primaryKey the primary key to the referenced entity
+   * @return the found entity instance
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if the first argument does
+   *           not denote an entity type or the second
+   *           argument is not a valid type for that
+   *           entity's primary key
+   * @throws EntityNotFoundException if the entity state
+   *           cannot be accessed
+   */
+  <T> T getReference(Class<T> entityClass, Object primaryKey);
+
+
+  /**
    * Find by primary key.
-   *
+   * 
    * @param entityClass the entity class to find an instance of
-   * @param id the primary key to find the entity by
+   * @param primaryKey the primary key to find the entity by
    * @return the found entity instance or null if the entity does not exist
    * @throws IllegalArgumentException if the first argument does
-   *         not denote an entity type or the second
-   *         argument is not a valid type for that
-   *         entity's primary key
+   *           not denote an entity type or the second
+   *           argument is not a valid type for that
+   *           entity's primary key
    * @see javax.persistence.EntityManager#find
    */
-  <T> T find(Class<T> entityClass, Object id);
+  <T> T find(Class<T> entityClass, Object primaryKey);
 
   /**
    * Find all entities of a particular type by generating a select query;
@@ -680,13 +707,42 @@ public interface CrudService {
 
   /**
    * <p>
-   * Refresh an entity that may have changed in another thread/transaction. If the entity is not in
-   * the 'managed' state, it is first merged into the persistent context, then refreshed.
+   * Refresh the state of the entity from the database (the entity may have changed in another
+   * thread/transaction), overwriting changes made to the entity, if any. Before refresh this method
+   * will get the entity instance by calling {@link EntityManager#find(entityClass, id)}.
+   * </p>
+   * 
+   * @param entityClass the entity type to refresh.
+   * @param id the entity identity to refresh.
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if the first argument does
+   *           not denote an entity type or the second
+   *           argument is not a valid type for that
+   *           entity's primary key
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   * @throws EntityNotFoundException if the entity no longer
+   *           exists in the database.
+   * @see javax.persistence.EntityManager#refresh(Object)
+   * @see javax.persistence.EntityManager#find(Class, Object)
+   */
+
+  <T> T refresh(Class<T> entityClass, Object id);
+
+  /**
+   * <p>
+   * Refresh the state of the instance from the database (the entity may have changed in another
+   * thread/transaction), overwriting changes made to the entity, if any. If the entity is not in
+   * the 'managed' state, this method will get the entity instance by calling
+   * {@link EntityManager#find(entityClass, id)}, then refresh.
    * </p>
    * 
    * @param transientEntity the transient entity to refresh
    * @return the refreshed entity
    * @see javax.persistence.EntityManager#refresh(Object)
+   * @see javax.persistence.EntityManager#find(Class, Object)
    * @throws IllegalArgumentException if instance is not an
    *           entity or is a removed entity
    * @throws TransactionRequiredException if invoked on a
@@ -700,14 +756,17 @@ public interface CrudService {
 
   /**
    * <p>
-   * Refresh a collection of entities that may have changed in another thread/transaction. If the
-   * entity is not in the 'managed' state, it is first merged into the persistent context, then
-   * refreshed.
+   * Refresh the state of a collection of entities from the database (the entities may have changed
+   * in another thread/transaction), overwriting change to the entity. If the entity is not in the
+   * 'managed' state, this method will get the entity instance by calling
+   * {@link EntityManager#find(entityClass, id)}, then refresh.
    * </p>
    * 
    * @param transientEntities a collection of transient entities to refresh
    * @return a collection of refreshed entities
    * @see javax.persistence.EntityManager#refresh(Object)
+   * @see javax.persistence.EntityManager#find(Class, Object)
+   * @see CrudService#refresh(Object)
    * @throws IllegalArgumentException if <code>transientEntities</code> parameter is null
    * @throws IllegalArgumentException if instance in the <code>transientEntities</code> collection
    *           is not an entity or is a removed entity
@@ -719,28 +778,6 @@ public interface CrudService {
    *           exists in the database.
    */
   <T> Collection<T> refresh(Collection<T> transientEntities);
-
-  /**
-   * <p>
-   * Refresh an entity that may have changed in another thread/transaction. If the entity is not in
-   * the 'managed' state, it is first merged into the persistent context, then refreshed.
-   * </p>
-   * 
-   * @param entityClass the entity type to refresh.
-   * @param id the entity identity to refresh.
-   * @see javax.persistence.EntityManager#refresh(Object)
-   * @throws IllegalArgumentException if the first argument does
-   *           not denote an entity type or the second
-   *           argument is not a valid type for that
-   *           entity's primary key
-   * @throws TransactionRequiredException if invoked on a
-   *           container-managed entity manager of type
-   *           PersistenceContextType.TRANSACTION and there is
-   *           no transaction.
-   * @throws EntityNotFoundException if the entity no longer
-   *           exists in the database.
-   */
-  <T> T refresh(Class<T> entityClass, Object id);
 
   /**
    * <p>
