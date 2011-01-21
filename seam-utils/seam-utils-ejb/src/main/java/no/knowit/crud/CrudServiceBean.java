@@ -82,8 +82,14 @@ public class CrudServiceBean implements CrudService {
   // 'R'
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> T find(final Class<T> entityClass, final Object id) {
-    return em.find(entityClass, id);
+  public <T> T getReference(final Class<T> entityClass, final Object primaryKey) {
+    return em.getReference(entityClass, primaryKey);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> T find(final Class<T> entityClass, final Object primaryKey) {
+    return em.find(entityClass, primaryKey);
   }
 
   @Override
@@ -96,16 +102,8 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
   public <T> List<T> find(final Class<T> entityClass, final int firstResult, final int maxResults) {
-    final Query query = getEntityManager()
-    .createQuery(CrudServiceUtils.createSelectJpql(entityClass));
-
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
-
+    final Query query = em.createQuery(CrudServiceUtils.createSelectJpql(entityClass));
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -122,13 +120,7 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = createExampleQuery(example, true, distinct, any);
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
-
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -144,14 +136,7 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findWithQuery(final String jpql, final int firstResult, final int maxResults) {
     final Query query = em.createQuery(jpql);
-
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
-
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -168,18 +153,12 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = em.createQuery(jpql);
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
-
     final Set<Entry<String, Object>> rawParameters = parameters.entrySet();
     for (final Entry<String, Object> entry : rawParameters) {
       query.setParameter(entry.getKey(), entry.getValue());
     }
 
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -196,13 +175,7 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findWithNamedQuery(final String queryName, final int firstResult,
       final int maxResults) {
     final Query query = em.createNamedQuery(queryName);
-
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -219,18 +192,11 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = em.createNamedQuery(queryName);
-
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
-
     final Set<Entry<String, Object>> rawParameters = parameters.entrySet();
     for (final Entry<String, Object> entry : rawParameters) {
       query.setParameter(entry.getKey(), entry.getValue());
     }
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -248,14 +214,7 @@ public class CrudServiceBean implements CrudService {
       final int maxResults) {
 
     final Query query = em.createNativeQuery(sql);
-
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
-
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -273,14 +232,7 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = em.createNativeQuery(sql, resultClass);
-
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
-
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -299,14 +251,7 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = em.createNativeQuery(sql, resultSetMapping);
-
-    if (firstResult > -1) {
-      query.setFirstResult(firstResult);
-    }
-    if (maxResults > 0) {
-      query.setMaxResults(maxResults);
-    }
-
+    addFirstAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -344,8 +289,8 @@ public class CrudServiceBean implements CrudService {
   // 'D'
   @Override
   public void remove(final Object entity) {
-    final Object managedEntity = em.contains(entity) ? entity : em.merge(entity);
-    em.remove(managedEntity);
+    final Object ref = em.contains(entity) ? entity : em.merge(entity);
+    em.remove(ref);
     em.flush();
   }
 
@@ -398,7 +343,7 @@ public class CrudServiceBean implements CrudService {
         e = persist(entity);
         debugMessage.append("Persisted new entity. Got identity: ");
       }
-      debugMessage.append(listIdentity(e));
+      debugMessage.append(identityToString(e));
       return e;
     }
     finally {
@@ -418,7 +363,7 @@ public class CrudServiceBean implements CrudService {
     return storedResults;
   }
 
-  // end C.R.U.D
+  //~ C.R.U.D
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -430,10 +375,19 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
+  public <T> T refresh(final Class<T> entityClass, final Object id) {
+    final T managedEntity = em.find(entityClass, id);
+    em.refresh(managedEntity);
+    return managedEntity;
+  }
+
+  @Override
   public <T> T refresh(final T transientEntity) {
+    @SuppressWarnings("unchecked")
     final T managedEntity = em.contains(transientEntity)
         ? transientEntity
-        : em.merge(transientEntity);
+        : (T) em.find(transientEntity.getClass(),
+            CrudServiceUtils.getIdValues(transientEntity).get(0));
 
     em.refresh(managedEntity);
     return managedEntity;
@@ -452,13 +406,6 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  public <T> T refresh(final Class<T> entityClass, final Object id) {
-    final T managedEntity = em.find(entityClass, id);
-    em.refresh(managedEntity);
-    return managedEntity;
-  }
-
-  @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public boolean isManaged(final Object entity) {
     return entity != null && getEntityManager().contains(entity);
@@ -466,13 +413,13 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public void flush() {
-    getEntityManager().flush();
+    em.flush();
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public void clear() {
-    getEntityManager().clear();
+    em.clear();
   }
 
   @Override
@@ -497,18 +444,6 @@ public class CrudServiceBean implements CrudService {
       }
     }
     return false;
-  }
-
-  protected String listIdentity(final Object entity) {
-    final List<Member> id = CrudServiceUtils.getIdAnnotations(entity.getClass());
-    final StringBuffer sb = new StringBuffer();
-    for (final Member member : id) {
-      sb.append(member.getName())
-      .append('=')
-      .append(ReflectionUtils.get(member, entity))
-      .append(", ");
-    }
-    return sb.delete(sb.length() - 2, sb.length() - 1).toString();
   }
 
   /**
@@ -557,6 +492,30 @@ public class CrudServiceBean implements CrudService {
     }
 
     return query;
+  }
+
+  private Query addFirstAndMaxResults(final Query query,
+      final int firstResult, final int maxResults) {
+
+    if (firstResult > -1) {
+      query.setFirstResult(firstResult);
+    }
+    if (maxResults > 0) {
+      query.setMaxResults(maxResults);
+    }
+    return query;
+  }
+
+  private String identityToString(final Object entity) {
+    final List<Member> id = CrudServiceUtils.getIdAnnotations(entity.getClass());
+    final StringBuffer sb = new StringBuffer();
+    for (final Member member : id) {
+      sb.append(member.getName())
+      .append('=')
+      .append(ReflectionUtils.get(member, entity))
+      .append(", ");
+    }
+    return sb.delete(sb.length() - 2, sb.length() - 1).toString();
   }
 
 }
