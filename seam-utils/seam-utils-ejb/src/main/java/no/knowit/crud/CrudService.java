@@ -520,53 +520,30 @@ public interface CrudService {
    * <p>
    * Creates an instance of {@link javax.persistence.Query} for executing a query in the Java
    * Persistence query language, binds all arguments in <code>parameters</code>, if any, to
-   * corresponding named parameters in the JPQL query. The number of entities returned by executing
-   * this query is limited by the <code>firstResult</code> and <code>maxResults</code> parameters. A
-   * negative value for <code>firstResult</code> indicates that <code>firstResult</code> should be
-   * ignored and {@link Query#setFirstResult(int)} is not called. Likewise a negative value for
-   * <code>maxResults</code> indicates that <code>maxResults</code> should be ignored and
-   * {@link Query#setMaxResults(int)} is not called.
+   * corresponding named parameters in the JPQL query.
    * </p>
    * 
    * @param queryName the name of the named query
    * @param parameters a map with arguments to bind to named parameters in the query. Use a
    *          {@link CrudService#EMPTY_PARAMETER_MAP} if you don't have any parameters to bind
-   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
-   *          negative value indicates that <code>firstResult</code> should be ignored and
-   *          {@link Query#setFirstResult(int)} is not called
-   * @param maxResults the maximum number of entities that should be returned by the query. A
-   *          negative value indicates that <code>maxResults</code> should be ignored and
-   *          {@link Query#setMaxResults(int)} is not called
    * @return the {@link javax.persistence.Query} instance
    * @see javax.persistence.EntityManager#createQuery(String)
    * @see javax.persistence.Query#setFirstResult(int)
    * @see javax.persistence.Query#setMaxResults(int)
    * @see javax.persistence.Query#setParameter(String, Object)
    */
-  Query createQuery(String jpql, Map<String, Object> parameters,
-      int firstResult, int maxResults);
+  Query createQuery(String jpql, Map<String, Object> parameters);
 
   /**
    * <p>
    * Creates an instance of {@link javax.persistence.NamedQuery} for executing a named query (in the
    * Java Persistence query language or in native SQL), binds all arguments in
-   * <code>parameters</code>, if any, to corresponding named parameters in the named query. The
-   * number of entities returned by executing this query is limited by the <code>firstResult</code>
-   * and <code>maxResults</code> parameters. A negative value for <code>firstResult</code> indicates
-   * that <code>firstResult</code> should be ignored and {@link Query#setFirstResult(int)} is not
-   * called. Likewise a negative value for <code>maxResults</code> indicates that
-   * <code>maxResults</code> should be ignored and {@link Query#setMaxResults(int)} is not called.
+   * <code>parameters</code>, if any, to corresponding named parameters in the named query.
    * </p>
    * 
    * @param queryName the name of the named query
    * @param parameters a map with arguments to bind to named parameters in the query. Use a
    *          {@link CrudService#EMPTY_PARAMETER_MAP} if you don't have any parameters to bind
-   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
-   *          negative value indicates that <code>firstResult</code> should be ignored and
-   *          {@link Query#setFirstResult(int)} is not called
-   * @param maxResults the maximum number of entities that should be returned by the query. A
-   *          negative value indicates that <code>maxResults</code> should be ignored and
-   *          {@link Query#setMaxResults(int)} is not called
    * @return the {@link javax.persistence.Query} instance
    * @throws IllegalArgumentException if a query has not been
    *           defined with the given name
@@ -578,73 +555,43 @@ public interface CrudService {
    * @see javax.persistence.Query#setParameter(String, Object)
    * @see javax.persistence.Query#getResultList()
    */
-  Query createNamedQuery(String jpql, Map<String, Object> parameters,
-      int firstResult, int maxResults);
+  Query createNamedQuery(String jpql, Map<String, Object> parameters);
 
   /**
    * <p>
    * Creates an instance of {@link javax.persistence.Query} using a native SQL select statement,
    * binds all arguments in <code>parameters</code>, if any, to corresponding named parameters in
-   * the native SQL. The number of entities returned by executing this query is limited by the
-   * <code>firstResult</code> and <code>maxResults</code> parameters. A negative value for
-   * <code>firstResult</code> indicates that <code>firstResult</code> should be ignored and
-   * {@link Query#setFirstResult(int)} is not called. Likewise a negative value for
-   * <code>maxResults</code> indicates that <code>maxResults</code> should be ignored and
-   * {@link Query#setMaxResults(int)} is not called.
+   * the native SQL.
    * </p>
    * 
    * @param sql the native SQL query to execute
    * @param parameters a map with arguments to bind to named parameters in the query. Use a
    *          {@link CrudService#EMPTY_PARAMETER_MAP} if you don't have any parameters to bind
-   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
-   *          negative value indicates that <code>firstResult</code> should be ignored and
-   *          {@link Query#setFirstResult(int)} is not called
-   * @param maxResults the maximum number of entities that should be returned by the query. A
-   *          negative value indicates that <code>maxResults</code> should be ignored and
-   *          {@link Query#setMaxResults(int)} is not called
    * @return the {@link javax.persistence.Query} instance
    */
-  Query createNativeQuery(String sql, Map<String, Object> parameters,
-      final int firstResult, final int maxResults);
+  Query createNativeQuery(String sql, Map<String, Object> parameters);
 
   /**
    * <p>
    * Creates an instance of {@link javax.persistence.Query} using a native SQL statement that
    * retrieves a single entity type, binds all arguments in <code>parameters</code>, if any, to
    * corresponding named parameters in the native SQL. The type of results is determined by the
-   * <code>resultClass</code> parameter. The number of entities returned by executing this query is
-   * limited by the <code>firstResult</code> and <code>maxResults</code> parameters. A negative
-   * value for <code>firstResult</code> indicates that <code>firstResult</code> should be ignored
-   * and {@link Query#setFirstResult(int)} is not called. Likewise a negative value for
-   * <code>maxResults</code> indicates that <code>maxResults</code> should be ignored and
-   * {@link Query#setMaxResults(int)} is not called.
+   * <code>resultClass</code> parameter.
    * </p>
    * 
    * @param sql the native SQL query to execute
    * @param resultClass the class of the resulting instance(s)
    * @param parameters a map with arguments to bind to named parameters in the query. Use a
    *          {@link CrudService#EMPTY_PARAMETER_MAP} if you don't have any parameters to bind
-   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
-   *          negative value indicates that <code>firstResult</code> should be ignored and
-   *          {@link Query#setFirstResult(int)} is not called
-   * @param maxResults the maximum number of entities that should be returned by the query. A
-   *          negative value indicates that <code>maxResults</code> should be ignored and
-   *          {@link Query#setMaxResults(int)} is not called
    * @return the {@link javax.persistence.Query} instance
    */
-  Query createNativeQuery(String sql, Class<?> resultClass, Map<String, Object> parameters,
-      int firstResult, int maxResults);
+  Query createNativeQuery(String sql, Class<?> resultClass, Map<String, Object> parameters);
 
   /**
    * <p>
    * Creates an instance of {@link javax.persistence.Query} using a native SQL statement that
    * retrieves a result set with multiple entity types, binds all arguments in
-   * <code>parameters</code>, if any, to corresponding named parameters in the native SQL. The
-   * number of entities returned by executing this query is limited by the <code>firstResult</code>
-   * and <code>maxResults</code> parameters. A negative value for <code>firstResult</code> indicates
-   * that <code>firstResult</code> should be ignored and {@link Query#setFirstResult(int)} is not
-   * called. Likewise a negative value for <code>maxResults</code> indicates that
-   * <code>maxResults</code> should be ignored and {@link Query#setMaxResults(int)} is not called.
+   * <code>parameters</code>, if any, to corresponding named parameters in the native SQL.
    * </p>
    * <p>
    * For example, if we want to create a <code>SqlResultSetMapping</code> for the <code>User</code>
@@ -673,16 +620,9 @@ public interface CrudService {
    * @param resultSetMapping the name of the result set mapping
    * @param parameters a map with arguments to bind to named parameters in the query. Use a
    *          {@link CrudService#EMPTY_PARAMETER_MAP} if you don't have any parameters to bind
-   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
-   *          negative value indicates that <code>firstResult</code> should be ignored and
-   *          {@link Query#setFirstResult(int)} is not called
-   * @param maxResults the maximum number of entities that should be returned by the query. A
-   *          negative value indicates that <code>maxResults</code> should be ignored and
-   *          {@link Query#setMaxResults(int)} is not called
    * @return the {@link javax.persistence.Query} instance
    */
-  Query createNativeQuery(String sql, String resultSetMapping, Map<String, Object> parameters,
-      int firstResult, int maxResults);
+  Query createNativeQuery(String sql, String resultSetMapping, Map<String, Object> parameters);
 
   /**
    * <p>
