@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
@@ -20,12 +21,16 @@ import org.hibernate.validator.NotNull;
   @NamedQuery(name = "Movie.byDirectorOrTitle",
       query = "from Movie m where m.director = :director or m.title = :title")
 })
+
+@NamedNativeQuery(name = "Movie.sqlAll", query = "select * from movie m", resultClass = Movie.class)
+
 public class Movie implements java.io.Serializable {
 
   private static final long serialVersionUID = 1L;
 
   public static final String ALL_MOVIES = "Movie.all";
   public static final String MOVIES_BY_DIRECTOR_OR_TITLE = "Movie.byDirectorOrTitle";
+  public static final String SQL_ALL_MOVIES = "Movie.sqlAll";
 
   @Id
   @GeneratedValue(strategy = IDENTITY)

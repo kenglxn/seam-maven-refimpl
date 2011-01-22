@@ -78,7 +78,7 @@ public class CrudServiceTest extends OpenEjbTest {
 
 
     // Delete all movies
-    crudService.remove(Movie.class);
+    crudService.removeWithType(Movie.class);
     assert crudService.findWithType(Movie.class).size() == 0 : "List.size():";
 
     // Persist 4 movies
@@ -137,7 +137,7 @@ public class CrudServiceTest extends OpenEjbTest {
   @Override
   @AfterClass
   public void cleanupClass() throws Exception {
-    crudService.remove(Movie.class);
+    crudService.removeWithType(Movie.class);
     assert crudService.findWithType(Movie.class).size() == 0 : "Expected Movie list size 0 after cleanup";
     super.cleanupClass();
   }
@@ -227,39 +227,59 @@ public class CrudServiceTest extends OpenEjbTest {
     final String jpql = "from Movie m";
     List<Movie> movies;
 
-    movies= crudService.findWithQuery(jpql, 0, 2);
-    assert movies.size() == 2;
+    movies = crudService.findWithQuery(jpql, null, 0, 2);
+    assert movies.size() == 2 : "expected: 2 but was: " + movies.size();
 
     final String jpqlByDirectorOrTitle = jpql + " where m.director = :director or m.title = :title";
     movies = crudService.findWithQuery(jpqlByDirectorOrTitle, QueryParameter
         .with("director", DIRECTOR_JOEL_COEN)
         .and("title", ALL_QUIET_ON_THE_WESTERN_FRONT)
-        .parameters());
-    assert movies.size() > 0;
+        .parameters(), -1, -1);
+    assert movies.size() > 0 : "expected movies.size() > 0";
   }
 
   @Test
   public void findWithNamedQuery() {
     List<Movie> movies;
-    movies = crudService.findWithNamedQuery(Movie.ALL_MOVIES, 0, 2);
-    assert movies.size() == 2;
+    movies = crudService.findWithNamedQuery(Movie.ALL_MOVIES, null, 0, 2);
+    assert movies.size() == 2 : "expected: 2 but was: " + movies.size();
 
     movies = crudService.findWithNamedQuery(Movie.MOVIES_BY_DIRECTOR_OR_TITLE, QueryParameter
         .with("director", DIRECTOR_JOEL_COEN)
         .and("title", ALL_QUIET_ON_THE_WESTERN_FRONT)
-        .parameters());
-    assert movies.size() > 0;
+        .parameters(), -1, -1);
+    assert movies.size() > 0 : "expected movies.size() > 0";
   }
 
   @Test
   public void findByNativeQuery() {
     final String sql = "select * from movie m";
 
-    final List<?> rawResults = crudService.findByNativeQuery(sql, 0, 2);
-    assert rawResults.size() == 2;
+    List<?> rawResults;
+    rawResults = crudService.findByNativeQuery(sql, CrudService.EMPTY_PARAMETER_MAP, 0, 2);
+    assert rawResults.size() == 2 : "expected: 2 but was: " + rawResults.size();
 
-    final List<Movie> movies = crudService.findByNativeQuery(sql, Movie.class);
-    assert movies.size() >= 4;
+    List<Movie> movies;
+    movies = crudService.findByNativeQuery(sql, Movie.class);
+    assert movies.size() >= 4 : "expected movies.size() >= 4";
+
+    final String sqlByDirector = sql + " where m.director = :director";
+    rawResults = crudService.findByNativeQuery(sqlByDirector,
+        QueryParameter.with("director", DIRECTOR_JOEL_COEN).parameters(), -1, -1);
+    assert movies.size() > 0 : "expected movies.size() > 0";
+
+    movies = crudService.findByNativeQuery(sqlByDirector, Movie.class,
+        QueryParameter.with("director", DIRECTOR_JOEL_COEN).parameters(), -1, -1);
+  }
+
+  @Test
+  public void findByNamedNativeQuery() {
+    List<Movie> movies;
+    movies = crudService.findWithNamedQuery(Movie.SQL_ALL_MOVIES);
+    assert movies.size() > 0 : "expected movies.size() > 0";
+
+    movies = crudService.findWithNamedQuery(Movie.SQL_ALL_MOVIES, null, -1, -1);
+    assert movies.size() > 0 : "expected movies.size() > 0";
   }
 
   @Test
@@ -275,7 +295,7 @@ public class CrudServiceTest extends OpenEjbTest {
 
     userTransaction.begin();
     try {
-      crudService.remove(exampleMovie, true);
+      crudService.removeByExample(exampleMovie, true);
       final List<Movie> movies = crudService.findByExample(exampleMovie, false, true);
       Assert.assertEquals(movies.size(), 0, "List.size()");
     }
@@ -291,7 +311,7 @@ public class CrudServiceTest extends OpenEjbTest {
     crudService.persist(new NamedEntity(100));
     assert crudService.findWithType(NamedEntity.class).size() > 0;
     assert crudService.count(NamedEntity.class) > 0;
-    crudService.remove(NamedEntity.class);
+    crudService.removeWithType(NamedEntity.class);
   }
 
   @Test
