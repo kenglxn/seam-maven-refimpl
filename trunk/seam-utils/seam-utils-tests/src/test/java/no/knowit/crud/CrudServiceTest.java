@@ -79,7 +79,7 @@ public class CrudServiceTest extends OpenEjbTest {
 
     // Delete all movies
     crudService.remove(Movie.class);
-    assert crudService.find(Movie.class).size() == 0 : "List.size():";
+    assert crudService.findWithType(Movie.class).size() == 0 : "List.size():";
 
     // Persist 4 movies
     ArrayList<Movie> movies = new ArrayList<Movie>();
@@ -131,14 +131,14 @@ public class CrudServiceTest extends OpenEjbTest {
     allQuietOnTheWesternFront = movies.get(3);
     assert allQuietOnTheWesternFront.getId() != null;
 
-    assert crudService.find(Movie.class).size() == 4 : "List.size(): expected 4";
+    assert crudService.findWithType(Movie.class).size() == 4 : "List.size(): expected 4";
   }
 
   @Override
   @AfterClass
   public void cleanupClass() throws Exception {
     crudService.remove(Movie.class);
-    assert crudService.find(Movie.class).size() == 0 : "Expected Movie list size 0 after cleanup";
+    assert crudService.findWithType(Movie.class).size() == 0 : "Expected Movie list size 0 after cleanup";
     super.cleanupClass();
   }
 
@@ -208,7 +208,7 @@ public class CrudServiceTest extends OpenEjbTest {
   @Test
   public void findAll() throws Exception {
     // Already tested in setupClass...
-    final List<Movie> allMovies = crudService.find(Movie.class);
+    final List<Movie> allMovies = crudService.findWithType(Movie.class);
     assert allMovies.size() > 0 : "Did not find any movies";
   }
 
@@ -289,7 +289,7 @@ public class CrudServiceTest extends OpenEjbTest {
   @Test
   public void shouldQueryANamedEntity() throws Exception {
     crudService.persist(new NamedEntity(100));
-    assert crudService.find(NamedEntity.class).size() > 0;
+    assert crudService.findWithType(NamedEntity.class).size() > 0;
     assert crudService.count(NamedEntity.class) > 0;
     crudService.remove(NamedEntity.class);
   }
