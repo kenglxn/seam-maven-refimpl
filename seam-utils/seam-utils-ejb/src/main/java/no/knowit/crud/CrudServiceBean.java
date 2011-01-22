@@ -93,20 +93,6 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> find(final Class<T> entityClass) {
-    return find(entityClass, -1, -1);
-  }
-
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public <T> List<T> find(final Class<T> entityClass, final int firstResult, final int maxResults) {
-    final Query query = em.createQuery(CrudServiceUtils.createSelectJpql(entityClass));
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
-  }
-
-  @Override
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findWithQuery(final String jpql) {
@@ -175,6 +161,20 @@ public class CrudServiceBean implements CrudService {
     for (final Entry<String, Object> entry : rawParameters) {
       query.setParameter(entry.getKey(), entry.getValue());
     }
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> List<T> findWithType(final Class<T> entityClass) {
+    return findWithType(entityClass, -1, -1);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public <T> List<T> findWithType(final Class<T> entityClass, final int firstResult, final int maxResults) {
+    final Query query = em.createQuery(CrudServiceUtils.createSelectJpql(entityClass));
     return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
@@ -375,7 +375,7 @@ public class CrudServiceBean implements CrudService {
   public <T> T refresh(final T transientEntity) {
     @SuppressWarnings("unchecked")
     final T managedEntity = em.contains(transientEntity)
-        ? transientEntity
+    ? transientEntity
         : (T) em.find(transientEntity.getClass(),
             CrudServiceUtils.getIdValues(transientEntity).get(0));
 

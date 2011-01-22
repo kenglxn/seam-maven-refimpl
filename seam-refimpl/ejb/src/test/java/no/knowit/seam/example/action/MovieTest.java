@@ -71,7 +71,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		// Delete all movies
 		CrudService crudService = doJndiLookup("crudService");
 		crudService.remove(new Movie(), true);
-		assert crudService.find(Movie.class).size() == 0 : "List.size():";
+		assert crudService.findWithType(Movie.class).size() == 0 : "List.size():";
 		
 		// Persist 3 movies
 		ArrayList<Movie> movies = new ArrayList<Movie>();
@@ -86,7 +86,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		  "and the persistent police work of pregnant Marge Gunderson."));
 		
 		movies = (ArrayList<Movie>) crudService.persist(movies);
-    assert crudService.find(Movie.class).size() == 3 : "List.size():";
+    assert crudService.findWithType(Movie.class).size() == 3 : "List.size():";
     
 		theBigLebowskiId = movies.get(0).getId();
     reservoirDogsId = movies.get(1).getId();

@@ -158,29 +158,6 @@ public interface CrudService {
    */
   <T> T find(Class<T> entityClass, Object primaryKey);
 
-  /**
-   * Find all entities of a particular type by generating a select query;
-   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code>
-   * is the given <code>entityClass</code> parameter.
-   * @param entityClass the entity class to find instances of
-   * @return a list of entities
-   * @throws IllegalArgumentException if produced query string is not valid
-   */
-  <T> List<T> find(Class<T> entityClass);
-
-  /**
-   * Find all entities of a particular type by generating a select query;
-   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
-   * <code>entityClass</code> parameter. The number of entities
-   * returned is limited by the <code>firstResult</code> and <code>maxResults</code> parameters.
-   * 
-   * @param entityClass the entity class to find instances of
-   * @param firstResult position of the first result to be returned by the query, numbered from 0
-   * @param maxResults the maximum number of entities that should be returned by the query
-   * @return a list of entities
-   * @see CrudService#find(Class)
-   */
-  <T> List<T> find(Class<T> entityClass, int firstResult, int maxResults);
 
   /**
    * Creates an instance of Query for executing a query in the Java Persistence query
@@ -339,6 +316,31 @@ public interface CrudService {
    */
   <T> List<T> findWithNamedQuery(String queryName, Map<String, Object> parameters,
       int firstResult, int maxResults);
+
+  /**
+   * Find all entities of a particular type by generating a select query;
+   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
+   * <code>entityClass</code> parameter.
+   * 
+   * @param entityClass the entity class to find instances of
+   * @return a list of entities
+   * @throws IllegalArgumentException if produced query string is not valid
+   */
+  <T> List<T> findWithType(Class<T> entityClass);
+
+  /**
+   * Find all entities of a particular type by generating a select query;
+   * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
+   * <code>entityClass</code> parameter. The number of entities
+   * returned is limited by the <code>firstResult</code> and <code>maxResults</code> parameters.
+   * 
+   * @param entityClass the entity class to find instances of
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
+   * @return a list of entities
+   * @see CrudService#findWithType(Class)
+   */
+  <T> List<T> findWithType(Class<T> entityClass, int firstResult, int maxResults);
 
   /**
    * <p>
