@@ -35,7 +35,7 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
 		super.setupClass();
 		
     CrudService crudService = (CrudService)getInitialContext().lookup("crudService/Local");
-    crudService.remove(Movie.class);
+    crudService.removeWithType(Movie.class);
     assert crudService.findWithType(Movie.class).size() == 0 : "Expected Movie list size 0 before tests";
     
 		crudService.persist(Movie.with()
@@ -49,7 +49,7 @@ public class SeamFrameworkTest extends SeamOpenEjbTest {
   @AfterClass
 	public void cleanupClass() throws Exception {
     CrudService crudService = (CrudService)getInitialContext().lookup("crudService/Local");
-    crudService.remove(Movie.class);
+    crudService.removeWithType(Movie.class);
     assert crudService.findWithType(Movie.class).size() == 0 : "Expected Movie list size 0 after cleanup"; 
 
     super.cleanupClass();

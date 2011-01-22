@@ -70,7 +70,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		
 		// Delete all movies
 		CrudService crudService = doJndiLookup("crudService");
-		crudService.remove(new Movie(), true);
+		crudService.removeByExample(new Movie(), true);
 		assert crudService.findWithType(Movie.class).size() == 0 : "List.size():";
 		
 		// Persist 3 movies

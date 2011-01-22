@@ -92,6 +92,9 @@ public class CrudServiceBean implements CrudService {
     return em.find(entityClass, primaryKey);
   }
 
+  // ---------------
+  // Find with Query
+  // ---------------
   @Override
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -102,29 +105,10 @@ public class CrudServiceBean implements CrudService {
   @Override
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findWithQuery(final String jpql, final int firstResult, final int maxResults) {
-    final Query query = em.createQuery(jpql);
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
-  }
-
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findWithQuery(final String jpql, final Map<String, Object> parameters) {
-    return findWithQuery(jpql, parameters, -1, -1);
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findWithQuery(final String jpql, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
-    final Query query = em.createQuery(jpql);
-    final Set<Entry<String, Object>> rawParameters = parameters.entrySet();
-    for (final Entry<String, Object> entry : rawParameters) {
-      query.setParameter(entry.getKey(), entry.getValue());
-    }
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+    return createQuery(jpql, parameters, firstResult, maxResults).getResultList();
   }
 
   @SuppressWarnings("unchecked")
@@ -137,33 +121,15 @@ public class CrudServiceBean implements CrudService {
   @SuppressWarnings("unchecked")
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findWithNamedQuery(final String queryName, final int firstResult,
-      final int maxResults) {
+  public <T> List<T> findWithNamedQuery(final String queryName,
+      final Map<String, Object> parameters, final int firstResult, final int maxResults) {
 
-    final Query query = em.createNamedQuery(queryName);
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+    return createNamedQuery(queryName, parameters, firstResult, maxResults).getResultList();
   }
 
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findWithNamedQuery(final String queryName, final Map<String, Object> parameters) {
-    return findWithNamedQuery(queryName, parameters, -1, -1);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findWithNamedQuery(final String queryName, final Map<String, Object> parameters,
-      final int firstResult, final int maxResults) {
-
-    final Query query = em.createNamedQuery(queryName);
-    final Set<Entry<String, Object>> rawParameters = parameters.entrySet();
-    for (final Entry<String, Object> entry : rawParameters) {
-      query.setParameter(entry.getKey(), entry.getValue());
-    }
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
-  }
-
+  // ---------------
+  // Find with Type
+  // ---------------
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findWithType(final Class<T> entityClass) {
@@ -173,11 +139,16 @@ public class CrudServiceBean implements CrudService {
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
-  public <T> List<T> findWithType(final Class<T> entityClass, final int firstResult, final int maxResults) {
-    final Query query = em.createQuery(CrudServiceUtils.createSelectJpql(entityClass));
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+  public <T> List<T> findWithType(final Class<T> entityClass,
+      final int firstResult, final int maxResults) {
+
+    return createQuery(CrudServiceUtils.createSelectJpql(entityClass), EMPTY_PARAMETER_MAP,
+        firstResult, maxResults).getResultList();
   }
 
+  // ---------------
+  // Find by Example
+  // ---------------
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findByExample(final T example, final boolean distinct, final boolean any) {
@@ -191,9 +162,13 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = createExampleQuery(example, true, distinct, any);
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+    setQueryParameters(query, EMPTY_PARAMETER_MAP, firstResult, maxResults);
+    return query.getResultList();
   }
 
+  // --------------------
+  // Find by Native Query
+  // --------------------
   @SuppressWarnings("unchecked")
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -201,14 +176,13 @@ public class CrudServiceBean implements CrudService {
     return em.createNativeQuery(sql).getResultList();
   }
 
-  @SuppressWarnings("unchecked")
   @Override
+  @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByNativeQuery(final String sql, final int firstResult,
-      final int maxResults) {
+  public <T> List<T> findByNativeQuery(final String sql, final Map<String, Object> parameters,
+      final int firstResult, final int maxResults) {
 
-    final Query query = em.createNativeQuery(sql);
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+    return createNativeQuery(sql, parameters, firstResult, maxResults).getResultList();
   }
 
   @Override
@@ -222,10 +196,9 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
   public <T> List<T> findByNativeQuery(final String sql, final Class<T> resultClass,
-      final int firstResult, final int maxResults) {
+      final Map<String, Object> parameters, final int firstResult, final int maxResults) {
 
-    final Query query = em.createNativeQuery(sql, resultClass);
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+    return createNativeQuery(sql, resultClass, parameters, firstResult, maxResults).getResultList();
   }
 
   @Override
@@ -239,10 +212,58 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
   public <T> List<T> findByNativeQuery(final String sql, final String resultSetMapping,
+      final Map<String, Object> parameters, final int firstResult, final int maxResults) {
+
+    return createNativeQuery(sql, resultSetMapping, parameters, firstResult, maxResults)
+    .getResultList();
+  }
+
+  // ---------------
+  // Create Query
+  // ---------------
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Query createQuery(final String jpql, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
+    final Query query = em.createQuery(jpql);
+    return setQueryParameters(query, parameters, firstResult, maxResults);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Query createNamedQuery(final String jpql, final Map<String, Object> parameters,
+      final int firstResult, final int maxResults) {
+
+    final Query query = em.createNamedQuery(jpql);
+    return setQueryParameters(query, parameters, firstResult, maxResults);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Query createNativeQuery(final String sql, final Map<String, Object> parameters,
+      final int firstResult, final int maxResults) {
+
+    final Query query = em.createNativeQuery(sql);
+    return setQueryParameters(query, parameters, firstResult, maxResults);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Query createNativeQuery(final String sql, final Class<?> resultClass,
+      final Map<String, Object> parameters, final int firstResult, final int maxResults) {
+
+    final Query query = em.createNativeQuery(sql, resultClass);
+    return setQueryParameters(query, parameters, firstResult, maxResults);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Query createNativeQuery(final String sql, final String resultSetMapping,
+      final Map<String, Object> parameters, final int firstResult, final int maxResults) {
+
     final Query query = em.createNativeQuery(sql, resultSetMapping);
-    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+    return setQueryParameters(query, parameters, firstResult, maxResults);
   }
 
   // 'U'
@@ -304,14 +325,14 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  public void remove(final Class<?> entityClass) {
-    em.createQuery(CrudServiceUtils.createDeleteJpql(entityClass)).executeUpdate();
+  public void removeByExample(final Object example, final boolean any) {
+    final Query query = createExampleQuery(example, false, false, any);
+    query.executeUpdate();
   }
 
   @Override
-  public void remove(final Object example, final boolean any) {
-    final Query query = createExampleQuery(example, false, false, any);
-    query.executeUpdate();
+  public void removeWithType(final Class<?> entityClass) {
+    em.createQuery(CrudServiceUtils.createDeleteJpql(entityClass)).executeUpdate();
   }
 
   // C or U :-)
@@ -484,7 +505,7 @@ public class CrudServiceBean implements CrudService {
     return query;
   }
 
-  private Query addFirstAndMaxResults(final Query query,
+  private Query setQueryParameters(final Query query, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
     if (firstResult > -1) {
@@ -492,6 +513,13 @@ public class CrudServiceBean implements CrudService {
     }
     if (maxResults > 0) {
       query.setMaxResults(maxResults);
+    }
+
+    if (parameters != null) {
+      final Set<Entry<String, Object>> rawParameters = parameters.entrySet();
+      for (final Entry<String, Object> entry : rawParameters) {
+        query.setParameter(entry.getKey(), entry.getValue());
+      }
     }
     return query;
   }
