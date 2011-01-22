@@ -108,7 +108,9 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findWithQuery(final String jpql, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
-    return createQuery(jpql, parameters, firstResult, maxResults).getResultList();
+    final Query query = createQuery(jpql, parameters);
+    setFirstResultAndMaxResults(query, firstResult, maxResults);
+    return query.getResultList();
   }
 
   @SuppressWarnings("unchecked")
@@ -124,7 +126,8 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findWithNamedQuery(final String queryName,
       final Map<String, Object> parameters, final int firstResult, final int maxResults) {
 
-    return createNamedQuery(queryName, parameters, firstResult, maxResults).getResultList();
+    final Query query = createNamedQuery(queryName, parameters);
+    return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   // ---------------
@@ -142,8 +145,8 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findWithType(final Class<T> entityClass,
       final int firstResult, final int maxResults) {
 
-    return createQuery(CrudServiceUtils.createSelectJpql(entityClass), EMPTY_PARAMETER_MAP,
-        firstResult, maxResults).getResultList();
+    final Query query = em.createQuery(CrudServiceUtils.createSelectJpql(entityClass));
+    return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   // ---------------
@@ -162,7 +165,7 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = createExampleQuery(example, true, distinct, any);
-    setQueryParameters(query, EMPTY_PARAMETER_MAP, firstResult, maxResults);
+    setFirstResultAndMaxResults(query, firstResult, maxResults);
     return query.getResultList();
   }
 
@@ -182,7 +185,8 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByNativeQuery(final String sql, final Map<String, Object> parameters,
       final int firstResult, final int maxResults) {
 
-    return createNativeQuery(sql, parameters, firstResult, maxResults).getResultList();
+    final Query query = createNativeQuery(sql, parameters);
+    return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @Override
@@ -198,7 +202,8 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByNativeQuery(final String sql, final Class<T> resultClass,
       final Map<String, Object> parameters, final int firstResult, final int maxResults) {
 
-    return createNativeQuery(sql, resultClass, parameters, firstResult, maxResults).getResultList();
+    final Query query = createNativeQuery(sql, resultClass, parameters);
+    return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @Override
@@ -214,8 +219,8 @@ public class CrudServiceBean implements CrudService {
   public <T> List<T> findByNativeQuery(final String sql, final String resultSetMapping,
       final Map<String, Object> parameters, final int firstResult, final int maxResults) {
 
-    return createNativeQuery(sql, resultSetMapping, parameters, firstResult, maxResults)
-    .getResultList();
+    final Query query = createNativeQuery(sql, resultSetMapping, parameters);
+    return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   // ---------------
@@ -223,47 +228,43 @@ public class CrudServiceBean implements CrudService {
   // ---------------
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Query createQuery(final String jpql, final Map<String, Object> parameters,
-      final int firstResult, final int maxResults) {
-
+  public Query createQuery(final String jpql, final Map<String, Object> parameters) {
     final Query query = em.createQuery(jpql);
-    return setQueryParameters(query, parameters, firstResult, maxResults);
+    return setQueryParameters(query, parameters);
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Query createNamedQuery(final String jpql, final Map<String, Object> parameters,
-      final int firstResult, final int maxResults) {
+  public Query createNamedQuery(final String jpql, final Map<String, Object> parameters) {
 
     final Query query = em.createNamedQuery(jpql);
-    return setQueryParameters(query, parameters, firstResult, maxResults);
+    return setQueryParameters(query, parameters);
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Query createNativeQuery(final String sql, final Map<String, Object> parameters,
-      final int firstResult, final int maxResults) {
+  public Query createNativeQuery(final String sql, final Map<String, Object> parameters) {
 
     final Query query = em.createNativeQuery(sql);
-    return setQueryParameters(query, parameters, firstResult, maxResults);
+    return setQueryParameters(query, parameters);
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Query createNativeQuery(final String sql, final Class<?> resultClass,
-      final Map<String, Object> parameters, final int firstResult, final int maxResults) {
+      final Map<String, Object> parameters) {
 
     final Query query = em.createNativeQuery(sql, resultClass);
-    return setQueryParameters(query, parameters, firstResult, maxResults);
+    return setQueryParameters(query, parameters);
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Query createNativeQuery(final String sql, final String resultSetMapping,
-      final Map<String, Object> parameters, final int firstResult, final int maxResults) {
+      final Map<String, Object> parameters) {
 
     final Query query = em.createNativeQuery(sql, resultSetMapping);
-    return setQueryParameters(query, parameters, firstResult, maxResults);
+    return setQueryParameters(query, parameters);
   }
 
   // 'U'
@@ -505,7 +506,17 @@ public class CrudServiceBean implements CrudService {
     return query;
   }
 
-  private Query setQueryParameters(final Query query, final Map<String, Object> parameters,
+  private Query setQueryParameters(final Query query, final Map<String, Object> parameters) {
+    if (parameters != null) {
+      final Set<Entry<String, Object>> rawParameters = parameters.entrySet();
+      for (final Entry<String, Object> entry : rawParameters) {
+        query.setParameter(entry.getKey(), entry.getValue());
+      }
+    }
+    return query;
+  }
+
+  private Query setFirstResultAndMaxResults(final Query query,
       final int firstResult, final int maxResults) {
 
     if (firstResult > -1) {
@@ -513,13 +524,6 @@ public class CrudServiceBean implements CrudService {
     }
     if (maxResults > 0) {
       query.setMaxResults(maxResults);
-    }
-
-    if (parameters != null) {
-      final Set<Entry<String, Object>> rawParameters = parameters.entrySet();
-      for (final Entry<String, Object> entry : rawParameters) {
-        query.setParameter(entry.getKey(), entry.getValue());
-      }
     }
     return query;
   }
