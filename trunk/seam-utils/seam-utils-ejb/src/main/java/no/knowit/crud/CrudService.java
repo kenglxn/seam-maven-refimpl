@@ -172,7 +172,7 @@ public interface CrudService {
    * Find all entities of a particular type by generating a select query;
    * <strong><code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
    * <code>entityClass</code> parameter. The number of entities
-   * returned is limited by the <code>startPosition</code> and <code>maxResult</code> parameters.
+   * returned is limited by the <code>firstResult</code> and <code>maxResults</code> parameters.
    * 
    * @param entityClass the entity class to find instances of
    * @param firstResult position of the first result to be returned by the query, numbered from 0
@@ -181,37 +181,6 @@ public interface CrudService {
    * @see CrudService#find(Class)
    */
   <T> List<T> find(Class<T> entityClass, int firstResult, int maxResults);
-
-  /**
-   * <p>
-   * Find entities based on an example entity.
-   * </p>
-   * 
-   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
-   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
-   * @param distinct whether the query should be distinct or not
-   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
-   *          <code>false</code> if the query should be an <b>"AND"</b> query.
-   * @return a list of entities
-   */
-  <T> List<T> find(T example, boolean distinct, boolean any);
-
-  /**
-   * <p>
-   * Find entities based on an example entity. The number of entities returned is limited by the
-   * <code>firstResult</code> and <code>maxResults</code> parameters.
-   * </p>
-   * 
-   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
-   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
-   * @param distinct Whether the query should be distinct or not
-   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
-   *          <code>false</code> if the query should be an <b>"AND"</b> query.
-   * @param firstResult position of the first result to be returned by the query, numbered from 0
-   * @param maxResults the maximum number of entities that should be returned by the query
-   * @return a list of entities
-   */
-  <T> List<T> find(T example, boolean distinct, boolean any, int firstResult, int maxResults);
 
   /**
    * Creates an instance of Query for executing a query in the Java Persistence query
@@ -369,6 +338,38 @@ public interface CrudService {
    * @throws IllegalArgumentException if the <code>parameters</code> parameter is null.
    */
   <T> List<T> findWithNamedQuery(String queryName, Map<String, Object> parameters,
+      int firstResult, int maxResults);
+
+  /**
+   * <p>
+   * Find entities based on an example entity.
+   * </p>
+   * 
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
+   * @param distinct whether the query should be distinct or not
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
+   *          <code>false</code> if the query should be an <b>"AND"</b> query.
+   * @return a list of entities
+   */
+  <T> List<T> findByExample(T example, boolean distinct, boolean any);
+
+  /**
+   * <p>
+   * Find entities based on an example entity. The number of entities returned is limited by the
+   * <code>firstResult</code> and <code>maxResults</code> parameters.
+   * </p>
+   * 
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
+   * @param distinct Whether the query should be distinct or not
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
+   *          <code>false</code> if the query should be an <b>"AND"</b> query.
+   * @param firstResult position of the first result to be returned by the query, numbered from 0
+   * @param maxResults the maximum number of entities that should be returned by the query
+   * @return a list of entities
+   */
+  <T> List<T> findByExample(T example, boolean distinct, boolean any,
       int firstResult, int maxResults);
 
   /**
@@ -707,9 +708,9 @@ public interface CrudService {
 
   /**
    * <p>
-   * Refresh the state of the entity from the database (the entity may have changed in another
-   * thread/transaction), overwriting changes made to the entity, if any. Before refresh this method
-   * will get the entity instance by calling {@link EntityManager#find(entityClass, id)}.
+   * Refresh the state of an entity, with the given id, from the database overwriting changes made
+   * to the entity, if any. Before refresh this method will get the entity instance by calling
+   * {@link EntityManager#find(entityClass, id)}.
    * </p>
    * 
    * @param entityClass the entity type to refresh.
@@ -733,10 +734,9 @@ public interface CrudService {
 
   /**
    * <p>
-   * Refresh the state of the instance from the database (the entity may have changed in another
-   * thread/transaction), overwriting changes made to the entity, if any. If the entity is not in
-   * the 'managed' state, this method will get the entity instance by calling
-   * {@link EntityManager#find(entityClass, id)}, then refresh.
+   * Refresh the state of the instance from the database overwriting changes made to the entity, if
+   * any. If the entity is not in the 'managed' state, this method will get the entity instance by
+   * calling {@link EntityManager#find(entityClass, id)}, then refresh.
    * </p>
    * 
    * @param transientEntity the transient entity to refresh
@@ -756,10 +756,9 @@ public interface CrudService {
 
   /**
    * <p>
-   * Refresh the state of a collection of entities from the database (the entities may have changed
-   * in another thread/transaction), overwriting change to the entity. If the entity is not in the
-   * 'managed' state, this method will get the entity instance by calling
-   * {@link EntityManager#find(entityClass, id)}, then refresh.
+   * Refresh the state of a collection of entities from the database overwriting changes to the
+   * entities, if any. If an entity in the collectionis not in the 'managed' state, this method will
+   * get the entity instance by calling {@link EntityManager#find(entityClass, id)}, then refresh.
    * </p>
    * 
    * @param transientEntities a collection of transient entities to refresh
@@ -807,6 +806,7 @@ public interface CrudService {
    * then an exception may be thrown.
    * </p>
    * 
+   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws TransactionRequiredException if there is no transaction
    * @throws PersistenceException if the flush fails
    * @see javax.persistence.EntityManager#flush()
@@ -828,6 +828,7 @@ public interface CrudService {
    * else the persistence context will continue to grow over time.
    * </p>
    * 
+   * @throws IllegalStateException if this EntityManager has been closed.
    * @see javax.persistence.EntityManager#clear()
    */
   void clear();
@@ -835,11 +836,12 @@ public interface CrudService {
   /**
    * Write anything to db that is pending operation and clear it.
    * 
-   * @see javax.persistence.EntityManager#flush()
-   * @see javax.persistence.EntityManager#clear()
+   * @throws IllegalStateException if this EntityManager has been closed.
    * @throws TransactionRequiredException if there is
    *           no transaction
    * @throws PersistenceException if the flush fails
+   * @see javax.persistence.EntityManager#flush()
+   * @see javax.persistence.EntityManager#clear()
    */
   void flushAndClear();
 
