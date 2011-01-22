@@ -31,6 +31,8 @@ import org.testng.annotations.Test;
 @LocalClient
 public class CrudServiceTest extends OpenEjbTest {
 
+  private static final Logger log = Logger.getLogger(CrudServiceTest.class);
+
   private static final String  DIRECTOR_JOEL_COEN      = "Joel Coen";
   private static final String  THE_BIG_LEBOWSKI_TITLE  = "The Big Lebowski";
   private static final Integer THE_BIG_LEBOWSKI_YEAR   = 1992;
@@ -45,7 +47,7 @@ public class CrudServiceTest extends OpenEjbTest {
     "A troubled rock star descends into madness " +
     "in the midst of his physical and social isolation from everyone.";
 
-  private static final Logger log = Logger.getLogger(CrudServiceTest.class);
+  private static final String ALL_QUIET_ON_THE_WESTERN_FRONT = "All Quiet on the Western Front";
 
   @EJB
   private CrudService crudService;
@@ -107,7 +109,7 @@ public class CrudServiceTest extends OpenEjbTest {
 
     movies.add(Movie.with()
         .director("Lewis Milestone")
-        .title("All Quiet on the Western Front")
+        .title(ALL_QUIET_ON_THE_WESTERN_FRONT)
         .year(1930)
         .plot("One of the most powerful anti-war statements ever put on film, this gut-wrenching " +
             "story concerns a group of friends who join the Army during World War I and are " +
@@ -152,7 +154,7 @@ public class CrudServiceTest extends OpenEjbTest {
     Assert.assertNotNull(theWall, "crudService.persist: movie was null");
     Assert.assertNotNull(theWall.getId(), "movie.getId: movie.id was null");
 
-    assert crudService.find(Movie.with().title(THE_WALL_TITLE).build(),
+    assert crudService.findByExample(Movie.with().title(THE_WALL_TITLE).build(),
         true, false).size() == 1 : "List.size():";
   }
 
@@ -216,8 +218,48 @@ public class CrudServiceTest extends OpenEjbTest {
     .director("Joel%")
     .year(1930)
     .build();
-    final List<Movie> exampleMovies = crudService.find(exampleMovie, false, true);
+    final List<Movie> exampleMovies = crudService.findByExample(exampleMovie, false, true);
     Assert.assertEquals(exampleMovies.size(), 3, "List.size()");
+  }
+
+  @Test
+  public void findwithQuery() {
+    final String jpql = "from Movie m";
+    List<Movie> movies;
+
+    movies= crudService.findWithQuery(jpql, 0, 2);
+    assert movies.size() == 2;
+
+    final String jpqlByDirectorOrTitle = jpql + " where m.director = :director or m.title = :title";
+    movies = crudService.findWithQuery(jpqlByDirectorOrTitle, QueryParameter
+        .with("director", DIRECTOR_JOEL_COEN)
+        .and("title", ALL_QUIET_ON_THE_WESTERN_FRONT)
+        .parameters());
+    assert movies.size() > 0;
+  }
+
+  @Test
+  public void findWithNamedQuery() {
+    List<Movie> movies;
+    movies = crudService.findWithNamedQuery(Movie.ALL_MOVIES, 0, 2);
+    assert movies.size() == 2;
+
+    movies = crudService.findWithNamedQuery(Movie.MOVIES_BY_DIRECTOR_OR_TITLE, QueryParameter
+        .with("director", DIRECTOR_JOEL_COEN)
+        .and("title", ALL_QUIET_ON_THE_WESTERN_FRONT)
+        .parameters());
+    assert movies.size() > 0;
+  }
+
+  @Test
+  public void findByNativeQuery() {
+    final String sql = "select * from movie m";
+
+    final List<?> rawResults = crudService.findByNativeQuery(sql, 0, 2);
+    assert rawResults.size() == 2;
+
+    final List<Movie> movies = crudService.findByNativeQuery(sql, Movie.class);
+    assert movies.size() >= 4;
   }
 
   @Test
@@ -234,7 +276,7 @@ public class CrudServiceTest extends OpenEjbTest {
     userTransaction.begin();
     try {
       crudService.remove(exampleMovie, true);
-      final List<Movie> movies = crudService.find(exampleMovie, false, true);
+      final List<Movie> movies = crudService.findByExample(exampleMovie, false, true);
       Assert.assertEquals(movies.size(), 0, "List.size()");
     }
     finally {

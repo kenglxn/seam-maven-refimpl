@@ -103,25 +103,7 @@ public class CrudServiceBean implements CrudService {
   @SuppressWarnings("unchecked")
   public <T> List<T> find(final Class<T> entityClass, final int firstResult, final int maxResults) {
     final Query query = em.createQuery(CrudServiceUtils.createSelectJpql(entityClass));
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
-  }
-
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> find(final T example, final boolean distinct, final boolean any) {
-    return find(example, distinct, any, -1, -1);
-  }
-
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public <T> List<T> find(final T example, final boolean distinct, final boolean any,
-      final int firstResult, final int maxResults) {
-
-    final Query query = createExampleQuery(example, true, distinct, any);
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @Override
@@ -136,8 +118,7 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findWithQuery(final String jpql, final int firstResult, final int maxResults) {
     final Query query = em.createQuery(jpql);
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @Override
@@ -157,9 +138,7 @@ public class CrudServiceBean implements CrudService {
     for (final Entry<String, Object> entry : rawParameters) {
       query.setParameter(entry.getKey(), entry.getValue());
     }
-
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @SuppressWarnings("unchecked")
@@ -174,9 +153,9 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> List<T> findWithNamedQuery(final String queryName, final int firstResult,
       final int maxResults) {
+
     final Query query = em.createNamedQuery(queryName);
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @Override
@@ -196,8 +175,23 @@ public class CrudServiceBean implements CrudService {
     for (final Entry<String, Object> entry : rawParameters) {
       query.setParameter(entry.getKey(), entry.getValue());
     }
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> List<T> findByExample(final T example, final boolean distinct, final boolean any) {
+    return findByExample(example, distinct, any, -1, -1);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public <T> List<T> findByExample(final T example, final boolean distinct, final boolean any,
+      final int firstResult, final int maxResults) {
+
+    final Query query = createExampleQuery(example, true, distinct, any);
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @SuppressWarnings("unchecked")
@@ -214,8 +208,7 @@ public class CrudServiceBean implements CrudService {
       final int maxResults) {
 
     final Query query = em.createNativeQuery(sql);
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @Override
@@ -232,16 +225,14 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = em.createNativeQuery(sql, resultClass);
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   @SuppressWarnings("unchecked")
   public <T> List<T> findByNativeQuery(final String sql, final String resultSetMapping) {
-    return em.createNativeQuery(sql, resultSetMapping)
-    .getResultList();
+    return em.createNativeQuery(sql, resultSetMapping).getResultList();
   }
 
   @Override
@@ -251,8 +242,7 @@ public class CrudServiceBean implements CrudService {
       final int firstResult, final int maxResults) {
 
     final Query query = em.createNativeQuery(sql, resultSetMapping);
-    addFirstAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
+    return addFirstAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
   // 'U'
