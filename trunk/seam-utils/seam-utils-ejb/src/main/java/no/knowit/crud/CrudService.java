@@ -166,6 +166,9 @@ public interface CrudService {
    */
   <T> T find(Class<T> entityClass, Object primaryKey);
 
+  // --------------------
+  // Find with Query
+  // --------------------
   /**
    * <p>
    * Creates an instance of {@link javax.persistence.Query} for executing a query in the Java
@@ -216,6 +219,9 @@ public interface CrudService {
   <T> List<T> findWithQuery(String jpql, Map<String, Object> parameters, int firstResult,
       int maxResults);
 
+  // ----------------------
+  // Find with Named Query
+  // ----------------------
   /**
    * Creates an instance of {@link javax.persistence.Query} for executing a named query (in the Java
    * Persistence query
@@ -269,84 +275,9 @@ public interface CrudService {
   <T> List<T> findWithNamedQuery(String queryName, Map<String, Object> parameters,
       int firstResult, int maxResults);
 
-  /**
-   * <p>
-   * Find entities based on an example entity.
-   * </p>
-   * 
-   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
-   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
-   * @param distinct whether the query should be distinct or not
-   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
-   *          <code>false</code> if the query should be an <b>"AND"</b> query.
-   * @return a list of entities
-   */
-  <T> List<T> findByExample(T example, boolean distinct, boolean any);
-
-  /**
-   * <p>
-   * Find entities based on an example entity. The number of entities returned is limited by the
-   * <code>firstResult</code> and <code>maxResults</code> parameters. A negative value for
-   * <code>firstResult</code> indicates that <code>firstResult</code> should be ignored and
-   * {@link Query#setFirstResult(int)} is not called. Likewise a negative value for
-   * <code>maxResults</code> indicates that <code>maxResults</code> should be ignored and
-   * {@link Query#setMaxResults(int)} is not called.
-   * </p>
-   * 
-   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
-   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
-   * @param distinct Whether the query should be distinct or not
-   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
-   *          <code>false</code> if the query should be an <b>"AND"</b> query.
-   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
-   *          negative value indicates that <code>firstResult</code> should be ignored and
-   *          {@link Query#setFirstResult(int)} is not called
-   * @param maxResults the maximum number of entities that should be returned by the query. A
-   *          negative value indicates that <code>maxResults</code> should be ignored and
-   *          {@link Query#setMaxResults(int)} is not called
-   * @return a list of entities
-   */
-  <T> List<T> findByExample(T example, boolean distinct, boolean any,
-      int firstResult, int maxResults);
-
-  /**
-   * <p>
-   * Find all entities of a particular type by generating a select query; <strong>
-   * <code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
-   * <code>entityClass</code> parameter.
-   * </p>
-   * 
-   * @param entityClass the entity class to find instances of
-   * @return a list of entities
-   * @throws IllegalArgumentException if produced query string is not valid
-   */
-  <T> List<T> findWithType(Class<T> entityClass);
-
-  /**
-   * <p>
-   * Find all entities of a particular type by generating a select query; <strong>
-   * <code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
-   * <code>entityClass</code> parameter. The number of entities returned is limited by the
-   * <code>firstResult</code> and <code>maxResults</code> parameters. A negative value for
-   * <code>firstResult</code> indicates that <code>firstResult</code> should be ignored and
-   * {@link Query#setFirstResult(int)} is not called. Likewise a negative value for
-   * <code>maxResults</code> indicates that <code>maxResults</code> should be ignored and
-   * {@link Query#setMaxResults(int)} is not called.
-   * </p>
-   * 
-   * @param entityClass the entity class to find instances of
-   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
-   *          negative value indicates that <code>firstResult</code> should be ignored and
-   *          {@link Query#setFirstResult(int)} is not called
-   * @param maxResults the maximum number of entities that should be returned by the query. A
-   *          negative value indicates that <code>maxResults</code> should be ignored and
-   *          {@link Query#setMaxResults(int)} is not called
-   * @return a list of entities
-   * @throws IllegalArgumentException if produced query string is not valid
-   * @see CrudService#findWithType(Class)
-   */
-  <T> List<T> findWithType(Class<T> entityClass, int firstResult, int maxResults);
-
+  // --------------------
+  // Find by Native Query
+  // --------------------
   /**
    * <p>
    * Creates an instance of {@link javax.persistence.Query} using a native SQL select statement,
@@ -512,6 +443,88 @@ public interface CrudService {
       Map<String, Object> parameters, int firstResult, int maxResults);
 
   // ---------------
+  // Find by Example
+  // ---------------
+  /**
+   * Find entities based on an example entity.
+   * 
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
+   * @param distinct whether the query should be distinct or not
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
+   *          <code>false</code> if the query should be an <b>"AND"</b> query.
+   * @return a list of entities
+   */
+  <T> List<T> findByExample(T example, boolean distinct, boolean any);
+
+  /**
+   * <p>
+   * Find entities based on an example entity. The number of entities returned is limited by the
+   * <code>firstResult</code> and <code>maxResults</code> parameters. A negative value for
+   * <code>firstResult</code> indicates that <code>firstResult</code> should be ignored and
+   * {@link Query#setFirstResult(int)} is not called. Likewise a negative value for
+   * <code>maxResults</code> indicates that <code>maxResults</code> should be ignored and
+   * {@link Query#setMaxResults(int)} is not called.
+   * </p>
+   * 
+   * @param example an entity instantiated with the fields to match. Only non <code>null</code>
+   *          primitives (e.g. String, Integer, Date) will be used to construct the query.
+   * @param distinct Whether the query should be distinct or not
+   * @param any <code>true</code> if the query should produce an <b>"OR"</b> query,
+   *          <code>false</code> if the query should be an <b>"AND"</b> query.
+   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
+   *          negative value indicates that <code>firstResult</code> should be ignored and
+   *          {@link Query#setFirstResult(int)} is not called
+   * @param maxResults the maximum number of entities that should be returned by the query. A
+   *          negative value indicates that <code>maxResults</code> should be ignored and
+   *          {@link Query#setMaxResults(int)} is not called
+   * @return a list of entities
+   */
+  <T> List<T> findByExample(T example, boolean distinct, boolean any,
+      int firstResult, int maxResults);
+
+  // ---------------
+  // Find with Type
+  // ---------------
+  /**
+   * <p>
+   * Find all entities of a particular type by generating a select query; <strong>
+   * <code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
+   * <code>entityClass</code> parameter.
+   * </p>
+   * 
+   * @param entityClass the entity class to find instances of
+   * @return a list of entities
+   * @throws IllegalArgumentException if produced query string is not valid
+   */
+  <T> List<T> findWithType(Class<T> entityClass);
+
+  /**
+   * <p>
+   * Find all entities of a particular type by generating a select query; <strong>
+   * <code>"SELECT e FROM Entity e"</code></strong>, where <code>Entity</code> is the given
+   * <code>entityClass</code> parameter. The number of entities returned is limited by the
+   * <code>firstResult</code> and <code>maxResults</code> parameters. A negative value for
+   * <code>firstResult</code> indicates that <code>firstResult</code> should be ignored and
+   * {@link Query#setFirstResult(int)} is not called. Likewise a negative value for
+   * <code>maxResults</code> indicates that <code>maxResults</code> should be ignored and
+   * {@link Query#setMaxResults(int)} is not called.
+   * </p>
+   * 
+   * @param entityClass the entity class to find instances of
+   * @param firstResult position of the first result to be returned by the query, numbered from 0. A
+   *          negative value indicates that <code>firstResult</code> should be ignored and
+   *          {@link Query#setFirstResult(int)} is not called
+   * @param maxResults the maximum number of entities that should be returned by the query. A
+   *          negative value indicates that <code>maxResults</code> should be ignored and
+   *          {@link Query#setMaxResults(int)} is not called
+   * @return a list of entities
+   * @throws IllegalArgumentException if produced query string is not valid
+   * @see CrudService#findWithType(Class)
+   */
+  <T> List<T> findWithType(Class<T> entityClass, int firstResult, int maxResults);
+
+  // ---------------
   // Create Query
   // ---------------
   /**
@@ -622,6 +635,8 @@ public interface CrudService {
    */
   Query createNativeQuery(String sql, String resultSetMapping, Map<String, Object> parameters);
 
+  // -------
+
   /**
    * <p>
    * Merge the state of the given entity into the current persistence context, returning (a
@@ -701,8 +716,10 @@ public interface CrudService {
   int executeUpdateByNativeQuery(String sql);
 
   /**
+   * <p>
    * Remove an entity from persistent storage in the database. After remove this method will call
    * flush to synchronize the persistence context to the underlying database.
+   * </p>
    * 
    * @param entityClass the entity class of the object to delete
    * @param id the Primary Key of the object to delete.
@@ -721,8 +738,10 @@ public interface CrudService {
   void remove(Class<?> type, Object id);
 
   /**
-   * Remove an entity from persistent storage in the database. After remove this method will
-   * call flush to synchronize the persistence context to the underlying database.
+   * <p>
+   * Remove an entity from persistent storage in the database. After remove this method will call
+   * flush to synchronize the persistence context to the underlying database.
+   * </p>
    * 
    * @param entity the object to delete.
    * @see javax.persistence.EntityManager#remove
@@ -770,8 +789,10 @@ public interface CrudService {
   void removeByExample(Object example, boolean any);
 
   /**
+   * <p>
    * Remove all instances of the specified class by executing a DELETE query, e.g. <br />
    * <code>delete e from Entity e</code>
+   * </p>
    * 
    * @throws IllegalArgumentException if <code>entityClass</code> parameter is null
    * @throws IllegalArgumentException if not an entity

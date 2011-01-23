@@ -130,45 +130,6 @@ public class CrudServiceBean implements CrudService {
     return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
   }
 
-  // ---------------
-  // Find with Type
-  // ---------------
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findWithType(final Class<T> entityClass) {
-    return findWithType(entityClass, -1, -1);
-  }
-
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public <T> List<T> findWithType(final Class<T> entityClass,
-      final int firstResult, final int maxResults) {
-
-    final Query query = em.createQuery(CrudServiceUtils.createSelectJpql(entityClass));
-    return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
-  }
-
-  // ---------------
-  // Find by Example
-  // ---------------
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public <T> List<T> findByExample(final T example, final boolean distinct, final boolean any) {
-    return findByExample(example, distinct, any, -1, -1);
-  }
-
-  @Override
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public <T> List<T> findByExample(final T example, final boolean distinct, final boolean any,
-      final int firstResult, final int maxResults) {
-
-    final Query query = createExampleQuery(example, true, distinct, any);
-    setFirstResultAndMaxResults(query, firstResult, maxResults);
-    return query.getResultList();
-  }
-
   // --------------------
   // Find by Native Query
   // --------------------
@@ -221,6 +182,45 @@ public class CrudServiceBean implements CrudService {
 
     final Query query = createNativeQuery(sql, resultSetMapping, parameters);
     return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
+  }
+
+  // ---------------
+  // Find with Type
+  // ---------------
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> List<T> findWithType(final Class<T> entityClass) {
+    return findWithType(entityClass, -1, -1);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public <T> List<T> findWithType(final Class<T> entityClass,
+      final int firstResult, final int maxResults) {
+
+    final Query query = em.createQuery(CrudServiceUtils.createSelectJpql(entityClass));
+    return setFirstResultAndMaxResults(query, firstResult, maxResults).getResultList();
+  }
+
+  // ---------------
+  // Find by Example
+  // ---------------
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> List<T> findByExample(final T example, final boolean distinct, final boolean any) {
+    return findByExample(example, distinct, any, -1, -1);
+  }
+
+  @Override
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public <T> List<T> findByExample(final T example, final boolean distinct, final boolean any,
+      final int firstResult, final int maxResults) {
+
+    final Query query = createExampleQuery(example, true, distinct, any);
+    setFirstResultAndMaxResults(query, firstResult, maxResults);
+    return query.getResultList();
   }
 
   // ---------------
