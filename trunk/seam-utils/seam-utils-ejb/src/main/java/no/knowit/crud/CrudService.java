@@ -18,8 +18,7 @@
  * http://press.adam-bien.com
  * 
  * Modified by Leif Olsen
- *   Added a lot of code from Crank, the Java Framework for CRUD and Validation:
- *   http://code.google.com/p/krank/
+ *   Added a lot of code from Crank, http://code.google.com/p/krank/
  *   Actually added some code of my own :-)
  */
 
@@ -36,7 +35,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import javax.persistence.TransactionRequiredException;
 
 /**
  * Generic CrudService interface, a.k.a. DAO, a.k.a. Repository.<br/>
@@ -703,26 +701,6 @@ public interface CrudService {
   int executeUpdateByNativeQuery(String sql);
 
   /**
-   * Remove an entity from persistent storage in the database. If the entity is not in the 'managed'
-   * state, it is merged into the persistent context, then removed. After remove this method will
-   * call flush to synchronize the persistence context to the underlying database.
-   * 
-   * @param entity the object to delete.
-   * @see javax.persistence.EntityManager#remove
-   * @see javax.persistence.EntityManager#merge
-   * @see javax.persistence.EntityManager#flush()
-   * @throws java.lang.IllegalStateException if this EntityManager has been closed
-   * @throws IllegalArgumentException if instance is not an
-   *           entity or is a removed entity
-   * @throws TransactionRequiredException if invoked on a
-   *           container-managed entity manager of type
-   *           PersistenceContextType.TRANSACTION and there is
-   *           no transaction.
-   * @throws javax.persistence.PersistenceException if the flush fails
-   */
-  void remove(Object entity);
-
-  /**
    * Remove an entity from persistent storage in the database. After remove this method will call
    * flush to synchronize the persistence context to the underlying database.
    * 
@@ -741,6 +719,25 @@ public interface CrudService {
    * @throws javax.persistence.PersistenceException if the flush fails
    */
   void remove(Class<?> type, Object id);
+
+  /**
+   * Remove an entity from persistent storage in the database. After remove this method will
+   * call flush to synchronize the persistence context to the underlying database.
+   * 
+   * @param entity the object to delete.
+   * @see javax.persistence.EntityManager#remove
+   * @see javax.persistence.EntityManager#merge
+   * @see javax.persistence.EntityManager#flush()
+   * @throws java.lang.IllegalStateException if this EntityManager has been closed
+   * @throws IllegalArgumentException if instance is not an
+   *           entity or is a removed entity
+   * @throws TransactionRequiredException if invoked on a
+   *           container-managed entity manager of type
+   *           PersistenceContextType.TRANSACTION and there is
+   *           no transaction.
+   * @throws javax.persistence.PersistenceException if the flush fails
+   */
+  void remove(Object entity);
 
   /**
    * <p>
@@ -774,7 +771,7 @@ public interface CrudService {
 
   /**
    * Remove all instances of the specified class by executing a DELETE query, e.g. <br />
-   * <code>delete e from Entity e<code>
+   * <code>delete e from Entity e</code>
    * 
    * @throws IllegalArgumentException if <code>entityClass</code> parameter is null
    * @throws IllegalArgumentException if not an entity
@@ -989,6 +986,19 @@ public interface CrudService {
    * @throws IllegalArgumentException if not an entity
    */
   boolean isManaged(Object entity);
+
+  /**
+   * <p>
+   * Get an entity into 'managed' state. If the entity isn't already in the 'managed' state, this
+   * method will make the entity 'managed' by calling {@link EntityManager#find(entityClass, id)}
+   * </p>
+   * 
+   * @param transientEntity the entity to get into managed state
+   * @return the managed entity
+   * @throws IllegalStateException if this EntityManager has been closed.
+   * @throws IllegalArgumentException if not an entity
+   */
+  <T> T getManagedEntity(final T transientEntity);
 
   /**
    * Get the EntityManager wired to this service

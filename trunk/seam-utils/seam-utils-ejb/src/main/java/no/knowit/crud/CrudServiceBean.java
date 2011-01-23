@@ -18,7 +18,7 @@
  * http://press.adam-bien.com
  * 
  * Modified by Leif Olsen
- *   Added a lot of code from Crank, the Java Framework for CRUD and Validation: http://code.google.com/p/krank/
+ *   Added a lot of code from Crank, http://code.google.com/p/krank/
  *   Actually added some code of my own :-)
  */
 package no.knowit.crud;
@@ -300,15 +300,15 @@ public class CrudServiceBean implements CrudService {
 
   // 'D'
   @Override
-  public void remove(final Object entity) {
-    final Object ref = em.contains(entity) ? entity : em.merge(entity);
+  public void remove(final Class<?> entityClass, final Object id) {
+    final Object ref = em.getReference(entityClass, id);
     em.remove(ref);
     em.flush();
   }
 
   @Override
-  public void remove(final Class<?> entityClass, final Object id) {
-    final Object ref = em.getReference(entityClass, id);
+  public void remove(final Object entity) {
+    final Object ref = getManagedEntity(entity);
     em.remove(ref);
     em.flush();
   }
@@ -319,8 +319,8 @@ public class CrudServiceBean implements CrudService {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
     for (final Object entity : entities) {
-      final Object managedEntity = em.contains(entity) ? entity : em.merge(entity);
-      em.remove(managedEntity);
+      final Object ref = getManagedEntity(entity);
+      em.remove(ref);
     }
     em.flush();
   }
@@ -380,8 +380,8 @@ public class CrudServiceBean implements CrudService {
   @Override
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public int count(final Class<?> entityClass) {
-    final Long result = (Long) getEntityManager().createQuery(
-        CrudServiceUtils.createCountJpql(entityClass)).getSingleResult();
+    final Long result = (Long) em.createQuery(CrudServiceUtils.createCountJpql(entityClass))
+    .getSingleResult();
 
     return result.intValue();
   }
@@ -395,12 +395,7 @@ public class CrudServiceBean implements CrudService {
 
   @Override
   public <T> T refresh(final T transientEntity) {
-    @SuppressWarnings("unchecked")
-    final T managedEntity = em.contains(transientEntity)
-    ? transientEntity
-        : (T) em.find(transientEntity.getClass(),
-            CrudServiceUtils.getIdValues(transientEntity).get(0));
-
+    final T managedEntity = getManagedEntity(transientEntity);
     em.refresh(managedEntity);
     return managedEntity;
   }
@@ -421,6 +416,15 @@ public class CrudServiceBean implements CrudService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public boolean isManaged(final Object entity) {
     return entity != null && getEntityManager().contains(entity);
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public <T> T getManagedEntity(final T transientEntity) {
+    return em.contains(transientEntity) ? transientEntity
+        : (T) em.find(transientEntity.getClass(), CrudServiceUtils.getIdValues(transientEntity)
+            .get(0));
   }
 
   @Override
@@ -460,16 +464,14 @@ public class CrudServiceBean implements CrudService {
 
   /**
    * This is a simple form of query by example. Produces a SELECT or DELETE
-   * query based on non null property values in the <code>example</code>
-   * parameter
-   * 
+   * query based on non null property values in the <code>example</code> parameter
    * The limitations are:
    * <ul>
-   *   <li>The entity must have at least one @Id annotation</li>
-   *   <li>Only primitives can be part of the query(Integer, String etc.)
-   *   <li>Can not handle embedded classes, object references, arrays and collections while generating JPQL</li>
+   * <li>The entity must have at least one @Id annotation</li>
+   * <li>Only primitives can be part of the query(Integer, String etc.)
+   * <li>Can not handle embedded classes, object references, arrays and collections while generating
+   * JPQL</li>
    * </ul>
-   * 
    */
   protected Query createExampleQuery(final Object example, final boolean select,
       final boolean distinct, final boolean any) {
@@ -481,29 +483,30 @@ public class CrudServiceBean implements CrudService {
     attributes = CrudServiceUtils.reduceQueryableAttributesToPopulatedFields(example, attributes);
 
     final StringBuilder debugData = new StringBuilder();
-
-    if (log.isDebugEnabled()) {
-      debugData.append(example.getClass().getSimpleName() + " class query parameters: ");
-    }
-
-    final Query query = getEntityManager().createQuery(jpql);
-    final Set<Entry<String, Member>> properties = attributes.entrySet();
-    for (final Entry<String, Member> entry : properties) {
-      final String property = entry.getKey();
-      final Member member = entry.getValue();
-      final Object value = member != null ? ReflectionUtils.get(member, example) : null;
-      query.setParameter(property, value);
-
+    try {
       if (log.isDebugEnabled()) {
-        debugData.append("[:" + property + " = " + value + "] ");
+        debugData.append(example.getClass().getSimpleName() + " class query parameters: ");
+      }
+
+      final Query query = getEntityManager().createQuery(jpql);
+      final Set<Entry<String, Member>> properties = attributes.entrySet();
+      for (final Entry<String, Member> entry : properties) {
+        final String property = entry.getKey();
+        final Member member = entry.getValue();
+        final Object value = member != null ? ReflectionUtils.get(member, example) : null;
+        query.setParameter(property, value);
+
+        if (log.isDebugEnabled()) {
+          debugData.append("[:" + property + " = " + value + "] ");
+        }
+      }
+      return query;
+    }
+    finally {
+      if (log.isDebugEnabled()) {
+        log.debug(debugData);
       }
     }
-
-    if (log.isDebugEnabled()) {
-      log.debug(debugData);
-    }
-
-    return query;
   }
 
   private Query setQueryParameters(final Query query, final Map<String, Object> parameters) {
