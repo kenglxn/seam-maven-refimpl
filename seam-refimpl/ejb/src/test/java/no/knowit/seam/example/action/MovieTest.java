@@ -85,7 +85,7 @@ public class MovieTest extends SeamOpenEjbTest {
 		  "Jerry Lundegaard's inept crime falls apart due to his and his henchmen's bungling " +
 		  "and the persistent police work of pregnant Marge Gunderson."));
 		
-		movies = (ArrayList<Movie>) crudService.persist(movies);
+		movies = (ArrayList<Movie>) crudService.persistCollection(movies);
     assert crudService.findWithType(Movie.class).size() == 3 : "List.size():";
     
 		theBigLebowskiId = movies.get(0).getId();
