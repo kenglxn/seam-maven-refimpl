@@ -126,7 +126,7 @@ public interface CrudService {
    * @throws PersistenceException if the flush fails
    * @see CrudService#persist(Object)
    */
-  <T> Collection<T> persist(Collection<T> entities);
+  <T> Collection<T> persistCollection(Collection<T> entities);
 
   /**
    * <p>
@@ -664,7 +664,7 @@ public interface CrudService {
 
   /**
    * <p>
-   * Merge the collection of entities, returning (a collection of potentially different objects) the
+   * Merge a collection of entities, returning (a collection of potentially different objects) the
    * persisted entities. Basics - merge will take an exiting 'detached' entity and merge its
    * properties onto an existing entity. After the entities in the collection are merged, this
    * method will call flush to synchronize the persistence context to the underlying database.
@@ -684,7 +684,7 @@ public interface CrudService {
    * @see javax.persistence.EntityManager#merge
    * @see javax.persistence.EntityManager#flush()
    */
-  <T> Collection<T> merge(Collection<T> entities);
+  <T> Collection<T> mergeCollection(Collection<T> entities);
 
   /**
    * Create an instance of Query for executing a Java Persistence query update or delete statement,
@@ -776,7 +776,7 @@ public interface CrudService {
    *           no transaction.
    * @throws javax.persistence.PersistenceException if the flush fails
    */
-  void remove(Collection<Object> entities);
+  void removeCollection(Collection<Object> entities);
 
   /**
    * Remove all entities where conditions in the <code>example</code> parameter matches.
@@ -846,7 +846,7 @@ public interface CrudService {
    * @throws IllegalArgumentException if one of the elements in the collection is not an entity
    * @throws javax.persistence.PersistenceException if the flush fails
    */
-  <T> Collection<T> store(Collection<T> entities);
+  <T> Collection<T> storeCollection(Collection<T> entities);
 
   /**
    * <p>
@@ -868,6 +868,7 @@ public interface CrudService {
    * 
    * @param entityClass the entity type to refresh.
    * @param id the entity identity to refresh.
+   * @return the refreshed entity
    * @throws IllegalStateException if this EntityManager has been closed.
    * @throws IllegalArgumentException if the first argument does
    *           not denote an entity type or the second
@@ -929,7 +930,7 @@ public interface CrudService {
    * @throws EntityNotFoundException if the entity no longer
    *           exists in the database.
    */
-  <T> Collection<T> refresh(Collection<T> transientEntities);
+  <T> Collection<T> refreshCollection(Collection<T> transientEntities);
 
   /**
    * <p>

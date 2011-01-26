@@ -59,6 +59,8 @@ public class CrudServiceTest extends OpenEjbTest {
   private Integer theBigLebowskiId;
   private Integer reservoirDogsId;
   private Movie allQuietOnTheWesternFront;
+  private List<Movie> moviesUnderTest = new ArrayList<Movie>();
+
 
 
   @Override
@@ -82,16 +84,14 @@ public class CrudServiceTest extends OpenEjbTest {
     assert crudService.findWithType(Movie.class).size() == 0 : "List.size():";
 
     // Persist 4 movies
-    ArrayList<Movie> movies = new ArrayList<Movie>();
-
-    movies.add(Movie.with()
+    moviesUnderTest.add(Movie.with()
         .director(DIRECTOR_JOEL_COEN)
         .title(THE_BIG_LEBOWSKI_TITLE)
         .year(THE_BIG_LEBOWSKI_YEAR)
         .plot("...")
         .build());
 
-    movies.add(Movie.with()
+    moviesUnderTest.add(Movie.with()
         .director("Quentin Tarantino")
         .title("Reservoir Dogs")
         .year(1992)
@@ -99,7 +99,7 @@ public class CrudServiceTest extends OpenEjbTest {
         "to suspect that one of them is a police informant.")
         .build());
 
-    movies.add(Movie.with()
+    moviesUnderTest.add(Movie.with()
         .director(DIRECTOR_JOEL_COEN)
         .title("Fargo")
         .year(1996)
@@ -107,7 +107,7 @@ public class CrudServiceTest extends OpenEjbTest {
         "and the persistent police work of pregnant Marge Gunderson.")
         .build());
 
-    movies.add(Movie.with()
+    moviesUnderTest.add(Movie.with()
         .director("Lewis Milestone")
         .title(ALL_QUIET_ON_THE_WESTERN_FRONT)
         .year(1930)
@@ -117,18 +117,18 @@ public class CrudServiceTest extends OpenEjbTest {
         "horror and misery by the harsh realities of combat.")
         .build());
 
-    movies = (ArrayList<Movie>) crudService.persist(movies);
+    crudService.persistCollection(moviesUnderTest);
 
-    theBigLebowskiId = movies.get(0).getId();
+    theBigLebowskiId = moviesUnderTest.get(0).getId();
     assert theBigLebowskiId != null;
 
-    reservoirDogsId = movies.get(1).getId();
+    reservoirDogsId = moviesUnderTest.get(1).getId();
     assert reservoirDogsId != null;
 
-    fargoId = movies.get(2).getId();
+    fargoId = moviesUnderTest.get(2).getId();
     assert fargoId != null;
 
-    allQuietOnTheWesternFront = movies.get(3);
+    allQuietOnTheWesternFront = moviesUnderTest.get(3);
     assert allQuietOnTheWesternFront.getId() != null;
 
     assert crudService.findWithType(Movie.class).size() == 4 : "List.size(): expected 4";
@@ -143,7 +143,7 @@ public class CrudServiceTest extends OpenEjbTest {
   }
 
   @Test
-  public void create() throws Exception {
+  public void persist() throws Exception {
     final Movie theWall = crudService.persist(Movie.with()
         .director(THE_WALL_DIRECTOR)
         .title(THE_WALL_TITLE)
@@ -158,26 +158,42 @@ public class CrudServiceTest extends OpenEjbTest {
         true, false).size() == 1 : "List.size():";
   }
 
+  
   @Test
-  public void read() throws Exception {
+  public void findByPrimaryKey() throws Exception {
     final Movie movie = crudService.find(Movie.class, theBigLebowskiId);
     Assert.assertNotNull(movie, "crudService.read: Did not find movie with id: " + theBigLebowskiId);
     Assert.assertEquals(movie.getTitle(), THE_BIG_LEBOWSKI_TITLE);
   }
 
   @Test
-  public void update() throws Exception {
+  public void merge() throws Exception {
     Movie movie = crudService.find(Movie.class, theBigLebowskiId);
     assert movie != null : "Movie was null";
     movie = crudService.merge(Movie.with(movie).plot(THE_BIG_LEBOWSKI_PLOT).build());
     Assert.assertEquals(movie.getPlot(), THE_BIG_LEBOWSKI_PLOT);
   }
+  
+  @Test
+  public void mergeCollection() {
+    int i = 0;
+    for (Movie movie : moviesUnderTest) {
+      movie = crudService.refresh(moviesUnderTest.get(0));
+      moviesUnderTest.set(i, movie);
+    }
+    
+    String aNewPlot = "A new plot ...";
+    moviesUnderTest.get(0).setPlot(aNewPlot);
+    
+    // Need a cast to use the *Collection methods
+    moviesUnderTest = (List<Movie>) crudService.mergeCollection(moviesUnderTest);
+    
+    Movie mergedMovie = crudService.find(Movie.class, moviesUnderTest.get(0).getId());
+    assert aNewPlot.equals(mergedMovie.getPlot()) : "Expected: " + aNewPlot;
+  }
 
   @Test
-  public void delete() throws Exception {
-    crudService.remove(Movie.class, reservoirDogsId);
-    Assert.assertNull(crudService.find(Movie.class, reservoirDogsId));
-
+  public void remove() throws Exception {
     final Movie aMovie = crudService.persist(Movie.with()
         .director("Director")
         .title("Title")
@@ -189,7 +205,7 @@ public class CrudServiceTest extends OpenEjbTest {
   }
 
   @Test
-  public void createOrUpdate() throws Exception {
+  public void store() throws Exception {
     // Create
     Movie movie = crudService.store(Movie.with()
         .director("Martin Scorsese")
@@ -203,6 +219,37 @@ public class CrudServiceTest extends OpenEjbTest {
         .plot("Words greatest rockband meets words greatest director - finally!")
         .build());
     assert movie != null : "Movie was null";
+  }
+  
+  @Test
+  void storeCollection() {
+    String yetAnotherPlot = "Yet anoter plot ...";
+    List<Movie> moviesToStore = new ArrayList<Movie>();
+    
+    Movie movieToMerge = Movie
+      .with(crudService.refresh(moviesUnderTest.get(0)))
+      .plot(yetAnotherPlot)
+      .build();
+    
+    Movie movieToPersist = Movie.with()
+      .director("Robert Rossen")
+      .title("All the King's Men")
+      .year(1949)
+      .plot("Based on the Pulitzer Prize-winning novel by Robert Penn Warren.")
+      .build();
+    
+    moviesToStore.add(movieToMerge);
+    moviesToStore.add(movieToPersist);
+
+    // Need a cast to use the *Collection methods
+    moviesToStore = (List<Movie>) crudService.storeCollection(moviesToStore);
+    
+    Movie mergedMovie = crudService.find(Movie.class, moviesUnderTest.get(0).getId());
+    assert yetAnotherPlot.equals(mergedMovie.getPlot()) : "Expected: " + yetAnotherPlot;
+
+    Integer id = moviesToStore.get(1).getId();
+    assert id != null : "Expected id != null";
+    assert crudService.find(Movie.class, id) != null : "Expected to find movie with id: " + id;
   }
 
   @Test
@@ -261,7 +308,7 @@ public class CrudServiceTest extends OpenEjbTest {
 
     List<Movie> movies;
     movies = crudService.findByNativeQuery(sql, Movie.class);
-    assert movies.size() >= 4 : "expected movies.size() >= 4";
+    assert movies.size() >= 4 : "expected movies.size() >= 4, got: " + movies.size();
 
     final String sqlByDirector = sql + " where m.director = :director";
     rawResults = crudService.findByNativeQuery(sqlByDirector,
@@ -283,7 +330,7 @@ public class CrudServiceTest extends OpenEjbTest {
   }
 
   @Test
-  public void deleteByExample() throws Exception {
+  public void removeByExample() throws Exception {
 
     final int expectedCount = crudService.count(Movie.class);
     log.debug("deleteByExample: Also testing transaction Rollback. # of movies before transaction: " + expectedCount);

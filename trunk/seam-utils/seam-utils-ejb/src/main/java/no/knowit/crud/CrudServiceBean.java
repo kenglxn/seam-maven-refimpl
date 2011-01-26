@@ -68,7 +68,7 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  public <T> Collection<T> persist(final Collection<T> entities) {
+  public <T> Collection<T> persistCollection(final Collection<T> entities) {
     if (entities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
@@ -276,7 +276,7 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  public <T> Collection<T> merge(final Collection<T> entities) {
+  public <T> Collection<T> mergeCollection(final Collection<T> entities) {
     if (entities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
@@ -314,7 +314,7 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  public void remove(final Collection<Object> entities) {
+  public void removeCollection(final Collection<Object> entities) {
     if (entities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
@@ -364,7 +364,7 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  public <T> Collection<T> store(final Collection<T> entities) {
+  public <T> Collection<T> storeCollection(final Collection<T> entities) {
     if (entities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
@@ -401,7 +401,7 @@ public class CrudServiceBean implements CrudService {
   }
 
   @Override
-  public <T> Collection<T> refresh(final Collection<T> transientEntities) {
+  public <T> Collection<T> refreshCollection(final Collection<T> transientEntities) {
     if (transientEntities == null) {
       throw new IllegalArgumentException(String.format(PARAM_NOT_NULL, "entities"));
     }
