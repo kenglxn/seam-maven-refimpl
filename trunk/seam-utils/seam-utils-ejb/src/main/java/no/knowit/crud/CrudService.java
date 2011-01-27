@@ -58,6 +58,12 @@ public interface CrudService {
   Map<String, Object> EMPTY_PARAMETER_MAP = new HashMap<String, Object>();
 
   /**
+   * Constant that can be used as a parameter value for <code>firstResult</code> and
+   * <code>maxResults</code> in finder methods to indicate that parameter value should be ignored
+   */
+  int IGNORE_BOUNDARY = -1;
+
+  /**
    * Make an entity instance managed and persistent.
    * <p>
    * The passed entity is persisted first, then the {@link javax.persistence.EntityManager#flush()}
