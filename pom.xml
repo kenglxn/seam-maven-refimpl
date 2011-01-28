@@ -14,7 +14,7 @@
 
   <modules>
     <module>./root/2.2.0</module>
-    <module>./root/2.2.1</module>
+    <!-- <module>./root/2.2.1</module> -->
     <module>./seam-utils</module>
   </modules>
 
