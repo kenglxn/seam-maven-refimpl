@@ -244,7 +244,7 @@
     <dependency>
       <groupId>org.apache.openejb</groupId>
       <artifactId>javaee-api</artifactId>
-      <scope>provided</scope>
+      <scope>test</scope>
     </dependency>
   
     <!-- openejb embedded container for running tests -->
