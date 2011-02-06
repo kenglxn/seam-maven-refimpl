@@ -8,7 +8,7 @@
   <parent>
 		<groupId>no.knowit.seam.examples</groupId>
 		<artifactId>jboss-seam-drools</artifactId>
-		<version>2.2.0-SNAPSHOT</version>
+		<version>2.2.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
