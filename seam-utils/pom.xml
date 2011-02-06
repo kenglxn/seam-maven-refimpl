@@ -42,40 +42,60 @@
 
   <profiles>
     <profile>
+      <!-- e.g: mvn initialize -Pshow-properties -->
       <id>show-properties</id>
       <build>
         <plugins>
           <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
+            <groupId>org.codehaus.gmaven</groupId>
+            <artifactId>gmaven-plugin</artifactId>
             <executions>
               <execution>
-                <phase>generate-sources</phase>
+                <id>g-show-properties</id>
+                <phase>initialize</phase>
                 <goals>
-                  <goal>run</goal>
+                  <goal>execute</goal>
                 </goals>
                 <configuration>
-                  <tasks>
-                    <echo>env                    : ${env}</echo>
-                    <echo>app.context            : ${app.context}</echo>
-                    <echo>app.unpack.modules     : ${app.unpack.modules}</echo>
-                    <echo>project.parent.basedir : ${project.parent.basedir}</echo>
-                    <echo>project.basedir        : ${project.basedir}</echo>
-                    <echo>project.build.directory: ${project.build.directory}</echo>
-                    <echo>jdk.source             : ${jdk.source}</echo>
-                    <echo>jdk.target             : ${jdk.target}</echo>
-                    <echo>jdk.debug              : ${jdk.debug}</echo>
-                    <echo>jdk.optimize           : ${jdk.optimize}</echo>
-                    <echo>as                     : ${as}</echo>
-                    <echo>as.deploy              : ${as.deploy}</echo>
-                    <echo>ds                     : ${ds}</echo>
-                    <echo>ds.connection.url      : ${ds.connection.url}</echo>
-                    <echo>ds.test                : ${ds.test}</echo>
-                    <echo>ds.connection.url.test : ${ds.connection.url.test}</echo>
-                  </tasks>
-                </configuration>
+                  <source>
+                  <![CDATA[
+                    def profiles = project.getActiveProfiles();
+                    log.info "========================================================================"
+                    log.info "Active profiles:"
+                    log.info "========================================================================"
+                    if(profiles.size > 0) {
+                      profiles.each{ profile ->
+                        log.info profile.id;
+                      }
+                    }
+                    else {
+                      log.info "No active profiles"
+                    }
+                    
+                    // Pattern to match ${property} placeholders
+                    def placeholderPattern = ~/\$\{(.*?)\}/;  
+                    log.info ""
+                    log.info "========================================================================"
+                    log.info "Maven project.properties:"
+                    log.info "========================================================================"
+                    log.info "project.parent.basedir = $project.parent.basedir";
+                    log.info "project.basedir        = $project.basedir";
+                    log.info "project.artifactId     = $project.artifactId";
+                    
+                    project.properties.sort{it.key}.each { key, value ->
+                      def matcher = placeholderPattern.matcher(value);
+                      if(matcher)
+                        log.warn "NON EXISTING PROPERTY IN PLACEHOLDER: $key = $value"
+                      else
+                        log.info "$key = $value";
+                    }
+                    log.info "========================================================================"
+                  ]]>
+                  </source>
+                </configuration>                
               </execution>
             </executions>
-          </plugin>
+          </plugin>        
         </plugins>
       </build>
     </profile>
