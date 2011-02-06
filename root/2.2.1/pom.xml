@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.jboss.seam</groupId>
     <artifactId>root</artifactId>
-    <version>2.2.1.CR2</version>
+    <version>2.2.1.Final</version>
   </parent>
 
   <groupId>no.knowit.seam</groupId>
@@ -24,34 +24,54 @@
 
   <properties>
     <!-- jar versions, for dependency management -->
-    <version.seam>2.2.1.CR2</version.seam> <!-- MUST correspond w. seam version in parent tag --> 
-    <version.richfaces>3.3.3.Final</version.richfaces>
-    <version.junit>4.8.2</version.junit>
-    <version.testng>5.14.1</version.testng>
-    <version.gmaven>1.3</version.gmaven>
-    <version.groovy>1.7.2</version.groovy>
-    <version.ant>1.8.1</version.ant>
+    <version.seam>2.2.1.Final</version.seam> <!-- MUST correspond w. seam version in parent tag -->
+     
+    <version.ant>1.8.2</version.ant>
+    <version.antlr>3.3</version.antlr>
+    <version.cglib-nodep>2.2</version.cglib-nodep>
     <version.commons.beanutils>1.8.3</version.commons.beanutils>
-    <version.jbpm-jpdl>3.2.2</version.jbpm-jpdl>
-    <version.jboss-cache>1.4.1.SP9</version.jboss-cache>
+    <version.commons-collections>3.2.1</version.commons-collections>
+    <version.commons-configuration>1.6</version.commons-configuration>
+    <version.commons-cli>1.2</version.commons-cli>
+    <version.commons-digester>1.8.1</version.commons-digester>
+    <version.commons-lang>2.4</version.commons-lang>
+    <version.groovy>1.7.2</version.groovy>
+    <version.guava>r07</version.guava>
     <version.hibernate-core>3.3.1.GA</version.hibernate-core>
     <version.hibernate-entitymanager>3.4.0.GA</version.hibernate-entitymanager>
     <version.hibernate-search>3.1.1.GA</version.hibernate-search>
-    <version.jta>1.1</version.jta>
-    <version.xstream>1.3.1</version.xstream>
-    <version.jboss-el>1.0_02.CR5</version.jboss-el>
-    <version.urlrewritefilter>3.1.0</version.urlrewritefilter>
     <version.hibernate-commons-annotations>3.3.0.ga</version.hibernate-commons-annotations>
-    <version.antlr>3.2</version.antlr>
-    <version.commons-configuration>1.6</version.commons-configuration>
-    <version.commons-digester>1.8.1</version.commons-digester>
-    <version.commons-lang>2.4</version.commons-lang>
-    <version.javaee-api>5.0-3</version.javaee-api>
-    <version.openejb-core>3.1.4</version.openejb-core>
-    <version.h2>1.3.149</version.h2>
-    <version.mysql>5.1.14</version.mysql>
-    <version.hsqldb>2.0.0</version.hsqldb>
+    <version.jboss-cache>1.4.1.SP9</version.jboss-cache>
+    <version.jboss-el>1.0_02.CR5</version.jboss-el>
+    <version.jbpm-jpdl>3.2.2</version.jbpm-jpdl>
+    <version.jta>1.1</version.jta>
+    <version.richfaces>3.3.3.Final</version.richfaces>
+    <version.urlrewritefilter>3.1.0</version.urlrewritefilter>
+    <version.xstream>1.3.1</version.xstream>
 
+    <!-- testing (primary) -->
+    <version.hamcrest>1.2.1</version.hamcrest>
+    <version.junit>4.8.2</version.junit>
+    <version.mockito>1.8.5</version.mockito>
+    <version.objenesis>1.2</version.objenesis>
+    <version.powermock>1.4.7</version.powermock>
+    <version.spock>0.5</version.spock>
+    <version.spock-groovy-1.7>0.5-groovy-1.7</version.spock-groovy-1.7>
+    <version.testng>5.14.1</version.testng>
+    
+    <!-- OpenEJB -->    
+    <version.openejb-javaee-api>5.0-3</version.openejb-javaee-api>
+    <version.openejb-core>3.1.4</version.openejb-core>
+    
+    <!-- JDBC -->
+    <version.h2>1.3.149</version.h2>
+    <version.hsqldb>2.0.0</version.hsqldb>
+    <version.mysql>5.1.14</version.mysql>
+    
+    <!-- plugins -->
+    <version.gmaven>1.3</version.gmaven>
+
+    <!--  -->
     <jdk.debug>true</jdk.debug>
     <jdk.optimize>false</jdk.optimize>
     <jdk.source>1.6</jdk.source>
@@ -677,11 +697,11 @@
           </exclusion>
         </exclusions>
       </dependency>
-			
+      
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
-        <version>${version.commons.beanutils}</version>
+        <version>${version.commons-beanutils}</version>
         <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>
@@ -694,6 +714,13 @@
         </exclusions>
       </dependency>
 
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>${version.commons-collections}</version>
+      </dependency>
+
+			
       <!-- 
         groovy-all-1.5.4 provided by Seam-2.1.2, seam-2.2.0 and seam-2.2.1 root POM 
         does not work with the gmaven-1.2 and 1.3 plugin, must use groovy-1.7.x.
@@ -812,7 +839,7 @@
       <dependency>
         <groupId>org.jboss.el</groupId>
         <artifactId>jboss-el</artifactId>
-        <version>1.0_02.CR5</version>
+        <version>${version.jboss-el}</version>
         <exclusions>
         <!-- ** -->
         <exclusion>
@@ -821,12 +848,17 @@
         </exclusion>
         </exclusions>
       </dependency>
-      
 
+      <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
+        <version>${version.cglib-nodep}</version>
+      </dependency>
+      
       <dependency>
         <groupId>org.tuckey</groupId>
         <artifactId>urlrewritefilter</artifactId>
-        <version>${version.urlrewritefilter}</version> <!-- 3.0.4 in seam root, 3.2.0 is latest, but could not find repo for that version -->
+        <version>${version.urlrewritefilter}</version>
         <exclusions>
           <exclusion>
             <groupId>junit</groupId>
@@ -910,7 +942,14 @@
           </exclusion>
         </exclusions>
       </dependency>
-      
+
+      <!-- guava -->
+      <dependency>
+         <groupId>com.google.guava</groupId>
+         <artifactId>guava</artifactId>
+         <version>r07</version>
+      </dependency>
+
       <!-- commons -->
       <dependency>
         <groupId>commons-beanutils</groupId>
@@ -924,6 +963,12 @@
         </exclusions>
       </dependency>
     
+      <dependency>
+         <groupId>commons-cli</groupId>
+         <artifactId>commons-cli</artifactId>
+         <version>${version.commons-cli}</version>
+      </dependency>
+
       <dependency>
         <groupId>commons-configuration</groupId>
         <artifactId>commons-configuration</artifactId>
@@ -977,7 +1022,7 @@
       <dependency>
         <groupId>org.apache.openejb</groupId>
         <artifactId>javaee-api</artifactId>
-        <version>${version.javaee-api}</version>
+        <version>${version.openejb-javaee-api}</version>
       </dependency>
       
       <!-- openejb embedded container -->
@@ -1002,17 +1047,77 @@
       </dependency>
 
       <!-- test -->
+      
+      <!-- see: http://code.google.com/p/hamcrest/ -->
+      <dependency> 
+        <groupId>org.hamcrest</groupId> 
+        <artifactId>hamcrest-core</artifactId>
+        <version>${version.hamcrest}</version>
+      </dependency>
+
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${version.junit}</version>
       </dependency>
 
+      <!-- see: http://code.google.com/p/mockito/ -->
+      <dependency>
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-all</artifactId>
+        <version>${version.mockito}</version>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-core</artifactId>
+        <version>${version.mockito}</version>
+      </dependency>
+
+      <!-- enables mocking of classes without default constructor (together with CGLIB) -->
+      <dependency> 
+        <groupId>org.objenesis</groupId>
+        <artifactId>objenesis</artifactId>
+        <version>${version.objenesis}</version>
+      </dependency>
+      
+      <!-- see: http://code.google.com/p/powermock/ -->
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-module-junit4</artifactId>
+        <version>${version.powermock}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-module-testng</artifactId>
+        <version>${version.powermock}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-api-mockito</artifactId>
+        <version>${version.powermock}</version>
+      </dependency>
+      
+      <!-- 
+        see: http://code.google.com/p/spock/
+        see: http://code.google.com/p/spock/source/browse/branches/groovy-1.7/spock-example/pom.xml 
+      -->
+      <dependency>
+        <groupId>org.spockframework</groupId>
+        <artifactId>spock-core</artifactId>
+        <version>${version.spock-groovy-1.7}</version>
+      </dependency>    
+    
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
         <version>${version.testng}</version>
       </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -1068,14 +1173,14 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.7.1</version>
+          <version>2.7.2</version>
         </plugin>
         
         <!-- Packaging types / tools -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-ear-plugin</artifactId>
-          <version>2.4.2</version>
+          <version>2.5</version>
           <configuration>
             <!-- 
               MNGECLIPSE-1541:
@@ -1182,6 +1287,12 @@
           <version>2.7</version>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>shurefire-report-plugin</artifactId>
+          <version>2.7.2</version>
+        </plugin>
+
         <!-- 
           The jdepend plugin consumes a lot of memory.
           If you get an outOfMemoryError try this: 
@@ -1235,14 +1346,14 @@
           see:   http://mojo.codehaus.org/maven-hibernate3/hibernate3-maven-plugin/
           see:   http://unmaintainable.wordpress.com/2008/04/12/hibernate3-schema-creation/
           requires: 
-          * ${app.persistence.unit.name}
+            * ${app.persistence.unit.name}
           usage: 
-          * cd  to parent project
-          * mvn install
-          * cd  to project containing the entities, e.g. ejb
-          * mvn install
-          * mvn hibernate3:hbm2ddl
-          * see target/hibernate3/sql/schema.ddl
+            * cd  to parent project
+            * mvn install
+            * cd  to project containing the entities, e.g. ejb
+            * mvn install
+            * mvn hibernate3:hbm2ddl
+            * see target/hibernate3/sql/schema.ddl
         -->
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -1293,14 +1404,20 @@
           <artifactId>gmaven-plugin</artifactId>
           <version>${version.gmaven}</version>
           <configuration>
-            <providerSelection>1.7</providerSelection> <!-- providerSelection probably defaults to 1.7 now -->
+            <providerSelection>1.7</providerSelection>
             <debug>${jdk.debug}</debug>
             <stacktrace>${jdk.debug}</stacktrace>
             <targetBytecode>1.5</targetBytecode> <!-- is the value to compile for a JDK 1.5 or later JVM. -->
             <verbose>true</verbose>
             <sourceEncoding>utf-8</sourceEncoding>
           </configuration>
-          
+
+          <!--
+            By default, GMaven 1.3 will always use Groovy 1.7.0 for compilation, no matter which 
+            Groovy version you have on the class path. This is here to to configure GMaven to use a
+            different Groovy version, see e.g. 
+              http://code.google.com/p/spock/source/browse/branches/groovy-1.7/spock-example/pom.xml
+           -->          
           <dependencies>
             <dependency>
               <groupId>org.codehaus.gmaven.runtime</groupId>
@@ -1422,6 +1539,27 @@
             <useFullNames>false</useFullNames>
           </configuration>
         </plugin>
+        
+        <!-- spock -->
+        <plugin>
+          <!-- 
+            Finds all Spock specifications in this project, and configures Maven to run them
+            If this plugin is removed, Spock specifications will need to adhere to Maven's naming 
+            conventions for test classes 
+          -->
+          <groupId>org.spockframework</groupId>
+          <artifactId>spock-maven</artifactId>
+          <version>${version.spock-groovy-1.7}</version>
+          <!-- you need to specify a concrete version number here -->
+          <executions>
+            <execution>
+              <goals>
+                <goal>find-specs</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
       </plugins>
     </pluginManagement>
     
