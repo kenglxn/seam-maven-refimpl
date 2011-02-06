@@ -9,12 +9,12 @@
   <groupId>no.knowit.seam</groupId>
   <artifactId>build-all</artifactId>
   <name>${project.artifactId} : ${project.version}</name>
-  <description>POM to build all modules i trunk</description>
+  <description>POM to build root POM and utilities</description>
   <packaging>pom</packaging>
 
   <modules>
-    <module>./root/2.2.0</module>
-    <!-- <module>./root/2.2.1</module> -->
+    <!--  <module>./root/2.2.0</module> -->
+    <module>./root/2.2.1</module>
     <module>./seam-utils</module>
   </modules>
 
