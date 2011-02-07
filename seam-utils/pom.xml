@@ -78,9 +78,11 @@
                     log.info "========================================================================"
                     log.info "Maven project.properties:"
                     log.info "========================================================================"
-                    log.info "project.parent.basedir = $project.parent.basedir";
-                    log.info "project.basedir        = $project.basedir";
-                    log.info "project.artifactId     = $project.artifactId";
+                    log.info "project.parent.basedir  = $project.parent.basedir";
+                    log.info "project.basedir         = $project.basedir";
+                    log.info "project.artifactId      = $project.artifactId";
+                    log.info "project.build.directory = $project.build.directory";
+                    log.info "project.build.finalName = $project.build.finalName";
                     
                     project.properties.sort{it.key}.each { key, value ->
                       def matcher = placeholderPattern.matcher(value);
@@ -267,10 +269,17 @@
       <scope>test</scope>
     </dependency>
   
-    <!-- openejb embedded container for running tests -->
+    <!-- OpenEJB embedded container for running tests -->
     <dependency>
       <groupId>org.apache.openejb</groupId>
       <artifactId>openejb-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- logging, for OpenEJB -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
       <scope>test</scope>
     </dependency>
     
@@ -281,6 +290,12 @@
       <scope>test</scope>
     </dependency>
     
+    <dependency>
+      <groupId>javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- databases  -->
     <!--
     <dependency>
@@ -317,19 +332,6 @@
       <scope>test</scope>
     </dependency>
     
-    <!-- logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
-    </dependency>
-    
-    <!--  -->
-    <dependency>
-      <groupId>javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
