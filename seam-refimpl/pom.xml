@@ -294,13 +294,20 @@
       <scope>provided</scope>
     </dependency>
   
-    <!-- openejb embedded container for running tests -->
+    <!-- OpenEJB embedded container for running tests -->
     <dependency>
       <groupId>org.apache.openejb</groupId>
       <artifactId>openejb-core</artifactId>
       <scope>test</scope>
     </dependency>
     
+    <!-- logging, for OpenEJB -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- For in-memory database -->
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -308,6 +315,12 @@
       <scope>test</scope>
     </dependency>
     
+    <dependency>
+      <groupId>javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- databases  -->
     <dependency>
       <groupId>com.h2database</groupId>
@@ -344,64 +357,66 @@
       <scope>test</scope>
     </dependency>
     
-    <!-- logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
-    </dependency>
-    
-    <!--  -->
-    <dependency>
-      <groupId>javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <profiles>
     <profile>
+      <!-- e.g: mvn initialize -Pshow-properties -->
       <id>show-properties</id>
       <build>
         <plugins>
           <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
+            <groupId>org.codehaus.gmaven</groupId>
+            <artifactId>gmaven-plugin</artifactId>
             <executions>
               <execution>
-                <phase>generate-sources</phase>
+                <id>g-show-properties</id>
+                <phase>initialize</phase>
                 <goals>
-                  <goal>run</goal>
+                  <goal>execute</goal>
                 </goals>
                 <configuration>
-                  <tasks>
-                    <echo>project.artifactId        : ${project.artifactId}</echo>
-                    <echo>env                       : ${env}</echo>
-                    <echo>app.context               : ${app.context}</echo>
-                    <echo>app.unpack.modules        : ${app.unpack.modules}</echo>
-                    <echo>project.parent.basedir    : ${project.parent.basedir}</echo>
-                    <echo>project.basedir           : ${project.basedir}</echo>
-                    <echo>project.build.directory   : ${project.build.directory}</echo>
-                    <echo>jdk.source                : ${jdk.source}</echo>
-                    <echo>jdk.target                : ${jdk.target}</echo>
-                    <echo>jdk.debug                 : ${jdk.debug}</echo>
-                    <echo>jdk.optimize              : ${jdk.optimize}</echo>
-                    <echo>as                        : ${as}</echo>
-                    <echo>as.version                : ${as.version}</echo>
-                    <echo>as.deploy                 : ${as.deploy}</echo>
-                    <echo>ds                        : ${ds}</echo>
-                    <echo>ds.connection.url         : ${ds.connection.url}</echo>
-                    <echo>ds.xml                    : ${ds.xml}</echo>
-                    <echo>pu.hibernate.dialect      : ${pu.hibernate.dialect}</echo>
-                    <echo>pu.hibernate.show_sql     : ${pu.hibernate.show_sql}</echo>										
-                    <echo>ds.test                   : ${ds.test}</echo>
-                    <echo>ds.connection.url.test    : ${ds.connection.url.test}</echo>
-                    <echo>pu.hibernate.dialect.test : ${pu.hibernate.dialect.test}</echo>
-                    <echo>pu.hibernate.show_sql.test: ${pu.hibernate.show_sql.test}</echo>										
-                  </tasks>
-                </configuration>
+                  <source>
+                  <![CDATA[
+                    def profiles = project.getActiveProfiles();
+                    log.info "========================================================================"
+                    log.info "Active profiles:"
+                    log.info "========================================================================"
+                    if(profiles.size > 0) {
+                      profiles.each{ profile ->
+                        log.info profile.id;
+                      }
+                    }
+                    else {
+                      log.info "No active profiles"
+                    }
+                    
+                    // Pattern to match ${property} placeholders
+                    def placeholderPattern = ~/\$\{(.*?)\}/;  
+                    log.info ""
+                    log.info "========================================================================"
+                    log.info "Maven project.properties:"
+                    log.info "========================================================================"
+                    log.info "project.parent.basedir  = $project.parent.basedir";
+                    log.info "project.basedir         = $project.basedir";
+                    log.info "project.artifactId      = $project.artifactId";
+                    log.info "project.build.directory = $project.build.directory";
+                    log.info "project.build.finalName = $project.build.finalName";
+                    
+                    project.properties.sort{it.key}.each { key, value ->
+                      def matcher = placeholderPattern.matcher(value);
+                      if(matcher)
+                        log.warn "NON EXISTING PROPERTY IN PLACEHOLDER: $key = $value"
+                      else
+                        log.info "$key = $value";
+                    }
+                    log.info "========================================================================"
+                  ]]>
+                  </source>
+                </configuration>                
               </execution>
             </executions>
-          </plugin>
+          </plugin>        
         </plugins>
       </build>
     </profile>
