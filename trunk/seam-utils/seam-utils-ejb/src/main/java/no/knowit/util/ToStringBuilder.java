@@ -13,16 +13,19 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import no.knowit.util.MetaCache.Meta;
 
 /**
- * <p>Assists in implementing {@link Object#toString()} methods. For example:<br/>
- * <b>Given</b> an object that contains two member fields, {@code foo}, and {@code bar}:</p>
+ * <p>
+ * Assists in implementing {@link Object#toString()} methods. For example:<br/>
+ * <b>Given</b> an object that contains two member fields, {@code foo}, and {@code bar}:
+ * </p>
  * 
- * <pre><code>public class MyBean {
+ * <pre>
+ * <code>public class MyBean {
  *   private int foo;
  *   private String bar;
  *   public MyBean(int foo, String bar) { this.foo = foo; this.bar = bar; }
@@ -34,17 +37,20 @@ import no.knowit.util.MetaCache.Meta;
  *       .flatten()
  *       .toString();
  *   }
- * }</code></pre>
+ * }</code>
+ * </pre>
+ * <p>
+ * <b>When</b> the values of {@code foo} and {@code bar} are <code>101</code> and
+ * <code>"My Bean!"</code> <b>then</b> the <code>toString</code> method should return the string:
+ * <code>"{MyBean": {"foo": 101, "bar": "Hello: My Bean!"}}"</code>.
+ * </p>
+ * <p>
+ * The builder is capable of outputting values in encapsulated classes as well. <b>Given</b> a class
+ * instance with values:
+ * </p>
  * 
- * <p><b>When</b> the values of {@code foo} and {@code bar} are <code>101</code> and 
- * <code>"My Bean!"</code>
- * <b>then</b> the <code>toString</code> method should return the string:
- * <code>"{MyBean": {"foo": 101, "bar": "Hello: My Bean!"}}"</code>.</p>
- * 
- * <p>The builder is capable of outputting values in encapsulated classes as well.
- * <b>Given</b> a class instance with values:</p>
- * 
- * <pre><code>public class Frog {
+ * <pre>
+ * <code>public class Frog {
  *   private String name = "Kermit";
  *   private int firstAppearance = 1955; // According to: http://en.wikipedia.org/wiki/Kermit_the_Frog
  *   private Map<String, String> address = new HashMap<String, String>() {{
@@ -58,27 +64,35 @@ import no.knowit.util.MetaCache.Meta;
  *       .builder(this)
  *       .toString();
  *   }
- * }</code></pre>
+ * }</code>
+ * </pre>
+ * <p>
+ * <b>When</b> we call <code>toString</code> <b>then</b> the method should return the string;
+ * </p>
  * 
- * <p><b>When</b> we call <code>toString</code>
- * <b>then</b> the method should return the string;</p>
- * 
- * <pre><code>{"Frog": {
+ * <pre>
+ * <code>{"Frog": {
  *  "name": "Kermit the frog",
  *  "firstAppearance": 1955,
  *  "address": {
  *    "street": "Sesame Street",
  *    "zip": "01234"
  *  }
- * }}</code></pre>
+ * }}</code>
+ * </pre>
+ * <p>
+ * You can also use the builder to debug 3rd party objects:
+ * </p>
  * 
- * <p>You can also use the builder to debug 3rd party objects:</p>
- * <pre><code>Integer i = new Integer(1001);
- * System.out.println(ToStringBuilder.builder(i).toString());</code></pre>
+ * <pre>
+ * <code>Integer i = new Integer(1001);
+ * System.out.println(ToStringBuilder.builder(i).toString());</code>
+ * </pre>
  * 
- * </p>Reflection is used to output the field values which for private and protected fields will
- * fail under a security manager, unless the appropriate permissions are set up correctly.<p>
- *
+ * </p>Reflection is used to output the field values - which for private and protected fields will
+ * fail under a security manager, unless the appropriate permissions are set up correctly.
+ * <p>
+ * 
  * @author LeifOO
  */
 public class ToStringBuilder {
@@ -146,10 +160,10 @@ public class ToStringBuilder {
     this.indentation = indentation < 0 ? 2 : indentation;
     return this;
   }
-  
+
   /**
    * Maximum level of encapsulated classes in formatted output
-   * <p><b>Given</b> a package, <code>org.mypackage</code>, and two classes, <code>Hello</code> and 
+   * <p><b>Given</b> a package, <code>org.mypackage</code>, and two classes, <code>Hello</code> and
    * <code>World</code> where <code>Hello</code> encapsulates <code>World</code>.</p>
    * 
    * <pre><code>public class World {
@@ -212,7 +226,7 @@ public class ToStringBuilder {
    * @return the same {@link ToStringBuilder} instance
    */
   public ToStringBuilder publicFieldsOnly() {
-    this.publicFields = true;
+    publicFields = true;
     return this;
   }
 
@@ -242,7 +256,7 @@ public class ToStringBuilder {
    * @return the same {@link ToStringBuilder} instance
    */
   public ToStringBuilder flatten() {
-    this.flatten = true;
+    flatten = true;
     return this;
   }
 
@@ -270,7 +284,7 @@ public class ToStringBuilder {
    * @return the same {@link ToStringBuilder} instance
    */
   public ToStringBuilder packageNameForClasses() {
-    this.packageNameForClasses = true;
+    packageNameForClasses = true;
     return this;
   }
 
@@ -298,7 +312,7 @@ public class ToStringBuilder {
    * @return the same {@link ToStringBuilder} instance
    */
   public ToStringBuilder skipRootNode() {
-    this.skipRootNode = true;
+    skipRootNode = true;
     return this;
   }
 
@@ -328,7 +342,7 @@ public class ToStringBuilder {
    */
   public ToStringBuilder rootNodeAlias(final String name) {
     final String n = name != null ? name.trim() : null;
-    this.rootNodeAlias = n;
+    rootNodeAlias = n;
     return this;
   }
 
@@ -361,7 +375,7 @@ public class ToStringBuilder {
    * @param fieldNameFormatter
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder fieldNameFormatter(FieldNameFormatter fieldNameFormatter) {
+  public ToStringBuilder fieldNameFormatter(final FieldNameFormatter fieldNameFormatter) {
     this.fieldNameFormatter = fieldNameFormatter;
     return this;
   }
@@ -395,13 +409,13 @@ public class ToStringBuilder {
    * @param fieldValueFormatter
    * @return the same {@link ToStringBuilder} instance
    */
-  public ToStringBuilder fieldValueFormatter(FieldValueFormatter fieldValueFormatter) {
+  public ToStringBuilder fieldValueFormatter(final FieldValueFormatter fieldValueFormatter) {
     this.fieldValueFormatter = fieldValueFormatter;
     return this;
   }
 
   /**
-   * <p>Only a specified set of fields will be <b>included</b> in the formatted output. 
+   * <p>Only a specified set of fields will be <b>included</b> in the formatted output.
    * Use "dot" notation to include fields for encapsulated classes.<br/>
    * <b>Given</b> a class instance with values:</p>
    * 
@@ -442,15 +456,15 @@ public class ToStringBuilder {
    * @return the same {@link ToStringBuilder} instance
    */
   public ToStringBuilder includeField(final String name) {
-    String n = name != null ? name.trim() : "";
+    final String n = name != null ? name.trim() : "";
     if (n.length() > 0) {
       fieldNames.add(n);
     }
     return this;
   }
-  
+
   /**
-   * <p>You can specify a set of fields to be <b>excluded</b> from the formatted output. 
+   * <p>You can specify a set of fields to be <b>excluded</b> from the formatted output.
    * Use "dot" notation to include fields for encapsulated classes.<br/>
    * <b>Given</b> a class instance with values:</p>
    * 
@@ -490,16 +504,16 @@ public class ToStringBuilder {
    * @return the same {@link ToStringBuilder} instance
    */
   public ToStringBuilder excludeField(final String name) {
-    String n = name != null ? name.trim() : "";
+    final String n = name != null ? name.trim() : "";
     if (n.length() > 0) {
       excludedFieldNames.add(n);
     }
     return this;
   }
-  
+
   /**
    * <p>Output fields with a given annotation.<br/>
-   * <b>Given</b> a class with a member field annotated with the {@link javax.persistence.Id} 
+   * <b>Given</b> a class with a member field annotated with the {@link javax.persistence.Id}
    * annotation:</p>
    * 
    * <pre><code>&#064;Entity
@@ -517,7 +531,7 @@ public class ToStringBuilder {
    *   }
    * }</code></pre>
    * 
-   * <p><b>When</b> the values of {@code identifier} is <code>101</code> 
+   * <p><b>When</b> the values of {@code identifier} is <code>101</code>
    * <b>then</b> the <code>toString</code> method should return the string:
    * <code>"{Frog": {"identifier": 101}}"</code>.</p>
    * 
@@ -546,41 +560,31 @@ public class ToStringBuilder {
       rootNodeAlias = generateClassname(target);
     }
 
-    allFields = (fieldNames.size() < 1 && excludedFieldNames.size() < 1 && annotations.size() < 1);
+    allFields = fieldNames.size() < 1 && excludedFieldNames.size() < 1 && annotations.size() < 1;
 
-    StringBuilder sb = new StringBuilder(64);
+    final StringBuilder sb = new StringBuilder(64);
     if (skipRootNode) {
       sb.append(build(target, indentation, 0));
     } else {
       sb.append('{')
-        .append(fieldNameFormatter.format(target, rootNodeAlias))
-        .append(build(target, indentation, 0))
-        .append('}');
+      .append(fieldNameFormatter.format(target, rootNodeAlias))
+      .append(build(target, indentation, 0))
+      .append('}');
     }
 
     return flatten ? flattenBuild(sb) : sb.toString();
   }
 
   /**
-   * Determines if the specified Class object represents a primitive type. In addition
-   * to the eight primitives determined by {@link java.lang.Class#isPrimitive} this method
-   * considers class objects of <code>
-   *  java.lang.String.class,    java.lang.Boolean.class,  java.lang.Byte.class,
-   *  java.lang.Character.class, java.lang.Double.class,   java.lang.Float.class,
-   *  java.lang.Integer.class,   java.lang.Long.class,     java.lang.Number.class,
-   *  java.lang.Short.class,     java.util.Currency.class, java.util.Date.class,
-   *  java.sql.Date.class,       java.sql.Time.class,      java.sql.Timestamp.class</code> 
-   *  and <code>enums</code> as primitives. 
-   *  
-   * @param type the type to check
-   * @return true if the type is a primitive, otherwise false
-   * @see {@link java.lang.Class#isPrimitive}
-   * @see {@link java.lang.Class#isEnum}
+   * @deprecated use {@link no.knowit.util.ReflectionUtils#isPrimitive} instead
+   * @param type
+   * @return
    */
+  @Deprecated
   public static boolean isPrimitive(final Class<?> type) {
-    return (type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1);
+    return type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) > -1;
   }
-  
+
   /**
    * Copy from: org.json.JSONObject<br/>
    * Produce a string in double quotes with backslash sequences in all the
@@ -591,15 +595,15 @@ public class ToStringBuilder {
    * @param string A String
    * @return A String correctly formatted for insertion in a JSON text.
    */
-  public static String quote(String string) {
+  public static String quote(final String string) {
     if (string == null || string.trim().length() == 0) {
       return "\"\"";
     }
     char b;
     char c = 0;
     int i;
-    int len = string.length();
-    StringBuffer sb = new StringBuffer(len + 4);
+    final int len = string.length();
+    final StringBuffer sb = new StringBuffer(len + 4);
     String t;
 
     sb.append('"');
@@ -607,55 +611,55 @@ public class ToStringBuilder {
       b = c;
       c = string.charAt(i);
       switch (c) {
-        case '\\':
-        case '"':
+      case '\\':
+      case '"':
+        sb.append('\\');
+        sb.append(c);
+        break;
+      case '/':
+        if (b == '<') {
           sb.append('\\');
+        }
+        sb.append(c);
+        break;
+      case '\b':
+        sb.append("\\b");
+        break;
+      case '\t':
+        sb.append("\\t");
+        break;
+      case '\n':
+        sb.append("\\n");
+        break;
+      case '\f':
+        sb.append("\\f");
+        break;
+      case '\r':
+        sb.append("\\r");
+        break;
+      default:
+        if (c < ' ' || c >= '\u0080' && c < '\u00a0' || c >= '\u2000' && c < '\u2100') {
+          t = "000" + Integer.toHexString(c);
+          sb.append("\\u" + t.substring(t.length() - 4));
+        } else {
           sb.append(c);
-          break;
-        case '/':
-          if (b == '<') {
-            sb.append('\\');
-          }
-          sb.append(c);
-          break;
-        case '\b':
-          sb.append("\\b");
-          break;
-        case '\t':
-          sb.append("\\t");
-          break;
-        case '\n':
-          sb.append("\\n");
-          break;
-        case '\f':
-          sb.append("\\f");
-          break;
-        case '\r':
-          sb.append("\\r");
-          break;
-        default:
-          if (c < ' ' || (c >= '\u0080' && c < '\u00a0') || (c >= '\u2000' && c < '\u2100')) {
-            t = "000" + Integer.toHexString(c);
-            sb.append("\\u" + t.substring(t.length() - 4));
-          } else {
-            sb.append(c);
-          }
+        }
       }
     }
     sb.append('"');
     return sb.toString();
   }
-  
-  private String generateClassname(Object obj) {
+
+  private String generateClassname(final Object obj) {
     return packageNameForClasses
-      ? obj.getClass().getName()
-      : obj.getClass().getSimpleName();
+    ? obj.getClass().getName()
+        : obj.getClass().getSimpleName();
   }
 
   private String flattenBuild(StringBuilder sb) {
-    String lines[] = sb.toString().split("[\\r\\n]+");
+    final String lines[] = sb.toString().split("[\\r\\n]+");
     sb = new StringBuilder(64);
-    for (String line : lines) {
+    for (final String line : lines) {
       sb.append(line.trim());
     }
     return sb.toString();
@@ -689,17 +693,17 @@ public class ToStringBuilder {
     }
   }
 
-  private StringBuilder build(final Object owner, int indent, final int recursion) {
+  private StringBuilder build(final Object owner, final int indent, final int recursion) {
     if(owner != null) {
       if (owner instanceof Collection<?>) {
         return buildCollection(owner, indent, recursion);
-      } 
+      }
       else if (owner instanceof Map<?, ?>) {
         return buildMap(owner, indent, recursion);
-      } 
+      }
       else if (owner.getClass().isArray()) {
         return buildArray(owner, indent, recursion);
-      } 
+      }
       else if (owner instanceof Object) {
         return buildObject(owner, indent, recursion);
       }
@@ -712,53 +716,54 @@ public class ToStringBuilder {
     if (target != owner) {
       sb.append(fieldNameFormatter.format(owner, generateClassname(owner)));
     }
-    
+
     if(recursion > recursionLevel) {
       sb.append(owner.getClass().getName() + '@' + Integer.toHexString(owner.hashCode()));
       owner.toString();
     }
     else {
       sb.append("{\n");
-  
+
       final Meta meta = MetaCache.getMeta(owner.getClass());
-      for (Entry<String, Field> entry : meta.fields.entrySet()) {
+      for (final Entry<String, Field> entry : meta.fields.entrySet()) {
         final Field field = entry.getValue();
         if (field == null) {
           continue;
         }
         final Method getter = meta.getters.get(entry.getKey());
-        if (!publicFields || (Modifier.isPublic(field.getModifiers()) ||
-          (getter != null && Modifier.isPublic(getter.getModifiers())))) {
-  
+        if (!publicFields || Modifier.isPublic(field.getModifiers()) ||
+            getter != null && Modifier.isPublic(getter.getModifiers())) {
+
           final String fieldName = entry.getKey();
-          
+
           if(fieldName.startsWith("this$")) {
-            // Nested classes that are not static member classes has a hidden 
+            // Nested classes that are not static member classes has a hidden
             // this$0 field to reference the outermost enclosing class
-            continue;  
+            continue;
           }
           if (isFieldNameInFieldNames(fieldName, owner) || hasAnnotation(fieldName, meta)) {
             final Object value = MetaCache.get(entry.getKey(), owner);
             final Class<?> type = field.getType();
-  
+
             sb.append(indention(indent))
-              .append(fieldNameFormatter.format(owner, fieldName))
-              .append(isPrimitive(type)
-                ? fieldValueFormatter.format(owner, value)
-                : build(value, indent + indentation, recursion+1))
-              .append(",\n");
+            .append(fieldNameFormatter.format(owner, fieldName))
+            .append(ReflectionUtils.isPrimitive(type)
+                    ? fieldValueFormatter.format(owner, value)
+                    : build(value, indent + indentation, recursion + 1)
+            )
+            .append(",\n");
           }
         }
       }
     }
     // Delete trailing ','
-    int n = sb.length() - 2;
+    final int n = sb.length() - 2;
     if (sb.charAt(n) == ',') {
       sb.deleteCharAt(n);
     }
     if(recursion <= recursionLevel) {
       sb.append(indention(indent - indentation))
-        .append('}');
+      .append('}');
     }
     return sb;
   }
@@ -766,18 +771,18 @@ public class ToStringBuilder {
   private StringBuilder buildArray(final Object owner, final int indent, final int recursion) {
     final StringBuilder sb = new StringBuilder(32);
     sb.append('[');
-    int l = Array.getLength(owner);
+    final int l = Array.getLength(owner);
     for (int i = 0; i < l; i++) {
-      Object v = Array.get(owner, i);
+      final Object v = Array.get(owner, i);
       if (v != null && isPrimitive(v.getClass())) {
         sb.append(fieldValueFormatter.format(owner, v));
       } else {
         sb.append('\n')
-          .append(indention(indent))
-          .append(build(v, indent + indentation, recursion + 1));
+        .append(indention(indent))
+        .append(build(v, indent + indentation, recursion + 1));
       }
       // Delete trailing '\n'
-      int n = sb.length() - 1;
+      final int n = sb.length() - 1;
       if (sb.charAt(n) == '\n') {
         sb.deleteCharAt(n);
       }
@@ -792,38 +797,39 @@ public class ToStringBuilder {
   private StringBuilder buildMap(final Object owner, final int indent, final int recursion) {
     final StringBuilder sb = new StringBuilder(32);
     sb.append("{\n");
-    for (Iterator<?> i = ((Map<?, ?>) owner).entrySet().iterator(); i.hasNext();) {
+    for (final Iterator<?> i = ((Map<?, ?>) owner).entrySet().iterator(); i.hasNext();) {
       final Entry<?, ?> e = (Entry<?, ?>) i.next();
       final Object v = e.getValue();
 
       sb.append(indention(indent))
-        .append(fieldNameFormatter.format(owner, e.getKey().toString()));
+      .append(fieldNameFormatter.format(owner, e.getKey().toString()));
 
       if (v != null) {
         sb.append(isPrimitive(v.getClass())
-          ? fieldValueFormatter.format(owner, v)
-          : build(v, indent + indentation, recursion + 1));
+            ? fieldValueFormatter.format(owner, v)
+                : build(v, indent + indentation, recursion + 1));
       }
       sb.append(i.hasNext() ? ",\n" : '\n');
     }
     sb.append(indention(indent - indentation))
-      .append('}');
+    .append('}');
     return sb;
   }
 
-  private StringBuilder buildCollection(final Object owner, final int indent, int recursion) {
+  private StringBuilder buildCollection(final Object owner, final int indent, final int recursion) {
     final StringBuilder sb = new StringBuilder(32);
     sb.append('[');
     final Collection<?> c = (Collection<?>) owner;
 
-    int i = 0, l = c.size();
-    for (Object v : c) {
+    int i = 0;
+    final int l = c.size();
+    for (final Object v : c) {
       if (v != null && isPrimitive(v.getClass())) {
         sb.append(fieldValueFormatter.format(owner, v));
       } else {
         sb.append('\n')
-          .append(indention(indent))
-          .append(build(v, indent + indentation, recursion + 1));
+        .append(indention(indent))
+        .append(build(v, indent + indentation, recursion + 1));
       }
       sb.append(++i < l ? ", " : "");
     }
@@ -831,19 +837,19 @@ public class ToStringBuilder {
     return sb;
   }
 
-  private String indention(int indent) {
-    return indent > 0 ? String.format("%" + (indent) + "s", "") : "";
+  private String indention(final int indent) {
+    return indent > 0 ? String.format("%" + indent + "s", "") : "";
   }
 
   private boolean isFieldNameInFieldNames(final String fieldName, final Object owner) {
-    if(allFields) { 
+    if(allFields) {
       return true;
     }
-    final boolean excludedFieldNamesSizeGt0 = excludedFieldNames.size() > 0; 
+    final boolean excludedFieldNamesSizeGt0 = excludedFieldNames.size() > 0;
     if(excludedFieldNamesSizeGt0) {
       for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
         if (excludedFieldNames.contains(
-          target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
+            target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
           return false;
         }
       }
@@ -851,7 +857,7 @@ public class ToStringBuilder {
     if(fieldNames.size() > 0) {
       for (Class<?> clazz = owner.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
         if (fieldNames.contains(
-          target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
+            target == owner ? fieldName : String.format("%s.%s", clazz.getSimpleName(), fieldName))) {
           return true;
         }
       }
@@ -859,16 +865,22 @@ public class ToStringBuilder {
     }
     return excludedFieldNamesSizeGt0 ? true : false;
   }
-  
+
   private boolean hasAnnotation(final String fieldName, final Meta meta) {
     if(annotations.size() > 0) {
-      Field field = meta.fields.get(fieldName);  // Assumes field != null
-      Method getter = meta.getters.get(fieldName);
-      Method setter = meta.setters.get(fieldName);
-      for(Class<? extends Annotation> annotation : annotations) {
-        if(field.isAnnotationPresent(annotation)) return true; 
-        if(getter != null && getter.isAnnotationPresent(annotation)) return true;
-        if(setter != null && setter.isAnnotationPresent(annotation)) return true;
+      final Field field = meta.fields.get(fieldName);  // Assumes field != null
+      final Method getter = meta.getters.get(fieldName);
+      final Method setter = meta.setters.get(fieldName);
+      for(final Class<? extends Annotation> annotation : annotations) {
+        if(field.isAnnotationPresent(annotation)) {
+          return true;
+        }
+        if(getter != null && getter.isAnnotationPresent(annotation)) {
+          return true;
+        }
+        if(setter != null && setter.isAnnotationPresent(annotation)) {
+          return true;
+        }
       }
     }
     return false;

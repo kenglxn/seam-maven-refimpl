@@ -23,6 +23,8 @@
  */
 package no.knowit.crud;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +40,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import no.knowit.util.MetaCache;
+import no.knowit.util.MetaCache.Meta;
 import no.knowit.util.ReflectionUtils;
 
 import org.apache.log4j.Logger;
@@ -450,6 +454,47 @@ public class CrudServiceBean implements CrudService {
       throw new IllegalStateException("EntityManager has not been set on service before usage");
     }
     return em;
+  }
+
+  public <T> T touchRelations(final T transientEntity, final int recursion) {
+    final T result = getManagedEntity(transientEntity);
+    touch(result);
+    return result;
+  }
+
+  protected void touch(final Object attribute) {
+
+    if (attribute != null) {
+      if (attribute instanceof Collection<?>) {
+        ((Collection<?>) attribute).size();
+      }
+      else if (attribute instanceof Map<?, ?>) {
+        ((Map<?, ?>) attribute).size();
+      }
+      else if (attribute.getClass().isArray()) {
+        Array.getLength(attribute);
+      }
+      else if (attribute instanceof Object) {
+        if (!ReflectionUtils.isPrimitive(attribute.getClass())) {
+
+          final Meta meta = MetaCache.getMeta(attribute.getClass());
+          for (final Entry<String, Field> entry : meta.getFields().entrySet()) {
+            final Field field = entry.getValue();
+            if (field == null) {
+              continue;
+            }
+            final String fieldName = entry.getKey();
+            if (fieldName.startsWith("this$")) {
+              // Nested classes that are not static member classes has a hidden
+              // this$0 field to reference the outermost enclosing class
+              continue;
+            }
+            final Object value = MetaCache.get(entry.getKey(), attribute);
+            touch(value);
+          }
+        }
+      }
+    }
   }
 
   protected boolean hasIdentity(final Object entity) {
