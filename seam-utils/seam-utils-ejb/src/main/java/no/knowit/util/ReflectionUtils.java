@@ -275,6 +275,24 @@ public class ReflectionUtils {
     throw new IllegalArgumentException("No such method: " + clazz.getName() + '.' + methodName);
   }
 
+  /**
+   * <p>
+   * Determines if the specified Class object represents a primitive type. In addition to the eight
+   * primitives determined by {@link java.lang.Class#isPrimitive} this method considers class
+   * objects of <code><pre>
+   *  java.lang.String.class,    java.lang.Boolean.class,  java.lang.Byte.class,
+   *  java.lang.Character.class, java.lang.Double.class,   java.lang.Float.class,
+   *  java.lang.Integer.class,   java.lang.Long.class,     java.lang.Number.class,
+   *  java.lang.Short.class,     java.util.Currency.class, java.util.Date.class,
+   *  java.sql.Date.class,       java.sql.Time.class,      java.sql.Timestamp.class</code> and
+   * <code>enums</pre></code> as primitives.
+   * </p>
+   * 
+   * @param type the type to check
+   * @return true if the type is a primitive, otherwise false
+   * @see {@link java.lang.Class#isPrimitive}
+   * @see {@link java.lang.Class#isEnum}
+   */
   public static boolean isPrimitive(final Class<?> type) {
     return type.isPrimitive() || type.isEnum() || OBJECT_PRIMITIVES.indexOf(type) != -1;
   }
