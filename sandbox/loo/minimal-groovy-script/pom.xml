@@ -166,10 +166,12 @@
         <configuration>
           <!-- mvn groovy:execute -->
           <source>
+          <![CDATA[
             println "\n========================================================================"
             println "Hello Groovy script:"
             println "hello.groovy property: " + project.properties['hello.groovy']
             println "========================================================================\n"
+          ]]>
           </source>
         </configuration>
         
@@ -183,6 +185,7 @@
             </goals>
             <configuration>
               <source>
+              <![CDATA[
                 // Read properties from each file in Maven's filters tag
                 project.filters.each { filter ->
                   log.info "Reading properties from: " + new File(filter).canonicalPath;
@@ -218,6 +221,7 @@
                   if(matcher)
                     log.warn "NON EXISTING PROPERTY IN PLACEHOLDER: $key = $value"
                 }
+              ]]>  
               </source>
             </configuration>                
           </execution>
@@ -276,6 +280,7 @@
                   <source>${project.basedir}/ShowProperties.groovy</source>
                   -->
                   <source>
+                  <![CDATA[
                     def profiles = project.getActiveProfiles();
                     if(profiles.size > 0) {
                       log.info "========================================================================"
@@ -300,6 +305,7 @@
                         log.info "$key = $value";
                     }
                     log.info "========================================================================"
+                  ]]>
                   </source>
                 </configuration>                
               </execution>
