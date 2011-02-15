@@ -26,6 +26,8 @@
   </modules>
 
   <properties>
+    <env>dev</env> <!-- The default setting if no profile is specified -->
+  
     <app>groovy</app>
     <app.context>groovy-properties</app.context>  <!-- hint: same value as artifactId -->
     <app.web.context>${app.context}</app.web.context>
@@ -353,6 +355,7 @@
 
   <profiles>
     <profile>
+      <!-- e.g: mvn initialize -Pshow-properties -->
       <id>show-properties</id>
       <build>
         <plugins>
@@ -368,19 +371,23 @@
                 </goals>
                 <configuration>
                   <source>
+                  <![CDATA[
                     def profiles = project.getActiveProfiles();
+                    log.info "========================================================================"
+                    log.info "Active profiles:"
+                    log.info "========================================================================"
                     if(profiles.size > 0) {
-                      log.info "========================================================================"
-                      log.info "Active profiles:"
-                      log.info "========================================================================"
                       profiles.each{ profile ->
                         log.info profile.id;
                       }
                     }
+                    else {
+                      log.info "No active profiles"
+                    }
                     
                     // Pattern to match ${property} placeholders
                     def placeholderPattern = ~/\$\{(.*?)\}/;  
-
+                    log.info ""
                     log.info "========================================================================"
                     log.info "Maven project.properties:"
                     log.info "========================================================================"
@@ -396,6 +403,7 @@
                         log.info "$key = $value";
                     }
                     log.info "========================================================================"
+                  ]]>
                   </source>
                 </configuration>                
               </execution>
@@ -439,6 +447,7 @@
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
         <executions>
+          <!-- e.g: mvn initialize -->
           <execution>
             <id>g-read-properties</id>
             <phase>validate</phase>
@@ -447,6 +456,7 @@
             </goals>
             <configuration>
               <source>
+              <![CDATA[
                 // Read properties from each file in Maven's filters tag
                 project.filters.each { filter ->
                   log.info "Reading properties from: " + new File(filter).canonicalPath;
@@ -482,6 +492,7 @@
                   if(matcher)
                     log.warn "NON EXISTING PROPERTY IN PLACEHOLDER: $key = $value"
                 }
+              ]]>
               </source>
             </configuration>                
           </execution>
