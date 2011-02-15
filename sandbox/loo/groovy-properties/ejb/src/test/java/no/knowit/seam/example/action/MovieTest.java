@@ -74,8 +74,8 @@ public class MovieTest extends SeamOpenEjbTest {
 		
 		// Delete all movies
 		CrudService crudService = lookupCrudService();
-		crudService.remove(new Movie(), true);
-		assert crudService.find(Movie.class).size() == 0 : "List.size():";
+		crudService.removeByExample(new Movie(), true);
+		assert crudService.findWithType(Movie.class).size() == 0 : "List.size():";
 		
 		// Persist 3 movies
 		ArrayList<Movie> movies = new ArrayList<Movie>();
@@ -89,7 +89,7 @@ public class MovieTest extends SeamOpenEjbTest {
 			"Jerry Lundegaard's inept crime falls apart due to his and his henchmen's bungling " +
 			"and the persistent police work of pregnant Marge Gunderson."));
 		
-		crudService.persist(movies);
+		crudService.persistCollection(movies);
 	}
 
 
