@@ -36,7 +36,7 @@
     <version.commons-digester>1.8.1</version.commons-digester>
     <version.commons-lang>2.4</version.commons-lang>
     <version.groovy>1.7.2</version.groovy>
-    <version.guava>r07</version.guava>
+    <version.guava>r08</version.guava>
     <version.hibernate-core>3.3.1.GA</version.hibernate-core>
     <version.hibernate-entitymanager>3.4.0.GA</version.hibernate-entitymanager>
     <version.hibernate-search>3.1.1.GA</version.hibernate-search>
@@ -81,6 +81,11 @@
     
     <!-- http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <!--
+      download sources: mvn dependency:sources
+      download javadoc: mvn dependency:resolve -Dclassifier=javadoc 
+     -->
   </properties>
 
   <dependencyManagement>
@@ -985,7 +990,7 @@
       <dependency>
          <groupId>com.google.guava</groupId>
          <artifactId>guava</artifactId>
-         <version>r07</version>
+         <version>${version.guava}</version>
       </dependency>
 
       <!-- commons -->
