@@ -748,7 +748,7 @@ public class ToStringBuilder {
             sb.append(indention(indent))
             .append(fieldNameFormatter.format(owner, fieldName))
             .append(ReflectionUtils.isPrimitive(type)
-                    ? fieldValueFormatter.format(owner, value)
+                ? fieldValueFormatter.format(owner, value)
                     : build(value, indent + indentation, recursion + 1)
             )
             .append(",\n");
@@ -805,7 +805,7 @@ public class ToStringBuilder {
       .append(fieldNameFormatter.format(owner, e.getKey().toString()));
 
       if (v != null) {
-        sb.append(isPrimitive(v.getClass())
+        sb.append(ReflectionUtils.isPrimitive(v.getClass())
             ? fieldValueFormatter.format(owner, v)
                 : build(v, indent + indentation, recursion + 1));
       }

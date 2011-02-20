@@ -154,6 +154,7 @@ public interface CrudService {
    *           entity's primary key
    * @throws EntityNotFoundException if the entity state
    *           cannot be accessed
+   * @see javax.persistence.EntityManager#getReference(Class, Object)
    */
   <T> T getReference(Class<T> entityClass, Object primaryKey);
 
@@ -1036,4 +1037,14 @@ public interface CrudService {
    *           if EntityManager has not been set on this service before usage
    */
   EntityManager getEntityManager();
+
+  /**
+   * @param <T>
+   * @param transientEntity
+   * @param recursion
+   * @param attributes
+   * @return
+   */
+  <T> T touchRelations(T transientEntity, int recursion, String... attributes);
+
 }

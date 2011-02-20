@@ -426,9 +426,10 @@ public class CrudServiceBean implements CrudService {
   @SuppressWarnings("unchecked")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public <T> T getManagedEntity(final T transientEntity) {
-    return em.contains(transientEntity) ? transientEntity
-        : (T) em.find(transientEntity.getClass(), CrudServiceUtils.getIdValues(transientEntity)
-            .get(0));
+    return em.contains(transientEntity)
+      ? transientEntity
+      : (T) em.find(
+          transientEntity.getClass(), CrudServiceUtils.getIdValues(transientEntity).get(0));
   }
 
   @Override
@@ -456,7 +457,9 @@ public class CrudServiceBean implements CrudService {
     return em;
   }
 
-  public <T> T touchRelations(final T transientEntity, final int recursion) {
+  public <T> T touchRelations(final T transientEntity, final int recursion,
+      final String... attributes) {
+
     final T result = getManagedEntity(transientEntity);
     touch(result);
     return result;
@@ -464,7 +467,7 @@ public class CrudServiceBean implements CrudService {
 
   protected void touch(final Object attribute) {
 
-    if (attribute != null) {
+    if (attribute != null && !ReflectionUtils.isPrimitive(attribute.getClass())) {
       if (attribute instanceof Collection<?>) {
         ((Collection<?>) attribute).size();
       }
@@ -475,23 +478,21 @@ public class CrudServiceBean implements CrudService {
         Array.getLength(attribute);
       }
       else if (attribute instanceof Object) {
-        if (!ReflectionUtils.isPrimitive(attribute.getClass())) {
 
-          final Meta meta = MetaCache.getMeta(attribute.getClass());
-          for (final Entry<String, Field> entry : meta.getFields().entrySet()) {
-            final Field field = entry.getValue();
-            if (field == null) {
-              continue;
-            }
-            final String fieldName = entry.getKey();
-            if (fieldName.startsWith("this$")) {
-              // Nested classes that are not static member classes has a hidden
-              // this$0 field to reference the outermost enclosing class
-              continue;
-            }
-            final Object value = MetaCache.get(entry.getKey(), attribute);
-            touch(value);
+        final Meta meta = MetaCache.getMeta(attribute.getClass());
+        for (final Entry<String, Field> entry : meta.getFields().entrySet()) {
+          final Field field = entry.getValue();
+          if (field == null) {
+            continue;
           }
+          final String fieldName = entry.getKey();
+          if (fieldName.startsWith("this$")) {
+            // Nested classes that are not static member classes has a hidden
+            // this$0 field to reference the outermost enclosing class
+            continue;
+          }
+          final Object value = MetaCache.get(entry.getKey(), attribute);
+          touch(value);
         }
       }
     }
