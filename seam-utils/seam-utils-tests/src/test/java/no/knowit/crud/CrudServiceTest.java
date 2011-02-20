@@ -8,11 +8,14 @@ import javax.ejb.EJB;
 import javax.transaction.UserTransaction;
 
 import no.knowit.openejb.mock.OpenEjbTest;
+import no.knowit.testsupport.domain.Product;
+import no.knowit.testsupport.domain.PurchaseOrder;
 import no.knowit.testsupport.model.Movie;
 import no.knowit.testsupport.model.NamedEntity;
 
 import org.apache.log4j.Logger;
 import org.apache.openejb.api.LocalClient;
+import org.hibernate.LazyInitializationException;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -61,6 +64,9 @@ public class CrudServiceTest extends OpenEjbTest {
   private Movie allQuietOnTheWesternFront;
   private List<Movie> moviesUnderTest = new ArrayList<Movie>();
 
+  private Product productA;
+  private Product productB;
+  private PurchaseOrder purchaseOrder;
 
 
   @Override
@@ -158,7 +164,7 @@ public class CrudServiceTest extends OpenEjbTest {
         true, false).size() == 1 : "List.size():";
   }
 
-  
+
   @Test
   public void findByPrimaryKey() throws Exception {
     final Movie movie = crudService.find(Movie.class, theBigLebowskiId);
@@ -173,22 +179,22 @@ public class CrudServiceTest extends OpenEjbTest {
     movie = crudService.merge(Movie.with(movie).plot(THE_BIG_LEBOWSKI_PLOT).build());
     Assert.assertEquals(movie.getPlot(), THE_BIG_LEBOWSKI_PLOT);
   }
-  
+
   @Test
   public void mergeCollection() {
-    int i = 0;
+    final int i = 0;
     for (Movie movie : moviesUnderTest) {
       movie = crudService.refresh(moviesUnderTest.get(0));
       moviesUnderTest.set(i, movie);
     }
-    
-    String aNewPlot = "A new plot ...";
+
+    final String aNewPlot = "A new plot ...";
     moviesUnderTest.get(0).setPlot(aNewPlot);
-    
+
     // Need a cast to use the *Collection methods
     moviesUnderTest = (List<Movie>) crudService.mergeCollection(moviesUnderTest);
-    
-    Movie mergedMovie = crudService.find(Movie.class, moviesUnderTest.get(0).getId());
+
+    final Movie mergedMovie = crudService.find(Movie.class, moviesUnderTest.get(0).getId());
     assert aNewPlot.equals(mergedMovie.getPlot()) : "Expected: " + aNewPlot;
   }
 
@@ -220,34 +226,34 @@ public class CrudServiceTest extends OpenEjbTest {
         .build());
     assert movie != null : "Movie was null";
   }
-  
+
   @Test
   void storeCollection() {
-    String yetAnotherPlot = "Yet anoter plot ...";
+    final String yetAnotherPlot = "Yet anoter plot ...";
     List<Movie> moviesToStore = new ArrayList<Movie>();
-    
-    Movie movieToMerge = Movie
-      .with(crudService.refresh(moviesUnderTest.get(0)))
-      .plot(yetAnotherPlot)
-      .build();
-    
-    Movie movieToPersist = Movie.with()
-      .director("Robert Rossen")
-      .title("All the King's Men")
-      .year(1949)
-      .plot("Based on the Pulitzer Prize-winning novel by Robert Penn Warren.")
-      .build();
-    
+
+    final Movie movieToMerge = Movie
+    .with(crudService.refresh(moviesUnderTest.get(0)))
+    .plot(yetAnotherPlot)
+    .build();
+
+    final Movie movieToPersist = Movie.with()
+    .director("Robert Rossen")
+    .title("All the King's Men")
+    .year(1949)
+    .plot("Based on the Pulitzer Prize-winning novel by Robert Penn Warren.")
+    .build();
+
     moviesToStore.add(movieToMerge);
     moviesToStore.add(movieToPersist);
 
     // Need a cast to use the *Collection methods
     moviesToStore = (List<Movie>) crudService.storeCollection(moviesToStore);
-    
-    Movie mergedMovie = crudService.find(Movie.class, moviesUnderTest.get(0).getId());
+
+    final Movie mergedMovie = crudService.find(Movie.class, moviesUnderTest.get(0).getId());
     assert yetAnotherPlot.equals(mergedMovie.getPlot()) : "Expected: " + yetAnotherPlot;
 
-    Integer id = moviesToStore.get(1).getId();
+    final Integer id = moviesToStore.get(1).getId();
     assert id != null : "Expected id != null";
     assert crudService.find(Movie.class, id) != null : "Expected to find movie with id: " + id;
   }
@@ -383,4 +389,41 @@ public class CrudServiceTest extends OpenEjbTest {
     assert fargo.getTitle().equals(title) : "Expected same title before and after refresh";
   }
 
+  @Test(expectedExceptions = LazyInitializationException.class)
+  public void shouldGetLazyInitializationException() {
+    createPurchaseOrderIfNull();
+
+    final PurchaseOrder po = crudService.find(PurchaseOrder.class, purchaseOrder.getId());
+    assert crudService.isManaged(po) == false : "Expected unmanaged purchase order entity";
+    po.getOrderines().size();
+  }
+
+  @Test
+  public void shouldNotGetLazyInitializationException() {
+    createPurchaseOrderIfNull();
+
+    PurchaseOrder po = crudService.find(PurchaseOrder.class, purchaseOrder.getId());
+    assert crudService.isManaged(po) == false : "Expected unmanaged purchase order entity";
+
+    po = crudService.touchRelations(po, 1, "orderLines");
+    po.getOrderines().size();
+  }
+
+  private void createPurchaseOrderIfNull() {
+    if (productA == null) {
+      productA = crudService.persist(Product.with().name("Product A").price(10).build());
+    }
+    if (productB == null) {
+      productB = crudService.persist(Product.with().name("Product B").price(15).build());
+    }
+
+    if (purchaseOrder == null) {
+      purchaseOrder = crudService.persist(
+          PurchaseOrder.with("Acme inc")
+          .orderLine(productA, 2)
+          .orderLine(productB, 10)
+          .build()
+      );
+    }
+  }
 }
