@@ -397,7 +397,7 @@
                     log.info "========================================================================"
                     log.info "Maven project.properties:"
                     log.info "========================================================================"
-                    log.info "project.parent.basedir  = $project.parent.basedir";
+                    if (project.parent) log.info "project.parent.basedir  = $project.parent.basedir";
                     log.info "project.basedir         = $project.basedir";
                     log.info "project.artifactId      = $project.artifactId";
                     log.info "project.build.directory = $project.build.directory";
