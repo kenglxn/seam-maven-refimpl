@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>no.knowit.seam</groupId>
+        <artifactId>seam-refimpl</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>seam-refimpl-war</artifactId>
+    <!-- m2eclipse does not like: ${app.context}-ear -->
+    <name>${project.artifactId} : ${project.version}</name>
+    <description>The Seam Maven reference implementation WAR module</description>
+    <packaging>war</packaging>
+
+    <properties>
+        <app.jndi.pattern>${project.build.finalName}/#{ejbName}/local</app.jndi.pattern>
+    </properties>
+
+    <profiles>
+        <!--
+         More than one profile can be active at once. Since profiles can contain the same types of
+         configuration there can be clashes. If two profiles clash the last to be activated will
+         override configurations in those activated earlier.
+         Note: Any activeByDefault profile will be deactivated if you activate another profile.
+         E.g. running "mvn install -Penv-dev" deactivates the "default" profile.
+        -->
+        <profile>
+            <id>env-dev</id>
+            <activation>
+                <file>
+                    <exists>../src/main/filters/filter-dev.properties</exists>
+                </file>
+            </activation>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>env-default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>default</env>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>explode</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>war-process-classes</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <!--EAR version--><!--<property--><!--name="deploy-path"--><!--value="${as.deploy}/${app.context}-ear.ear"/>--><!--WAR only version-->
+                                        <property name="deploy-path" value="${as.deploy}"/>
+                                        <!--copy everything except WEB-INF/classes-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.directory}/${project.build.finalName}">
+                                                <include name="**/*"/>
+                                                <exclude name="WEB-INF/**/*"/>
+                                                <exclude name="META-INF/context.xml"/>
+                                            </fileset>
+                                        </copy>
+                                        <!--copy everything from WEB-INF/classes except classes-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war/WEB-INF/classes" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.directory}/${project.build.finalName}/WEB-INF/classes">
+                                                <exclude name="**/*.class"/>
+                                            </fileset>
+                                        </copy>
+                                        <!--copy hot deployable classes-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war/WEB-INF/dev" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.directory}/${project.build.finalName}/WEB-INF/classes"
+                                                     excludesfile="nonhotdeployable">
+                                                <include name="**/*.class"/>
+                                            </fileset>
+                                        </copy>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>explodeTestsFast</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>process-test-classes</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <!--EAR version--><!--<property--><!--name="deploy-path"--><!--value="${as.deploy}/${app.context}-ear.ear"/>--><!--WAR only version-->
+                                        <property name="deploy-path" value="${as.deploy}"/>
+                                        <!--copy resources-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war/WEB-INF/classes" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.testOutputDirectory}">
+                                                <exclude name="**/*.class"/>
+                                            </fileset>
+                                        </copy>
+                                        <!--copy hot deployable classes-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war/WEB-INF/dev" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.testOutputDirectory}" excludesfile="nonhotdeployable">
+                                                <include name="**/*.class"/>
+                                            </fileset>
+                                        </copy>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!--WAR only version-->
+        <profile>
+            <!--
+              Unexplode ear. Remove project from appserver deploy folder.
+              Execute e.g. "mvn clean -Punexplode"
+            -->
+            <id>unexplode</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>clean</id>
+                                <phase>clean</phase>
+                                <configuration>
+                                    <tasks>
+                                        <property name="deploy-path" value="${as.deploy}/${project.build.finalName}.war"/>
+
+                                        <echo>Unexploding: ${deploy-path}</echo>
+
+                                        <delete file="${deploy-path}" quiet="true"/>
+                                        <delete dir="${deploy-path}" quiet="true"/>
+                                        <!--
+                                          Uncomment this tag if you have deployed the *-ds.xml file to the appserver's deploy folder
+                                          <delete file="${as.deploy}/${ds.xml}"	quiet="true" />
+                                        -->
+                                    </tasks>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--WAR only version-->
+        <profile>
+            <id>restart</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>war-package</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <property name="deploy-path" value="${as.deploy}"/>
+                                        <!--copy everything except WEB-INF/classes-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.directory}/${project.build.finalName}">
+                                                <include name="**/*"/>
+                                                <exclude name="WEB-INF/classes/**/*"/>
+                                            </fileset>
+                                        </copy>
+                                        <!--copy everything from WEB-INF/classes except classes-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war/WEB-INF/classes" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.directory}/${project.build.finalName}/WEB-INF/classes">
+                                                <exclude name="**/*.class"/>
+                                            </fileset>
+                                        </copy>
+                                        <!--copy non hot deployable classes-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war/WEB-INF/classes" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.directory}/${project.build.finalName}/WEB-INF/classes"
+                                                     includesfile="nonhotdeployable"/>
+                                        </copy>
+                                        <!--copy hot deployable classes-->
+                                        <copy todir="${deploy-path}/${project.build.finalName}.war/WEB-INF/dev" overwrite="true" verbose="false">
+                                            <fileset dir="${project.build.directory}/${project.build.finalName}/WEB-INF/classes"
+                                                     excludesfile="nonhotdeployable">
+                                                <include name="**/*.class"/>
+                                            </fileset>
+                                        </copy>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-app-ds-xml</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${as.deploy}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>../ear/src/main/resources</directory>
+                                            <filtering>true</filtering>
+                                            <includes>
+                                                <include>${ds.xml}</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jsfunit</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.jsfunit</groupId>
+                    <artifactId>jboss-jsfunit-core</artifactId>
+                    <scope>compile</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>xerces</groupId>
+                            <artifactId>xercesImpl</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>xalan</groupId>
+                            <artifactId>xalan</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+
+                <!--Needed for JSFUnit tests by Cactus-->
+                <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                    <version>3.8.2</version>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.unitils</groupId>
+                    <artifactId>unitils-core</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.unitils</groupId>
+                    <artifactId>unitils-dbunit</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.unitils</groupId>
+                    <artifactId>unitils-dbmaintainer</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.dbmaintain</groupId>
+                    <artifactId>dbmaintain</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>${jdbc.driver.groupId}</groupId>
+                    <artifactId>${jdbc.driver.artifactId}</artifactId>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <cactus.contextURL>${cactus.contextURL}</cactus.contextURL>
+                            </systemPropertyVariables>
+                            <failIfNoTests>true</failIfNoTests>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>verify</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <configuration>
+                            <container>
+                                <containerId>jboss42x</containerId>
+                                <type>remote</type>
+                            </container>
+                            <configuration>
+                                <type>runtime</type>
+                                <properties>
+                                    <cargo.hostname>${cargo.hostname}</cargo.hostname>
+                                    <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                                </properties>
+				<deployables>
+				</deployables>
+                            </configuration>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>deploy</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>undeploy</goal>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jsfunit</id>
+                                <goals>
+                                    <goal>war</goal>
+                                </goals>
+                                <configuration>
+                                    <webResources>
+                                        <webResource>
+                                            <directory>src/test/resources</directory>
+                                            <targetPath>WEB-INF</targetPath>
+                                            <includes>
+                                                <include>web.xml</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </webResource>
+                                        <resource>
+                                            <directory>${project.build.testOutputDirectory}</directory>
+                                            <targetPath>WEB-INF/classes</targetPath>
+                                            <includes>
+                                                <include>**/*.class</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
+                                            <directory>${project.build.testOutputDirectory}</directory>
+                                            <targetPath>/</targetPath>
+                                            <includes>
+                                                <include>**/*.xsl</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
+                                            <directory>${basedir}/src/test/resources</directory>
+                                            <targetPath>WEB-INF/classes</targetPath>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                        <resource>
+                                            <directory>${unitils.dbscripts.src}</directory>
+                                            <targetPath>WEB-INF/classes/</targetPath>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </webResources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-app-ds-xml</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${as.home}/server/default/deploy</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>../ear/src/main/resources</directory>
+                                            <filtering>true</filtering>
+                                            <includes>
+                                                <include>${ds.xml}</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>skipSurefire</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>cli</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.twdata.maven</groupId>
+                        <artifactId>maven-cli-plugin</artifactId>
+                        <version>1.0.6-SNAPSHOT</version>
+                        <configuration>
+                            <userAliases>
+                                <disableConstraints>properties:read-project-properties dbmaintain:disableConstraints</disableConstraints>
+                                <clearDatabase>properties:read-project-properties dbmaintain:clearDatabase</clearDatabase>
+                                <updateDatabase>properties:read-project-properties dbmaintain:updateDatabase</updateDatabase>
+                                <unexplode>clean -Punexplode</unexplode>
+                                <explode>package -S -Pexplode</explode>
+                                <restart>package -S -Prestart</restart>
+                                <!--jsfunitRun - updates database, builds project with JSFUnit tests, deploys it into running JBoss AS and runs JSFUnit tests -->
+                                <jsfunitRun>clean properties:read-project-properties dbmaintain:clearDatabase dbmaintain:updateDatabase
+                                    dbmaintain:updateSequences dbmaintain:disableConstraints verify -Pjsfunit -Dmaven.test.skip=false
+                                </jsfunitRun>
+                                <jsfunitRestart>restart -Pjsfunit -Dmaven.test.skip=false clearDatabase updateDatabase disableConstraints</jsfunitRestart>
+                                <!--jsfunitExplode - compiles only JSFUnit tests and copies them into exploded package on running JBoss AS, this is meant for rapid test modifications -->
+                                <jsfunitExplode>test -PexplodeTestsFast,skipSurefire -Dmaven.test.skip=false</jsfunitExplode>
+                                <!--jsfunitExplodeAll - same as explode, but includes JSFUnit tests, use this when you need to update facelets and JSFUnit tests-->
+                                <jsfunitExplodeAll>explode -Pjsfunit,skipSurefire -Dmaven.test.skip=false</jsfunitExplodeAll>
+                            </userAliases>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <!-- seam --><!--WAR only version START-->
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam</artifactId>
+            <type>jar</type>
+            <version>${version.seam}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.el</groupId>
+            <artifactId>jboss-el</artifactId>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.richfaces.framework</groupId>
+            <artifactId>richfaces-api</artifactId>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+            <type>jar</type>
+        </dependency>
+
+        <!--WAR only version END-->
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-ui</artifactId>
+        </dependency>
+
+        <!-- optional, but a reasonable requirement for a newly created project -->
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-debug</artifactId>
+        </dependency>
+
+        <!-- add more Seam modules as needed
+        <dependency>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam-remoting</artifactId>
+        </dependency>
+
+        <dependency>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam-mail</artifactId>
+        </dependency>
+
+        <dependency>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam-pdf</artifactId>
+        </dependency>
+
+        <dependency>
+          <groupId>org.jboss.seam</groupId>
+          <artifactId>jboss-seam-excel</artifactId>
+        </dependency>
+        -->
+
+        <!-- richfaces -->
+        <dependency>
+            <groupId>org.richfaces.framework</groupId>
+            <artifactId>richfaces-impl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.richfaces.ui</groupId>
+            <artifactId>richfaces-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.richfaces.samples</groupId>
+            <artifactId>glassX</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.richfaces.samples</groupId>
+            <artifactId>darkX</artifactId>
+        </dependency>
+
+        <!--  jee -->
+        <dependency>
+            <groupId>com.sun.facelets</groupId>
+            <artifactId>jsf-facelets</artifactId>
+        </dependency>
+
+        <!-- url rewrite filter,
+          There are two rewrite options in Seam, you can choose to either use the org.tuckey
+          UrlRewriteFilter or the native Seam rewriting. You should not attempt to use both.
+          The native Seam rewriting does not use the org.tuckey rewrite engine at all.
+          If you are going to use Seam's native rewriting, then remove the org.tuckey
+          UrlRewriteFilter from web.xml and nuke the urlrewrite.xml file.
+          With Seam 2.1 or newer it is recommend to use Seam's native rewrite engine.
+
+        <dependency>
+          <groupId>org.tuckey</groupId>
+          <artifactId>urlrewritefilter</artifactId>
+        </dependency>
+        -->
+
+
+        <!--
+          For Eclipse and JBoss Tools:
+          List all other modules you are interested to browse
+          into (ctrl+click) from xhtml pages with scope provided
+        <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>${app.context}-ejb</artifactId>
+          <type>ejb</type>
+          <scope>provided</scope>
+        </dependency>
+        -->
+
+        <!--JSFUnit-->
+        <dependency>
+            <groupId>org.jboss.jsfunit</groupId>
+            <artifactId>jboss-jsfunit-core</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xalan</groupId>
+                    <artifactId>xalan</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-dbunit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>${app.context}</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <!--
+      Maven filter properties are ony visible to
+      resources and can not be accessed from the POM.
+        -->
+        <filters>
+            <filter>${basedir}/../src/main/filters/filter-${env}.properties</filter>
+        </filters>
+
+        <plugins>
+            <!--
+              Maven filter properties are ony visible to resources and can not be
+              accessed from the POM. This is where the Properties Maven Plugin makes
+              our life a little easier when dealing with properties that we need to
+              access inside our POM. It provides goals to read and write properties
+              from and to files, and also to set system properties. It's main use-case
+              is loading properties from files instead of declaring them in pom.xml,
+              something that comes in handy when dealing with different environments.
+              The plugin is configured to read properties during the "validate" phase
+              and the properties are then accessible from the pom.
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <configuration>
+                    <files>
+                        <file>${basedir}/../src/main/filters/filter-${env}.properties</file>
+                    </files>
+                    <outputFile/>
+                    <properties/>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pre-clean</id>
+                        <phase>pre-clean</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--WAR only mode-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <webResource>
+                            <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                            <targetPath>WEB-INF</targetPath>
+                            <filtering>true</filtering>
+                        </webResource>
+                        <webResource>
+                            <directory>${basedir}/../ejb/src/main/resources/META-INF</directory>
+                            <targetPath>WEB-INF/classes/META-INF</targetPath>
+                            <includes>
+                                <include>persistence.xml</include>
+                            </includes>
+                            <filtering>true</filtering>
+                        </webResource>
+                    </webResources>
+                    <archive>
+                        <manifestEntries>
+                            <Build-Date>${timestamp}</Build-Date>
+                            <Build-Revision>${buildNumber}</Build-Revision>
+                            <Mode>${env}</Mode>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.dbmaintain</groupId>
+                <artifactId>dbmaintain-maven-plugin</artifactId>
+                <configuration>
+                    <databases>
+                        <database>
+                            <dialect>${unitils.dialect}</dialect>
+                            <driverClassName>${ds.driver.class}</driverClassName>
+                            <userName>${ds.user.name}</userName>
+                            <password>${ds.password}</password>
+                            <url>${ds.connection.url}</url>
+                            <schemaNames>${ds.schema}</schemaNames>
+                        </database>
+                    </databases>
+                    <autoCreateDbMaintainScriptsTable>true</autoCreateDbMaintainScriptsTable>
+                    <cleanDb>false</cleanDb>
+                    <fromScratchEnabled>${dbmaintain.fromScratchEnabled}</fromScratchEnabled>
+                    <lowestAcceptableSequenceValue>1000</lowestAcceptableSequenceValue>
+                    <updateSequences>false</updateSequences>
+                    <scriptLocations>${unitils.dbscripts.src}</scriptLocations>
+                    <scriptEncoding>UTF-8</scriptEncoding>
+                    <qualifiers>${dbmaintain.qualifiers}</qualifiers>
+                    <excludedQualifiers>${dbmaintain.excludedQualifiers}</excludedQualifiers>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>${jdbc.driver.groupId}</groupId>
+                        <artifactId>${jdbc.driver.artifactId}</artifactId>
+                        <version>${jdbc.driver.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
