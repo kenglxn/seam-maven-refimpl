@@ -1,0 +1,6 @@
+**/*IT.class
+**/*IT$*.class
+**/*ITI.class
+**/no/knowit/seam/example/model/**/*.class
+**/no/knowit/seam/example/test/AbstractUnitilisedJSFUnitTestCase.class
+**/no/knowit/seam/example/test/AbstractUnitilisedJSFUnitTestCase$*.class

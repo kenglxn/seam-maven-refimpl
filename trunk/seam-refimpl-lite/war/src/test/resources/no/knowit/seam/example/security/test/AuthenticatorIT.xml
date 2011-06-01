@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../../../../src/test/dbschemaxsd/dataset.xsd">
+    <USERS ID="1" USERNAME="s4237@pjwstk.edu.pl" PASSWORD_DIGEST="WU+AOzgKQTlu1j3KOVA1Qg==" REGISTRATION_DATE="2010-10-01" ACTIVE="true"/>
+</dataset>
