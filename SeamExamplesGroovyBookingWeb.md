@@ -1,0 +1,55 @@
+# A Mavenized Version of jboss-seam-2.2.0/examples/groovybooking WEB example #
+
+This is a Mavenized Version of the jboss-seam-2.2.0/examples/groovybooking WEB example project. The example application is tested on JBoss Application Server 4.2.3 GA jdk6.
+
+Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of experimenting to get Groovy to play nice in a Seam Maven environment. The groovy-all jar dependency, version 1.5.4, provided by the seam-2.2.0 and seam-2.2.0 root POM did not work; I had to upgrade the dependency to version 1.6.3 which in turn affected the gmaven plugin:
+```
+<plugin>
+  <groupId>org.codehaus.groovy.maven</groupId>
+  <artifactId>gmaven-plugin</artifactId>
+  <version>1.0</version>
+  <configuration>
+    <debug>true</debug>
+    <stacktrace>true</stacktrace>
+    <targetBytecode>1.5</targetBytecode> <!-- is the value to compile for a JDK 1.5 or later JVM. -->
+    <verbose>true</verbose>
+    <sourceEncoding>utf-8</sourceEncoding>
+  </configuration>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generateStubs</goal>
+        <goal>compile</goal>
+        <goal>generateTestStubs</goal>
+        <goal>testCompile</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>		
+```
+
+## Differences from the original example application ##
+  * The datasource file, `seam-groovybooking-web-ds.xml`, is moved to the project root folder
+  * Uses standard Maven directory layout
+  * Groovy files are located in the `war/src/groovy` directory
+  * Removed `components.properties`, uses filtering to set values in `components.xml`
+  * installed="false" did not work for `persistence:entity-manager-factory`, installed must evaluate to "true" for jboss-4.2.3.GA-jdk6
+```
+    <persistence:entity-manager-factory 
+      name="groovyEntityManagerFactory"
+      persistence-unit-name="groovy" 
+      installed="true"/>
+```
+  * "groovy-all" must be upgraded to version 1.6.3. Version 1.5.4 provided by the seam-2.2.0 root POM, does not work.
+  * Uses gmaven-plugin to compile Groovy files
+  * No hot code replacement, all compiled code deployed to `WEB-INF/classes`. It should be realtivly easy to make a Maven hot code replacement version but this was not the goal for this excercise :-)
+
+## How to install and run the application ##
+  * [The Getting Started tutorial](http://www.glxn.net/seam-maven-refimpl/doc/tutorial/) explains the basic steps
+  * [Checkout from svn](http://seam-maven-refimpl.googlecode.com/svn/trunk/) and build required modules
+  * Open a command shell and cd to project folder: groovybooking-web
+  * Execute mvn install
+  * Copy `groovybooking-web/jboss-seam-groovybooking-web-ds.xml` to your appserver's deploy folder, e.g. `C:\dev\server\jboss-4.2.3.GA-jdk6\server\default\deploy`
+  * copy `groovybooking-web/war/target/seam-groovybooking-web.war` to your appserver's deploy folder
+  * Start the server and point your browser to http://localhost:8080/seam-groovybooking-web
+  * Remember to `delete seam-groovybooking-web-ds.xml` and `seam-groovybooking-web-ds.war` from the server when you have finished the example

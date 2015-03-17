@@ -1,0 +1,34 @@
+# Introduction #
+
+The project shows how to use the following UI components to handle JPA `@ManyToMany` CRUD:
+
+```
+<h:selectManyCheckbox>
+<h:selectManyListbox>
+<rich:pickList>
+<rich:listShuttle>
+```
+
+Model:
+
+```
+Language*<------*Person*<----->*Company
+                   *
+                   |
+Interest*<----------
+```
+
+Person `*<->*` Company is a "bi-directional" association where Person holds the inverse side of the association and Company is the owning side. The important thing to remember when working with many to many bi-directional associations is to update the collection at the owning side `(Company.java)` before the inverse side is persisted `(PersonHome.java)`. Also  note that a  `HashSet` is used on the owning side, which makes it easy to avoid redundant associations.
+
+## Howto ##
+The steps required to get the project up and running:
+  * [The Getting Started tutorial explains the basic steps.](http://www.glxn.net/seam-maven-refimpl/doc/tutorial/)
+  * [Checkout from svn and build required mudules](http://seam-maven-refimpl.googlecode.com/svn/trunk/).
+  * Copy m2m/src/main/filters/filter-prod.properties to m2m/src/main/filters/filter-dev.properties and modify the filter-dev.properties file as described in the getting started tutorial.
+  * Open a command shell and cd to project folder, m2m
+  * Execute **mvn install -Penv-dev,explode**
+  * Start the server and access the application at http://localhost:8080/m2m
+
+In addition, this example shows:
+  * How to use the [Build Number Maven Plugin ](http://mojo.codehaus.org/buildnumber-maven-plugin/).<br /> The example uses the [Build Number Maven Plugin ](http://mojo.codehaus.org/buildnumber-maven-plugin/) to generate a unique build number for the projects EAR, EJB and WAR modules. Open e.g. the m2m/ear/target/m2m-ear-`*`/m2m-war-`*`/META-INF/MANIFEST.MF to see the result.<br />Maven does not generate a manifest file for the target/m2m-ear-`*`/META-INF folder, so the only way to inspect the manifest file for the EAR is to open the packaged ear.
+  * How to read properties from the war/META-INF/MANIFEST.MF file.<br />Code needed to read properties from manifest file is provided.

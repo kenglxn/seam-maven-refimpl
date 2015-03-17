@@ -1,0 +1,52 @@
+# A Mavenized JEE version of the JBoss Seam 2.2.0 groovybooking example #
+
+This is a Mavenized JEE version of the JBoss Seam 2.2.0 groovybooking examle. The example application is tested on JBoss Application Server 4.2.3 GA jdk6 and 5.1.0 GA jdk6
+
+Mavenizing a Seam Groovy application was not an easy task, i had to do a lot of experimenting to get Groovy to play nice in a Seam Maven environment. The groovy-all jar dependency, version 1.5.4, provided by the seam-2.2.0 root POM did not work; I had to upgrade the dependency to version 1.7. The gmaven-plugin is preconfigured in the refimpl root pom:
+```
+<plugin>
+  <groupId>org.codehaus.groovy.maven</groupId>
+  <artifactId>gmaven-plugin</artifactId>
+  <version>1.0</version>
+  <configuration>
+    <debug>true</debug>
+    <stacktrace>true</stacktrace>
+    <targetBytecode>1.5</targetBytecode> <!-- is the value to compile for a JDK 1.5 or later JVM. -->
+    <verbose>true</verbose>
+    <sourceEncoding>utf-8</sourceEncoding>
+  </configuration>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generateStubs</goal>
+        <goal>compile</goal>
+        <goal>generateTestStubs</goal>
+        <goal>testCompile</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>   
+```
+
+Differences from the original app:
+
+  * Uses standard Maven directory layout
+  * `*`.java moved to ejb/src/main/java folder
+  * `*`.groovy files moved to ejb/src/main/groovy folder
+  * Removed components.properties, uses filtering to set values in components.xml
+  * Uses gmaven-plugin to compile Groovy files
+  * "groovy-all" is upgraded to version 1.7.1 in the refimpl root POM. Version 1.5.4 provided by the seam-2.2.0 root POM, does not work.
+
+## How to install and run the application ##
+  * [The Getting Started tutorial](http://www.glxn.net/seam-maven-refimpl/doc/tutorial/) explains the basic steps
+  * [Checkout from svn](http://seam-maven-refimpl.googlecode.com/svn/trunk/) and build required modules
+  * Copy **groovybooking-jee/src/main/filters/filter-prod.properties** to groovybooking-jee/src/main/filters/**filter-dev.properties** and modify the filter-dev.properties file as described in the getting started tutorial
+  * Open a command shell and cd to project folder; **groovybooking-jee**
+  * Execute **mvn install -Penv-dev,explode**
+  * Start the server and access the application at http://localhost:8080/seam-groovybooking-jee
+
+## Import project to Eclipe 3.5 ##
+  * Install the [groovy-eclipse plugin](http://groovy.codehaus.org/Eclipse+Plugin)
+  * Import the project as explained in the [Eclipse tutorial](http://www.glxn.net/seam-maven-refimpl/doc/tutorial/02-eclipse.html)
+  * Right click on the **jboss-seam-groovybooking-jee-ejb/src/main/groovy** folder and select **Build Path > Use as Source Folder**
+  * Right click on the **jboss-seam-groovybooking-jee-ejb** project and select **Configure > Convert to Groovy Project**

@@ -1,0 +1,16 @@
+# A Mavenized Version of Seam In Action, Chapter Two. #
+
+We have made a Mavenized version of the source code from chapter two in the excellent Seam In Action book using the **seam-refimpl** as a project template. For those who prefers Maven as a build management system this should be a suitable starting point to play with the example code while reading the book.
+You will need JBoss-4.2.3 or JBoss-5.x and MYSQL-5.x to run the project "as is".
+
+## How to install and run the application ##
+  * [The Getting Started tutorial](http://www.glxn.net/seam-maven-refimpl/doc/tutorial/) explains the basic steps
+  * [Checkout from svn](http://seam-maven-refimpl.googlecode.com/svn/trunk/) and build required modules
+  * In MYSQL.
+    * Create database "**open18initial\_db**"
+    * Execute ./samples/seaminaction/etc/schema/open18-initial-schema-mysql.sql
+    * Execute ./samples/seaminaction/etc/schema/open18-initial-seed-data-mysql.sql
+  * Copy **open18ee/src/main/filters/filter-prod.properties** to open18ee-jee/src/main/filters/**filter-dev.properties** and modify the filter-dev.properties file as described in the getting started tutorial
+  * Open a command shell and cd to project folder; **open18ee**
+  * Execute **mvn install -Penv-dev,explode**
+  * Start the server and access the application at http://localhost:8080/open18-baseline
